@@ -3,9 +3,6 @@ require('dotenv').config();
 
 module.exports = async (message) => {
   if (message.author.id === process.env.DISBOARD_ID) {
-    console.log(message);
-    console.log('\n\n\n\n\n\n\n\n\n\n');
-    console.log(message.embeds[0]);
     if (message.embeds[0] != null && message.embeds[0].description.includes("Bump erfolgreich")) {
       const query = {
         guildId: message.guild.id,

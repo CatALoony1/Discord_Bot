@@ -21,7 +21,7 @@ function getRandomXp(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+}
 
 module.exports = async (client) => {
     cron.schedule('*/5 * * * *', async function () {
@@ -35,7 +35,7 @@ module.exports = async (client) => {
         if (conf) {
             multiplier = Number(conf.value);
         }
-        let xpToGive = 5 * getRandomXp(1,5) * multiplier;
+        let xpToGive = 5 * getRandomXp(1, 5) * multiplier;
         client.channels.cache.forEach(async (channel) => {
             if (channel.type == 2 && channel.id != '1307820687599337602') {
                 if (channel.members.size >= 2) {
