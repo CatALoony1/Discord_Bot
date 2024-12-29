@@ -1,0 +1,82 @@
+const { SlashCommandBuilder, Client, Interaction, InteractionContextType, EmbedBuilder } = require('discord.js');
+const calculateLevelXp = require('../utils/calculateLevelXp');
+const Level = require('../models/Level');
+
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('stats')
+    .setDescription('Zeigt all deine Level-Bezogenen Daten.')
+    .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
+
+  run: async ({ interaction, client }) => {
+    console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+    if (!interaction.inGuild()) {
+      interaction.reply('Hier ist doch kein Server!');
+      return;
+    }
+
+    await interaction.deferReply();
+    const targetUserId = interaction.member.id;
+    const targetUserObj = await interaction.guild.members.fetch(targetUserId);
+    const fetchedLevel = await Level.findOne({
+      userId: targetUserId,
+      guildId: interaction.guild.id,
+    });
+
+    if (!fetchedLevel) {
+      interaction.editReply("Du hast noch kein Level");
+      return;
+    }
+
+    let allLevels = await Level.find({ guildId: interaction.guild.id });
+
+    var oldUsers = [];
+    for (let j = 0; j < allLevels.length; j++) {
+      if (!(interaction.guild.members.cache.find(m => m.id === allLevels[j].userId)?.id)) {
+        oldUsers[oldUsers.length] = j;
+      }
+    }
+    for (let j = 0; j < oldUsers.length; j++) {
+      allLevels.splice(oldUsers[j], 1);
+    }
+
+    allLevels.sort((a, b) => {
+      if (a.level === b.level) {
+        return b.xp - a.xp;
+      } else {
+        return b.level - a.level;
+      }
+    });
+    let currentRank = allLevels.findIndex((lvl) => lvl.userId === targetUserId) + 1;
+    if(fetchedLevel.voicetime >= 60){
+      var h = 0;
+      var m = fetchedLevel.voicetime;
+      while(true){
+        if(m >= 60){
+          m -= 60;
+          h += 1;
+        }else{
+          break;
+        }
+      }
+      var time = `${h}h ${m}m`;
+    }else{
+      var time = `${voicetime}min`;
+    }
+    const messageEdited = new EmbedBuilder();
+    messageEdited.setColor(0x0033cc);
+    messageEdited.setAuthor({ name: interaction.member.user.username, iconURL: interaction.member.user.displayAvatarURL({ size: 256 }) });
+    messageEdited.setTitle(`Deine Stats:`);
+    messageEdited.addFields({ name: 'Rang:', value: `${currentRank}` });
+    messageEdited.addFields({ name: 'XP zum nächsten Level:', value: `${fetchedLevel.xp}/${calculateLevelXp(fetchedLevel.level)}` });
+    messageEdited.addFields({ name: 'Gesamte XP:', value: `${fetchedLevel.allxp}` });
+    messageEdited.addFields({ name: 'Nachrichten XP:', value: `${fetchedLevel.messagexp}` });
+    messageEdited.addFields({ name: 'Voice Call XP:', value: `${fetchedLevel.voicexp}` });
+    messageEdited.addFields({ name: 'Nachrichten:', value: `${fetchedLevel.messages}` });
+    messageEdited.addFields({ name: 'Ungefähre Voice Call Zeit:', value: `${time}` });
+    messageEdited.addFields({ name: 'Letzte XP:', value: `${fetchedLevel.lastMessage}` });
+    messageEdited.addFields({ name: 'Levelbarfarbe:', value: `${fetchedLevel.color}` });
+
+    interaction.editReply({ embeds: [messageEdited] });
+  },
+};
