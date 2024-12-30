@@ -68,6 +68,7 @@ module.exports = {
     messageEdited.setAuthor({ name: interaction.member.user.username, iconURL: interaction.member.user.displayAvatarURL({ size: 256 }) });
     messageEdited.setTitle(`Deine Stats:`);
     messageEdited.addFields({ name: 'Rang:', value: `${currentRank}` });
+    messageEdited.addFields({ name: 'Level:', value: `${fetchedLevel.level}` });
     messageEdited.addFields({ name: 'XP zum nächsten Level:', value: `${fetchedLevel.xp}/${calculateLevelXp(fetchedLevel.level)}` });
     messageEdited.addFields({ name: 'Gesamte XP:', value: `${fetchedLevel.allxp}` });
     messageEdited.addFields({ name: 'Nachrichten XP:', value: `${fetchedLevel.messagexp}` });
