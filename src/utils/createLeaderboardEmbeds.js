@@ -39,10 +39,25 @@ async function createLeaderboardEmbeds(page, interaction) {
     }
     let userObj = await interaction.guild.members.fetch(fetchedLevel[i].userId);
     let value;
+    if(fetchedLevel[i].voicetime >= 60){
+      var h = 0;
+      var m = fetchedLevel[i].voicetime;
+      while(true){
+        if(m >= 60){
+          m -= 60;
+          h += 1;
+        }else{
+          break;
+        }
+      }
+      var time = `${h}h ${m}m`;
+    }else{
+      var time = `${fetchedLevel[i].voicetime}m`;
+    }
     if (i === max - 1 || i === fetchedLevel.length - 1) {
-      value = `Level: ${fetchedLevel[i].level} Xp: ${fetchedLevel[i].allxp} Nachrichten: ${fetchedLevel[i].messages}`;
+      value = `Level: ${fetchedLevel[i].level} XP: ${fetchedLevel[i].allxp}\n Nachrichten: ${fetchedLevel[i].messages} Voice Zeit: ${time}`;
     } else {
-      value = `Level: ${fetchedLevel[i].level} Xp: ${fetchedLevel[i].allxp} Nachrichten: ${fetchedLevel[i].messages}\n--------------------------------------`;
+      value = `Level: ${fetchedLevel[i].level} XP: ${fetchedLevel[i].allxp}\n Nachrichten: ${fetchedLevel[i].messages} Voice Zeit: ${time}\n--------------------------------------`;
     }
     embed.addFields({ name: `#${i + 1}  ${userObj.user.username}`, value: value });
   }

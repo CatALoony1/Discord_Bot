@@ -61,7 +61,7 @@ module.exports = {
       }
       var time = `${h}h ${m}m`;
     }else{
-      var time = `${voicetime}min`;
+      var time = `${fetchedLevel.voicetime}m`;
     }
     const messageEdited = new EmbedBuilder();
     messageEdited.setColor(0x0033cc);
