@@ -17,7 +17,7 @@ async function createLeaderboardEmbeds(page, interaction) {
     }
   }
   for (let j = 0; j < oldUsers.length; j++) {
-    fetchedLevel.splice(oldUsers[j], 1);
+    fetchedLevel.splice(oldUsers[j] - j, 1);
   }
   fetchedLevel.sort((a, b) => {
     if (a.level === b.level) {

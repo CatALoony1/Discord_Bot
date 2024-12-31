@@ -52,7 +52,7 @@ module.exports = {
       }
     }
     for (let j = 0; j < oldUsers.length; j++) {
-      allLevels.splice(oldUsers[j], 1);
+      allLevels.splice(oldUsers[j]-j, 1);
     }
 
     allLevels.sort((a, b) => {
