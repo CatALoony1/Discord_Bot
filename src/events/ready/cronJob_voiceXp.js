@@ -36,7 +36,7 @@ module.exports = async (client) => {
             multiplier = Number(conf.value);
         }
         let xpToGive = 5 * getRandomXp(1, 5) * multiplier;
-        client.channels.cache.forEach(async (channel) => {
+        await client.channels.cache.forEach(async (channel) => {
             if (channel.type == 2 && channel.id != '1307820687599337602') {
                 if (channel.members.size >= 2) {
                     channel.members.forEach(async (member) => {
