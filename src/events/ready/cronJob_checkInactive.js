@@ -70,6 +70,6 @@ module.exports = async (client) => {
             messageUserInactive.setDescription(`${playerTagsOnServer.toString().replace(',', '\n')}`);
             await targetChannel.send({ embeds: [messageUserInactive] });
         }
-        console.log(`CheckInactive-Job started...`);
+        console.log(`CheckInactive-Job finished...`);
     });
 }
