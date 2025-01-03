@@ -12,6 +12,7 @@ function getRandom(min, max) {
 module.exports = async (client) => {
     cron.schedule('0 0 * * *', async function () {
         console.log('Quiz started');
+        const guild = client.guilds.cache.get(process.env.GUILD_ID);
         try {
             var targetChannel = await client.channels.fetch(process.env.QUIZ_ID);
             const oldQuestions = await Questions.find({
@@ -63,6 +64,13 @@ module.exports = async (client) => {
                 questionEmbed.addFields({ name: `B`, value: `${answers[1]}` });
                 questionEmbed.addFields({ name: `C`, value: `${answers[2]}` });
                 questionEmbed.addFields({ name: `D`, value: `${answers[3]}` });
+                const targetUserId = fetchedQuestions[questionIndex].participants[0];
+                if (!(guild.members.cache.find(m => m.id === targetUserId)?.id)) {
+                    console.log(`ERROR Quiz ${targetUserId} ist kein User`);
+                }else{
+                    const targetUserObj = await guild.members.fetch(targetUserId);
+                    questionEmbed.setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) });
+                }
                 const aButton = new Discord.ButtonBuilder()
                     .setLabel('A')
                     .setStyle(Discord.ButtonStyle.Primary)
