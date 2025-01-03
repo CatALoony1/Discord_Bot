@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Client, Interaction, AttachmentBuilder, ActionRowBuilder, InteractionContextType, ButtonStyle, ButtonBuilder } = require('discord.js');
+const { SlashCommandBuilder, Client, Interaction, ActionRowBuilder, InteractionContextType, ButtonStyle, ButtonBuilder } = require('discord.js');
 const canvacord = require('canvacord');
 const calculateLevelXp = require('../utils/calculateLevelXp');
 
