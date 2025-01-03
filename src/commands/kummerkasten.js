@@ -25,21 +25,6 @@ module.exports = {
       const actionRow = new ActionRowBuilder().addComponents(textInput);
       modal.addComponents(actionRow);
       await interaction.showModal(modal);
-      const filter = (i) => i.customId === `feedback-${interaction.user.id}`;
-      const modalInteraction = await interaction.awaitModalSubmit({
-        filter,
-        time: 1000 * 60 * 3 //1sec * 60 *3 = 3min
-      }).catch((error) => console.log(error));
-      await modalInteraction.deferReply({ ephemeral: true })
-      const feedbackText = modalInteraction.fields.getTextInputValue('feedback-input');
-      const feedback = new EmbedBuilder();
-      feedback.setColor(0x0033cc);
-      feedback.setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ size: 256 }) });
-      feedback.setTimestamp(Date.now());
-      feedback.setTitle(`Neue Kummerkasten Nachricht`);
-      feedback.setDescription(feedbackText);
-      await targetChannel.send({ embeds: [feedback] });
-      modalInteraction.editReply('Nachricht eingeworfen!');
     } catch (err) {
       console.log(err);
     }

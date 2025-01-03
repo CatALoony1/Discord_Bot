@@ -8,7 +8,6 @@ module.exports = {
   run: async ({ interaction, client }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     try {
-      const targetUser = await interaction.guild.members.fetch(process.env.ADMIN_ID);
       const modal = new ModalBuilder()
         .setTitle('Schlage eine Frage vor.')
         .setCustomId(`qvorschlag-${interaction.user.id}`);
@@ -49,28 +48,6 @@ module.exports = {
       const fifthActionRow = new ActionRowBuilder().addComponents(falsch3Input);
       modal.addComponents(firstActionRow, secondActionRow, thirdctionRow, fourthActionRow, fifthActionRow);
       await interaction.showModal(modal);
-      const filter = (i) => i.customId === `qvorschlag-${interaction.user.id}`;
-      const modalInteraction = await interaction.awaitModalSubmit({
-        filter,
-        time: 1000 * 60 * 3 //1sec * 60 *3 = 3min
-      }).catch((error) => console.log(error));
-      await modalInteraction.deferReply({ ephemeral: true })
-      const frage = modalInteraction.fields.getTextInputValue('qvorschlag-frage');
-      const richtig = modalInteraction.fields.getTextInputValue('qvorschlag-richtig');
-      const falsch1 = modalInteraction.fields.getTextInputValue('qvorschlag-falsch1');
-      const falsch2 = modalInteraction.fields.getTextInputValue('qvorschlag-falsch2');
-      const falsch3 = modalInteraction.fields.getTextInputValue('qvorschlag-falsch3');
-      const vorschlag = new EmbedBuilder();
-      vorschlag.setColor(0x0033cc);
-      vorschlag.setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ size: 256 }) });
-      vorschlag.setTitle(`Fragen Vorschlag`);
-      vorschlag.setDescription(frage);
-      vorschlag.addFields({ name: `Richig:`, value: `${richtig}` });
-      vorschlag.addFields({ name: `Falsch1:`, value: `${falsch1}` });
-      vorschlag.addFields({ name: `Falsch2:`, value: `${falsch2}` });
-      vorschlag.addFields({ name: `Falsch3:`, value: `${falsch3}` });
-      await targetUser.send({ embeds: [vorschlag] });
-      modalInteraction.editReply('Frage abgegeben!');
     } catch (err) {
       console.log(err);
     }

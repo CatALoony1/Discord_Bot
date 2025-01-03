@@ -1,4 +1,3 @@
-const createLeaderboardEmbeds = require("../../utils/createLeaderboardEmbeds");
 const Questions = require('../../models/QuizQuestion');
 const QuizStats = require('../../models/QuizStats');
 module.exports = async (interaction) => {

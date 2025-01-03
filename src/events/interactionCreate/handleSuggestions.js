@@ -23,7 +23,7 @@ module.exports = async (interaction) => {
             interaction.editReply('Vorschlag zugestimmt!');
             targetMessage.edit({
                 embeds: [targetMessageEmbed],
-                components: [targetMessage.components[0]],
+                components: [],
             })
             return;
         }
@@ -39,7 +39,7 @@ module.exports = async (interaction) => {
             interaction.editReply('Vorschlag abgelehnt!');
             targetMessage.edit({
                 embeds: [targetMessageEmbed],
-                components: [targetMessage.components[0]],
+                components: [],
             })
             return;
         }
