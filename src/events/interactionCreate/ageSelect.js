@@ -1,3 +1,4 @@
+require('dotenv').config();
 const rolenames = ['18-21',
   '22-25',
   '26-29',
@@ -8,8 +9,11 @@ module.exports = async (interaction) => {
     if (interaction.customId == 'ageselect') {
       if (interaction.values[0] === '<18') {
         try {
-          interaction.member.kick('FSK 18');
+          const usertag = interaction.member.user.tag;
+          interaction.member.ban('Server ist ab 18');
           interaction.deferUpdate();
+          const targetChannel = newMessage.guild.channels.cache.get(process.env.LOG_ID) || (await newMessage.guild.channels.fetch(process.env.LOG_ID));
+          await targetChannel.send(`${usertag} gebannt, da der Server ab 18 ist.`);
           return;
         } catch (error) {
           console.log(error);
