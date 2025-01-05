@@ -37,6 +37,9 @@ module.exports = async (client) => {
                     }
                 }
             }
+            await Questions.deleteMany({
+                asked: 'J',
+            });
 
             const fetchedQuestions = await Questions.find({
                 asked: 'N',
