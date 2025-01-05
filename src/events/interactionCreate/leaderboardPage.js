@@ -15,7 +15,7 @@ module.exports = async (interaction) => {
                     components: [targetMessage.components[0]],
                     ephemeral: true
                 })
-                interaction.deferUpdate();
+                await interaction.deferUpdate();
                 return;
             } else {
                 interaction.reply({ content: `Du bist bereits auf Seite 1.`, ephemeral: true });
@@ -37,7 +37,7 @@ module.exports = async (interaction) => {
                     components: [targetMessage.components[0]],
                     ephemeral: true
                 })
-                interaction.deferUpdate();
+                await interaction.deferUpdate();
                 return;
             } else {
                 interaction.reply({ content: `Du bist bereits auf der letzten Seite.`, ephemeral: true });

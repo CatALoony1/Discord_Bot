@@ -11,7 +11,7 @@ module.exports = async (interaction) => {
         try {
           const usertag = interaction.member.user.tag;
           interaction.member.ban('Server ist ab 18');
-          interaction.deferUpdate();
+          await interaction.deferUpdate();
           const targetChannel = newMessage.guild.channels.cache.get(process.env.LOG_ID) || (await newMessage.guild.channels.fetch(process.env.LOG_ID));
           await targetChannel.send(`${usertag} gebannt, da der Server ab 18 ist.`);
           return;
