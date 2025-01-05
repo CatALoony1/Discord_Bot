@@ -61,7 +61,7 @@ module.exports = async (interaction) => {
                 await interaction.editReply(`Antwort ${answer} ist leider nicht richtig! Die richtige Antwort ist ${rightAnswerChar}`);
             }
         } else {
-            interaction.editReply(`Diese Frage exisitiert nicht in der Datenbank!`);
+            interaction.editReply(`Du kannst diese Frage nicht beantworten, da sie zu alt ist!`);
         }
     } catch (error) {
         console.log(error);
