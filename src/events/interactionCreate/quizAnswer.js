@@ -8,6 +8,7 @@ module.exports = async (interaction) => {
         const fetchedQuestion = await Questions.findOne({
             questionId: id,
         });
+        const rightAnswerChar = fetchedQuestion.rightChar;
         if (fetchedQuestion.participants.includes(interaction.user.id)) {
             await interaction.editReply('Du hast die Frage bereits beantwortet oder die Frage eingereicht.');
             return;
@@ -56,7 +57,7 @@ module.exports = async (interaction) => {
                 });
                 await newStats.save();
             }
-            await interaction.editReply(`Antwort ${answer} ist leider nicht richtig!`);
+            await interaction.editReply(`Antwort ${answer} ist leider nicht richtig! Die richtige Antwort ist ${rightAnswerChar}`);
         }
     } catch (error) {
         console.log(error);
