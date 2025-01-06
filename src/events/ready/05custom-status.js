@@ -40,7 +40,7 @@ let status = [
   },
   {
     type: ActivityType.Custom,
-    state: '🐙'
+    name: '🐙'
   },
   {
     name: 'Sucht das One Piece',
@@ -59,6 +59,7 @@ let status = [
 module.exports = (client) => {
   setInterval(() => {
     let random = Math.floor(Math.random() * status.length);
+    console.log(random);
     client.user.setActivity(status[random]);
   }, 10000);
 };
