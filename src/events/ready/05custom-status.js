@@ -22,7 +22,6 @@ let status = [
     type: ActivityType.Custom,
   },
   {
-    name: 'Der Kraken greift an',
     type: ActivityType.Custom,
     state: '🐙'
   },
