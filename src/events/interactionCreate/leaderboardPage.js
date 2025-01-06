@@ -11,7 +11,7 @@ module.exports = async (interaction) => {
                 let newPage = +page;
                 await interaction.update({
                     embeds: [await createLeaderboardEmbeds(newPage - 2, interaction)],
-                    components: [interaction.components[0]]
+                    components: [targetMessage.components[0]]
                 })
                 return;
             } else {
@@ -31,7 +31,7 @@ module.exports = async (interaction) => {
                 let newPage = +page;
                 await interaction.update({
                     embeds: [await createLeaderboardEmbeds(newPage - 2, interaction)],
-                    components: [interaction.components[0]]
+                    components: [targetMessage.components[0]]
                 })
                 return;
             } else {
