@@ -18,11 +18,12 @@ module.exports = async (interaction) => {
                 await interaction.deferUpdate();
                 return;
             } else {
-                interaction.reply({ content: `Du bist bereits auf Seite 1.`, ephemeral: true });
+                await interaction.reply({ content: `Du bist bereits auf Seite 1.`, ephemeral: true });
                 return;
             }
         } catch (error) {
             console.log(error);
+            await interaction.reply({ content: `Fehler: Probiere es erneut oder kontaktiere bei erneutem Auftreten einen Admin.`, ephemeral: true });
         }
     } else if (interaction.customId === 'lPageUp') {
         try {
@@ -40,11 +41,12 @@ module.exports = async (interaction) => {
                 await interaction.deferUpdate();
                 return;
             } else {
-                interaction.reply({ content: `Du bist bereits auf der letzten Seite.`, ephemeral: true });
+                await interaction.reply({ content: `Du bist bereits auf der letzten Seite.`, ephemeral: true });
                 return;
             }
         } catch (error) {
             console.log(error);
+            await interaction.reply({ content: `Fehler: Probiere es erneut oder kontaktiere bei erneutem Auftreten einen Admin.`, ephemeral: true });
         }
     }
 };
