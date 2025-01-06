@@ -29,6 +29,7 @@ module.exports = async (interaction) => {
             let [page, maxpage] = targetMessageEmbed.description.split("/");
             if (page != maxpage) {
                 let newPage = +page;
+                console.log(newPage-2);
                 await interaction.update({
                     embeds: [await createLeaderboardEmbeds(newPage - 2, interaction)],
                     components: [targetMessage.components[0]]
