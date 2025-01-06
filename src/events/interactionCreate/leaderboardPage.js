@@ -20,7 +20,6 @@ module.exports = async (interaction) => {
             }
         } catch (error) {
             console.log(error);
-            await interaction.reply({ content: `Fehler: Probiere es erneut oder kontaktiere bei erneutem Auftreten einen Admin.`, ephemeral: true });
         }
     } else if (interaction.customId === 'lPageUp') {
         try {
@@ -40,7 +39,6 @@ module.exports = async (interaction) => {
             }
         } catch (error) {
             console.log(error);
-            await interaction.reply({ content: `Fehler: Probiere es erneut oder kontaktiere bei erneutem Auftreten einen Admin.`, ephemeral: true });
         }
     }
 };
