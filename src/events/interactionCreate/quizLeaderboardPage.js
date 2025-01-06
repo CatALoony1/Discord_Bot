@@ -9,13 +9,10 @@ module.exports = async (interaction, client) => {
             let [page, maxpage] = targetMessageEmbed.description.split("/");
             if (page != 1) {
                 let newPage = +page;
-                let embed = await createQuizLeaderboardEmbeds(newPage - 2, client);
-                await targetMessage.edit({
-                    embeds: [embed],
-                    components: [targetMessage.components[0]],
-                    ephemeral: true
+                await interaction.update({
+                    embeds: [await createQuizLeaderboardEmbeds(newPage - 2, client)],
+                    components: [targetMessage.components[0]]
                 })
-                await interaction.deferUpdate();
                 return;
             } else {
                 await interaction.reply({ content: `Du bist bereits auf Seite 1.`, ephemeral: true });
@@ -32,13 +29,10 @@ module.exports = async (interaction, client) => {
             let [page, maxpage] = targetMessageEmbed.description.split("/");
             if (page != maxpage) {
                 let newPage = +page;
-                let embeds = await createQuizLeaderboardEmbeds(newPage, client);
-                await targetMessage.edit({
-                    embeds: [embeds],
-                    components: [targetMessage.components[0]],
-                    ephemeral: true
+                await interaction.update({
+                    embeds: [await createQuizLeaderboardEmbeds(newPage, client)],
+                    components: [targetMessage.components[0]]
                 })
-                await interaction.deferUpdate();
                 return;
             } else {
                 await interaction.reply({ content: `Du bist bereits auf der letzten Seite.`, ephemeral: true });
