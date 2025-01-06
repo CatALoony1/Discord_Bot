@@ -21,6 +21,15 @@ let status = [
     name: 'Ahoi Brause',
     type: ActivityType.Custom,
   },
+  {
+    name: 'Der Kraken greift an',
+    type: ActivityType.Custom,
+    state: '🐙'
+  },
+  {
+    name: 'Schiffe versenken',
+    type: ActivityType.Competing,
+  },
 ];
 
 module.exports = (client) => {
