@@ -6,7 +6,16 @@ let status = [
     url: 'https://www.youtube.com/watch?v=ZIo-ChHy4iU',
   },
   {
+    name: 'mehr Eigenwerbung',
+    type: ActivityType.Streaming,
+    url: 'https://www.youtube.com/watch?v=iTMsblGTAdM',
+  },
+  {
     name: 'Fisch',
+    type: ActivityType.Watching,
+  },
+  {
+    name: 'in die Ferne',
     type: ActivityType.Watching,
   },
   {
@@ -14,7 +23,15 @@ let status = [
     type: ActivityType.Listening,
   },
   {
+    name: 'dem Nixengesang',
+    type: ActivityType.Listening,
+  },
+  {
     name: 'alleine',
+    type: ActivityType.Playing,
+  },
+  {
+    name: 'das Angelspiel',
     type: ActivityType.Playing,
   },
   {
@@ -26,7 +43,15 @@ let status = [
     state: '🐙'
   },
   {
+    name: 'Sucht das One Piece',
+    type: ActivityType.Custom,
+  },
+  {
     name: 'Schiffe versenken',
+    type: ActivityType.Competing,
+  },
+  {
+    name: 'Fischstäbchen essen',
     type: ActivityType.Competing,
   },
 ];
