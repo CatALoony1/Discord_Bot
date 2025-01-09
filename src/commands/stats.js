@@ -37,7 +37,7 @@ module.exports = {
       }
     }
     for (let j = 0; j < oldUsers.length; j++) {
-      allLevels.splice(oldUsers[j]-j, 1);
+      allLevels.splice(oldUsers[j] - j, 1);
     }
 
     allLevels.sort((a, b) => {
@@ -48,19 +48,19 @@ module.exports = {
       }
     });
     let currentRank = allLevels.findIndex((lvl) => lvl.userId === targetUserId) + 1;
-    if(fetchedLevel.voicetime >= 60){
+    if (fetchedLevel.voicetime >= 60) {
       var h = 0;
       var m = fetchedLevel.voicetime;
-      while(true){
-        if(m >= 60){
+      while (true) {
+        if (m >= 60) {
           m -= 60;
           h += 1;
-        }else{
+        } else {
           break;
         }
       }
       var time = `${h}h ${m}m`;
-    }else{
+    } else {
       var time = `${fetchedLevel.voicetime}m`;
     }
     const messageEdited = new EmbedBuilder();
@@ -71,6 +71,12 @@ module.exports = {
     messageEdited.addFields({ name: 'Level:', value: `${fetchedLevel.level}` });
     messageEdited.addFields({ name: 'XP zum nächsten Level:', value: `${fetchedLevel.xp}/${calculateLevelXp(fetchedLevel.level)}` });
     messageEdited.addFields({ name: 'Gesamte XP:', value: `${fetchedLevel.allxp}` });
+    if (Date.now() >= new Date("2025-02-01")) {
+      messageEdited.addFields({ name: 'XP diesen Monat:', value: `${fetchedLevel.thismonth}` });
+    }
+    if (Date.now() >= new Date("2025-03-01")) {
+      messageEdited.addFields({ name: 'XP letzten Monat:', value: `${fetchedLevel.lastmonth}` });
+    }
     messageEdited.addFields({ name: 'Nachrichten XP:', value: `${fetchedLevel.messagexp}` });
     messageEdited.addFields({ name: 'Voice Call XP:', value: `${fetchedLevel.voicexp}` });
     messageEdited.addFields({ name: 'Nachrichten:', value: `${fetchedLevel.messages}` });

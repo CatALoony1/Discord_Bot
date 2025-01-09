@@ -48,6 +48,14 @@ const levelSchema = new Schema({
   voicetime: {
     type: Number,
     default: 0,
+  },
+  thismonth: {
+    type: Number,
+    default: 0,
+  },
+  lastmonth: {
+    type: Number,
+    default: 0,
   }
 });
 

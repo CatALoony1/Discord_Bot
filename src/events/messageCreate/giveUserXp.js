@@ -49,6 +49,7 @@ module.exports = async (message) => {
       level.xp += xpToGive;
       level.allxp += xpToGive;
       level.messagexp += xpToGive;
+      level.thismonth += xpToGive;
       level.messages += 1;
       level.lastMessage = Date.now();
       if (level.xp > calculateLevelXp(level.level)) {
@@ -106,6 +107,7 @@ module.exports = async (message) => {
         messagexp: xpToGive,
         voicexp: 0,
         voicetime: 0,
+        thismonth: xpToGive,
       });
       await newLevel.save();
       cooldowns.add(message.author.id);

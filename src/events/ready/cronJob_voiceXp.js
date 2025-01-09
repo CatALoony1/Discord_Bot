@@ -51,6 +51,7 @@ module.exports = async (client) => {
                                 level.xp += xpToGive;
                                 level.allxp += xpToGive;
                                 level.voicexp += xpToGive;
+                                level.thismonth += xpToGive;
                                 level.lastMessage = Date.now();
                                 level.voicetime += 5;
                                 if (level.xp > calculateLevelXp(level.level)) {
@@ -101,6 +102,7 @@ module.exports = async (client) => {
                                     messagexp: 0,
                                     voicexp: xpToGive,
                                     voicetime: 5,
+                                    thismonth: xpToGive,
                                 });
                                 await newLevel.save();
                             }
