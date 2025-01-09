@@ -79,6 +79,7 @@ module.exports = {
     }
     messageEdited.addFields({ name: 'Nachrichten XP:', value: `${fetchedLevel.messagexp}` });
     messageEdited.addFields({ name: 'Voice Call XP:', value: `${fetchedLevel.voicexp}` });
+    messageEdited.addFields({ name: 'Bonus XP:', value: `${fetchedLevel.bonusclaimed}` });
     messageEdited.addFields({ name: 'Nachrichten:', value: `${fetchedLevel.messages}` });
     messageEdited.addFields({ name: 'Ungefähre Voice Call Zeit:', value: `${time}` });
     messageEdited.addFields({ name: 'Letzte XP:', value: `${fetchedLevel.lastMessage}` });

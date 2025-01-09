@@ -56,6 +56,10 @@ const levelSchema = new Schema({
   lastmonth: {
     type: Number,
     default: 0,
+  },
+  bonusclaimed:{
+    type: Number,
+    default: 0,
   }
 });
 
