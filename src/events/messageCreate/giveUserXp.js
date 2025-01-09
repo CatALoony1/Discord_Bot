@@ -29,15 +29,41 @@ const roles = new Map([[0, 'Landratte'],
  */
 module.exports = async (message) => {
   if (!message.inGuild() || message.author.bot || cooldowns.has(message.author.id)) return;
-  let confQuery = {
+
+  // Multiplier
+  let conf = await Config.findOne({
     key: "xpMultiplier"
-  }
-  let conf = await Config.findOne(confQuery);
+  });
   let multiplier = 1;
   if (conf) {
     multiplier = Number(conf.value);
   }
-  const xpToGive = getRandomXp(5, 15) * multiplier;
+
+  //BonusXP
+  var bonusXP = 0;
+  const messageLength = message.content.length;
+  if (messageLength == 69) {
+    bonusXP += 69;
+  } else if (messageLength == 666) {
+    bonusXP += 66;
+  } else if (messageLength >= 1500) {
+    bonusXP += 100;
+    if (messageLength >= 3000) {
+      bonusXP += 150;
+    }
+  }
+  let bonusWords = await Config.findOne({
+    key: "bonusWords"
+  });
+  const bonusWordList = bonusWords.value.split(',');
+  bonusWordList.forEach(word => {
+    if (message.content.toLowerCase().includes(word)) {
+      bonusXP += getRandomXp(1, 5);
+    }
+  });
+  await message.reply({ content: `Du hast ${bonusXP} Bonus XP erhalten!`, ephemeral: true });
+  
+  const xpToGive = (getRandomXp(5, 15) * multiplier) + bonusXP;
   const query = {
     userId: message.author.id,
     guildId: message.guild.id,
