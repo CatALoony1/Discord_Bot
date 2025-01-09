@@ -62,7 +62,8 @@ module.exports = async (message) => {
     }
   });
   if(bonusXP > 0){
-    await message.reply({ content: `Du hast ${bonusXP} Bonus XP erhalten!`, ephemeral: true });
+    await message.react("⭐");
+    console.log(`user ${message.author.tag} received ${bonusXP} XP`);
   }
   
   const xpToGive = (getRandomXp(5, 15) * multiplier) + bonusXP;
