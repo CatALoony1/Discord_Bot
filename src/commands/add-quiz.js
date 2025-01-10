@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const Question = require('../models/QuizQuestion');
+require('dotenv').config();
 module.exports = {
     devOnly: true,
     data: new SlashCommandBuilder()
