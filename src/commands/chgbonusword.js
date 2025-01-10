@@ -4,7 +4,7 @@ require('dotenv').config();
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('changebonusword')
+    .setName('chgbonusword')
     .setDescription('Tauscht Bonuswort aus')
     .addStringOption(option =>
       option.setName('oldword')
@@ -17,11 +17,7 @@ module.exports = {
         .setRequired(true)
     )
     .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
-  /**
-   * 
-   * @param {Object} param0 
-   * @param {import('discord.js').ChatInputCommandInteraction} param0.interaction
-   */
+
   run: async ({ interaction, client }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     if (interaction.user.id != process.env.ADMIN_ID) {
