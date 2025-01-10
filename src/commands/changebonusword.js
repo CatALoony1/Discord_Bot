@@ -4,15 +4,17 @@ require('dotenv').config();
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('chgbonusword')
+    .setName('changebonusword')
     .setDescription('Tauscht Bonuswort aus')
     .addStringOption(option =>
       option.setName('oldword')
+      .setDescription('Altes Wort.')
         .setMinLength(1)
         .setRequired(true)
     )
     .addStringOption(option =>
       option.setName('newword')
+      .setDescription('Neues Wort.')
         .setMinLength(1)
         .setRequired(true)
     )
