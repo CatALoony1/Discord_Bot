@@ -74,7 +74,7 @@ module.exports = async (message) => {
     if (level) {
       level.xp += xpToGive;
       level.allxp += xpToGive;
-      level.messagexp += xpToGive;
+      level.messagexp += (xpToGive-bonusXP);
       level.thismonth += xpToGive;
       level.bonusclaimed += bonusXP;
       level.messages += 1;
@@ -131,7 +131,7 @@ module.exports = async (message) => {
         messages: 1,
         lastMessage: Date.now(),
         userName: message.author.tag,
-        messagexp: xpToGive,
+        messagexp: (xpToGive-bonusXP),
         voicexp: 0,
         voicetime: 0,
         thismonth: xpToGive,
