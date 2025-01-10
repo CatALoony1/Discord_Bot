@@ -8,13 +8,13 @@ module.exports = {
     .setDescription('Tauscht Bonuswort aus')
     .addStringOption(option =>
       option.setName('oldword')
-      .setDescription('Altes Wort.')
+        .setDescription('Altes Wort.')
         .setMinLength(1)
         .setRequired(true)
     )
     .addStringOption(option =>
       option.setName('newword')
-      .setDescription('Neues Wort.')
+        .setDescription('Neues Wort.')
         .setMinLength(1)
         .setRequired(true)
     )
