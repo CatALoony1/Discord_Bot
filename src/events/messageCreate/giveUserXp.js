@@ -55,7 +55,7 @@ bonusWordList = doc.value.split(',');
   }
   bonusWordList.forEach(word => {
     if (message.content.toLowerCase().includes(word)) {
-      bonusXP += getRandomXp(1, 5);
+      bonusXP += getRandomXp(10, 20);
     }
   });
   if(bonusXP > 0){
