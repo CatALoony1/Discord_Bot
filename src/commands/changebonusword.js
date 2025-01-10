@@ -4,7 +4,7 @@ require('dotenv').config();
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('swapbonusword')
+    .setName('changebonusword')
     .setDescription('Tauscht Bonuswort aus')
     .addStringOption(option =>
       option.setName('oldword')
