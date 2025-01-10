@@ -19,7 +19,7 @@ module.exports = {
             if (bumpEntry) {
                 bumpEntry.endTime = Date.now() + 7200000;
                 bumpEntry.reminded = 'N';
-                bumpEntry.save();
+                await bumpEntry.save();
                 await interaction.reply({ content: `Bump Reminder erstellt!`, ephemeral: true });
             } else {
                 const newBump = new Bump({
