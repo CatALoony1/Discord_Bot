@@ -59,7 +59,7 @@ bonusWordList = doc.value.split(',');
     }
   });
   if(bonusXP > 0){
-    await message.react("⭐");
+    message.react("⭐");
     console.log(`user ${message.author.tag} received ${bonusXP} Bonus XP`);
   }
   
