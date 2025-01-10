@@ -10,7 +10,8 @@ module.exports = {
       option.setName('oldword')
         .setMinLength(1)
         .setRequired(true)
-    ).addStringOption(option =>
+    )
+    .addStringOption(option =>
       option.setName('newword')
         .setMinLength(1)
         .setRequired(true)
