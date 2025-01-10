@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Client, Interaction, AttachmentBuilder, InteractionContextType } = require('discord.js');
+const { SlashCommandBuilder, Client, Interaction, InteractionContextType } = require('discord.js');
 const calculateLevelXp = require('../utils/calculateLevelXp');
 const Level = require('../models/Level');
 
