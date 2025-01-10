@@ -30,14 +30,15 @@ const roles = new Map([[0, 'Landratte'],
 module.exports = async (message) => {
   if (!message.inGuild() || message.author.bot || cooldowns.has(message.author.id)) return;
 
-  // Multiplier
-  let conf = await Config.findOne({
-    key: "xpMultiplier"
-  });
   let multiplier = 1;
-  if (conf) {
-    multiplier = Number(conf.value);
-  }
+let bonusWordList = [];
+for await (const doc of Config.find()){
+ if(doc.key == "xpMultiplier"){
+ multiplier = Number(doc.value);
+}else if(doc.key == "bonusWords"){
+bonusWordList = doc.value.split(',');
+}
+}
 
   //BonusXP
   var bonusXP = 0;
@@ -52,10 +53,6 @@ module.exports = async (message) => {
       bonusXP += 150;
     }
   }
-  let bonusWords = await Config.findOne({
-    key: "bonusWords"
-  });
-  const bonusWordList = bonusWords.value.split(',');
   bonusWordList.forEach(word => {
     if (message.content.toLowerCase().includes(word)) {
       bonusXP += getRandomXp(1, 5);
