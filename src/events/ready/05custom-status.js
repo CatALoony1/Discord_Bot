@@ -11,6 +11,11 @@ let status = [
     url: 'https://www.youtube.com/watch?v=iTMsblGTAdM',
   },
   {
+    name: 'Serverhymne',
+    type: ActivityType.Streaming,
+    url: 'https://www.youtube.com/watch?v=k0jvsZ6HQOM',
+  },
+  {
     name: 'Fisch',
     type: ActivityType.Watching,
   },
