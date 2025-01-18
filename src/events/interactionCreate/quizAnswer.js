@@ -11,6 +11,7 @@ module.exports = async (interaction) => {
         if (fetchedQuestion) {
             const rightAnswerChar = fetchedQuestion.rightChar;
             if (fetchedQuestion.participants.includes(interaction.user.id)) {
+                console.log('Quiz: tried to answer multiple times');
                 await interaction.editReply('Du hast die Frage bereits beantwortet oder die Frage eingereicht.');
                 return;
             } else {
