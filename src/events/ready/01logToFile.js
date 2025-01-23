@@ -79,7 +79,7 @@ module.exports = async (client) => {
         });
         if (string.includes('connect ECONNREFUSED')) {
             targetChannel.send(`DB connection ERROR <@${process.env.ADMIN_ID}> please check DB`);
-        } else if (string.includes('Error') || string.includes('error')) {
+        } else if (string.toLowerCase().includes('error')) {
             targetChannel.send(`ERROR <@${process.env.ADMIN_ID}> please check log`);
         }
     }, true);
