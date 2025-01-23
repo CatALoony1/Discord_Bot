@@ -22,7 +22,7 @@ module.exports = async (guildMember) => {
             .setImage('https://media1.tenor.com/m/Ir6lg8ixJpYAAAAC/sailor-channing-tatum.gif')
             ;
 
-        var message = await targetChannel.send(`|| <@${guildMember.id}>||`);
+        var message = await targetChannel.send(`||${role} <@${guildMember.id}>||`);
         await message.reply({ embeds: [welcome] });
         message.delete();
     } catch (error) {
