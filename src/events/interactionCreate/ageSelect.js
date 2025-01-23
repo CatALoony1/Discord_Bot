@@ -9,8 +9,8 @@ module.exports = async (interaction) => {
     if (interaction.customId == 'ageselect') {
       if (interaction.values[0] === '<18') {
         try {
-          console.log('ERROR Test');
           const usertag = interaction.member.user.tag;
+          await interaction.member.user.send('Du wurdest gebannt, da der Server ab 18 ist.');
           await interaction.member.ban({ reason: 'Server ist ab 18' });
           await interaction.deferUpdate();
           const targetChannel = interaction.guild.channels.cache.get(process.env.LOG_ID) || (await interaction.guild.channels.fetch(process.env.LOG_ID));
