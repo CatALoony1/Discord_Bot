@@ -23,7 +23,7 @@ const answers = new Map([[1, 'Ja!'],
  * @param {Message} message 
  * @returns 
  */
-module.exports = async (message) => {
+module.exports = async (message, client) => {
     if (!message.inGuild() || message.author.bot || !message.isMemberMentioned(client.user) || !message.content.includes("?")) return;
     message.reply(answers.get(getRandom(1, 10)));
 };
