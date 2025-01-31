@@ -24,6 +24,10 @@ const answers = new Map([[1, 'Ja!'],
  * @returns 
  */
 module.exports = async (message, client) => {
+    console.log(`Bot Mentioned`);
+    console.log(client.user);
+    console.log(message.isMemberMentioned(client.user));
+    console.log(message.content.includes("?"));
     if (!message.inGuild() || message.author.bot || !message.isMemberMentioned(client.user) || !message.content.includes("?")) return;
     message.reply(answers.get(getRandom(1, 10)));
 };
