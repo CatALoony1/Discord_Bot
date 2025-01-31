@@ -15,6 +15,10 @@ module.exports = {
  * @param {import('commandkit').SlashCommandProps} param0
  */
   run: async ({ interaction, client }) => {
+    if(interaction.user.id != process.env.ADMIN_ID){
+      interaction.reply('Du darfst das nicht!!!!');
+      return;
+  }
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     const targetUser = interaction.options.getUser('target-user');
 
