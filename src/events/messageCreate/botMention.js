@@ -25,9 +25,6 @@ const answers = new Map([[1, 'Ja!'],
  */
 module.exports = async (message, client) => {
     console.log(`Bot Mentioned`);
-    console.log(client.user);
-    console.log(message.mentions.includes(client.user));
-    console.log(message.content.includes("?"));
-    if (!message.inGuild() || message.author.bot || !message.mentions.includes(client.user) || !message.content.includes("?")) return;
+    if (!message.inGuild() || message.author.bot || !message.content.includes("?")) return;
     message.reply(answers.get(getRandom(1, 10)));
 };
