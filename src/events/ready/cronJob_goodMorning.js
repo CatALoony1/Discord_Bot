@@ -11,7 +11,7 @@ function getRandom(min, max) {
 module.exports = async (client) => {
   var verschlafen = cron.schedule('0 10 * * *', async function () { // 10 Uhr
     var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
-    targetChannel.send(`„Alle Mann an Deck! … Moment mal, warum ist es schon so hell?“`);
+    targetChannel.send(`Alle Mann an Deck! … Moment mal, warum ist es schon so hell?`);
     verschlafen.stop();
   });
   verschlafen.stop();
