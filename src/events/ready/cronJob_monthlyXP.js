@@ -1,13 +1,15 @@
 const Discord = require("discord.js");
 const cron = require('node-cron');
 const Level = require('../../models/Level');
+require('dotenv').config();
 
 module.exports = async (client) => {
-  cron.schedule('0 0 1 * *', async function () {
+  //cron.schedule('0 0 1 * *', async function () {
+    cron.schedule('45 7 * * *', async function () {
     console.log('Started deleting monthly XP');
     try {
       const fetchedLevel = await Level.find({
-        guildId: interaction.guild.id,
+        guildId: process.env.GUILD_ID,
       });
       fetchedLevel.forEach(async level => {
         level.lastmonth = level.thismonth;
