@@ -44,8 +44,8 @@ const answers = new Map([[1, 'Ja!'],
  * @returns 
  */
 module.exports = async (message, client) => {
-    console.log(`Bot Mentioned`);
     if (!message.inGuild() || message.author.bot || !message.mentions.has(client.user.id) || !message.content.includes("?")) return;
+    console.log(`Bot Mentioned`);
     var number = getRandom(1, 30);
     if(number == 22){
         let sleep = async (ms) => await new Promise(r => setTimeout(r,ms));
