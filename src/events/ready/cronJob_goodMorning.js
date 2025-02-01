@@ -14,6 +14,7 @@ module.exports = async (client) => {
     targetChannel.send(`„Alle Mann an Deck! … Moment mal, warum ist es schon so hell?“`);
     verschlafen.stop();
   });
+  verschlafen.stop();
   cron.schedule('0 7 * * *', async function () { // 7 Uhr
     if (getRandom(1, 25) != 1) {
       var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
