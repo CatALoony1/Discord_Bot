@@ -1,4 +1,4 @@
-const { StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder, ComponentType, PermissionFlagsBits, SlashCommandBuilder, Client, Interaction, InteractionContextType } = require('discord.js');
+const { PermissionFlagsBits, SlashCommandBuilder, Client, Interaction, InteractionContextType, MessageFlags } = require('discord.js');
 const Level = require('../models/Level');
 
 module.exports = {
@@ -35,15 +35,15 @@ module.exports = {
             console.log(`Error saving updated level ${e}`);
             return;
           });
-          await interaction.reply({ content: `Farbe erfolgreich geaendert.`, ephemeral: true });
+          await interaction.reply({ content: `Farbe erfolgreich geaendert.`, flags: MessageFlags.Ephemeral });
         } else {
-          await interaction.reply({ content: `Du bist noch nicht in der DB, chatte mal bisschen.`, ephemeral: true });
+          await interaction.reply({ content: `Du bist noch nicht in der DB, chatte mal bisschen.`, flags: MessageFlags.Ephemeral });
         }
       } catch (error) {
         console.log(`Error giving xp: ${error}`);
       }
     } else {
-      await interaction.reply({ content: `Der eingegebene Wert muss ein Hex-Farbcde sein Bsp.: #1f7da2`, ephemeral: true });
+      await interaction.reply({ content: `Der eingegebene Wert muss ein Hex-Farbcde sein Bsp.: #1f7da2`, flags: MessageFlags.Ephemeral });
     }
   },
 };

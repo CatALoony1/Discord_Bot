@@ -1,3 +1,4 @@
+const { MessageFlags } = require('discord.js');
 const createLeaderboardEmbeds = require("../../utils/createLeaderboardEmbeds");
 
 module.exports = async (interaction) => {
@@ -15,7 +16,7 @@ module.exports = async (interaction) => {
                 })
                 return;
             } else {
-                await interaction.reply({ content: `Du bist bereits auf Seite 1.`, ephemeral: true });
+                await interaction.reply({ content: `Du bist bereits auf Seite 1.`, flags: MessageFlags.Ephemeral });
                 return;
             }
         } catch (error) {
@@ -34,7 +35,7 @@ module.exports = async (interaction) => {
                 })
                 return;
             } else {
-                await interaction.reply({ content: `Du bist bereits auf der letzten Seite.`, ephemeral: true });
+                await interaction.reply({ content: `Du bist bereits auf der letzten Seite.`, flags: MessageFlags.Ephemeral });
                 return;
             }
         } catch (error) {

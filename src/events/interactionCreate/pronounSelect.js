@@ -1,3 +1,4 @@
+const { MessageFlags } = require('discord.js');
 const rolenames = ['He/him',
   'She/her',
   'They/them'];
@@ -34,13 +35,13 @@ module.exports = async (interaction) => {
         };
       }
       if (addedRoles.length != 0 && removedRoles.length != 0) {
-        await interaction.reply({ content: `Die Pronomen ${addedRoles} wurde dir zugewiesen.\nDie Pronomen ${removedRoles} wurde entfernt.`, ephemeral: true });
+        await interaction.reply({ content: `Die Pronomen ${addedRoles} wurde dir zugewiesen.\nDie Pronomen ${removedRoles} wurde entfernt.`, flags: MessageFlags.Ephemeral });
       } else if (addedRoles.length != 0) {
-        await interaction.reply({ content: `Die Pronomen ${addedRoles} wurde dir zugewiesen.`, ephemeral: true });
+        await interaction.reply({ content: `Die Pronomen ${addedRoles} wurde dir zugewiesen.`, flags: MessageFlags.Ephemeral });
       } else if (removedRoles.length != 0) {
-        await interaction.reply({ content: `Die Pronomen ${removedRoles} wurde entfernt.`, ephemeral: true });
+        await interaction.reply({ content: `Die Pronomen ${removedRoles} wurde entfernt.`, flags: MessageFlags.Ephemeral });
       } else {
-        await interaction.reply({ content: `Du besitzt alle Rollen die du ausgewählt hast.`, ephemeral: true });
+        await interaction.reply({ content: `Du besitzt alle Rollen die du ausgewählt hast.`, flags: MessageFlags.Ephemeral });
       }
     }
   }
@@ -56,9 +57,9 @@ module.exports = async (interaction) => {
         }
       }
       if (removedRoles.length != 0) {
-        await interaction.reply({ content: `Die Pronomen ${removedRoles} wurde entfernt.`, ephemeral: true });
+        await interaction.reply({ content: `Die Pronomen ${removedRoles} wurde entfernt.`, flags: MessageFlags.Ephemeral });
       } else {
-        await interaction.reply({ content: `Du hattest gar keine Pronomen-Rolle.`, ephemeral: true });
+        await interaction.reply({ content: `Du hattest gar keine Pronomen-Rolle.`, flags: MessageFlags.Ephemeral });
       }
     }
   }

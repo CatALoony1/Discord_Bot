@@ -5,7 +5,7 @@ module.exports = async (interaction) => {
     if (!interaction.isModalSubmit()) return;
     if (interaction.customId === `qvorschlag-${interaction.user.id}`) {
         const targetUser = await interaction.guild.members.fetch(process.env.ADMIN_ID);
-        await interaction.deferReply({ ephemeral: true })
+        await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral })
         const frage = interaction.fields.getTextInputValue('qvorschlag-frage');
         const richtig = interaction.fields.getTextInputValue('qvorschlag-richtig');
         const falsch1 = interaction.fields.getTextInputValue('qvorschlag-falsch1');
@@ -23,7 +23,7 @@ module.exports = async (interaction) => {
         await targetUser.send({ embeds: [vorschlag] });
         interaction.editReply('Frage abgegeben!');
     } else if (interaction.customId.includes(`qaddbyadmin-${interaction.user.id}`)) {
-        await interaction.deferReply({ ephemeral: true })
+        await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral })
         const frage = interaction.fields.getTextInputValue('qaddbyadmin-frage');
         const richtig = interaction.fields.getTextInputValue('qaddbyadmin-richtig');
         const falsch1 = interaction.fields.getTextInputValue('qaddbyadmin-falsch1');

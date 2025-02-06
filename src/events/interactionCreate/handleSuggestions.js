@@ -1,5 +1,6 @@
 const Suggestion = require('../../models/Suggestion');
 const formatResults = require('../../utils/formatResults');
+const { MessageFlags } = require('discord.js');
 
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('suggestion')) return;
@@ -7,7 +8,7 @@ module.exports = async (interaction) => {
         const [type, suggestionId, action] = interaction.customId.split('.');
         if (!type || !suggestionId || !action) return;
         if (type !== 'suggestion') return;
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         const targetSuggestion = await Suggestion.findOne({ suggestionId })
         const targetMessage = await interaction.channel.messages.fetch(targetSuggestion.messageId);
         const targetMessageEmbed = targetMessage.embeds[0];

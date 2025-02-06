@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Client, Interaction, PermissionFlagsBits, InteractionContextType } = require('discord.js');
+const { SlashCommandBuilder, Client, Interaction, PermissionFlagsBits, InteractionContextType, MessageFlags } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -17,7 +17,7 @@ module.exports = {
   run: async ({ interaction, client }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     const amount = interaction.options.get('anzahl').value;
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
     if (!amount) return interaction.editReply({ content: 'Du musst schon sagen wie viel ich löschen soll!' });
     if (isNaN(amount)) return interaction.editReply({ content: 'Es muss schon eine Zahl sein!' });

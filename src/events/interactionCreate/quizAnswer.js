@@ -1,9 +1,10 @@
+const { MessageFlags } = require('discord.js');
 const Questions = require('../../models/QuizQuestion');
 const QuizStats = require('../../models/QuizStats');
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('quiz')) return;
     try {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         const [type, rw, answer, id] = interaction.customId.split('_');
         const fetchedQuestion = await Questions.findOne({
             questionId: id,

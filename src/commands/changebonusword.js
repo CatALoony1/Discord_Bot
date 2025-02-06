@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Interaction, Client, InteractionContextType } = require('discord.js');
+const { SlashCommandBuilder, Interaction, Client, InteractionContextType, MessageFlags } = require('discord.js');
 const Config = require('../models/Config');
 require('dotenv').config();
 
@@ -35,9 +35,9 @@ module.exports = {
       bonusWords.value = bonusWords.value.replace(oldWord, newWord);
       await bonusWords.save();
       console.log(`Word ${oldWord} replaced by ${newWord}.`);
-      await interaction.reply({ content: `Wort ${oldWord} durch ${newWord} ersetzt.`, ephemeral: true });
+      await interaction.reply({ content: `Wort ${oldWord} durch ${newWord} ersetzt.`, flags: MessageFlags.Ephemeral });
     } else {
-      await interaction.reply({ content: `Das Wort ist nicht vorhanden`, ephemeral: true });
+      await interaction.reply({ content: `Das Wort ist nicht vorhanden`, flags: MessageFlags.Ephemeral });
     }
   },
 };

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Client, Interaction, PermissionFlagsBits, InteractionContextType } = require('discord.js');
+const { SlashCommandBuilder, Client, Interaction, PermissionFlagsBits, InteractionContextType, MessageFlags } = require('discord.js');
 const Bump = require("../models/Bump");
 require('dotenv').config();
 
@@ -20,14 +20,14 @@ module.exports = {
                 bumpEntry.endTime = Date.now() + 7200000;
                 bumpEntry.reminded = 'N';
                 await bumpEntry.save();
-                await interaction.reply({ content: `Bump Reminder erstellt!`, ephemeral: true });
+                await interaction.reply({ content: `Bump Reminder erstellt!`, flags: MessageFlags.Ephemeral });
             } else {
                 const newBump = new Bump({
                     guildId: interaction.guild.id,
                     endTime: Date.now() + 7200000,
                 });
                 await newBump.save();
-                await interaction.reply({ content: `Bump Reminder erstellt!`, ephemeral: true });
+                await interaction.reply({ content: `Bump Reminder erstellt!`, flags: MessageFlags.Ephemeral });
             }
         } catch (error) {
             interaction.reply('Fehler bei erstellen des Bump Reminders.');

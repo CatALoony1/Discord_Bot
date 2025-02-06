@@ -1,3 +1,4 @@
+const { MessageFlags } = require('discord.js');
 const rolenames = ['League of Legends',
   'Minecraft',
   'Dead by Daylight',
@@ -38,13 +39,13 @@ module.exports = async (interaction) => {
         };
       }
       if (addedRoles.length != 0 && removedRoles.length != 0) {
-        await interaction.reply({ content: `Die Spiele ${addedRoles} wurde dir zugewiesen.\nDie Spiele ${removedRoles} wurde entfernt.`, ephemeral: true });
+        await interaction.reply({ content: `Die Spiele ${addedRoles} wurde dir zugewiesen.\nDie Spiele ${removedRoles} wurde entfernt.`, flags: MessageFlags.Ephemeral });
       } else if (addedRoles.length != 0) {
-        await interaction.reply({ content: `Die Spiele ${addedRoles} wurde dir zugewiesen.`, ephemeral: true });
+        await interaction.reply({ content: `Die Spiele ${addedRoles} wurde dir zugewiesen.`, flags: MessageFlags.Ephemeral });
       } else if (removedRoles.length != 0) {
-        await interaction.reply({ content: `Die Spiele ${removedRoles} wurde entfernt.`, ephemeral: true });
+        await interaction.reply({ content: `Die Spiele ${removedRoles} wurde entfernt.`, flags: MessageFlags.Ephemeral });
       } else {
-        await interaction.reply({ content: `Du besitzt alle Rollen die du ausgewählt hast.`, ephemeral: true });
+        await interaction.reply({ content: `Du besitzt alle Rollen die du ausgewählt hast.`, flags: MessageFlags.Ephemeral });
       }
     }
   }
@@ -60,9 +61,9 @@ module.exports = async (interaction) => {
         }
       }
       if (removedRoles.length != 0) {
-        await interaction.reply({ content: `Die Spiele ${removedRoles} wurde entfernt.`, ephemeral: true });
+        await interaction.reply({ content: `Die Spiele ${removedRoles} wurde entfernt.`, flags: MessageFlags.Ephemeral });
       } else {
-        await interaction.reply({ content: `Du hattest gar keine Spiele-Rolle.`, ephemeral: true });
+        await interaction.reply({ content: `Du hattest gar keine Spiele-Rolle.`, flags: MessageFlags.Ephemeral });
       }
     }
   }

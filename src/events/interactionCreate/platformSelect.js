@@ -1,3 +1,4 @@
+const { MessageFlags } = require('discord.js');
 const rolenames = ['XBOX',
   'Switch',
   'PC',
@@ -36,13 +37,13 @@ module.exports = async (interaction) => {
         };
       }
       if (addedRoles.length != 0 && removedRoles.length != 0) {
-        await interaction.reply({ content: `Die Plattformen ${addedRoles} wurde dir zugewiesen.\nDie Plattformen ${removedRoles} wurde entfernt.`, ephemeral: true });
+        await interaction.reply({ content: `Die Plattformen ${addedRoles} wurde dir zugewiesen.\nDie Plattformen ${removedRoles} wurde entfernt.`, flags: MessageFlags.Ephemeral });
       } else if (addedRoles.length != 0) {
-        await interaction.reply({ content: `Die Plattformen ${addedRoles} wurde dir zugewiesen.`, ephemeral: true });
+        await interaction.reply({ content: `Die Plattformen ${addedRoles} wurde dir zugewiesen.`, flags: MessageFlags.Ephemeral });
       } else if (removedRoles.length != 0) {
-        await interaction.reply({ content: `Die Plattformen ${removedRoles} wurde entfernt.`, ephemeral: true });
+        await interaction.reply({ content: `Die Plattformen ${removedRoles} wurde entfernt.`, flags: MessageFlags.Ephemeral });
       } else {
-        await interaction.reply({ content: `Du besitzt alle Rollen die du ausgewählt hast.`, ephemeral: true });
+        await interaction.reply({ content: `Du besitzt alle Rollen die du ausgewählt hast.`, flags: MessageFlags.Ephemeral });
       }
     }
   }
@@ -58,9 +59,9 @@ module.exports = async (interaction) => {
         }
       }
       if (removedRoles.length != 0) {
-        await interaction.reply({ content: `Die Plattformen ${removedRoles} wurde entfernt.`, ephemeral: true });
+        await interaction.reply({ content: `Die Plattformen ${removedRoles} wurde entfernt.`, flags: MessageFlags.Ephemeral });
       } else {
-        await interaction.reply({ content: `Du hattest gar keine Plattform-Rolle.`, ephemeral: true });
+        await interaction.reply({ content: `Du hattest gar keine Plattform-Rolle.`, flags: MessageFlags.Ephemeral });
       }
     }
   }
