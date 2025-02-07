@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Client, Interaction, AttachmentBuilder, InteractionContextType } = require('discord.js');
+const { SlashCommandBuilder, AttachmentBuilder, InteractionContextType } = require('discord.js');
 const canvacord = require('canvacord');
 const Level = require('../models/Level');
 

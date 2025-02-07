@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const cron = require('node-cron');
 const Level = require('../../models/Level');
 require('dotenv').config();

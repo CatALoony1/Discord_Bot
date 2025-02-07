@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Interaction, Client, InteractionContextType, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
 const Config = require('../models/Config');
 require('dotenv').config();
 

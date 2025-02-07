@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Client, Interaction, PermissionFlagsBits, InteractionContextType, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, InteractionContextType, MessageFlags } = require('discord.js');
 const Config = require("../models/Config");
 module.exports = {
   data: new SlashCommandBuilder()

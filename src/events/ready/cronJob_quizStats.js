@@ -1,4 +1,4 @@
-const { Client, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
 const createQuizLeaderboardEmbeds = require("../../utils/createQuizLeaderboardEmbeds");
 const cron = require('node-cron');
 

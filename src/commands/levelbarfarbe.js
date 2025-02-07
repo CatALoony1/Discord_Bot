@@ -1,4 +1,4 @@
-const { PermissionFlagsBits, SlashCommandBuilder, Client, Interaction, InteractionContextType, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
 const Level = require('../models/Level');
 
 module.exports = {

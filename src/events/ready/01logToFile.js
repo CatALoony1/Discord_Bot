@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const fs = require("fs");
 require('dotenv').config();
 var install_hook_to = function (obj) {

@@ -1,6 +1,5 @@
 require('dotenv').config();
 const Discord = require('discord.js');
-const mongoose = require('mongoose');
 const { CommandHandler } = require('djs-commander');
 const path = require('path');
 
