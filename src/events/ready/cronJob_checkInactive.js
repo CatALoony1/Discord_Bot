@@ -26,8 +26,8 @@ module.exports = async (client) => {
                     let now = new Date();
                     let diffTime = Math.abs(now - fetchedLevel[i].lastMessage);
                     let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                    if (diffDays < 90) { //User on Server
-                        playersTags[i] = 'good';
+                    if (diffDays < 30) { //User on Server
+                        playersTags[i] = 'good';//TODO check for rework
                     } else {
                         playerTagsOnServer[playerTagsOnServer.length] = playersTags[i];
                     }
