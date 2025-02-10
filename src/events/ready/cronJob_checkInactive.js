@@ -66,7 +66,7 @@ module.exports = async (client) => {
             const messageUserInactive = new Discord.EmbedBuilder();
             messageUserInactive.setColor(0xff0000);
             messageUserInactive.setTimestamp(Date.now());
-            messageUserInactive.setTitle(`Folgende User haben seit 90 Tagen nichts geschrieben:`);
+            messageUserInactive.setTitle(`Folgende User haben seit 30 Tagen nichts geschrieben:`);
             messageUserInactive.setDescription(`${playerTagsOnServer.toString().replace(',', '\n')}`);
             await targetChannel.send({ embeds: [messageUserInactive] });
         }
