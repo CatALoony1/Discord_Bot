@@ -32,10 +32,7 @@ module.exports = {
         });
         if (config.value.includes(targetUserObj.user.tag)) {
             let away = config.value.split(',');
-            console.log(away);
-            console.log(away.indexOf(targetUserObj.user.tag));
-            away = away.splice(away.indexOf(targetUserObj.user.tag), 1);
-            console.log(away);
+            away.splice(away.indexOf(targetUserObj.user.tag), 1);
             config.value = away.toString();
             await config.save();
             await interaction.editReply(`Der User ${targetUserObj.user.tag} wurde entfernt.`);
