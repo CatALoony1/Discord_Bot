@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, PermissionFlagsBits } = require('discord.js');
 const calculateLevelXp = require('../utils/calculateLevelXp');
 const Level = require('../models/Level');
 
@@ -36,6 +36,7 @@ module.exports = {
         .setRequired(true)
         .setMinLength(1)
     )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
   run: async ({ interaction, client }) => {

@@ -9,7 +9,8 @@ module.exports = {
       option
         .setName('target-user')
         .setDescription('The user you want to emulate joining.')
-    ),
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
   /**
  * @param {import('commandkit').SlashCommandProps} param0

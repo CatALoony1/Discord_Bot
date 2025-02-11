@@ -5,7 +5,7 @@ const formatResults = require('../../utils/formatResults');
 module.exports = async (interaction) => {
     if (!interaction.isModalSubmit()) return;
     if (interaction.customId === `suggestion-${interaction.user.id}`) {
-        await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral })
+        await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
         let suggestionMessage;
         try {
             suggestionMessage = await interaction.channel.send('Vorschlag wird erstellt, bitte warten...');
