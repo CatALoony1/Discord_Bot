@@ -28,7 +28,7 @@ module.exports = {
         }
         const targetUserObj = await interaction.guild.members.fetch(targetUserId);
         const config = await Config.findOne({
-            away: 'away',
+            key: 'away',
         });
         if (config.value.includes(targetUserObj.user.tag)) {
             let away = config.value.split(',');
