@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, InteractionContextType, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, PermissionFlagsBits, MessageFlags } = require('discord.js');
 const Config = require('../models/Config');
 
 
@@ -16,7 +16,7 @@ module.exports = {
 
     run: async ({ interaction, client }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
-        await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         if (!interaction.inGuild()) {
             interaction.editReply('Hier ist doch kein Server!');
             return;
