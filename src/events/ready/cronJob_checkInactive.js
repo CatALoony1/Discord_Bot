@@ -31,6 +31,7 @@ module.exports = async (client) => {
             }
             var playerTagsOnServer = [];
             var playerTagsLurk = [];
+            console.log(away);
             members.forEach((member) => {
                 console.log(member.user.tag);
                 if (!(away.length != 0 && away.includes(member.user.tag))) {
@@ -44,19 +45,14 @@ module.exports = async (client) => {
                             } else {
                                 playerTagsOnServer[playerTagsOnServer.length] = playerTags[i];
                             }
-                            console.log(4);
-                            console.log(playerTags);
+                            console.log('break');
                             break;
                         }
                         if (i == (playerTags.length - 1)) {
                             let now = new Date();
-                            console.log(now);
                             let joinDate = member.joinedAt;
-                            console.log(joinDate);
                             let diffTime = Math.abs(now - joinDate);
-                            console.log(diffTime);
                             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                            console.log(diffDays);
                             console.log(diffDays);
                             if (diffDays >= 15) { //User on Server, not DB
                                 playerTagsLurk[playerTagsLurk.length] = playerTags[i];
@@ -112,12 +108,12 @@ module.exports = async (client) => {
                     console.log('Fehler, Logchannel gibts nicht');
                     return;
                 }
-                const messageUserInactive = new Discord.EmbedBuilder();
-                messageUserInactive.setColor(0xff0000);
-                messageUserInactive.setTimestamp(Date.now());
-                messageUserInactive.setTitle(`Seit 15 Tagen auf dem Server, nur am lurken`);
-                messageUserInactive.setDescription(`${playerTagsLurk.toString().replace(',', '\n')}`);
-                await targetChannel.send({ embeds: [messageUserInactive] });
+                const messageUserInactiveLurk = new Discord.EmbedBuilder();
+                messageUserInactiveLurk.setColor(0xff0000);
+                messageUserInactiveLurk.setTimestamp(Date.now());
+                messageUserInactiveLurk.setTitle(`Seit 15 Tagen auf dem Server, nur am lurken`);
+                messageUserInactiveLurk.setDescription(`${playerTagsLurk.toString().replace(',', '\n')}`);
+                await targetChannel.send({ embeds: [messageUserInactiveLurk] });
             }
         } catch (err) {
             console.log(err);
