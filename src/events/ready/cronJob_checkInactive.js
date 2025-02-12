@@ -32,8 +32,8 @@ module.exports = async (client) => {
             var playerTagsOnServer = [];
             var playerTagsLurk = [];
             console.log(away);
-            members.forEach((member) => {
-                console.log(member.user.tag);
+            members.forEach(async (member) => {
+                await console.log(member.user.tag);
                 if (!(away.length != 0 && away.includes(member.user.tag))) {
                     for (let i = 0; i < playerTags.length; i++) {
                         if (playerTags[i] === member.user.tag) {
@@ -45,11 +45,11 @@ module.exports = async (client) => {
                             } else {
                                 playerTagsOnServer[playerTagsOnServer.length] = playerTags[i];
                             }
-                            console.log('break');
+                            await console.log('break');
                             break;
                         }
-                        console.log(i);
-                        console.log(playerTags.length);
+                        await console.log(i);
+                        await console.log(playerTags.length);
                         if (i == (playerTags.length - 1)) {
                             let now = new Date();
                             let joinDate = member.joinedAt;
@@ -58,7 +58,7 @@ module.exports = async (client) => {
                             console.log(diffDays);
                             if (diffDays >= 15) { //User on Server, not DB
                                 playerTagsLurk[playerTagsLurk.length] = playerTags[i];
-                                console.log(playerTagsLurk);
+                                await console.log(playerTagsLurk);
                             }
                         }
                     }
@@ -116,7 +116,7 @@ module.exports = async (client) => {
                 messageUserInactiveLurk.setTimestamp(Date.now());
                 messageUserInactiveLurk.setTitle(`Seit 15 Tagen auf dem Server, nur am lurken`);
                 messageUserInactiveLurk.setDescription(`${playerTagsLurk.toString().replace(',', '\n')}`);
-                await targetChannel.send({ embeds: [messageUserInactiveLurk] });
+                //await targetChannel.send({ embeds: [messageUserInactiveLurk] });
             }
         } catch (err) {
             console.log(err);
