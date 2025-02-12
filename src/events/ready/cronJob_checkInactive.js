@@ -106,7 +106,10 @@ module.exports = async (client) => {
                 messageUserInactiveLurk.setColor(0xff0000);
                 messageUserInactiveLurk.setTimestamp(Date.now());
                 messageUserInactiveLurk.setTitle(`Seit 15 Tagen auf dem Server, nur am lurken`);
-                messageUserInactiveLurk.setDescription(`${playerTagsLurk.toString().replace(',', '\n')}`);
+                console.log(playerTagsLurk);
+                console.log(playerTagsLurk.toString());
+                console.log(playerTagsLurk.toString().replace(',', '\n'));
+                //messageUserInactiveLurk.setDescription(`${playerTagsLurk.toString().replace(',', '\n')}`);
                 await targetChannel.send({ embeds: [messageUserInactiveLurk] });
             }
         } catch (err) {
