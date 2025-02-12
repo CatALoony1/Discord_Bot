@@ -22,7 +22,7 @@ module.exports = async (message, client) => {
     const { executorId, target, targetId } = firstEntry;
     const user = await client.users.fetch(executorId);
     if (user.bot) return;
-    let description = 'Nachricht war leer oder ein Embed';
+    let description = 'Nachricht war vor restart, leer oder ein Embed';
     if(message.content != null && message.content.length >= 1){
       description = `${message.content}`;
     }
