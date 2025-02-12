@@ -93,7 +93,7 @@ module.exports = async (client) => {
                 messageUserInactive.setColor(0xff0000);
                 messageUserInactive.setTimestamp(Date.now());
                 messageUserInactive.setTitle(`Folgende User haben seit 30 Tagen nichts geschrieben:`);
-                messageUserInactive.setDescription(`${playerTagsOnServer.toString().replace(',', '\n')}`);
+                messageUserInactive.setDescription(`${playerTagsOnServer.toString().replaceAll(',', '\n')}`);
                 await targetChannel.send({ embeds: [messageUserInactive] });
             }
             if (playerTagsLurk.length != 0) {
@@ -106,10 +106,7 @@ module.exports = async (client) => {
                 messageUserInactiveLurk.setColor(0xff0000);
                 messageUserInactiveLurk.setTimestamp(Date.now());
                 messageUserInactiveLurk.setTitle(`Seit 15 Tagen auf dem Server, nur am lurken`);
-                console.log(playerTagsLurk);
-                console.log(playerTagsLurk.toString());
-                console.log(playerTagsLurk.toString().replace(',', '\n'));
-                //messageUserInactiveLurk.setDescription(`${playerTagsLurk.toString().replace(',', '\n')}`);
+                messageUserInactiveLurk.setDescription(`${playerTagsLurk.toString().replaceAll(',', '\n')}`);
                 await targetChannel.send({ embeds: [messageUserInactiveLurk] });
             }
         } catch (err) {
