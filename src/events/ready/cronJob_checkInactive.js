@@ -24,14 +24,12 @@ module.exports = async (client) => {
                     away = doc.value.split(',');
                 }
             }
-            console.log(away);
             var playerTags = [];
             for (let i = 0; i < fetchedLevel.length; i++) {
                 playerTags[i] = fetchedLevel[i].userName;
             }
             var playerTagsOnServer = [];
             var playerTagsLurk = [];
-            console.log(away);
             members.forEach(async (member) => {
                 await console.log(member.user.tag);
                 if (!(away.length != 0 && away.includes(member.user.tag))) {
@@ -45,7 +43,6 @@ module.exports = async (client) => {
                             } else {
                                 playerTagsOnServer[playerTagsOnServer.length] = playerTags[i];
                             }
-                            await console.log('break');
                             break;
                         }
                         await console.log(i);
@@ -55,7 +52,6 @@ module.exports = async (client) => {
                             let joinDate = member.joinedAt;
                             let diffTime = Math.abs(now - joinDate);
                             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                            console.log(diffDays);
                             if (diffDays >= 15) { //User on Server, not DB
                                 playerTagsLurk[playerTagsLurk.length] = playerTags[i];
                                 await console.log(playerTagsLurk);
