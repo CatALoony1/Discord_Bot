@@ -5,8 +5,7 @@ const Level = require('../../models/Level');
 const Config = require('../../models/Config');
 
 module.exports = async (client) => {
-    //cron.schedule('0 1 * * *', async function () { // 1 Uhr
-    cron.schedule('*/5 * * * *', async function () {
+    cron.schedule('0 1 * * *', async function () { // 1 Uhr
         await console.log(`CheckInactive-Job started...`);
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
