@@ -30,11 +30,15 @@ module.exports = async (client) => {
         }
         var playerTagsOnServer = [];
         var playerTagsLurk = [];
+        console.log(res);
         res.forEach((member) => {
             console.log(member.user.tag);
             if (!(away.length != 0 && away.includes(member.user.tag))) {
+                console.log(1);
                 for (let i = 0; i < playerTags.length; i++) {
+                    console.log(2);
                     if (playerTags[i] === member.user.tag) {
+                        console.log(3);
                         let now = new Date();
                         let diffTime = Math.abs(now - fetchedLevel[i].lastMessage);
                         let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
@@ -43,9 +47,13 @@ module.exports = async (client) => {
                         } else {
                             playerTagsOnServer[playerTagsOnServer.length] = playerTags[i];
                         }
+                        console.log(4);
+                        console.log(playerTags);
                         break;
                     }
+                    console.log(5);
                     if (i == (playerTags.length - 1)) {
+                        console.log(6);
                         let now = new Date();
                         let diffTime = Math.abs(now - member.joinedAt());
                         let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
