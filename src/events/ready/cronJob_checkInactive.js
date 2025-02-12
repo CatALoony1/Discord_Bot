@@ -5,7 +5,8 @@ const Level = require('../../models/Level');
 const Config = require('../../models/Config');
 
 module.exports = async (client) => {
-    cron.schedule('0 1 * * *', async function () { // 1 Uhr
+    //cron.schedule('0 1 * * *', async function () { // 1 Uhr
+    cron.schedule('*/5 * * * *', async function () {
         console.log(`CheckInactive-Job started...`);
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         let res = await guild.members.fetch();
@@ -22,6 +23,7 @@ module.exports = async (client) => {
                 away = doc.value.split(',');
             }
         }
+        console.log(away);
         var playerTags = [];
         for (let i = 0; i < fetchedLevel.length; i++) {
             playerTags[i] = fetchedLevel[i].userName;
@@ -29,6 +31,7 @@ module.exports = async (client) => {
         var playerTagsOnServer = [];
         var playerTagsLurk = [];
         res.forEach((member) => {
+            console.log(member.user.tag);
             if (!(away.length != 0 && away.includes(member.user.tag))) {
                 for (let i = 0; i < playerTags.length; i++) {
                     if (playerTags[i] === member.user.tag) {
@@ -46,6 +49,7 @@ module.exports = async (client) => {
                         let now = new Date();
                         let diffTime = Math.abs(now - member.joinedAt());
                         let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                        console.log(diffDays);
                         if (diffDays >= 15) { //User on Server, not DB
                             playerTagsLurk[playerTagsLurk.length] = playerTags[i];
                         }
@@ -53,6 +57,7 @@ module.exports = async (client) => {
                 }
             }
         });
+        console.log(playerTagsLurk);
         for (let i = 0; i < playerTags.length; i++) {
             if (playerTags[i] != 'good') {
                 if (!(away.length != 0 && away.includes(playerTags[i]))) {
