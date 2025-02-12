@@ -107,7 +107,7 @@ module.exports = async (client) => {
                 messageUserInactiveLurk.setTimestamp(Date.now());
                 messageUserInactiveLurk.setTitle(`Seit 15 Tagen auf dem Server, nur am lurken`);
                 messageUserInactiveLurk.setDescription(`${playerTagsLurk.toString().replace(',', '\n')}`);
-                //await targetChannel.send({ embeds: [messageUserInactiveLurk] });
+                await targetChannel.send({ embeds: [messageUserInactiveLurk] });
             }
         } catch (err) {
             await console.log(err);
