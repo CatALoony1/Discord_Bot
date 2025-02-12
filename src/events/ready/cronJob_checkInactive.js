@@ -31,8 +31,7 @@ module.exports = async (client) => {
             var playerTagsOnServer = [];
             var playerTagsLurk = [];
             members.forEach(async (member) => {
-                if (!(away.length != 0 && away.includes(member.user.tag))) {
-                    await console.log(member.user.tag);
+                if (!(away.length != 0 && away.includes(member.user.tag)) && !member.user.bot) {
                     for (let i = 0; i < playerTags.length; i++) {
                         if (playerTags[i] === member.user.tag) {
                             let now = new Date();
@@ -52,13 +51,11 @@ module.exports = async (client) => {
                             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                             if (diffDays >= 15) { //User on Server, not DB
                                 playerTagsLurk[playerTagsLurk.length] = member.user.tag;
-                                await console.log(playerTagsLurk);
                             }
                         }
                     }
                 }
             });
-            await console.log(playerTagsLurk);
             for (let i = 0; i < playerTags.length; i++) {
                 if (playerTags[i] != 'good') {
                     if (!(away.length != 0 && away.includes(playerTags[i]))) {
