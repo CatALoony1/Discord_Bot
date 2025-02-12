@@ -48,6 +48,8 @@ module.exports = async (client) => {
                             console.log('break');
                             break;
                         }
+                        console.log(i);
+                        console.log(playerTags.length);
                         if (i == (playerTags.length - 1)) {
                             let now = new Date();
                             let joinDate = member.joinedAt;
@@ -56,6 +58,7 @@ module.exports = async (client) => {
                             console.log(diffDays);
                             if (diffDays >= 15) { //User on Server, not DB
                                 playerTagsLurk[playerTagsLurk.length] = playerTags[i];
+                                console.log(playerTagsLurk);
                             }
                         }
                     }
