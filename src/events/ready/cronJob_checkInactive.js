@@ -31,7 +31,6 @@ module.exports = async (client) => {
             }
             var playerTagsOnServer = [];
             var playerTagsLurk = [];
-            console.log(members);
             members.forEach((member) => {
                 console.log(member.user.tag);
                 if (!(away.length != 0 && away.includes(member.user.tag))) {
@@ -52,7 +51,7 @@ module.exports = async (client) => {
                         if (i == (playerTags.length - 1)) {
                             let now = new Date();
                             console.log(now);
-                            let joinDate = member.joinedAt();
+                            let joinDate = member.joinedAt;
                             console.log(joinDate);
                             let diffTime = Math.abs(now - joinDate);
                             console.log(diffTime);
