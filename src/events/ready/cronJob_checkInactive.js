@@ -7,7 +7,7 @@ const Config = require('../../models/Config');
 module.exports = async (client) => {
     //cron.schedule('0 1 * * *', async function () { // 1 Uhr
     cron.schedule('*/5 * * * *', async function () {
-        console.log(`CheckInactive-Job started...`);
+        await console.log(`CheckInactive-Job started...`);
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
             let members = await guild.members.fetch();
@@ -15,7 +15,7 @@ module.exports = async (client) => {
                 guildId: process.env.GUILD_ID,
             });
             if (fetchedLevel.length === 0) {
-                console.log('ERROR: Niemand auf dem Server hat Level')
+                await console.log('ERROR: Niemand auf dem Server hat Level')
                 return;
             }
             var away = [];
@@ -60,7 +60,7 @@ module.exports = async (client) => {
                     }
                 }
             });
-            console.log(playerTagsLurk);
+            await console.log(playerTagsLurk);
             for (let i = 0; i < playerTags.length; i++) {
                 if (playerTags[i] != 'good') {
                     if (!(away.length != 0 && away.includes(playerTags[i]))) {
@@ -80,18 +80,18 @@ module.exports = async (client) => {
             }
             for (let i = 0; i < playerTags.length; i++) {
                 if (playerTags[i] != 'good') {
-                    console.log(`User ${playerTags[i]} hasn't send a message in at least 30 Days.`);
+                    await console.log(`User ${playerTags[i]} hasn't send a message in at least 30 Days.`);
                     await Level.deleteOne({ guildId: process.env.GUILD_ID, userName: playerTags[i], });
                 }
             }
             for (let i = 0; i < playerTagsLurk.length; i++) {
-                console.log(`User ${playerTagsLurk[i]} hasn't send a message in at least 15 Days.`);
+                await console.log(`User ${playerTagsLurk[i]} hasn't send a message in at least 15 Days.`);
             }
 
             if (playerTagsOnServer.length != 0) {
                 const targetChannel = await client.channels.fetch(process.env.LOG_ID);
                 if (!targetChannel) {
-                    console.log('Fehler, Logchannel gibts nicht');
+                    await console.log('Fehler, Logchannel gibts nicht');
                     return;
                 }
                 const messageUserInactive = new Discord.EmbedBuilder();
@@ -104,7 +104,7 @@ module.exports = async (client) => {
             if (playerTagsLurk.length != 0) {
                 const targetChannel = await client.channels.fetch(process.env.LOG_ID);
                 if (!targetChannel) {
-                    console.log('Fehler, Logchannel gibts nicht');
+                    await console.log('Fehler, Logchannel gibts nicht');
                     return;
                 }
                 const messageUserInactiveLurk = new Discord.EmbedBuilder();
@@ -115,8 +115,8 @@ module.exports = async (client) => {
                 //await targetChannel.send({ embeds: [messageUserInactiveLurk] });
             }
         } catch (err) {
-            console.log(err);
+            await console.log(err);
         }
-        console.log(`CheckInactive-Job finished...`);
+        await console.log(`CheckInactive-Job finished...`);
     });
 }
