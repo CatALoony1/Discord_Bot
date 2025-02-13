@@ -109,7 +109,7 @@ module.exports = async (client) => {
                 messageUserInactive.setDescription(`${playerTagsOnServer.toString().replaceAll(',', '\n')}`);
                 await targetChannel.send({ embeds: [messageUserInactive] });
             }
-            if (playerTagsLurk.length != 0) {
+            if (playerTagsLurk.size != 0) {
                 const targetChannel = await client.channels.fetch(process.env.LOG_ID);
                 if (!targetChannel) {
                     await console.log('Fehler, Logchannel gibts nicht');
