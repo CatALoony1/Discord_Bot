@@ -56,6 +56,13 @@ module.exports = async (client) => {
                     }
                 }
             });
+            if (away.length != 0) {
+                for (let i = 0; i < playerTags.keys().length; i++) {
+                    if (away.includes(playerTags.keys()[i])) {
+                        playerTags.keys()[i] = 'good';
+                    }
+                }
+            }
             for (let i = 0; i < playerTags.keys().length; i++) {
                 if (playerTags.keys()[i] != 'good') {
                     if (!(away.length != 0 && away.includes(playerTags.keys()[i]))) {
@@ -77,22 +84,22 @@ module.exports = async (client) => {
                 guildId: process.env.GUILD_ID,
             });
             var quizUserIds = [];
-            for(let stat of fetchedQuizstats){
+            for (let stat of fetchedQuizstats) {
                 quizUserIds[quizUserIds.length] = stat.userId;
             }
             for (let i = 0; i < playerTags.keys().length; i++) {
                 if (playerTags.keys()[i] != 'good') {
                     await console.log(`User ${playerTags.keys()[i]} hasn't send a message in at least 30 Days.`);
                     await Level.deleteOne({ guildId: process.env.GUILD_ID, userName: playerTags.keys()[i], });
-                    if(quizUserIds.includes(playerTags.get(playerTags.keys[i]))){
-                        await QuizStats.deleteOne({guildId: process.env.GUILD_ID, userId: playerTags.get(playerTags.keys[i]),});
+                    if (quizUserIds.includes(playerTags.get(playerTags.keys[i]))) {
+                        await QuizStats.deleteOne({ guildId: process.env.GUILD_ID, userId: playerTags.get(playerTags.keys[i]), });
                     }
                 }
             }
             for (let i = 0; i < playerTagsLurk.keys().length; i++) {
                 await console.log(`User ${playerTagsLurk.keys()[i]} hasn't send a message in at least 15 Days.`);
-                if(quizUserIds.includes(playerTagsLurk.get(playerTagsLurk.keys[i]))){
-                    await QuizStats.deleteOne({guildId: process.env.GUILD_ID, userId: playerTagsLurk.get(playerTagsLurk.keys[i]),});
+                if (quizUserIds.includes(playerTagsLurk.get(playerTagsLurk.keys[i]))) {
+                    await QuizStats.deleteOne({ guildId: process.env.GUILD_ID, userId: playerTagsLurk.get(playerTagsLurk.keys[i]), });
                 }
             }
 
