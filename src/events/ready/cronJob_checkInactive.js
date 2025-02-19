@@ -41,6 +41,7 @@ module.exports = async (client) => {
                                 playerTags.keys()[i] = 'good';
                             } else {
                                 playerTagsOnServer[playerTagsOnServer.length] = member.user.tag;
+                                playerTags.keys()[i] = 'good';
                             }
                             break;
                         }
