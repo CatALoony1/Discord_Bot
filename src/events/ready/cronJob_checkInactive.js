@@ -37,6 +37,7 @@ module.exports = async (client) => {
                             let now = new Date();
                             let diffTime = Math.abs(now - fetchedLevel[i].lastMessage);
                             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                            console.log(`${member.user.tag}: ${diffDays}`);
                             if (diffDays < 30) { //User on Server
                                 playerTags.keys()[i] = 'good';
                             } else {
@@ -72,6 +73,7 @@ module.exports = async (client) => {
                                 let now = new Date();
                                 let diffTime = Math.abs(now - fetchedLevel[i].lastMessage);
                                 let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                                console.log(`${playerTags.keys()[i]}: ${diffDays}`);
                                 if (diffDays < 30) { //User not on Server
                                     playerTags.keys()[i] = 'good';
                                 }
@@ -81,6 +83,7 @@ module.exports = async (client) => {
                     }
                 }
             }
+            console.log(`Map: ${playerTags.keys()}`);
             const fetchedQuizstats = await QuizStats.find({
                 guildId: process.env.GUILD_ID,
             });
