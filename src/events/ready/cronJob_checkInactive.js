@@ -75,7 +75,7 @@ module.exports = async (client) => {
                     for (let j = 0; j < fetchedLevel.length; j++) {
                         if (key === fetchedLevel[j].userName) {
                             let now = new Date();
-                            let diffTime = Math.abs(now - fetchedLevel[i].lastMessage);
+                            let diffTime = Math.abs(now - fetchedLevel[j].lastMessage);
                             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                             console.log(`${key}: ${diffDays}`);
                             if (diffDays < 30) { //User not on Server
