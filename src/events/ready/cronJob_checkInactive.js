@@ -39,7 +39,7 @@ module.exports = async (client) => {
                             let now = new Date();
                             let diffTime = Math.abs(now - fetchedLevel[i].lastMessage);
                             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                            console.log(`${member.user.tag}: ${diffDays}`);
+                            console.log(`DB and Server: ${member.user.tag}: ${diffDays}`);
                             if (diffDays < 30) { //User on Server
                                 playerTagsGood[playerTagsGood.length] = key;
                                 vorhanden = 1;
@@ -56,6 +56,7 @@ module.exports = async (client) => {
                         let joinDate = member.joinedAt;
                         let diffTime = Math.abs(now - joinDate);
                         let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                        console.log(`Not DB: ${member.user.id}: ${diffDays}`);
                         if (diffDays >= 15) { //User on Server, not DB
                             playerTagsLurk.set(member.user.tag, member.user.id);
                         }
@@ -77,7 +78,7 @@ module.exports = async (client) => {
                             let now = new Date();
                             let diffTime = Math.abs(now - fetchedLevel[j].lastMessage);
                             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                            console.log(`${key}: ${diffDays}`);
+                            console.log(`DB not Server: ${key}: ${diffDays}`);
                             if (diffDays < 30) { //User not on Server
                                 playerTagsGood[playerTagsGood.length] = key;
                             }
@@ -89,7 +90,6 @@ module.exports = async (client) => {
             for (const key of playerTagsGood) {
                 playerTags.delete(key);
             }
-            console.log(playerTags);
             const fetchedQuizstats = await QuizStats.find({
                 guildId: process.env.GUILD_ID,
             });
