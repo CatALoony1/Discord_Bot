@@ -35,7 +35,7 @@ module.exports = async (client) => {
                 if (!(away.length != 0 && away.includes(member.user.tag)) && !member.user.bot) {
                     let vorhanden = 0;
                     for (const key of playerTags.keys()) {
-                        if (key === member.user.tag) {
+                        if (key == member.user.tag) {
                             let now = new Date();
                             let diffTime = Math.abs(now - fetchedLevel[i].lastMessage);
                             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
@@ -104,7 +104,9 @@ module.exports = async (client) => {
                     await QuizStats.deleteOne({ guildId: process.env.GUILD_ID, userId: playerTags.get(key), });
                 }
             }
+            var playerLurkArray = [];
             for (const key of playerTagsLurk.keys()) {
+                playerLurkArray[playerLurkArray.length] = key;
                 await console.log(`User ${key} hasn't send a message in at least 15 Days.`);
                 if (quizUserIds.includes(playerTagsLurk.get(key))) {
                     await QuizStats.deleteOne({ guildId: process.env.GUILD_ID, userId: playerTagsLurk.get(key), });
@@ -134,7 +136,7 @@ module.exports = async (client) => {
                 messageUserInactiveLurk.setColor(0xff0000);
                 messageUserInactiveLurk.setTimestamp(Date.now());
                 messageUserInactiveLurk.setTitle(`Seit 15 Tagen auf dem Server, nur am lurken`);
-                messageUserInactiveLurk.setDescription(`${playerTagsLurk.toString().replaceAll(',', '\n')}`);
+                messageUserInactiveLurk.setDescription(`${playerLurkArray.toString().replaceAll(',', '\n')}`);
                 await targetChannel.send({ embeds: [messageUserInactiveLurk] });
             }
         } catch (err) {
