@@ -6,7 +6,8 @@ const Config = require('../../models/Config');
 const QuizStats = require('../../models/QuizStats');
 
 module.exports = async (client) => {
-    cron.schedule('0 1 * * *', async function () { // 1 Uhr
+    //cron.schedule('0 1 * * *', async function () { // 1 Uhr
+    cron.schedule('52 11 * * *', async function () { // 1 Uhr
         await console.log(`CheckInactive-Job started...`);
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -35,6 +36,7 @@ module.exports = async (client) => {
                 if (!(away.length != 0 && away.includes(member.user.tag)) && !member.user.bot) {
                     let vorhanden = 0;
                     for (const key of playerTags.keys()) {
+                        console.log(`Key: ${key} Member: ${member.user.tag}`);
                         if (key == member.user.tag) {
                             let now = new Date();
                             let diffTime = Math.abs(now - fetchedLevel[i].lastMessage);
