@@ -1,8 +1,9 @@
 require('dotenv').config();
-const { EmbedBuilder, Message, AuditLogEvent } = require('discord.js');
+const { EmbedBuilder, Message, AuditLogEvent, Client } = require('discord.js');
 /**
  * 
  * @param {Message} message 
+ * @param {Client} client
  * @returns 
  */
 module.exports = async (message, client) => {
@@ -14,16 +15,23 @@ module.exports = async (message, client) => {
       console.log('Fehler, Logchannel gibts nicht');
       return;
     }
-    const logs = await message.guild.fetchAuditLogs({
-      type: AuditLogEvent.MessageDelete,
-      limit: 1,
-    });
-    const firstEntry = logs.entries.first();
-    const { executorId, target, targetId } = firstEntry;
-    const user = await client.users.fetch(executorId);
-    if (user.bot) return;
+    var user = client.user;
+    if (message.author == null) {
+      const logs = await message.guild.fetchAuditLogs({
+        type: AuditLogEvent.MessageDelete,
+        limit: 1,
+      });
+      const firstEntry = logs.entries.first();
+      const { executorId, target, targetId } = firstEntry;
+      user = await client.users.fetch(executorId);
+      if (user.bot) return;
+    } else {
+      if (message.guild.members.cache.find(m => m.id === message.author.id)?.id) {
+        user = message.author;
+      }
+    }
     let description = 'Nachricht war vor restart, leer oder ein Embed';
-    if(message.content != null && message.content.length >= 1){
+    if (message.content != null && message.content.length >= 1) {
       description = `${message.content}`;
     }
     const messageDeleted = new EmbedBuilder();

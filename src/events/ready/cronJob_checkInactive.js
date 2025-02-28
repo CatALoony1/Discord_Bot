@@ -38,8 +38,8 @@ module.exports = async (client) => {
                         if (key == member.user.tag) {
                             let now = new Date();
                             var lastMessage;
-                            for(const level of fetchedLevel){
-                                if(level.userName == key){
+                            for (const level of fetchedLevel) {
+                                if (level.userName == key) {
                                     lastMessage = level.lastMessage;
                                     break;
                                 }
