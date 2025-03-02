@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require('discord.js');
 /**
  * 
  * @param {import {'discord.js'}.GuildMember} guildMember 
@@ -29,6 +29,16 @@ module.exports = async (guildMember) => {
         await messageL.react('🇳');
         await messageL.react('🇬');
 
+
+        const button = new ButtonBuilder()
+            .setCustomId('whyleave')
+            .setLabel('Rückmeldung geben')
+            .setStyle('Primary');
+        const row = new ActionRowBuilder().addComponents(button);
+        guildMember.send({
+            content: 'Teile uns mit, warum du gegangen bist.',
+            components: [row],
+        });
     } catch (error) {
         console.log(error);
     }
