@@ -17,6 +17,69 @@ let status = [
   },
   {
     activities: [{
+      name: 'noch mehr Eigenwerbung',
+      type: ActivityType.Streaming,
+      url: 'https://www.youtube.com/watch?v=2Qt_182NE_M'
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Popeye\'s liebster',
+      type: ActivityType.Streaming,
+      url: 'https://www.youtube.com/watch?v=vN_ptzsm6fw'
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Eigenwerbung ohne Ende',
+      type: ActivityType.Streaming,
+      url: 'https://www.youtube.com/watch?v=4w6AvoRjP0w'
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Zu viel Eigenwerbung',
+      type: ActivityType.Streaming,
+      url: 'https://www.youtube.com/watch?v=e2EL8WE5IFo'
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Eigenwerbung bringt Geld',
+      type: ActivityType.Streaming,
+      url: 'https://www.youtube.com/watch?v=agG7VwGULnI'
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Werbebudget wird genutzt',
+      type: ActivityType.Streaming,
+      url: 'https://www.youtube.com/watch?v=IYSCGAhp7HA'
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Früher war Eigenwerbung besser',
+      type: ActivityType.Streaming,
+      url: 'https://www.youtube.com/watch?v=jfxbhbAIoGg'
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Sci-Fi Eigenwerbung',
+      type: ActivityType.Streaming,
+      url: 'https://www.youtube.com/watch?v=1zRI-dKrcSY'
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Mein eigener Song',
+      type: ActivityType.Streaming,
+      url: 'https://www.youtube.com/watch?v=FK-YmV1eVaU'
+    }], status: 'online'
+  },
+  {
+    activities: [{
       name: 'Serverhymne',
       type: ActivityType.Streaming,
       url: 'https://www.youtube.com/watch?v=k0jvsZ6HQOM'
@@ -33,6 +96,12 @@ let status = [
       name: 'in die Ferne',
       type: ActivityType.Watching
     }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'der Crew zu',
+      type: ActivityType.Watching
+    }], status: 'idle'
   },
   {
     activities: [{
@@ -54,6 +123,12 @@ let status = [
   },
   {
     activities: [{
+      name: 'beim Braten',
+      type: ActivityType.Listening
+    }], status: 'idle'
+  },
+  {
+    activities: [{
       name: 'alleine',
       type: ActivityType.Playing
     }], status: 'online'
@@ -63,6 +138,12 @@ let status = [
       name: 'das Angelspiel',
       type: ActivityType.Playing
     }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'mit deinen Geschmacksnerven',
+      type: ActivityType.Playing
+    }], status: 'online'
   },
   {
     activities: [{
@@ -79,6 +160,72 @@ let status = [
   {
     activities: [{
       name: 'Sucht das One Piece',
+      type: ActivityType.Custom
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Plündert ein Handelsschiff',
+      type: ActivityType.Custom
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Zu viel Rum getrunken',
+      type: ActivityType.Custom
+    }], status: 'idle'
+  },
+  {
+    activities: [{
+      name: 'Snackt Limetten🍋‍🟩',
+      type: ActivityType.Custom
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Wartet auf das Essen',
+      type: ActivityType.Custom
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Poliert seine Gabel',
+      type: ActivityType.Custom
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Schärft sein Messer',
+      type: ActivityType.Custom
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Vernichtet Konkurrenzprodukte',
+      type: ActivityType.Custom
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Überprüft die Panadendicke',
+      type: ActivityType.Custom
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Beschützt die Geheimformel',
+      type: ActivityType.Custom
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Testet neue Rezepte',
+      type: ActivityType.Custom
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Erhöht die Preise',
       type: ActivityType.Custom
     }], status: 'dnd'
   },
@@ -103,7 +250,8 @@ function getRandom(min, max) {
 }
 
 module.exports = (client) => {
-  cron.schedule('*/15 * * * * *', async function () { //30sec
-    await client.user.setPresence(status[getRandom(0, status.length - 1)]);
+  cron.schedule('*/30 * * * * *', async function () { //30sec
+    const number = getRandom(0, status.length - 1);
+    await client.user.setPresence(status[number]);
   });
 };
