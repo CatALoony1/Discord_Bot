@@ -26,21 +26,19 @@ let status = [
     activities: [{
       name: 'Fisch',
       type: ActivityType.Watching
-    }], status: 'online',
-    afk: false
+    }], status: 'online'
   },
   {
     activities: [{
       name: 'in die Ferne',
       type: ActivityType.Watching
-    }], status: 'online',
-    afk: true
+    }], status: 'online'
   },
   {
     activities: [{
       name: 'dir',
       type: ActivityType.Listening
-    }], status: 'invisible'
+    }], status: 'idle'
   },
   {
     activities: [{
@@ -64,7 +62,7 @@ let status = [
     activities: [{
       name: 'das Angelspiel',
       type: ActivityType.Playing
-    }], status: 'online'
+    }], status: 'dnd'
   },
   {
     activities: [{
@@ -105,13 +103,7 @@ function getRandom(min, max) {
 }
 
 module.exports = (client) => {
-  var i = 0;
   cron.schedule('*/15 * * * * *', async function () { //30sec
-    const number = getRandom(0, status.length - 1);
-    await client.user.setPresence(status[i]);
-    i++;
-    if(i == status.length){
-      i = 0;
-    }
+    await client.user.setPresence(status[getRandom(0, status.length - 1)]);
   });
 };
