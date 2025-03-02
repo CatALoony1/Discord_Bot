@@ -6,35 +6,35 @@ let status = [
       name: 'Eigenwerbung',
       type: ActivityType.Streaming,
       url: 'https://www.youtube.com/watch?v=ZIo-ChHy4iU'
-    }], status: 'idle',
-    afk: true
+    }], status: 'online'
   },
   {
     activities: [{
       name: 'mehr Eigenwerbung',
       type: ActivityType.Streaming,
       url: 'https://www.youtube.com/watch?v=iTMsblGTAdM'
-    }], status: 'idle',
-    afk: false
+    }], status: 'online'
   },
   {
     activities: [{
       name: 'Serverhymne',
       type: ActivityType.Streaming,
       url: 'https://www.youtube.com/watch?v=k0jvsZ6HQOM'
-    }], status: 'dnd'
+    }], status: 'online'
   },
   {
     activities: [{
       name: 'Fisch',
       type: ActivityType.Watching
-    }], status: 'online'
+    }], status: 'online',
+    afk: false
   },
   {
     activities: [{
       name: 'in die Ferne',
       type: ActivityType.Watching
-    }], status: 'online'
+    }], status: 'online',
+    afk: true
   },
   {
     activities: [{
@@ -106,7 +106,7 @@ function getRandom(min, max) {
 
 module.exports = (client) => {
   var i = 0;
-  cron.schedule('*/30 * * * * *', async function () { //30sec
+  cron.schedule('*/15 * * * * *', async function () { //30sec
     const number = getRandom(0, status.length - 1);
     await client.user.setPresence(status[i]);
     i++;
