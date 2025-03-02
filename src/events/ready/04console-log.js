@@ -1,5 +1,6 @@
+require('dotenv').config();
 module.exports = async (client) => {
     console.log(`Logged in as ${client.user.tag}!`);
-    var targetChannel = await client.channels.fetch(process.env.BOT_UPDATE_ID);
-    targetChannel.send(`Bot ist gestartet.`);
+    const targetUser = await interaction.guild.members.fetch(process.env.ADMIN_ID);
+    targetUser.send(`Bot ist gestartet.`);
 };
