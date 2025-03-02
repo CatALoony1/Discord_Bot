@@ -6,8 +6,7 @@ const Config = require('../../models/Config');
 const QuizStats = require('../../models/QuizStats');
 
 module.exports = async (client) => {
-    //cron.schedule('0 1 * * *', async function () { // 1 Uhr
-    cron.schedule('5 6 * * *', async function () { // 1 Uhr
+    cron.schedule('0 1 * * *', async function () { // 1 Uhr
         await console.log(`CheckInactive-Job started...`);
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
