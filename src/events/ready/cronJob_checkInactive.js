@@ -6,7 +6,8 @@ const Config = require('../../models/Config');
 const QuizStats = require('../../models/QuizStats');
 
 module.exports = async (client) => {
-    cron.schedule('0 1 * * *', async function () { // 1 Uhr
+    //cron.schedule('0 1 * * *', async function () { // 1 Uhr
+    cron.schedule('2 6 * * *', async function () { // 1 Uhr
         await console.log(`CheckInactive-Job started...`);
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -44,7 +45,7 @@ module.exports = async (client) => {
                                     break;
                                 }
                             }
-                            let diffTime = Math.abs(now - fetchedLevel[i].lastMessage);
+                            let diffTime = Math.abs(now - lastMessage);
                             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                             console.log(`DB and Server: ${member.user.tag}: ${diffDays}`);
                             if (diffDays < 30) { //User on Server
