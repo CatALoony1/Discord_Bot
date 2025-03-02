@@ -251,7 +251,6 @@ function getRandom(min, max) {
 
 module.exports = (client) => {
   cron.schedule('*/30 * * * * *', async function () { //30sec
-    const number = getRandom(0, status.length - 1);
-    await client.user.setPresence(status[number]);
+    await client.user.setPresence(status[getRandom(0, status.length - 1)]);
   });
 };
