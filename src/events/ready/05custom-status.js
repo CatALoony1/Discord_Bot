@@ -1,69 +1,112 @@
 const { ActivityType } = require('discord.js');
+const cron = require('node-cron');
 let status = [
   {
-    name: 'Eigenwerbung',
-    type: ActivityType.Streaming,
-    url: 'https://www.youtube.com/watch?v=ZIo-ChHy4iU',
+    activities: [{
+      name: 'Eigenwerbung',
+      type: ActivityType.Streaming,
+      url: 'https://www.youtube.com/watch?v=ZIo-ChHy4iU'
+    }], status: 'idle',
+    afk: true
   },
   {
-    name: 'mehr Eigenwerbung',
-    type: ActivityType.Streaming,
-    url: 'https://www.youtube.com/watch?v=iTMsblGTAdM',
+    activities: [{
+      name: 'mehr Eigenwerbung',
+      type: ActivityType.Streaming,
+      url: 'https://www.youtube.com/watch?v=iTMsblGTAdM'
+    }], status: 'idle',
+    afk: false
   },
   {
-    name: 'Serverhymne',
-    type: ActivityType.Streaming,
-    url: 'https://www.youtube.com/watch?v=k0jvsZ6HQOM',
+    activities: [{
+      name: 'Serverhymne',
+      type: ActivityType.Streaming,
+      url: 'https://www.youtube.com/watch?v=k0jvsZ6HQOM'
+    }], status: 'dnd'
   },
   {
-    name: 'Fisch',
-    type: ActivityType.Watching,
+    activities: [{
+      name: 'Fisch',
+      type: ActivityType.Watching
+    }], status: 'online'
   },
   {
-    name: 'in die Ferne',
-    type: ActivityType.Watching,
+    activities: [{
+      name: 'in die Ferne',
+      type: ActivityType.Watching
+    }], status: 'online'
   },
   {
-    name: 'dir',
-    type: ActivityType.Listening,
+    activities: [{
+      name: 'dir',
+      type: ActivityType.Listening
+    }], status: 'invisible'
   },
   {
-    name: 'dem Nixengesang',
-    type: ActivityType.Listening,
+    activities: [{
+      name: 'dem Nixengesang',
+      type: ActivityType.Listening
+    }], status: 'idle'
   },
   {
-    name: 'alleine',
-    type: ActivityType.Playing,
+    activities: [{
+      name: 'Seemannsliedern',
+      type: ActivityType.Listening
+    }], status: 'online'
   },
   {
-    name: 'das Angelspiel',
-    type: ActivityType.Playing,
+    activities: [{
+      name: 'alleine',
+      type: ActivityType.Playing
+    }], status: 'online'
   },
   {
-    name: 'Ahoi Brause',
-    type: ActivityType.Custom,
+    activities: [{
+      name: 'das Angelspiel',
+      type: ActivityType.Playing
+    }], status: 'online'
   },
   {
-    type: ActivityType.Custom,
-    name: '🐙'
+    activities: [{
+      name: 'Ahoi Brause',
+      type: ActivityType.Custom
+    }], status: 'online'
   },
   {
-    name: 'Sucht das One Piece',
-    type: ActivityType.Custom,
+    activities: [{
+      name: '🐙',
+      type: ActivityType.Custom
+    }], status: 'online'
   },
   {
-    name: 'Schiffe versenken',
-    type: ActivityType.Competing,
+    activities: [{
+      name: 'Sucht das One Piece',
+      type: ActivityType.Custom
+    }], status: 'dnd'
   },
   {
-    name: 'Fischstäbchen essen',
-    type: ActivityType.Competing,
+    activities: [{
+      name: 'Schiffe versenken',
+      type: ActivityType.Competing
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Fischstäbchen essen',
+      type: ActivityType.Competing
+    }], status: 'dnd'
   },
 ];
 
+function getRandom(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 module.exports = (client) => {
-  setInterval(() => {
-    let random = Math.floor(Math.random() * status.length);
-    client.user.setActivity(status[random]);
-  }, 10000);
+  cron.schedule('*/1 * * * *', async function () {
+    const number = getRandom(0, status.length - 1);
+    client.user.setPresence(status[number]);
+  });
 };

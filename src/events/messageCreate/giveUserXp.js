@@ -29,7 +29,6 @@ const roles = new Map([[0, 'Landratte'],
  */
 module.exports = async (message) => {
   if (!message.inGuild() || message.author.bot || cooldowns.has(message.author.id)) return;
-
   let multiplier = 1;
   let bonusWordList = [];
   for await (const doc of Config.find()) {
@@ -39,7 +38,6 @@ module.exports = async (message) => {
       bonusWordList = doc.value.split(',');
     }
   }
-
   //BonusXP
   var bonusXP = 0;
   const messageLength = message.content.length;
@@ -62,7 +60,6 @@ module.exports = async (message) => {
     message.react("⭐");
     console.log(`user ${message.author.tag} received ${bonusXP} Bonus XP`);
   }
-
   const xpToGive = (getRandomXp(5, 15) * multiplier) + bonusXP;
   const query = {
     userId: message.author.id,
@@ -74,7 +71,7 @@ module.exports = async (message) => {
     if (level) {
       level.xp += xpToGive;
       level.allxp += xpToGive;
-      level.messagexp += (xpToGive-bonusXP);
+      level.messagexp += (xpToGive - bonusXP);
       level.thismonth += xpToGive;
       level.bonusclaimed += bonusXP;
       level.messages += 1;
@@ -105,7 +102,6 @@ module.exports = async (message) => {
             console.log(`Role Mitglied was given to user ${message.member.user.tag}`);
           }
         }
-
         const embed = new EmbedBuilder()
           .setTitle('Glückwunsch!')
           .setDescription(description)
@@ -131,7 +127,7 @@ module.exports = async (message) => {
         messages: 1,
         lastMessage: Date.now(),
         userName: message.author.tag,
-        messagexp: (xpToGive-bonusXP),
+        messagexp: (xpToGive - bonusXP),
         voicexp: 0,
         voicetime: 0,
         thismonth: xpToGive,
