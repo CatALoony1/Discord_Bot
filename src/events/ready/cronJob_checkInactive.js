@@ -7,7 +7,7 @@ const QuizStats = require('../../models/QuizStats');
 
 module.exports = async (client) => {
     //cron.schedule('0 1 * * *', async function () { // 1 Uhr
-    cron.schedule('2 6 * * *', async function () { // 1 Uhr
+    cron.schedule('5 6 * * *', async function () { // 1 Uhr
         await console.log(`CheckInactive-Job started...`);
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -78,7 +78,6 @@ module.exports = async (client) => {
                     }
                 }
             }
-            playerTagsGood = [];
             for (const key of playerTags.keys()) {
                 if (!playerTagsGood.includes(key)) {
                     for (let j = 0; j < fetchedLevel.length; j++) {
