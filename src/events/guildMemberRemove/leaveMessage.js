@@ -29,8 +29,9 @@ module.exports = async (guildMember) => {
         await messageL.react('🇳');
         await messageL.react('🇬');
 
+        guildMember.send('hallo');
 
-        const button = new ButtonBuilder()
+        /*const button = new ButtonBuilder()
             .setCustomId('whyleave')
             .setLabel('Rückmeldung geben')
             .setStyle('Primary');
@@ -38,7 +39,7 @@ module.exports = async (guildMember) => {
         guildMember.send({
             content: 'Teile uns mit, warum du gegangen bist.',
             components: [row],
-        });
+        });*/
     } catch (error) {
         console.log(error);
     }
