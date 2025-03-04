@@ -75,7 +75,6 @@ module.exports = async (interaction) => {
                     level.level += 1;
                     console.log(`user ${targetUserObj.user.tag} reached level ${level.level}`);
                     let description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${level.level}** erreicht!⚓`;
-
                     if (roles.has(level.level)) {
                         let newRole = roles.get(level.level);
                         description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${level.level}** erreicht und bist somit zum ${newRole} aufgestiegen!⚓`;
@@ -96,7 +95,6 @@ module.exports = async (interaction) => {
                             console.log(`Role Mitglied was given to user ${targetUserObj.user.tag}`);
                         }
                     }
-
                     const embed = new Discord.EmbedBuilder()
                         .setTitle('Glückwunsch!')
                         .setDescription(description)
@@ -132,5 +130,4 @@ module.exports = async (interaction) => {
         }
         interaction.editReply('Frage eingetragen!');
     }
-
 };
