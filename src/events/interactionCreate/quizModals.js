@@ -50,7 +50,7 @@ module.exports = async (interaction) => {
                 userId: mentionedUserId,
                 guildId: interaction.guild.id,
             });
-            console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (command)`);
+            console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (Quiz)`);
             if (level) {
                 level.xp += xpToGive;
                 level.allxp += xpToGive;
