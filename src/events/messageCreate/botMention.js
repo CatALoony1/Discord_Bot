@@ -48,6 +48,9 @@ module.exports = async (message, client) => {
     if (!message.inGuild() || message.author.bot || !message.content.includes(client.user.id) || !message.content.includes("?")) return;
     console.log(`Bot Mentioned`);
     var number = getRandom(1, 31);
+    if(message.content.includes("Bratkartoffeln")){
+        number = 22;
+    }
     if(number == 22){
         let sleep = async (ms) => await new Promise(r => setTimeout(r,ms));
         var newMessage = await message.reply(answers.get(number));
