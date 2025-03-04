@@ -35,7 +35,8 @@ const answers = new Map([[1, 'Ja!'],
 [27, 'Ja, so steht es in der Bibel geschrieben!'],
 [28, 'Ich bin noch unentschlossen.'],
 [29, 'Ich prüfe das...'],
-[30, 'Denk noch einmal genau über deine Frage nach.']
+[30, 'Denk noch einmal genau über deine Frage nach.'],
+[31, '69']
 ]);
 
 /**
@@ -46,7 +47,7 @@ const answers = new Map([[1, 'Ja!'],
 module.exports = async (message, client) => {
     if (!message.inGuild() || message.author.bot || !message.content.includes(client.user.id) || !message.content.includes("?")) return;
     console.log(`Bot Mentioned`);
-    var number = getRandom(1, 30);
+    var number = getRandom(1, 31);
     if(number == 22){
         let sleep = async (ms) => await new Promise(r => setTimeout(r,ms));
         var newMessage = await message.reply(answers.get(number));
