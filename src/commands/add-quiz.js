@@ -16,7 +16,7 @@ module.exports = {
    * @param {import('commandkit').SlashCommandProps} param0
    */
     run: async ({ interaction, client }) => {
-        if(interaction.user.id != process.env.ADMIN_ID){
+        if (interaction.user.id != process.env.ADMIN_ID) {
             interaction.reply('Du darfst das nicht!!!!');
             return;
         }
@@ -66,5 +66,8 @@ module.exports = {
         } catch (err) {
             console.log(err);
         }
+    },
+    options: {
+        devOnly: true,
     },
 };

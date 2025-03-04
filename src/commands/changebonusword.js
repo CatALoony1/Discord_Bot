@@ -40,4 +40,7 @@ module.exports = {
       await interaction.reply({ content: `Das Wort ist nicht vorhanden`, flags: MessageFlags.Ephemeral });
     }
   },
+  options: {
+    devOnly: true,
+  },
 };

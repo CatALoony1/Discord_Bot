@@ -1,6 +1,6 @@
 require('dotenv').config();
 const Discord = require('discord.js');
-const { CommandHandler } = require('djs-commander');
+const { CommandKit } = require('commandkit');
 const path = require('path');
 
 const client = new Discord.Client({
@@ -8,13 +8,14 @@ const client = new Discord.Client({
   partials: [Discord.Partials.Message, Discord.Partials.Channel, Discord.Partials.Reaction],
 });
 
-new CommandHandler({
+new CommandKit({
   client,
+  devGuildIds: ['1307808556413747210'],
   devUserIds: ['393803995065614343'],
   commandsPath: path.join(__dirname, 'commands'),
   eventsPath: path.join(__dirname, 'events'),
-
-});
+  bulkRegister: true,
+})
 
 client.login(process.env.TOKEN);
 
