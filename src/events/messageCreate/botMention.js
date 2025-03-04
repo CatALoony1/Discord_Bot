@@ -36,7 +36,16 @@ const answers = new Map([[1, 'Ja!'],
 [28, 'Ich bin noch unentschlossen.'],
 [29, 'Ich prüfe das...'],
 [30, 'Denk noch einmal genau über deine Frage nach.'],
-[31, '69']
+[31, '69'],
+[32, 'Fragen Sie diesbezüglich bitte Basti.'],
+[33, 'Wende dich bitte an Verena.'],
+[34, 'Kira kann dir das sicherlich beantworten.'],
+[35, 'Alex weiß auf alles die Antwort, frag bitte sie.'],
+[36, 'Die Antwort ist das Gegenteil von dem, was Jonas antworten würde.'],
+[37, 'Ich schmolle und werde deshalb nicht antworten!'],
+[38, 'Nur wenn heute Sonntag ist!'],
+[39, 'So eine dreiste Frage beantworte ich nicht.'],
+[40, 'Wenn du mich sowas nochmal fragst, schicke ich dich von der Planke!']
 ]);
 
 /**
@@ -49,11 +58,8 @@ module.exports = async (message, client) => {
     console.log(`Bot Mentioned`);
     var number = getRandom(1, 31);
     var delay = 2000;
-    if(message.content.includes("Bratkartoffeln")){
-        number = 22;
-    }
-    if(number == 22){
-        let sleep = async (ms) => await new Promise(r => setTimeout(r,ms));
+    if (number == 22) {
+        let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
         var newMessage = await message.reply(answers.get(number));
         newMessage = await newMessage.reply(`Self destruction initialized!`);
         await sleep(delay);
@@ -63,8 +69,15 @@ module.exports = async (message, client) => {
         await sleep(delay);
         newMessage = await newMessage.reply(`1`);
         await sleep(delay);
-        newMessage = await newMessage.reply(`BOOM💥`);
-    }else{
+        const boom = getRandom(1, 4)
+        if (boom == 1) {
+            newMessage = await newMessage.reply(`BOOM💥`);
+        } else if (boom == 2) {
+            newMessage = await newMessage.reply(`Self destruction canceled, you are safe!`);
+        } else if (boom == 3) {
+            newMessage = await newMessage.reply(`https://media1.tenor.com/m/CpMcOSzFKwYAAAAC/suprised-explosion.gif`);
+        }
+    } else {
         await message.reply(answers.get(number));
     }
 };
