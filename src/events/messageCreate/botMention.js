@@ -72,6 +72,14 @@ module.exports = async (message, client) => {
         const boom = getRandom(1, 4)
         if (boom == 1) {
             newMessage = await newMessage.reply(`BOOM💥`);
+            if (getRandom(1, 5) == 5) {
+                await sleep(delay);
+                newMessage = await newMessage.reply(`Evil Captain starting up...`);
+                await sleep(delay);
+                newMessage = await newMessage.reply(`Evil Captain is now taking control!`);
+                await sleep(delay);
+                newMessage = await newMessage.reply(`https://media1.tenor.com/m/XjtE_QFunw8AAAAd/sophia-the-robot-destroy.gif`);
+            }
         } else if (boom == 2) {
             newMessage = await newMessage.reply(`Self destruction canceled, you are safe!`);
         } else if (boom == 3) {
