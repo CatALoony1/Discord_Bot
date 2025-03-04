@@ -27,7 +27,7 @@ module.exports = {
       option.setName('xpmenge')
         .setDescription('Die Menge an XP die der Nutzer erhalten soll.')
         .setRequired(true)
-        .setMaxValue(100)
+        .setMaxValue(300)
         .setMinValue(1)
     )
     .addStringOption(option =>
