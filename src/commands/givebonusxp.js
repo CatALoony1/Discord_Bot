@@ -113,7 +113,7 @@ module.exports = {
           guildId: interaction.guild.id,
           xp: xpToGive,
           allxp: xpToGive,
-          messages: 1,
+          messages: 0,
           lastMessage: Date.now(),
           userName: targetUserObj.user.tag,
           messagexp: 0,
@@ -121,6 +121,7 @@ module.exports = {
           voicetime: 0,
           thismonth: xpToGive,
           bonusclaimed: xpToGive,
+          quizadded: 1
         });
         await newLevel.save();
         await interaction.editReply(`Nutzer ${targetUserObj} hat ${xpToGive} Bonus XP erhalten!\nGrund: ${reason}`);

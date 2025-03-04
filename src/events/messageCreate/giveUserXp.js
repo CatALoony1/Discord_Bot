@@ -132,6 +132,7 @@ module.exports = async (message) => {
         voicetime: 0,
         thismonth: xpToGive,
         bonusclaimed: bonusXP,
+        quizadded: 1
       });
       await newLevel.save();
       cooldowns.add(message.author.id);

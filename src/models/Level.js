@@ -60,6 +60,10 @@ const levelSchema = new Schema({
   bonusclaimed:{
     type: Number,
     default: 0,
+  },
+  quizadded:{
+    type: Number,
+    default: 0,
   }
 });
 

@@ -103,6 +103,8 @@ module.exports = async (client) => {
                                     voicexp: xpToGive,
                                     voicetime: 5,
                                     thismonth: xpToGive,
+                                    bonusclaimed: 0,
+                                    quizadded: 1
                                 });
                                 await newLevel.save();
                             }
