@@ -48,6 +48,7 @@ module.exports = async (message, client) => {
     if (!message.inGuild() || message.author.bot || !message.content.includes(client.user.id) || !message.content.includes("?")) return;
     console.log(`Bot Mentioned`);
     var number = getRandom(1, 31);
+    var delay = 2000;
     if(message.content.includes("Bratkartoffeln")){
         number = 22;
     }
@@ -55,13 +56,13 @@ module.exports = async (message, client) => {
         let sleep = async (ms) => await new Promise(r => setTimeout(r,ms));
         var newMessage = await message.reply(answers.get(number));
         newMessage = await newMessage.reply(`Self destruction initialized!`);
-        await sleep(3000);
+        await sleep(delay);
         newMessage = await newMessage.reply(`3`);
-        await sleep(3000);
+        await sleep(delay);
         newMessage = await newMessage.reply(`2`);
-        await sleep(3000);
+        await sleep(delay);
         newMessage = await newMessage.reply(`1`);
-        await sleep(3000);
+        await sleep(delay);
         newMessage = await newMessage.reply(`BOOM💥`);
     }else{
         await message.reply(answers.get(number));
