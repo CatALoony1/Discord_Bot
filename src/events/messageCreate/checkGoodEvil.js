@@ -55,7 +55,11 @@ const badList = [
     "dumm",
     "behindert",
     "scheiß",
-    "mobb"
+    "mobb",
+    "erpressen",
+    "schlagen",
+    "böse",
+    "nerv"
 ];
 
 /**
