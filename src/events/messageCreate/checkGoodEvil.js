@@ -47,7 +47,11 @@ const badList = [
     "missgeburt",
     "schlappschwanz",
     "nazi",
-    "afd"
+    "afd",
+    "tot",
+    "tod",
+    "dead",
+    "death"
 ];
 
 /**
