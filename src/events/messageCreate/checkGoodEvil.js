@@ -54,7 +54,8 @@ const badList = [
     "death",
     "dumm",
     "behindert",
-    "scheiß"
+    "scheiß",
+    "mobb"
 ];
 
 /**
