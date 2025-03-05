@@ -10,7 +10,9 @@ const goodList = ['liebe',
     'hochzeit',
     'ehemann',
     'ehefrau',
-    'jahrestag'];
+    'jahrestag',
+    '♥️',
+    '❤️'];
 
 const badList = [
     "idiot",
@@ -40,7 +42,12 @@ const badList = [
     "krüppel",
     "penner",
     "loser",
-    "opfer"
+    "opfer",
+    "hure",
+    "missgeburt",
+    "schlappschwanz",
+    "nazi",
+    "afd"
 ];
 
 /**
