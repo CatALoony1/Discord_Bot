@@ -1,4 +1,7 @@
 const { Message } = require('discord.js');
+require('dotenv').config();
+const BotState = require('../../models/BotState');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -56,36 +59,79 @@ const answers = new Map([[1, 'Ja!'],
 module.exports = async (message, client) => {
     if (!message.inGuild() || message.author.bot || !message.content.includes(client.user.id) || !message.content.includes("?")) return;
     console.log(`Bot Mentioned`);
-    var number = getRandom(1, 31);
-    var delay = 2000;
-    if (number == 22) {
-        let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
-        var newMessage = await message.reply(answers.get(number));
-        newMessage = await newMessage.reply(`Self destruction initialized!`);
-        await sleep(delay);
-        newMessage = await newMessage.reply(`3`);
-        await sleep(delay);
-        newMessage = await newMessage.reply(`2`);
-        await sleep(delay);
-        newMessage = await newMessage.reply(`1`);
-        await sleep(delay);
-        const boom = getRandom(1, 4)
-        if (boom == 1) {
-            newMessage = await newMessage.reply(`BOOM💥`);
-            if (getRandom(1, 5) == 5) {
-                await sleep(delay);
-                newMessage = await newMessage.reply(`Evil Captain starting up...`);
-                await sleep(delay);
-                newMessage = await newMessage.reply(`Evil Captain is now taking control!`);
-                await sleep(delay);
-                newMessage = await newMessage.reply(`https://media1.tenor.com/m/XjtE_QFunw8AAAAd/sophia-the-robot-destroy.gif`);
-            }
-        } else if (boom == 2) {
-            newMessage = await newMessage.reply(`Self destruction canceled, you are safe!`);
-        } else if (boom == 3) {
-            newMessage = await newMessage.reply(`https://media1.tenor.com/m/CpMcOSzFKwYAAAAC/suprised-explosion.gif`);
-        }
+    var state = await BotState.findOne({
+        guildId: message.guild.id,
+    });
+    var botstatevar = 'neutral';
+    if (state) {
+        botstatevar = state.state;
     } else {
-        await message.reply(answers.get(number));
+        console.log(`Botstate entry created`);
+        const newBotstate = new BotState({
+            guildId: message.guild.id,
+            evilCount: 0,
+            loveCount: 0,
+            state: 'neutral'
+        });
+        await newBotstate.save();
+        state = newBotstate;
+    }
+    if (botstatevar == 'neutral') {
+        var number = getRandom(1, 31);
+        var delay = 2000;
+        if (number == 22) {
+            let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
+            var newMessage = await message.reply(answers.get(number));
+            newMessage = await newMessage.reply(`Self destruction initialized!`);
+            await sleep(delay);
+            newMessage = await newMessage.reply(`3`);
+            await sleep(delay);
+            newMessage = await newMessage.reply(`2`);
+            await sleep(delay);
+            newMessage = await newMessage.reply(`1`);
+            await sleep(delay);
+            const boom = getRandom(1, 4)
+            if (boom == 1) {
+                newMessage = await newMessage.reply(`BOOM💥`);
+                if (getRandom(1, 5) == 5) {
+                    await sleep(delay);
+                    newMessage = await newMessage.reply(`Evil Captain starting up...`);
+                    await sleep(delay);
+                    newMessage = await newMessage.reply(`Evil Captain is now taking control!`);
+                    await sleep(delay);
+                    newMessage = await newMessage.reply(`https://media1.tenor.com/m/XjtE_QFunw8AAAAd/sophia-the-robot-destroy.gif`);
+                    console.log('Botstate changed to evil');
+                    state.state = 'evil';
+                    state.startTime = Date.now();
+                    state.save();
+                }
+            } else if (boom == 2) {
+                newMessage = await newMessage.reply(`Self destruction canceled, you are safe!`);
+            } else if (boom == 3) {
+                newMessage = await newMessage.reply(`https://media1.tenor.com/m/CpMcOSzFKwYAAAAC/suprised-explosion.gif`);
+            }
+        } else {
+            await message.reply(answers.get(number));
+        }
+    } else if (botstatevar == 'evil') {
+        console.log('contacting evil AI');
+        const prompt = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo ');
+        const genAI = new GoogleGenerativeAI(process.env.AI_API);
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        model.systemInstruction = 'Dein Name ist Captain Iglo. Du sprichst wie ein Pirat und bist sehr fies und böse.';
+        const result = await model.generateContent(prompt);
+        console.log(result.response.text());
+        await message.reply(result.response.text());
+    } else if (botstatevar == 'good') {
+        console.log('contacting good AI');
+        const prompt = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo ');
+        const genAI = new GoogleGenerativeAI(process.env.AI_API);
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        model.systemInstruction = 'Dein Name ist Captain Iglo. Du sprichst wie ein wirklich sehr freundlicher seemann, der mit jeder Anwort viel Liebe ausdrückt.';
+        const result = await model.generateContent(prompt);
+        console.log(result.response.text());
+        await message.reply(result.response.text());
+    } else {
+        console.log('ERROR: Botstate passt nicht!');
     }
 };

@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@google/generative-ai": "^0.23.0",
     "canvacord": "^6.0.2",
     "commandkit": "^0.1.10",
     "discord.js": "^14.16.3",
