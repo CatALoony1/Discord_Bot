@@ -1,7 +1,7 @@
 const { Message } = require('discord.js');
 const BotState = require('../../models/BotState');
 
-const goodList = ['liebe',
+const goodList = ['lieb',
     'love',
     'romantik',
     'beziehung',
