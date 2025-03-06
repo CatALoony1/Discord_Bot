@@ -97,6 +97,7 @@ module.exports = async (message, client) => {
                     await sleep(delay);
                     newMessage = await newMessage.reply(`Evil Captain starting up...`);
                     await sleep(delay);
+                    await client.user.setAvatar('./img/iglo_evil.jpg');
                     newMessage = await newMessage.reply(`Evil Captain is now taking control!`);
                     await sleep(delay);
                     newMessage = await newMessage.reply(`https://media1.tenor.com/m/XjtE_QFunw8AAAAd/sophia-the-robot-destroy.gif`);

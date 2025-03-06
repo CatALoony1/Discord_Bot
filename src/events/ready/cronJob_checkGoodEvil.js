@@ -25,10 +25,11 @@ module.exports = async (client) => {
         state.save();
         var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
         if (oldState == 'evil') {
-          targetChannel.send(`Ach, ich habe mich wieder etwas beruhigt, diese Wut war echt anstrengend.`);
+          await targetChannel.send(`Ach, ich habe mich wieder etwas beruhigt, diese Wut war echt anstrengend.`);
         } else {
-          targetChannel.send(`Auch die schönste Zeit vergeht mal, schade! :(`);
+          await targetChannel.send(`Auch die schönste Zeit vergeht mal, schade! :(`);
         }
+        await client.user.setAvatar('./img/iglo_neutral.jpg');
       }
     } else {
       console.log(`Botstate entry created`);
