@@ -1,6 +1,7 @@
-const { ActionRowBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonStyle, ButtonBuilder, EmbedBuilder } = require('discord.js');
 const createQuizLeaderboardEmbeds = require("../../utils/createQuizLeaderboardEmbeds");
 const cron = require('node-cron');
+const QuizQuestions = require('../../models/QuizQuestion')
 
 module.exports = async (client) => {
     cron.schedule('11 1 * * 7', async function () {
@@ -20,9 +21,18 @@ module.exports = async (client) => {
 
         const firstRow = new ActionRowBuilder().addComponents(pageDownButton, pageUpButton);
 
-        targetChannel.send({
+        await targetChannel.send({
             embeds: [embed],
             components: [firstRow]
         })
+
+        const fetchedQuestions = await QuizQuestions.find({
+            asked: 'N',
+        });
+        const numberQuestions = new Discord.EmbedBuilder();
+        numberQuestions.setColor(0x868686);
+        numberQuestions.setTitle(`Anzahl der Fragen in der DB:`);
+        numberQuestions.setDescription(`${fetchedQuestions.length}`);
+        await targetChannel.send({ embeds: [numberQuestions] });
     });
 };
