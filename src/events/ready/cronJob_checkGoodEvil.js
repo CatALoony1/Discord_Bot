@@ -18,7 +18,7 @@ module.exports = async (client) => {
         let diffTime = Math.abs(Date.now() - state.startTime);
         let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
         const oldState = state.state;
-        if (diffDays >= 2) {
+        if (diffDays >= 1) {
           state.state = 'neutral';
           state.startTime = undefined;
         }
