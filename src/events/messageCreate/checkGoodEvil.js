@@ -59,7 +59,8 @@ const badList = [
     "erpressen",
     "schlagen",
     "böse",
-    "nerv"
+    "nerv",
+    "ärger"
 ];
 
 /**
