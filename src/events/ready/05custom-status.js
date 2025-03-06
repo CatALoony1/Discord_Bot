@@ -87,6 +87,18 @@ let status = [
   },
   {
     activities: [{
+      name: 'Kochen mit dem Captain',
+      type: ActivityType.Streaming,
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Fischstäbchen-Verkostung',
+      type: ActivityType.Streaming,
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
       name: 'Fisch',
       type: ActivityType.Watching
     }], status: 'online'
@@ -102,6 +114,30 @@ let status = [
       name: 'der Crew zu',
       type: ActivityType.Watching
     }], status: 'idle'
+  },
+  {
+    activities: [{
+      name: 'das 1x1 der Fischstäbchen',
+      type: ActivityType.Watching
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'rechnen lernen mit Fischstäbchen',
+      type: ActivityType.Watching
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Fischstäbchen für dummies',
+      type: ActivityType.Watching
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Unterwasserdokumentation',
+      type: ActivityType.Watching
+    }], status: 'online'
   },
   {
     activities: [{
@@ -129,6 +165,12 @@ let status = [
   },
   {
     activities: [{
+      name: 'dem Rauschen der Wellen',
+      type: ActivityType.Listening
+    }], status: 'idle'
+  },
+  {
+    activities: [{
       name: 'alleine',
       type: ActivityType.Playing
     }], status: 'online'
@@ -142,6 +184,12 @@ let status = [
   {
     activities: [{
       name: 'mit deinen Geschmacksnerven',
+      type: ActivityType.Playing
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'cooking simulator',
       type: ActivityType.Playing
     }], status: 'online'
   },
@@ -238,6 +286,24 @@ let status = [
   {
     activities: [{
       name: 'Fischstäbchen essen',
+      type: ActivityType.Competing
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Segelboot-Rennen',
+      type: ActivityType.Competing
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Angelturnier',
+      type: ActivityType.Competing
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Schatzsuche',
       type: ActivityType.Competing
     }], status: 'dnd'
   },
