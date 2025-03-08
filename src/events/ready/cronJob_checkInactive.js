@@ -26,6 +26,7 @@ module.exports = async (client) => {
             }
             var playerTags = new Map();
             for (let i = 0; i < fetchedLevel.length; i++) {
+//TODO: Levelobjekt des users in playertags -> dadurch spare datenbankzugriffe
                 playerTags.set(fetchedLevel[i].userName, fetchedLevel[i].userId);
             }
             var playerTagsOnServer = [];
