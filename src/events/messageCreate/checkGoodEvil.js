@@ -60,7 +60,12 @@ const badList = [
     "schlagen",
     "böse",
     "nerv",
-    "ärger"
+    "ärger",
+"kill",
+"töt",
+"mord",
+"abstechen",
+"erschießen"
 ];
 
 /**
