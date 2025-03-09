@@ -61,11 +61,11 @@ const badList = [
     "böse",
     "nerv",
     "ärger",
-"kill",
-"töt",
-"mord",
-"abstechen",
-"erschießen"
+    "kill",
+    "töt",
+    "mord",
+    "abstechen",
+    "erschießen"
 ];
 
 /**
