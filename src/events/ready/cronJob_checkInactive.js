@@ -26,8 +26,7 @@ module.exports = async (client) => {
             }
             var playerTags = new Map();
             for (let i = 0; i < fetchedLevel.length; i++) {
-//TODO: Levelobjekt des users in playertags -> dadurch spare datenbankzugriffe
-                playerTags.set(fetchedLevel[i].userName, fetchedLevel[i].userId);
+                playerTags.set(fetchedLevel[i].userName, fetchedLevel[i]);
             }
             var playerTagsOnServer = [];
             var playerTagsLurk = new Map();
@@ -38,13 +37,7 @@ module.exports = async (client) => {
                     for (const key of playerTags.keys()) {
                         if (key == member.user.tag) {
                             let now = new Date();
-                            var lastMessage;
-                            for (const level of fetchedLevel) {
-                                if (level.userName == key) {
-                                    lastMessage = level.lastMessage;
-                                    break;
-                                }
-                            }
+                            var lastMessage = playerTags.get(key).lastMessage;
                             let diffTime = Math.abs(now - lastMessage);
                             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                             console.log(`DB and Server: ${member.user.tag}: ${diffDays}`);
@@ -107,7 +100,7 @@ module.exports = async (client) => {
             for (const key of playerTags.keys()) {
                 await console.log(`User ${key} hasn't send a message in at least 30 Days.`);
                 await Level.deleteOne({ guildId: process.env.GUILD_ID, userName: key, });
-                if (quizUserIds.includes(playerTags.get(key))) {
+                if (quizUserIds.includes(playerTags.get(key).userId)) {
                     await QuizStats.deleteOne({ guildId: process.env.GUILD_ID, userId: playerTags.get(key), });
                 }
             }
