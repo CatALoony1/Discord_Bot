@@ -67,7 +67,7 @@ module.exports = {
         level.thismonth += xpToGive;
         level.bonusclaimed += xpToGive;
         level.lastMessage = Date.now();
-        if (level.xp > calculateLevelXp(level.level)) {
+        if (level.xp >= calculateLevelXp(level.level)) {
           level.xp = level.xp - calculateLevelXp(level.level);
           level.level += 1;
           console.log(`user ${targetUserObj.user.tag} reached level ${level.level}`);

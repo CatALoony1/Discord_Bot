@@ -76,7 +76,7 @@ module.exports = async (message) => {
       level.bonusclaimed += bonusXP;
       level.messages += 1;
       level.lastMessage = Date.now();
-      if (level.xp > calculateLevelXp(level.level)) {
+      if (level.xp >= calculateLevelXp(level.level)) {
         level.xp = level.xp - calculateLevelXp(level.level);
         level.level += 1;
         console.log(`user ${message.author.tag} reached level ${level.level}`);

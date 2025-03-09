@@ -54,7 +54,7 @@ module.exports = async (client) => {
                                 level.thismonth += xpToGive;
                                 level.lastMessage = Date.now();
                                 level.voicetime += 5;
-                                if (level.xp > calculateLevelXp(level.level)) {
+                                if (level.xp >= calculateLevelXp(level.level)) {
                                     level.xp = level.xp - calculateLevelXp(level.level);
                                     level.level += 1;
                                     console.log(`user ${member.user.tag} reached level ${level.level}`);

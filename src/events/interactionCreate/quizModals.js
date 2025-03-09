@@ -70,7 +70,7 @@ module.exports = async (interaction) => {
                 level.bonusclaimed += xpToGive;
                 level.lastMessage = Date.now();
                 level.quizadded += 1;
-                if (level.xp > calculateLevelXp(level.level)) {
+                if (level.xp >= calculateLevelXp(level.level)) {
                     level.xp = level.xp - calculateLevelXp(level.level);
                     level.level += 1;
                     console.log(`user ${targetUserObj.user.tag} reached level ${level.level}`);
