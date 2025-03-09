@@ -5,7 +5,8 @@ const QuizQuestions = require('../../models/QuizQuestion')
 
 module.exports = async (client) => {
     cron.schedule('11 1 * * 7', async function () {
-        var targetChannel = await client.channels.fetch(process.env.QUIZ_ID);
+        try{
+var targetChannel = await client.channels.fetch(process.env.QUIZ_ID);
         const embed = await createQuizLeaderboardEmbeds(0, client);
         const pageDownButton = new ButtonBuilder()
             .setEmoji('⬅️')
@@ -29,10 +30,13 @@ module.exports = async (client) => {
         const fetchedQuestions = await QuizQuestions.find({
             asked: 'N',
         });
-        const numberQuestions = new Discord.EmbedBuilder();
+        const numberQuestions = new EmbedBuilder();
         numberQuestions.setColor(0x868686);
         numberQuestions.setTitle(`Anzahl der Fragen in der DB:`);
         numberQuestions.setDescription(`${fetchedQuestions.length}`);
         await targetChannel.send({ embeds: [numberQuestions] });
+} catch(error) {
+console.log(error);
+}
     });
 };
