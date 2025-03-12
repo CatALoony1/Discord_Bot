@@ -11,8 +11,12 @@ module.exports = async (interaction) => {
     if (interaction.customId === `begruessung-${interaction.user.id}`) {
         try {
             var targetChannel = interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) || (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));
-            await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral })
-            const text = interaction.fields.getTextInputValue('begruessung-text').replaceAll('<me>',`<@${interaction.user.id}>`);
+            await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
+            if (interaction.fields.getTextInputValue('begruessung-text').includes('<@')) {
+                interaction.editReply('Pings von Nutzern oder Rollen sind nicht erlaubt!');
+                return;
+            }
+            const text = interaction.fields.getTextInputValue('begruessung-text').replaceAll('<me>', `<@${interaction.user.id}>`);
             const begruessungEmbed = new Discord.EmbedBuilder();
             begruessungEmbed.setColor(0x0033cc);
             begruessungEmbed.setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ size: 256 }) });
