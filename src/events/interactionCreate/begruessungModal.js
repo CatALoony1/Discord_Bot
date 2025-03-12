@@ -44,7 +44,7 @@ module.exports = async (interaction) => {
                 await begruessung.save();
             } else {
                 var welcomeChannel = interaction.guild.channels.cache.get(process.env.WELCOME_ID) || (await interaction.guild.channels.fetch(process.env.WELCOME_ID));
-                welcomeChannel.createWebhook({
+                webhookObj = welcomeChannel.createWebhook({
                     name: interaction.user.displayName,
                     avatar: interaction.user.displayAvatarURL({ size: 256 }),
                 })
@@ -54,8 +54,8 @@ module.exports = async (interaction) => {
                     guildId: interaction.guild.id,
                     authorId: interaction.user.id,
                     content: text,
-                    webhookId: webhook.id,
-                    webhookToken: webhook.token,
+                    webhookId: webhookObj.id,
+                    webhookToken: webhookObj.token,
                 });
                 await newBegruessung.save();
             }
