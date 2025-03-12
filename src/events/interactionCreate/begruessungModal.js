@@ -48,6 +48,7 @@ module.exports = async (interaction) => {
                     name: interaction.user.displayName,
                     avatar: interaction.user.displayAvatarURL({ size: 256 }),
                 });
+                console.log(`Webhook ${webhookObj.id} created`);
                 const newBegruessung = new Begruessung({
                     guildId: interaction.guild.id,
                     authorId: interaction.user.id,
