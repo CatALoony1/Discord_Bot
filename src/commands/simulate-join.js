@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
-  devOnly: true,
   data: new SlashCommandBuilder()
     .setName('simulate-join')
     .setDescription('Simulate a member joining.')
@@ -39,6 +38,6 @@ module.exports = {
   },
   options: {
     devOnly: true,
-    deleted: true,
+    deleted: false,
   },
 };
