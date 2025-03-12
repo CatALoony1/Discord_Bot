@@ -14,7 +14,7 @@ module.exports = {
             const textInput = new TextInputBuilder()
                 .setCustomId('begruessung-text')
                 .setLabel('Frage:')
-                .setPlaceholder('Placeholders:\n<me> - yourself\n<bot> - Captain Iglo\n<new> - new Member\n<server> - the server')
+                .setPlaceholder('Placeholders:\n<me> - du\n<new> - der/die neue\n <#CHANNELID> - CHANNELID ersetzen')
                 .setStyle(TextInputStyle.Paragraph)
                 .setRequired(true)
                 .setMaxLength(500);

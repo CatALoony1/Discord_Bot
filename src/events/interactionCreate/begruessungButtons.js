@@ -14,7 +14,7 @@ module.exports = async (interaction) => {
             interaction.editReply('ERROR Irgendwas passt nicht.');
             return;
         }
-        if (targetBegruessung != 'X') {
+        if (targetBegruessung.zugestimmt != 'X') {
             interaction.editReply(`Die Begrüßung wurde bereits auf ${targetBegruessung.zugestimmt} gesetzt!`);
             return;
         }

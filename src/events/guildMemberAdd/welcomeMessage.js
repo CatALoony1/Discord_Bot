@@ -30,7 +30,7 @@ module.exports = async (guildMember) => {
         if (allbegruessungen.length > 0) {
             for (const begruessung of allbegruessungen) {
                 let webhookClient = new WebhookClient({ id: begruessung.webhookId, token: begruessung.webhookToken });
-                await webhookClient.send(begruessung.content);
+                await webhookClient.send(begruessung.content.replaceAll('<new>',`<@${guildMember.id}>`));
             }
         }
     } catch (error) {
