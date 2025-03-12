@@ -52,7 +52,7 @@ module.exports = async (interaction) => {
                     name: interaction.user.displayName,
                     avatar: interaction.user.displayAvatarURL({ size: 256 }),
                 })
-                    .then(webhook => console.log(`Created webhook ${webhook}`), new Begruessung({
+                    .then(webhook => new Begruessung({
                         guildId: interaction.guild.id,
                         authorId: interaction.user.id,
                         content: text,
