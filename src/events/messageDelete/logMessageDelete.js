@@ -8,7 +8,7 @@ const { EmbedBuilder, Message, AuditLogEvent, Client } = require('discord.js');
  */
 module.exports = async (message, client) => {
   console.log(`message deleted in ${message.channel}`);
-  if (message.author != null && message.author.bot) return;
+  if (message.author != null && (message.author.bot || message.webhookId)) return;
   try {
     const targetChannel = message.guild.channels.cache.get(process.env.LOG_ID) || (await message.guild.channels.fetch(process.env.LOG_ID));
     if (!targetChannel) {
@@ -24,7 +24,7 @@ module.exports = async (message, client) => {
       const firstEntry = logs.entries.first();
       const { executorId, target, targetId } = firstEntry;
       user = await client.users.fetch(executorId);
-      if (user.bot) return;
+      if (user.bot || message.webhookId) return;
     } else {
       if (message.guild.members.cache.find(m => m.id === message.author.id)?.id) {
         user = message.author;

@@ -1,5 +1,6 @@
 require('dotenv').config();
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, WebhookClient } = require('discord.js');
+const Begruessung = require('../../models/Begruessung');
 /**
  * 
  * @param {import {'discord.js'}.GuildMember} guildMember 
@@ -25,6 +26,13 @@ module.exports = async (guildMember) => {
         var message = await targetChannel.send(`||${role} <@${guildMember.id}>||`);
         await message.reply({ embeds: [welcome] });
         message.delete();
+        var allbegruessungen = await Begruessung.find({ guildId: guildMember.guild.id, zugestimmt: 'J' });
+        if (allbegruessungen.length > 0) {
+            for (const begruessung of allbegruessungen) {
+                let webhookClient = new WebhookClient({ id: begruessung.webhookId, token: begruessung.webhookToken });
+                await webhookClient.send(begruessung.content);
+            }
+        }
     } catch (error) {
         console.log(error);
     }

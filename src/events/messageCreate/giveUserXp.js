@@ -28,7 +28,7 @@ const roles = new Map([[0, 'Landratte'],
  * @returns 
  */
 module.exports = async (message) => {
-  if (!message.inGuild() || message.author.bot || cooldowns.has(message.author.id)) return;
+  if (!message.inGuild() || message.author.bot || cooldowns.has(message.author.id) || message.webhookId) return;
   let multiplier = 1;
   let bonusWordList = [];
   for await (const doc of Config.find()) {

@@ -7,7 +7,7 @@ const { EmbedBuilder, Message } = require('discord.js');
  * @returns 
  */
 module.exports = async (oldMessage, newMessage) => {
-    if (newMessage.author.bot) return;
+    if (newMessage.author.bot || newMessage.webhookId) return;
     if (oldMessage.content === newMessage.content) return;
     console.log(`message edited in ${newMessage.channel}`);
     try {

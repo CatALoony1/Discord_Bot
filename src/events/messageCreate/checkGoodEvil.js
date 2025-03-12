@@ -74,7 +74,7 @@ const badList = [
  * @returns 
  */
 module.exports = async (message, client) => {
-    if (!message.inGuild() || message.author.bot) return;
+    if (!message.inGuild() || message.author.bot || message.webhookId) return;
     var state = await BotState.findOne({
         guildId: message.guild.id,
     });
