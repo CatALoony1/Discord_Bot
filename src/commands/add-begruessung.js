@@ -14,7 +14,7 @@ module.exports = {
             const textInput = new TextInputBuilder()
                 .setCustomId('begruessung-text')
                 .setLabel('Frage:')
-                .setPlaceholder('Placeholders:\n<me> - mention yourself\n<bot> - mention Captain Iglo\n<new> - mention new Member\n<server> - mention the server\n\nUm einen Channel zu erwähnen bitte <#challenID> (channelID durch die ID des channels ersetzen)')
+                .setPlaceholder('Placeholders:\n<me> - yourself\n<bot> - Captain Iglo\n<new> - new Member\n<server> - the server')
                 .setStyle(TextInputStyle.Paragraph)
                 .setRequired(true)
                 .setMaxLength(500);
