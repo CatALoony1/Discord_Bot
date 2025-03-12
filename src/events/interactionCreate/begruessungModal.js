@@ -48,19 +48,18 @@ module.exports = async (interaction) => {
                 await begruessung.save();
             } else {
                 var welcomeChannel = interaction.guild.channels.cache.get(process.env.WELCOME_ID) || (await interaction.guild.channels.fetch(process.env.WELCOME_ID));
-                webhookObj = await welcomeChannel.createWebhook({
+                await welcomeChannel.createWebhook({
                     name: interaction.user.displayName,
                     avatar: interaction.user.displayAvatarURL({ size: 256 }),
-                });
-                console.log(`Webhook ${webhookObj.id} created`);
-                const newBegruessung = new Begruessung({
-                    guildId: interaction.guild.id,
-                    authorId: interaction.user.id,
-                    content: text,
-                    webhookId: webhookObj.id,
-                    webhookToken: webhookObj.token,
-                });
-                await newBegruessung.save();
+                })
+                    .then(webhook => console.log(`Created webhook ${webhook}`), new Begruessung({
+                        guildId: interaction.guild.id,
+                        authorId: interaction.user.id,
+                        content: text,
+                        webhookId: webhook.id,
+                        webhookToken: webhook.token,
+                    }).save())
+                    .catch(console.error);
             }
             interaction.editReply('Begrüßung zur Überprüfung abgegeben.');
         } catch (error) {
