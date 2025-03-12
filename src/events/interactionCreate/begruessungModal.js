@@ -12,7 +12,7 @@ module.exports = async (interaction) => {
         try {
             var targetChannel = interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) || (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));
             await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral })
-            var text = interaction.fields.getTextInputValue('begruessung-text');
+            const text = interaction.fields.getTextInputValue('begruessung-text').replaceAll('<me>',`<@${interaction.user.id}>`);
             const begruessungEmbed = new Discord.EmbedBuilder();
             begruessungEmbed.setColor(0x0033cc);
             begruessungEmbed.setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ size: 256 }) });
@@ -39,7 +39,7 @@ module.exports = async (interaction) => {
                 authorId: interaction.user.id,
             });
             if (begruessung) {
-                begruessung.content = text.replaceAll('<me>',`<@${interaction.user.id}>`);
+                begruessung.content = text;
                 begruessung.zugestimmt = "X";
                 await begruessung.save();
             } else {
