@@ -44,12 +44,11 @@ module.exports = async (interaction) => {
                 await begruessung.save();
             } else {
                 var welcomeChannel = interaction.guild.channels.cache.get(process.env.WELCOME_ID) || (await interaction.guild.channels.fetch(process.env.WELCOME_ID));
-                webhookObj = welcomeChannel.createWebhook({
+                webhookObj = await welcomeChannel.createWebhook({
                     name: interaction.user.displayName,
                     avatar: interaction.user.displayAvatarURL({ size: 256 }),
-                })
-                    .then(webhook => console.log(`Created webhook ${webhook}`))
-                    .catch(console.error);
+                });
+                console.log(webhookObj);
                 const newBegruessung = new Begruessung({
                     guildId: interaction.guild.id,
                     authorId: interaction.user.id,
