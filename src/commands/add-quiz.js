@@ -2,7 +2,6 @@ const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, Act
 const Question = require('../models/QuizQuestion');
 require('dotenv').config();
 module.exports = {
-    devOnly: true,
     data: new SlashCommandBuilder()
         .setName('add-quiz')
         .setDescription('Füge eine Frage hinzu')
