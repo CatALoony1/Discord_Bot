@@ -20,7 +20,7 @@ module.exports = {
         try {
             await interaction.deferReply({ flags: MessageFlags.Ephemeral });
             const id = interaction.options.get('messageid').value;
-            const fetchedMessage = await interaction.guild.members.fetch(id);
+            const fetchedMessage = await interaction.channel.messages.fetch(id);
             await fetchedMessage.react('🇸');
             await fetchedMessage.react('🇨');
             await fetchedMessage.react('🇭');
