@@ -29,6 +29,7 @@ module.exports = async (message, client) => {
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
         model.systemInstruction = 'Dein Name ist Jonas, du befindest dich auf einem Discord Server. Deine Antworten sind kurz und knapp. Du antwortest ausschließlich auf SFW und jugendfreie Fragen.';
         console.log(prompt);
+        console.log(String(prompt));
         const result = await model.generateContent(String(prompt));
         //const result = await model.generateContent([prompt]);
         console.log(result.response.text());
