@@ -10,8 +10,8 @@ const client = new Discord.Client({
 
 new CommandKit({
   client,
-  devGuildIds: ['1307808556413747210'],
-  devUserIds: ['393803995065614343'],
+  devGuildIds: [process.env.GUILD_ID],
+  devUserIds: [process.env.ADMIN_ID],
   commandsPath: path.join(__dirname, 'commands'),
   eventsPath: path.join(__dirname, 'events'),
   bulkRegister: true,
