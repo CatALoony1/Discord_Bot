@@ -327,7 +327,7 @@ module.exports = (client) => {
       const guild = await client.guilds.cache.get(process.env.GUILD_ID);
       const targetUser = await guild.members.fetch(process.env.ADMIN_ID);
       var hasActivity = 0;
-      if (targetUser.presence.activities || targetUser.presence.activities.length != 0) {
+      if (targetUser.presence.activities && targetUser.presence.activities.length != 0) {
         const activity = targetUser.presence.activities[0];
         if (activity.type == 0 && activity.name.includes('Visual Studio')) {
           hasActivity = 1;
