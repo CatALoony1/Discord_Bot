@@ -120,7 +120,7 @@ module.exports = async (message, client) => {
         const genAI = new GoogleGenerativeAI(process.env.AI_API);
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
         model.systemInstruction = 'Dein Name ist Captain Iglo. Du sprichst wie ein Pirat und bist sehr fies und böse.';
-        const result = await model.generateContent(prompt);
+        const result = await model.generateContent([prompt]);
         console.log(result.response.text());
         await message.reply(result.response.text());
     } else if (botstatevar == 'good') {
@@ -129,7 +129,7 @@ module.exports = async (message, client) => {
         const genAI = new GoogleGenerativeAI(process.env.AI_API);
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
         model.systemInstruction = 'Dein Name ist Captain Iglo. Du sprichst wie ein wirklich sehr freundlicher seemann, der mit jeder Anwort viel Liebe ausdrückt.';
-        const result = await model.generateContent(prompt);
+        const result = await model.generateContent([prompt]);
         console.log(result.response.text());
         await message.reply(result.response.text());
     } else {
