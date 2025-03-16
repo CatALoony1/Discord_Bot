@@ -1,5 +1,6 @@
-const { ActivityType } = require('discord.js');
+const { ActivityType, Client } = require('discord.js');
 const cron = require('node-cron');
+require('dotenv').config();
 let status = [
   {
     activities: [{
@@ -315,8 +316,24 @@ function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/**
+ * 
+ * @param {Client} client 
+ * @returns 
+ */
 module.exports = (client) => {
   cron.schedule('*/30 * * * * *', async function () { //30sec
-    await client.user.setPresence(status[getRandom(0, status.length - 1)]);
+    const guild = await client.guilds.cache.get(process.env.GUILD_ID);
+    const targetUser = await guild.members.fetch(process.env.ADMIN_ID);
+    var hasActivity = 0;
+    if (targetUser.presence.activities || targetUser.presence.activities.length != 0) {
+      const activity = targetUser.presence.activities[0];
+      hasActivity = 1;
+    }
+    if (hasActivity == 1 && activity.type == 0 && activity.name.includes('Visual Studio')) {
+      await client.user.setPresence({ activities: [{ name: 'Wird gerade operiert.', type: ActivityType.Custom }], status: 'dnd' });
+    } else {
+      await client.user.setPresence(status[getRandom(0, status.length - 1)]);
+    }
   });
 };
