@@ -329,10 +329,11 @@ module.exports = (client) => {
       var hasActivity = 0;
       if (targetUser.presence.activities || targetUser.presence.activities.length != 0) {
         const activity = targetUser.presence.activities[0];
-        hasActivity = 1;
-        console.log(activity);
+        if (activity.type == 0 && activity.name.includes('Visual Studio')) {
+          hasActivity = 1;
+        }
       }
-      if (hasActivity == 1 && activity.type == 0 && activity.name.includes('Visual Studio')) {
+      if (hasActivity == 1) {
         await client.user.setPresence({ activities: [{ name: 'Wird gerade operiert.', type: ActivityType.Custom }], status: 'dnd' });
       } else {
         await client.user.setPresence(status[getRandom(0, status.length - 1)]);
