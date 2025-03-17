@@ -22,14 +22,18 @@ module.exports = {
             await interaction.deferReply({ flags: MessageFlags.Ephemeral });
             const id = interaction.options.get('messageid').value;
             const fetchedMessage = await interaction.channel.messages.fetch(id);
-            await fetchedMessage.react('🇸');
-            await fetchedMessage.react('🇨');
-            await fetchedMessage.react('🇭');
-            await fetchedMessage.react('🇲');
-            await fetchedMessage.react('🇺');
-            await fetchedMessage.react('🇹');
-            await fetchedMessage.react('🇿');
-            await interaction.editReply('Erledigt!');
+            //await fetchedMessage.react('🇸');
+           // await fetchedMessage.react('🇨');
+         //   await fetchedMessage.react('🇭');
+          //  await fetchedMessage.react('🇲');
+       //     await fetchedMessage.react('🇺');
+       //     await fetchedMessage.react('🇹');
+     //       await fetchedMessage.react('🇿');
+const prompt = message.content;
+const genAI = new GoogleGenerativeAI(process.env .AI_API);
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+const result = await model.generateContent(String(prompt)); console.log(result.response.text());
+          await interaction.editReply('Erledigt!');
         } catch (err) {
             console.log(err);
         }
