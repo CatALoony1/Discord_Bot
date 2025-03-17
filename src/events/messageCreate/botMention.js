@@ -122,7 +122,7 @@ module.exports = async (message, client) => {
         model.systemInstruction = 'Dein Name ist Captain Iglo. Du sprichst wie ein Pirat und bist sehr fies und böse.';
         const result = await model.generateContent(String(prompt));
         console.log(result.response.text());
-        await message.reply(result.response.text());
+        await message.reply(`${result.response.text()}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else if (botstatevar == 'good') {
         console.log('contacting good AI');
         const prompt = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo ');
@@ -131,7 +131,7 @@ module.exports = async (message, client) => {
         model.systemInstruction = 'Dein Name ist Captain Iglo. Du sprichst wie ein wirklich sehr freundlicher seemann, der mit jeder Anwort viel Liebe ausdrückt.';
         const result = await model.generateContent(String(prompt));
         console.log(result.response.text());
-        await message.reply(result.response.text());
+        await message.reply(`${result.response.text()}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else {
         console.log('ERROR: Botstate passt nicht!');
     }
