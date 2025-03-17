@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 require('dotenv').config();
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('schmutz')
