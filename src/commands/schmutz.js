@@ -29,7 +29,7 @@ module.exports = {
        //     await fetchedMessage.react('🇺');
        //     await fetchedMessage.react('🇹');
      //       await fetchedMessage.react('🇿');
-const prompt = message.content;
+const prompt = fetchedMessage.content;
 const genAI = new GoogleGenerativeAI(process.env.AI_API);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 const result = await model.generateContent(String(prompt)); 
