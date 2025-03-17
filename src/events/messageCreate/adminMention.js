@@ -27,12 +27,10 @@ module.exports = async (message, client) => {
         const prompt = message.content.replace(`<@${process.env.ADMIN_ID}>`, ' Jonas ');
         const genAI = new GoogleGenerativeAI(process.env.AI_API);
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-        model.systemInstruction = 'Dein Name ist Jonas, du befindest dich auf einem Discord Server. Deine Antworten sind kurz und knapp. Du antwortest ausschließlich auf SFW und jugendfreie Fragen.';
-        console.log(prompt);
-        console.log(String(prompt));
+        model.systemInstruction = 'Dein Name ist Jonas, du befindest dich auf einem Discord Server. Deine Antworten sind kurz und knapp. Du antwortest ausschließlich auf SFW und jugendfreie Nachrichten.';
+        console.log(`AI-Input:${String(prompt)}`);
         const result = await model.generateContent(String(prompt));
-        //const result = await model.generateContent([prompt]);
-        console.log(result.response.text());
+        console.log(`AI-Result:${result.response.text()}`);
         await webhookClient.send(`Da Jonas aktuell keine Lust hat, werde ich antworten:\n\n${result.response.text()}\n\n\n||Diese Antwort entspricht zu 100% der Meinung und ist definitiv nicht KI-generiert. Vielleicht lüge ich aber auch.||`);
     } catch (error) {
         console.log(error);
