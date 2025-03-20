@@ -18,9 +18,10 @@ module.exports = async (message) => {
       if (level) {
         level.lastBump = new Date();
         level.save();
-        if (!message.guild.members.cache.get(userid).some(role => role.name === 'Bumper')) {
+        const member = await message.guild.members.fetch(userid);
+        if (!member.some(role => role.name === 'Bumper')) {
           const role = message.guild.roles.cache.find(role => role.name === 'Bumper');
-          await message.guild.members.cache.get(userid).roles.add(role);
+          await member.roles.add(role);
         };
         const embed = new EmbedBuilder()
           .setTitle('❤️Dankeschön für deine Untersützung!❤️')
