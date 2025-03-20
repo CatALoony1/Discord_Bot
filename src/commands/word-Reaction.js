@@ -62,7 +62,7 @@ module.exports = {
             const wordArray = Array.from(word, zeichen => zeichen.toUpperCase());
             const id = interaction.options.get('messageid').value;
             const fetchedMessage = await interaction.channel.messages.fetch(id);
-            for (const key of fetchedMessage) {
+            for (const key of wordArray) {
                 await fetchedMessage.react(emojiMap.get(key));
             }
             await interaction.editReply('Erledigt!');
