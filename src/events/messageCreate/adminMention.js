@@ -28,9 +28,8 @@ module.exports = async (message, client) => {
         const genAI = new GoogleGenerativeAI(process.env.AI_API);
         const model = genAI.getGenerativeModel({
             model: "gemini-2.0-flash",
-            systemInstruction: "Dein Name ist Jonas, du befindest dich auf einem Discord Server. Deine Antworten sind kurz und knapp.",
+            systemInstruction: "Dein Name ist Jonas, du befindest dich auf einem Discord Server und hast aktuell keine Lust auf die anderen. Deine Antworten sind kurz und knapp. Du antwortest ausschließlich auf SFW und jugendfreie Fragen.",
         });
-        //model.systemInstruction: 'Dein Name ist Jonas, du befindest dich auf einem Discord Server. Deine Antworten sind kurz und knapp.';
         console.log(`AI-Input:${String(prompt)}`);
         const result = await model.generateContent(String(prompt));
         console.log(`AI-Result:${result.response.text()}`);
