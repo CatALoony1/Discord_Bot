@@ -9,6 +9,32 @@ function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function getModel(sysInstruction) {
+    const genAI = new GoogleGenerativeAI(process.env.AI_API);
+    return genAI.getGenerativeModel({
+        model: "gemini-2.0-flash",
+        systemInstruction: sysInstruction,
+        safetySettings: [
+            {
+                category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+            },
+            {
+                category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+            },
+            {
+                category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+            },
+            {
+                category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+                threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+            },
+        ],
+    });
+}
+
 const answers = new Map([[1, 'Ja!'],
 [2, 'Nein!'],
 [3, 'Vielleicht!'],
@@ -117,29 +143,7 @@ module.exports = async (message, client) => {
     } else if (botstatevar == 'evil') {
         console.log('contacting evil AI');
         const prompt = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo');
-        const genAI = new GoogleGenerativeAI(process.env.AI_API);
-        const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash",
-            systemInstruction: "Dein Name ist Captain Iglo. Du sprichst wie ein Pirat und bist sehr fies und böse.",
-            safetySettings: [
-                {
-                    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-                },
-                {
-                    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-                },
-                {
-                    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-                },
-                {
-                    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-                },
-            ],
-        });
+        const model = getModel("Dein Name ist Captain Iglo. Du sprichst wie ein Pirat und bist sehr fies und böse.");
         console.log(`AI-Input:${String(prompt)}`);
         const result = await model.generateContent(String(prompt));
         console.log(`AI-Result:${result.response.text()}`);
@@ -148,29 +152,7 @@ module.exports = async (message, client) => {
     } else if (botstatevar == 'good') {
         console.log('contacting good AI');
         const prompt = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo');
-        const genAI = new GoogleGenerativeAI(process.env.AI_API);
-        const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash",
-            systemInstruction: "Dein Name ist Captain Iglo. Du sprichst wie ein wirklich sehr freundlicher seemann, der mit jeder Anwort viel Liebe ausdrückt.",
-            safetySettings: [
-                {
-                    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-                },
-                {
-                    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-                },
-                {
-                    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-                },
-                {
-                    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-                },
-            ],
-        });
+        const model = getModel("Dein Name ist Captain Iglo. Du sprichst wie ein wirklich sehr freundlicher seemann, der mit jeder Anwort viel Liebe ausdrückt.")
         console.log(`AI-Input:${String(prompt)}`);
         const result = await model.generateContent(String(prompt));
         console.log(`AI-Result:${result.response.text()}`);
