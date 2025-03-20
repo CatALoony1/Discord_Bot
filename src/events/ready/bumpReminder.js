@@ -11,21 +11,7 @@ module.exports = async (client) => {
       const bumpEntry = await Bump.findOne(query);
       if (bumpEntry) {
         if (bumpEntry.endTime < Date.now() && bumpEntry.reminded === 'N') {
-          const message = bumpReady(client);
-          console.log('Bump reminded');
-          bumpEntry.remindedId = message.id;
-          bumpEntry.reminded = 'J';
-          bumpEntry.save();
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, 5000);
-};
-
-async function bumpReady(client) {
-  let guild = client.guilds.cache.get(process.env.GUILD_ID);
+          let guild = client.guilds.cache.get(process.env.GUILD_ID);
   let role = guild.roles.cache.find(role => role.name === 'Bump-Ping');
   var bump = new Discord.EmbedBuilder()
     .setColor(0x0033cc)
@@ -35,5 +21,14 @@ async function bumpReady(client) {
   var message = await targetChannel.send(`||${role}||`);
   var newmessage = await message.reply({ embeds: [bump] });
   message.delete();
-  return newmessage
-}
+          console.log('Bump reminded');
+          bumpEntry.remindedId = newmessage.id;
+          bumpEntry.reminded = 'J';
+          bumpEntry.save();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, 5000);
+};
