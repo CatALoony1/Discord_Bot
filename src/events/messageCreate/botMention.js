@@ -121,9 +121,29 @@ module.exports = async (message, client) => {
         const model = genAI.getGenerativeModel({
             model: "gemini-2.0-flash",
             systemInstruction: "Dein Name ist Captain Iglo. Du sprichst wie ein Pirat und bist sehr fies und böse.",
+            safetySettings: [
+                {
+                    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                },
+                {
+                    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                },
+                {
+                    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                },
+                {
+                    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                },
+            ],
         });
+        console.log(`AI-Input:${String(prompt)}`);
         const result = await model.generateContent(String(prompt));
-        console.log(result.response.text());
+        console.log(`AI-Result:${result.response.text()}`);
+        console.log(result.response.usageMetadata.totalTokenCount);
         await message.reply(`${result.response.text()}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else if (botstatevar == 'good') {
         console.log('contacting good AI');
@@ -132,9 +152,29 @@ module.exports = async (message, client) => {
         const model = genAI.getGenerativeModel({
             model: "gemini-2.0-flash",
             systemInstruction: "Dein Name ist Captain Iglo. Du sprichst wie ein wirklich sehr freundlicher seemann, der mit jeder Anwort viel Liebe ausdrückt.",
+            safetySettings: [
+                {
+                    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                },
+                {
+                    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                },
+                {
+                    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                },
+                {
+                    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                },
+            ],
         });
+        console.log(`AI-Input:${String(prompt)}`);
         const result = await model.generateContent(String(prompt));
-        console.log(result.response.text());
+        console.log(`AI-Result:${result.response.text()}`);
+        console.log(result.response.usageMetadata.totalTokenCount);
         await message.reply(`${result.response.text()}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else {
         console.log('ERROR: Botstate passt nicht!');

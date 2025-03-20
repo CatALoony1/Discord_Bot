@@ -2,7 +2,7 @@ const { Message, WebhookClient } = require('discord.js');
 require('dotenv').config();
 const Config = require('../../models/Config');
 const Begruessung = require('../../models/Begruessung');
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require("@google/generative-ai");
 
 /**
  * 
@@ -28,11 +28,30 @@ module.exports = async (message, client) => {
         const genAI = new GoogleGenerativeAI(process.env.AI_API);
         const model = genAI.getGenerativeModel({
             model: "gemini-2.0-flash",
-            systemInstruction: "Dein Name ist Jonas, du befindest dich auf einem Discord Server und hast aktuell keine Lust auf die anderen. Deine Antworten sind kurz und knapp. Du antwortest ausschließlich auf SFW und jugendfreie Fragen.",
+            systemInstruction: "Dein Name ist Jonas, du befindest dich auf einem Discord Server und hast aktuell keine Lust auf die anderen. Deine Antworten sind kurz und knapp.",
+            safetySettings: [
+                {
+                    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                },
+                {
+                    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                },
+                {
+                    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                },
+                {
+                    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                },
+            ],
         });
         console.log(`AI-Input:${String(prompt)}`);
         const result = await model.generateContent(String(prompt));
         console.log(`AI-Result:${result.response.text()}`);
+        console.log(result.response.usageMetadata.totalTokenCount);
         await webhookClient.send(`Da Jonas aktuell keine Lust hat, werde ich antworten:\n\n${result.response.text()}\n\n\n||Diese Antwort entspricht zu 100% der Meinung und ist definitiv nicht KI-generiert. Vielleicht lüge ich aber auch.||`);
     } catch (error) {
         console.log(error);
