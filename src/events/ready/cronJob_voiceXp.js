@@ -35,19 +35,32 @@ module.exports = async (client) => {
         if (conf) {
             multiplier = Number(conf.value);
         }
-        let xpToGive = 5 * getRandomXp(1, 5) * multiplier;
         await client.channels.cache.forEach(async (channel) => {
             if (channel.type == 2 && channel.id != '1307820687599337602') {
                 if (channel.members.size >= 2) {
                     channel.members.forEach(async (member) => {
+                        let xpToGive = 5 * getRandomXp(1, 5) * multiplier;
                         const query = {
                             userId: member.user.id,
                             guildId: channel.guild.id,
                         };
                         try {
                             const level = await Level.findOne(query);
-                            console.log(`user ${member.user.tag} received ${xpToGive} XP (Voice)`);
                             if (level) {
+                                if (channel.guild.members.cache.get(member.user.id).some(role => role.name === 'Bumper')) {
+                                    let now = new Date();
+                                    let lastbump = level.lastBump;
+                                    let diffTime = Math.abs(now - lastbump);
+                                    let diffHour = Math.floor(diffTime / (1000 * 60 * 60));
+                                    if (diffHour >= 24) {
+                                        let tempRole = channel.guild.roles.cache.find(role => role.name === 'Bumper');
+                                        await channel.guild.members.cache.get(member.user.id).roles.remove(tempRole);
+                                        console.log(`Role Bumper was removed from user ${member.user.tag}`);
+                                    } else {
+                                        xpToGive = Math.ceil(xpToGive * 1.1);
+                                    }
+                                };
+                                console.log(`user ${member.user.tag} received ${xpToGive} XP (Voice)`);
                                 level.xp += xpToGive;
                                 level.allxp += xpToGive;
                                 level.voicexp += xpToGive;
@@ -90,6 +103,7 @@ module.exports = async (client) => {
                                     return;
                                 });
                             } else {
+                                console.log(`user ${member.user.tag} received ${xpToGive} XP (Voice)`);
                                 console.log(`new user ${member.user.tag} added to database`);
                                 const newLevel = new Level({
                                     userId: member.user.id,

@@ -60,15 +60,28 @@ module.exports = async (message) => {
     message.react("⭐");
     console.log(`user ${message.author.tag} received ${bonusXP} Bonus XP`);
   }
-  const xpToGive = (getRandomXp(5, 15) * multiplier) + bonusXP;
+  var xpToGive = (getRandomXp(5, 15) * multiplier) + bonusXP;
   const query = {
     userId: message.author.id,
     guildId: message.guild.id,
   };
   try {
     const level = await Level.findOne(query);
-    console.log(`user ${message.author.tag} received ${xpToGive} XP`);
     if (level) {
+      if (message.guild.members.cache.get(message.author.id).some(role => role.name === 'Bumper')) {
+        let now = new Date();
+        let lastbump = level.lastBump;
+        let diffTime = Math.abs(now - lastbump);
+        let diffHour = Math.floor(diffTime / (1000 * 60 * 60));
+        if (diffHour >= 24) {
+          let tempRole = message.guild.roles.cache.find(role => role.name === 'Bumper');
+          await message.guild.members.cache.get(message.author.id).roles.remove(tempRole);
+          console.log(`Role Bumper was removed from user ${message.author.tag}`);
+        } else {
+          xpToGive = Math.ceil(xpToGive * 1.1);
+        }
+      };
+      console.log(`user ${message.author.tag} received ${xpToGive} XP`);
       level.xp += xpToGive;
       level.allxp += xpToGive;
       level.messagexp += (xpToGive - bonusXP);
@@ -118,6 +131,7 @@ module.exports = async (message) => {
         cooldowns.delete(message.author.id);
       }, 15000); // Cooldown 15000 = 15sec
     } else {
+      console.log(`user ${message.author.tag} received ${xpToGive} XP`);
       console.log(`new user ${message.author.tag} added to database`);
       const newLevel = new Level({
         userId: message.author.id,

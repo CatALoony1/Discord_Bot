@@ -12,6 +12,9 @@ const bumpSchema = new Schema({
   reminded: {
     type: String,
     default: 'N',
+  },
+  remindedId: {
+    type: String,
   }
 });
 

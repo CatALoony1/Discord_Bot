@@ -56,14 +56,27 @@ module.exports = async (interaction) => {
         await newQuestion.save();
         var targetChannel = interaction.guild.channels.cache.get(process.env.QUIZ_ID) || (await interaction.guild.channels.fetch(process.env.QUIZ_ID));
         const targetUserObj = await interaction.guild.members.fetch(mentionedUserId);
-        const xpToGive = 40;
+        var xpToGive = 40;
         try {
             const level = await Level.findOne({
                 userId: mentionedUserId,
                 guildId: interaction.guild.id,
             });
-            console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (Quiz)`);
             if (level) {
+                if (interaction.guild.members.cache.get(mentionedUserId).some(role => role.name === 'Bumper')) {
+                    let now = new Date();
+                    let lastbump = level.lastBump;
+                    let diffTime = Math.abs(now - lastbump);
+                    let diffHour = Math.floor(diffTime / (1000 * 60 * 60));
+                    if (diffHour >= 24) {
+                        let tempRole = interaction.guild.roles.cache.find(role => role.name === 'Bumper');
+                        await interaction.guild.members.cache.get(mentionedUserId).roles.remove(tempRole);
+                        console.log(`Role Bumper was removed from user ${targetUserObj.user.tag}`);
+                    } else {
+                        xpToGive = Math.ceil(xpToGive * 1.1);
+                    }
+                };
+                console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (Quiz)`);
                 level.xp += xpToGive;
                 level.allxp += xpToGive;
                 level.thismonth += xpToGive;
@@ -107,6 +120,7 @@ module.exports = async (interaction) => {
                     return;
                 });
             } else {
+                console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (Quiz)`);
                 console.log(`new user ${targetUserObj.user.tag} added to database`);
                 const newLevel = new Level({
                     userId: targetUserObj.user.id,

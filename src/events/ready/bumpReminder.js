@@ -11,8 +11,9 @@ module.exports = async (client) => {
       const bumpEntry = await Bump.findOne(query);
       if (bumpEntry) {
         if (bumpEntry.endTime < Date.now() && bumpEntry.reminded === 'N') {
-          bumpReady(client);
+          const message = bumpReady(client);
           console.log('Bump reminded');
+          bumpEntry.remindedId = message.id;
           bumpEntry.reminded = 'J';
           bumpEntry.save();
         }
@@ -32,6 +33,7 @@ async function bumpReady(client) {
     .setImage('https://media1.tenor.com/m/fJoFy21AVjUAAAAd/bump.gif');
   var targetChannel = await client.channels.fetch(process.env.BUMP_ID);
   var message = await targetChannel.send(`||${role}||`);
-  await message.reply({ embeds: [bump] });
+  var newmessage = await message.reply({ embeds: [bump] });
   message.delete();
+  return newmessage
 }

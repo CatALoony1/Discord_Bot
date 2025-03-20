@@ -53,15 +53,28 @@ module.exports = {
       return;
     }
     const targetUserObj = await interaction.guild.members.fetch(targetUserId);
-    const xpToGive = interaction.options.get('xpmenge').value;
+    var xpToGive = interaction.options.get('xpmenge').value;
     const reason = interaction.options.get('grund').value;
     try {
       const level = await Level.findOne({
         userId: targetUserId,
         guildId: interaction.guild.id,
       });
-      console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (command)`);
       if (level) {
+        if (interaction.guild.members.cache.get(targetUserId).some(role => role.name === 'Bumper')) {
+          let now = new Date();
+          let lastbump = level.lastBump;
+          let diffTime = Math.abs(now - lastbump);
+          let diffHour = Math.floor(diffTime / (1000 * 60 * 60));
+          if (diffHour >= 24) {
+            let tempRole = interaction.guild.roles.cache.find(role => role.name === 'Bumper');
+            await interaction.guild.members.cache.get(targetUserId).roles.remove(tempRole);
+            console.log(`Role Bumper was removed from user ${targetUserObj.user.tag}`);
+          } else {
+            xpToGive = Math.ceil(xpToGive * 1.1);
+          }
+        };
+        console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (command)`);
         level.xp += xpToGive;
         level.allxp += xpToGive;
         level.thismonth += xpToGive;
@@ -107,6 +120,7 @@ module.exports = {
         });
         await interaction.editReply(`Nutzer ${targetUserObj} hat ${xpToGive} Bonus XP erhalten!\nGrund: ${reason}`);
       } else {
+        console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (command)`);
         console.log(`new user ${targetUserObj.user.tag} added to database`);
         const newLevel = new Level({
           userId: targetUserObj.user.id,

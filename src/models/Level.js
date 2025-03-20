@@ -57,13 +57,16 @@ const levelSchema = new Schema({
     type: Number,
     default: 0,
   },
-  bonusclaimed:{
+  bonusclaimed: {
     type: Number,
     default: 0,
   },
-  quizadded:{
+  quizadded: {
     type: Number,
     default: 0,
+  },
+  lastBump: {
+    type: Date,
   }
 });
 
