@@ -68,14 +68,14 @@ module.exports = async (message) => {
   try {
     const level = await Level.findOne(query);
     if (level) {
-      if (message.guild.members.cache.get(message.author.id).some(role => role.name === 'Bumper')) {
+      if (message.member.some(role => role.name === 'Bumper')) {
         let now = new Date();
         let lastbump = level.lastBump;
         let diffTime = Math.abs(now - lastbump);
         let diffHour = Math.floor(diffTime / (1000 * 60 * 60));
         if (diffHour >= 24) {
           let tempRole = message.guild.roles.cache.find(role => role.name === 'Bumper');
-          await message.guild.members.cache.get(message.author.id).roles.remove(tempRole);
+          await message.member.roles.remove(tempRole);
           console.log(`Role Bumper was removed from user ${message.author.tag}`);
         } else {
           xpToGive = Math.ceil(xpToGive * 1.1);
