@@ -26,9 +26,10 @@ module.exports = async (message, client) => {
         console.log('contacting admin AI');
         const prompt = message.content.replace(`<@${process.env.ADMIN_ID}>`, 'Jonas');
         const genAI = new GoogleGenerativeAI(process.env.AI_API);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash",
-systemInstruction: "Dein Name ist Jonas, du befindest dich auf einem Discord Server. Deine Antworten sind kurz und knapp.",
- });
+        const model = genAI.getGenerativeModel({
+            model: "gemini-2.0-flash",
+            systemInstruction: "Dein Name ist Jonas, du befindest dich auf einem Discord Server. Deine Antworten sind kurz und knapp.",
+        });
         //model.systemInstruction: 'Dein Name ist Jonas, du befindest dich auf einem Discord Server. Deine Antworten sind kurz und knapp.';
         console.log(`AI-Input:${String(prompt)}`);
         const result = await model.generateContent(String(prompt));
