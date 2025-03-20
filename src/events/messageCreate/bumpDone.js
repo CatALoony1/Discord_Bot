@@ -24,7 +24,7 @@ module.exports = async (message) => {
           await member.roles.add(role);
         };
         const embed = new EmbedBuilder()
-          .setTitle('❤️Dankeschön für deine Untersützung!❤️')
+          .setTitle('Dankeschön für deine Untersützung!❤️')
           .setDescription(`Danke <@${userid}>, dass du den Server gebumpt hast. Um unsere Dankbarkeit zu zeigen bekommst du für 24 Stunden die Rolle **Bumper**, durch diese Rolle erhälst du einen Bonus von 10% auf jegliche erhaltene Erfahrung!`)
           .setThumbnail(member.user.displayAvatarURL({ format: 'png', dynamic: true }))
           .setColor(0x0033cc);
