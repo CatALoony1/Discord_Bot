@@ -63,7 +63,7 @@ module.exports = async (interaction) => {
                 guildId: interaction.guild.id,
             });
             if (level) {
-                if (targetUserObj.some(role => role.name === 'Bumper')) {
+                if (targetUserObj.roles.cache.some(role => role.name === 'Bumper')) {
                     let now = new Date();
                     let lastbump = level.lastBump;
                     let diffTime = Math.abs(now - lastbump);

@@ -47,7 +47,7 @@ module.exports = async (client) => {
                         try {
                             const level = await Level.findOne(query);
                             if (level) {
-                                if (member.some(role => role.name === 'Bumper')) {
+                                if (member.roles.cache.some(role => role.name === 'Bumper')) {
                                     let now = new Date();
                                     let lastbump = level.lastBump;
                                     let diffTime = Math.abs(now - lastbump);
