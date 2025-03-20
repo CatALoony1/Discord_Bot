@@ -50,7 +50,7 @@ module.exports = {
         ),
 
     run: async ({ interaction, client }) => {
-        console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+        console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag} with value ${interaction.options.get('wort').value}`);
         try {
             await interaction.deferReply({ flags: MessageFlags.Ephemeral });
             const regex = /^[A-Z!?]+$/i;
