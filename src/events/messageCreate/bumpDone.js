@@ -2,6 +2,7 @@ const Bump = require("../../models/Bump");
 require('dotenv').config();
 
 module.exports = async (message) => {
+  console.log(message);
   if (message.author.id === process.env.DISBOARD_ID) {
     if (message.embeds[0] != null && message.embeds[0].description.includes("Bump erfolgreich")) {
       const query = {
