@@ -26,7 +26,7 @@ module.exports = async (message) => {
         const embed = new EmbedBuilder()
           .setTitle('❤️Dankeschön für deine Untersützung!❤️')
           .setDescription(`Danke <@${userid}>, dass du den Server gebumpt hast. Um unsere Dankbarkeit zu zeigen bekommst du für 24 Stunden die Rolle **Bumper**, durch diese Rolle erhälst du einen Bonus von 10% auf jegliche erhaltene Erfahrung!`)
-          .setImage(targetUserObj.user.displayAvatarURL({ format: 'png', dynamic: true }))
+          .setImage(member.user.displayAvatarURL({ format: 'png', dynamic: true }))
           .setColor(0x0033cc);
         message.channel.send({ embeds: [embed] });
       }
