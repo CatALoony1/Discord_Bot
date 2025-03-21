@@ -68,11 +68,14 @@ module.exports = async (message) => {
   try {
     const level = await Level.findOne(query);
     if (level) {
+console.log(message.member.roles);
       if (message.member.roles.cache.some(role => role.name === 'Bumper')) {
+console.log('Bumper');
         let now = new Date();
         let lastbump = level.lastBump;
         let diffTime = Math.abs(now - lastbump);
         let diffHour = Math.floor(diffTime / (1000 * 60 * 60));
+console.log(diffHour);
         if (diffHour >= 24) {
           let tempRole = message.guild.roles.cache.find(role => role.name === 'Bumper');
           await message.member.roles.remove(tempRole);
