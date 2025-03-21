@@ -20,7 +20,7 @@ module.exports = async (guildMember) => {
             .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
             .setDescription(`<@${guildMember.id}> wird den Haien zum Fraß vorgeworfen.`)
             //.setImage('https://media1.tenor.com/m/lPVgOtgFbeIAAAAd/gargamel-walk-the-plank.gif');
-.setImage('https://c.tenor.com/lPVgOtgFbeIAAAAd/tenor.gif');
+            .setImage('https://c.tenor.com/lPVgOtgFbeIAAAAd/tenor.gif');
         var messageL = await targetChannel.send({ embeds: [leave] });
         await messageL.react('🇸');
         await messageL.react('🇵');

@@ -21,7 +21,7 @@ module.exports = async (guildMember) => {
             .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
             .setTitle(`⚓ Willkommen an Bord des Captain Iglo Servers! 🐟\nBereite dich auf spannende Abenteuer auf den sieben Weltmeeren vor! 🌊`)
             //.setImage('https://media1.tenor.com/m/Ir6lg8ixJpYAAAAC/sailor-channing-tatum.gif');
-.setImage('https://c.tenor.com/Ir6lg8ixJpYAAAAC/tenor.gif');
+            .setImage('https://c.tenor.com/Ir6lg8ixJpYAAAAC/tenor.gif');
 
         var message = await targetChannel.send(`||${role} <@${guildMember.id}>||`);
         await message.reply({ embeds: [welcome] });
@@ -30,7 +30,7 @@ module.exports = async (guildMember) => {
         if (allbegruessungen.length > 0) {
             for (const begruessung of allbegruessungen) {
                 let webhookClient = new WebhookClient({ id: begruessung.webhookId, token: begruessung.webhookToken });
-                await webhookClient.send(begruessung.content.replaceAll('<new>',`<@${guildMember.id}>`));
+                await webhookClient.send(begruessung.content.replaceAll('<new>', `<@${guildMember.id}>`));
             }
         }
     } catch (error) {
