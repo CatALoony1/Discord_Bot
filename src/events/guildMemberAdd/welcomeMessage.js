@@ -20,8 +20,8 @@ module.exports = async (guildMember) => {
             .setColor(0x0033cc)
             .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
             .setTitle(`⚓ Willkommen an Bord des Captain Iglo Servers! 🐟\nBereite dich auf spannende Abenteuer auf den sieben Weltmeeren vor! 🌊`)
-            .setImage('https://media1.tenor.com/m/Ir6lg8ixJpYAAAAC/sailor-channing-tatum.gif')
-            ;
+            //.setImage('https://media1.tenor.com/m/Ir6lg8ixJpYAAAAC/sailor-channing-tatum.gif');
+.setImage('https://c.tenor.com/Ir6lg8ixJpYAAAAC/tenor.gif');
 
         var message = await targetChannel.send(`||${role} <@${guildMember.id}>||`);
         await message.reply({ embeds: [welcome] });
