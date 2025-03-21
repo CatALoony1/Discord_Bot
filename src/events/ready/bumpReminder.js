@@ -16,8 +16,8 @@ module.exports = async (client) => {
   var bump = new Discord.EmbedBuilder()
     .setColor(0x0033cc)
     .setTitle("Es ist Zeit zu bumpen!")
-    //.setImage('https://media1.tenor.com/m/fJoFy21AVjUAAAAd/bump.gif');
-.setImage('https://c.tenor.com/fJoFy21AVjUAAAAd/tenor.gif');
+    .setImage('https://media1.tenor.com/m/fJoFy21AVjUAAAAd/bump.gif');
+//.setImage('https://c.tenor.com/fJoFy21AVjUAAAAd/tenor.gif');
   var targetChannel = await client.channels.fetch(process.env.BUMP_ID);
   var message = await targetChannel.send(`||${role}||`);
   var newmessage = await message.reply({ embeds: [bump] });
