@@ -126,7 +126,9 @@ module.exports = async (message, client) => {
                     await client.user.setAvatar('./img/iglo_evil.jpg');
                     newMessage = await newMessage.reply(`Evil Captain is now taking control!`);
                     await sleep(delay);
-                    newMessage = await newMessage.reply(`https://media1.tenor.com/m/XjtE_QFunw8AAAAd/sophia-the-robot-destroy.gif`);
+                    //newMessage = await newMessage.reply(`https://media1.tenor.com/m/XjtE_QFunw8AAAAd/sophia-the-robot-destroy.gif`);
+newMessage = await newMessage.reply(`https://c.tenor.com/XjtE_QFunw8AAAAd/tenor.gif`);
+
                     console.log('Botstate changed to evil');
                     state.state = 'evil';
                     state.startTime = Date.now();
@@ -135,7 +137,8 @@ module.exports = async (message, client) => {
             } else if (boom == 2) {
                 newMessage = await newMessage.reply(`Self destruction canceled, you are safe!`);
             } else if (boom == 3) {
-                newMessage = await newMessage.reply(`https://media1.tenor.com/m/CpMcOSzFKwYAAAAC/suprised-explosion.gif`);
+                //newMessage = await newMessage.reply(`https://media1.tenor.com/m/CpMcOSzFKwYAAAAC/suprised-explosion.gif`);
+newMessage = await newMessage.reply(`https://c.tenor.com/CpMcOSzFKwYAAAAC/tenor.gif`);
             }
         } else {
             await message.reply(answers.get(number));
