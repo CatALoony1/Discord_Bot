@@ -1,38 +1,11 @@
 const { Message } = require('discord.js');
-require('dotenv').config();
 const BotState = require('../../models/BotState');
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const getAIResult = require('../../utils/getAIResult');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function getModel(sysInstruction) {
-    const genAI = new GoogleGenerativeAI(process.env.AI_API);
-    return genAI.getGenerativeModel({
-        model: "gemini-2.0-flash",
-        systemInstruction: sysInstruction,
-        safetySettings: [
-            {
-                category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-                threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-            },
-            {
-                category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-                threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-            },
-            {
-                category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-                threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-            },
-            {
-                category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-                threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-            },
-        ],
-    });
 }
 
 const answers = new Map([[1, 'Ja!'],
@@ -146,20 +119,14 @@ module.exports = async (message, client) => {
     } else if (botstatevar == 'evil') {
         console.log('contacting evil AI');
         const prompt = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo');
-        const model = getModel("Dein Name ist Captain Iglo. Du sprichst wie ein Pirat und bist sehr fies und böse.");
-        console.log(`AI-Input:${String(prompt)}`);
-        const result = await model.generateContent(String(prompt));
-        console.log(`AI-Result:${result.response.text()}`);
-        console.log(result.response.usageMetadata.totalTokenCount);
+        const sysInstruction = "Dein Name ist Captain Iglo. Du sprichst wie ein Pirat und bist sehr fies und böse.";
+        const result = await getAIResult(prompt, sysInstruction);
         await message.reply(`${result.response.text()}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else if (botstatevar == 'good') {
         console.log('contacting good AI');
         const prompt = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo');
-        const model = getModel("Dein Name ist Captain Iglo. Du sprichst wie ein wirklich sehr freundlicher seemann, der mit jeder Anwort viel Liebe ausdrückt.")
-        console.log(`AI-Input:${String(prompt)}`);
-        const result = await model.generateContent(String(prompt));
-        console.log(`AI-Result:${result.response.text()}`);
-        console.log(result.response.usageMetadata.totalTokenCount);
+        const sysInstruction = "Dein Name ist Captain Iglo. Du sprichst wie ein wirklich sehr freundlicher seemann, der mit jeder Anwort viel Liebe ausdrückt.";
+        const result = await getAIResult(prompt, sysInstruction);
         await message.reply(`${result.response.text()}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else {
         console.log('ERROR: Botstate passt nicht!');
