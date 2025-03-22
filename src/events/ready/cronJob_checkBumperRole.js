@@ -1,9 +1,6 @@
-const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
 const Level = require('../../models/Level');
-const Config = require('../../models/Config');
-const calculateLevelXp = require('../../utils/calculateLevelXp');
 
 module.exports = async (client) => {
     cron.schedule('*/5 * * * *', async function () {
