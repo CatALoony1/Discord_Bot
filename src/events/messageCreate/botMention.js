@@ -47,7 +47,10 @@ const answers = new Map([[1, 'Ja!'],
 [37, 'Ich schmolle und werde deshalb nicht antworten!'],
 [38, 'Nur wenn heute Sonntag ist!'],
 [39, 'So eine dreiste Frage beantworte ich nicht.'],
-[40, 'Wenn du mich sowas nochmal fragst, schicke ich dich von der Planke!']
+[40, 'Wenn du mich sowas nochmal fragst, schicke ich dich von der Planke!'],
+[41, 'What would Jesus do?'],
+[42, 'Nur wenn du mir Kekse gibst.'],
+[43, 'Gegen eine kleine Spende könnte ich dem zustimmen.']
 ]);
 
 /**
