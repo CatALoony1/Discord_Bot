@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 require('dotenv').config();
 const Bump = require('../../models/Bump');
-const getTenorGifById = require("../../utils/getTenorGifByID");
+const getTenorGifById = require("../../utils/getTenorGifById");
 
 module.exports = async (client) => {
   setInterval(async () => {
