@@ -108,22 +108,22 @@ module.exports = {
         }
         if (xpToGive != 0) {
             console.log(`user ${targetUserObj.user.tag} received ${xpToGive} XP`);
-            level.xp += xpToGive;
-            level.allxp += xpToGive;
-            level.messagexp += (xpToGive - bonusXP);
-            level.thismonth += xpToGive;
-            level.bonusclaimed += bonusXP;
-            level.messages += 1;
-            level.lastMessage = Date.now();
-            if (level.xp >= calculateLevelXp(level.level)) {
+            fetchedLevel.xp += xpToGive;
+            fetchedLevel.allxp += xpToGive;
+            fetchedLevel.messagexp += (xpToGive - bonusXP);
+            fetchedLevel.thismonth += xpToGive;
+            fetchedLevel.bonusclaimed += bonusXP;
+            fetchedLevel.messages += 1;
+            fetchedLevel.lastMessage = Date.now();
+            if (fetchedLevel.xp >= calculateLevelXp(fetchedLevel.level)) {
                 do {
-                    level.xp = level.xp - calculateLevelXp(level.level);
-                    level.level += 1;
-                    console.log(`user ${targetUserObj.user.tag} reached level ${level.level}`);
-                    let description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${level.level}** erreicht!⚓`;
-                    if (roles.has(level.level)) {
-                        let newRole = roles.get(level.level);
-                        description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${level.level}** erreicht und bist somit zum ${newRole} aufgestiegen!⚓`;
+                    fetchedLevel.xp = fetchedLevel.xp - calculateLevelXp(fetchedLevel.level);
+                    fetchedLevel.level += 1;
+                    console.log(`user ${targetUserObj.user.tag} reached level ${fetchedLevel.level}`);
+                    let description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${fetchedLevel.level}** erreicht!⚓`;
+                    if (roles.has(fetchedLevel.level)) {
+                        let newRole = roles.get(fetchedLevel.level);
+                        description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${fetchedLevel.level}** erreicht und bist somit zum ${newRole} aufgestiegen!⚓`;
 
                         for (const value of roles.values()) {
                             if (targetUserObj.roles.cache.some(role => role.name === value)) {
@@ -135,7 +135,7 @@ module.exports = {
                         let role = interaction.guild.roles.cache.find(role => role.name === newRole);
                         await targetUserObj.roles.add(role);
                         console.log(`Role ${newRole} was given to user ${targetUserObj.user.tag}`);
-                        if (level.level === 1) {
+                        if (fetchedLevel.level === 1) {
                             let memberRole = interaction.guild.roles.cache.find(role => role.name === 'Mitglied');
                             await targetUserObj.roles.add(memberRole);
                             console.log(`Role Mitglied was given to user ${targetUserObj.user.tag}`);
@@ -147,9 +147,9 @@ module.exports = {
                         .setThumbnail(targetUserObj.user.displayAvatarURL({ format: 'png', dynamic: true }))
                         .setColor(0x0033cc);
                     interaction.channel.send({ embeds: [embed] });
-                } while (level.xp >= calculateLevelXp(level.level));
+                } while (fetchedLevel.xp >= calculateLevelXp(fetchedLevel.level));
             }
-            await level.save().catch((e) => {
+            await fetchedLevel.save().catch((e) => {
                 console.log(`Error saving updated level ${e}`);
                 return;
             });
