@@ -1,8 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
-const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 require('dotenv').config();
-const http =  require("https");
-var gif = undefined;
+const fetch = require('node-fetch');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('gif')
@@ -26,15 +24,14 @@ module.exports = {
         }
         try {
             var apikey = process.env.TENOR_API;
-            var clientkey = "CaptainIglo";
-            var lmt = 1;
-            var search_term = suchwort;
+            getTenorGif(suchwort, apikey)
+                .then((gifUrl) => {
+                    interaction.reply(gifUrl);
+                })
+                .catch((error) => {
+                    console.error('ERROR:', error);
+                });
 
-            var search_url = "https://tenor.googleapis.com/v2/search?q=" + search_term + "&key=" +
-                apikey + "&client_key=" + clientkey + "&limit=" + lmt;
-            await httpGetAsync(search_url,tenorCallback_search);
-            console.log(`main: ${gif}`);
-            console.log(http.get(search_url));
         } catch (error) {
             console.log(error);
         }
@@ -44,32 +41,21 @@ module.exports = {
     },
 };
 
-async function tenorCallback_search(responsetext)
-{
-    var response_objects = JSON.parse(responsetext);
+async function getTenorGif(searchTerm, apiKey) {
+    const url = `https://tenor.googleapis.com/v2/search?q=${searchTerm}&key=${apiKey}&limit=1`;
 
-    gifs = response_objects["results"];
-    //console.log(gifs[0]["media_formats"]["gif"]["url"]);
-    //console.log(`callback: ${gifs[0]["media_formats"]["gif"]["url"]}`);
-    gif = gifs[0]["media_formats"]["gif"]["url"];
-    return;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
 
-}
-
-async function httpGetAsync(theUrl, callback)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = async function()
-    {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-        {
-            await callback(xmlHttp.responseText);
+        if (data.results && data.results.length > 0) {
+            const gifUrl = data.results[0].media_formats.gif.url;
+            return gifUrl;
+        } else {
+            return 'Kein GIF gefunden.';
         }
+    } catch (error) {
+        console.error('Fehler beim Abrufen des GIFs:', error);
+        return 'Fehler beim Abrufen des GIFs.';
     }
-    console.log(`async: ${gif}`);
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.send(null);
-    console.log(`async2: ${gif}`);
-    return gif;
 }
-
