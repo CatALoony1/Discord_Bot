@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
 require('dotenv').config();
-import fetch from 'node-fetch';
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('gif')
@@ -41,6 +40,7 @@ async function getTenorGif(searchTerm, apiKey) {
     const url = `https://tenor.googleapis.com/v2/search?q=${searchTerm}&key=${apiKey}&limit=1&random=true`;
 
     try {
+        const fetch = await import('node-fetch').then(module => module.default);
         const response = await fetch(url);
         const data = await response.json();
 
