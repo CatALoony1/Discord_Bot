@@ -68,6 +68,7 @@ module.exports = {
       guildId: interaction.guild.id,
       userId: targetUserId,
     });
+    console.log(lotto);
     var lottospiele = 0;
     if (lotto && lotto.length > 0) {
       lottospiele = lotto.length;
