@@ -76,7 +76,7 @@ module.exports = async (message, client) => {
         state = newBotstate;
     }
     if (botstatevar == 'neutral') {
-        var number = getRandom(1, 31);
+        var number = getRandom(1, 40);
         var delay = 2000;
         if (number == 22) {
             let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
