@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 require('dotenv').config();
 
 module.exports = {
