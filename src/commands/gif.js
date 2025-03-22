@@ -33,7 +33,7 @@ module.exports = {
             var gif = httpGetAsync(search_url,tenorCallback_search);
             console.log(gif);
         } catch (error) {
-            console.log(`ERROR sending GIF: ${error}`);
+            console.log(error);
         }
     },
     options: {
