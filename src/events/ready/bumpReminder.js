@@ -16,6 +16,10 @@ module.exports = async (client) => {
           let role = guild.roles.cache.find(role => role.name === 'Bump-Ping');
           await getTenorGifById(8978495178385937973)
             .then(async (gifUrl) => {
+              if(!gifUrl.includes("http")){
+                console.log("ERROR Bump gif");
+                return;
+              }
               var bump = new Discord.EmbedBuilder()
                 .setColor(0x0033cc)
                 .setTitle("Es ist Zeit zu bumpen!")
