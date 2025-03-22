@@ -44,7 +44,7 @@ module.exports = {
     }
 
     let allLevels = await Level.find({ guildId: interaction.guild.id });
-
+    console.log(allLevels.length);
     var oldUsers = [];
     for (let j = 0; j < allLevels.length; j++) {
       if (!(interaction.guild.members.cache.find(m => m.id === allLevels[j].userId)?.id)) {
