@@ -64,10 +64,11 @@ module.exports = {
     } else {
       var time = `${fetchedLevel.voicetime}m`;
     }
-    const lotto = await Lottozahlen.find({
+    let lotto = await Lottozahlen.find({
       guildId: interaction.guild.id,
       userId: targetUserId,
     });
+    console.log(lotto.length);
     var lottospiele = 0;
     if (lotto && lotto.size > 0) {
     }
