@@ -36,9 +36,6 @@ module.exports = {
             console.log(error);
         }
     },
-    options: {
-        devOnly: false,
-    },
 };
 
 async function getTenorGif(searchTerm, apiKey) {
