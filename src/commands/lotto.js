@@ -58,7 +58,7 @@ module.exports = {
         } else {
             lottozahl = Math.floor(Math.random() * 140000000);
         }
-        if (randomNumber != 0) {
+        if (lottozahl != 0) {
             const newLottozahl = new Lottozahlen({
                 guildId: interaction.guild.id,
                 userId: targetUserId,
