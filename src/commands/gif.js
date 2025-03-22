@@ -32,7 +32,7 @@ module.exports = {
             var search_url = "https://tenor.googleapis.com/v2/search?q=" + search_term + "&key=" +
                 apikey + "&client_key=" + clientkey + "&limit=" + lmt;
             var gif = await httpGetAsync(search_url,tenorCallback_search);
-            console.log(gif);
+            console.log(`main: ${gif}`);
         } catch (error) {
             console.log(error);
         }
@@ -48,6 +48,7 @@ async function tenorCallback_search(responsetext)
 
     gifs = response_objects["results"];
     //console.log(gifs[0]["media_formats"]["gif"]["url"]);
+    console.log(`callback: ${gifs[0]["media_formats"]["gif"]["url"]}`);
     return gifs[0]["media_formats"]["gif"]["url"];
 
 }
@@ -63,8 +64,10 @@ async function httpGetAsync(theUrl, callback)
             gif = await callback(xmlHttp.responseText);
         }
     }
+    console.log(`async: ${gif}`);
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.send(null);
+    console.log(`async2: ${gif}`);
     return gif;
 }
 
