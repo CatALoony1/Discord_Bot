@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 require('dotenv').config();
+const http =  require("https");
 var gif = undefined;
 module.exports = {
     data: new SlashCommandBuilder()
@@ -33,6 +34,7 @@ module.exports = {
                 apikey + "&client_key=" + clientkey + "&limit=" + lmt;
             await httpGetAsync(search_url,tenorCallback_search);
             console.log(`main: ${gif}`);
+            console.log(http.get(search_url));
         } catch (error) {
             console.log(error);
         }
