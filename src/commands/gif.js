@@ -15,7 +15,7 @@ module.exports = {
     run: async ({ interaction, client }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         const suchwort = interaction.options.get('suchwort').value;
-        const regex = /^[A-Z]+$/i;
+        const regex = /^[A-Z\s]+$/i;
         if (!regex.test(suchwort)) {
             await interaction.deferReply({ flags: MessageFlags.Ephemeral });
             await interaction.editReply('Das übergebene Wort enthält Zeichen die nicht zugelassen sind.');
