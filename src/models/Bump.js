@@ -7,7 +7,7 @@ const bumpSchema = new Schema({
   },
   endTime: {
     type: Date,
-    require: true,
+    required: true,
   },
   reminded: {
     type: String,

@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose');
 const botStateSchema = new Schema({
   guildId: {
     type: String,
-    required: true,
+    require: true,
   },
   state: {
     type: String,

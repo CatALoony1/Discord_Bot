@@ -31,7 +31,7 @@ const levelSchema = new Schema({
   },
   lastMessage: {
     type: Date,
-    require: true,
+    required: true,
   },
   userName: {
     type: String,

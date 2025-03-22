@@ -19,7 +19,7 @@ const quizStatsSchema = new Schema({
     },
     lastParticipation: {
         type: Date,
-        require: true,
+        required: true,
     }
 });
 

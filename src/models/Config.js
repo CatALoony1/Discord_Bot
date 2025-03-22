@@ -3,11 +3,11 @@ const { Schema, model } = require('mongoose');
 const configSchema = new Schema({
   key: {
     type: String,
-    require: true,
+    required: true,
   },
   value: {
     type: String,
-    require: true,
+    required: true,
   }
 });
 
