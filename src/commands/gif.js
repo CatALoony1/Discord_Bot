@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 require('dotenv').config();
-
+var gif = undefined;
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('gif')
@@ -31,7 +31,7 @@ module.exports = {
 
             var search_url = "https://tenor.googleapis.com/v2/search?q=" + search_term + "&key=" +
                 apikey + "&client_key=" + clientkey + "&limit=" + lmt;
-            var gif = await httpGetAsync(search_url,tenorCallback_search);
+            await httpGetAsync(search_url,tenorCallback_search);
             console.log(`main: ${gif}`);
         } catch (error) {
             console.log(error);
@@ -48,20 +48,20 @@ async function tenorCallback_search(responsetext)
 
     gifs = response_objects["results"];
     //console.log(gifs[0]["media_formats"]["gif"]["url"]);
-    console.log(`callback: ${gifs[0]["media_formats"]["gif"]["url"]}`);
-    return gifs[0]["media_formats"]["gif"]["url"];
+    //console.log(`callback: ${gifs[0]["media_formats"]["gif"]["url"]}`);
+    gif = gifs[0]["media_formats"]["gif"]["url"];
+    return;
 
 }
 
 async function httpGetAsync(theUrl, callback)
 {
     var xmlHttp = new XMLHttpRequest();
-    var gif = undefined;
     xmlHttp.onreadystatechange = async function()
     {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
         {
-            gif = await callback(xmlHttp.responseText);
+            await callback(xmlHttp.responseText);
         }
     }
     console.log(`async: ${gif}`);
