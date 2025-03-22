@@ -69,7 +69,7 @@ module.exports = {
             interaction.editReply(`Du hast diesmal leider nicht den Jackpot geknackt, deine Lottozahl war die ${lottozahl}`);
         } else {
             await Lottozahlen.deleteMany({ guildId: interaction.guild.id });
-            interaction.editReply(`Glückwunsch <@${targetUserId}> du hast den Jackpot geknackt und erhälst somit 1.000.000 XP`);
+            interaction.editReply(`Glückwunsch <@${targetUserId}> du hast den Jackpot mit der Zahl ${lottozahl} geknackt und erhälst somit 1.000.000 XP`);
             const xpToGive = 1000000;
             console.log(`user ${targetUserObj.user.tag} received ${xpToGive} XP`);
             level.xp += xpToGive;
