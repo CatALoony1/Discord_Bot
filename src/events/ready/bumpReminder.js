@@ -14,7 +14,7 @@ module.exports = async (client) => {
         if (bumpEntry.endTime < Date.now() && bumpEntry.reminded === 'N') {
           let guild = client.guilds.cache.get(process.env.GUILD_ID);
           let role = guild.roles.cache.find(role => role.name === 'Bump-Ping');
-          await getTenorGifById(8978495178385937973)
+          await getTenorGifById("8978495178385937973")
             .then(async (gifUrl) => {
               if(!gifUrl.includes("http")){
                 console.log("ERROR Bump gif");
