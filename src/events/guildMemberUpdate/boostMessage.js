@@ -11,22 +11,30 @@ module.exports = async (oldMember, newMember) => {
                 console.log('Fehler, Verlassenschannel gibts nicht');
                 return;
             }
-            const boost = new EmbedBuilder()
-                .setColor(0x0033cc)
-                .setAuthor({ name: newMember.user.username, iconURL: newMember.user.displayAvatarURL({ size: 256 }) })
-                .setTitle(`Danke für den Serverboost!❤️`)
-                //.setImage('https://media1.tenor.com/m/j-DfaT9PimAAAAAd/top-gun-top-gun-maverick.gif');
-                .setImage('https://c.tenor.com/j-DfaT9PimAAAAAd/tenor.gif');
-
-            var message = await targetChannel.send(`||<@${newMember.id}>||`);
-            var reply = await message.reply({ embeds: [boost] });
-            message.delete();
-            await reply.react('🇩');
-            await reply.react('🇦');
-            await reply.react('🇳');
-            await reply.react('🇰');
-            await reply.react('🇪');
-            await reply.react('‼️');
+            await getTenorGifById("26899454")
+                .then(async (gifUrl) => {
+                    if (!gifUrl.includes("http")) {
+                        console.log("ERROR Boost gif");
+                        return;
+                    }
+                    const boost = new EmbedBuilder()
+                        .setColor(0x0033cc)
+                        .setAuthor({ name: newMember.user.username, iconURL: newMember.user.displayAvatarURL({ size: 256 }) })
+                        .setTitle(`Danke für den Serverboost!❤️`)
+                        .setImage(gifUrl);
+                    var message = await targetChannel.send(`||<@${newMember.id}>||`);
+                    var reply = await message.reply({ embeds: [boost] });
+                    message.delete();
+                    await reply.react('🇩');
+                    await reply.react('🇦');
+                    await reply.react('🇳');
+                    await reply.react('🇰');
+                    await reply.react('🇪');
+                    await reply.react('‼️');
+                })
+                .catch((error) => {
+                    console.error('ERROR:', error);
+                });
         } catch (error) {
             console.log(error);
         }

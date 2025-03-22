@@ -79,7 +79,7 @@ module.exports = async (message, client) => {
         state = newBotstate;
     }
     if (botstatevar == 'neutral') {
-        var number = getRandom(1, answers.size-1);
+        var number = getRandom(1, answers.size - 1);
         var delay = 2000;
         if (number == 22) {
             let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
@@ -102,19 +102,36 @@ module.exports = async (message, client) => {
                     await client.user.setAvatar('./img/iglo_evil.jpg');
                     newMessage = await newMessage.reply(`Evil Captain is now taking control!`);
                     await sleep(delay);
-                    //newMessage = await newMessage.reply(`https://media1.tenor.com/m/XjtE_QFunw8AAAAd/sophia-the-robot-destroy.gif`);
-                    newMessage = await newMessage.reply(`https://c.tenor.com/XjtE_QFunw8AAAAd/tenor.gif`);
-
-                    console.log('Botstate changed to evil');
-                    state.state = 'evil';
-                    state.startTime = Date.now();
-                    state.save();
+                    await getTenorGifById("10449061")
+                        .then(async (gifUrl) => {
+                            if (!gifUrl.includes("http")) {
+                                console.log("ERROR Evil gif");
+                                return;
+                            }
+                            newMessage = await newMessage.reply(gifUrl);
+                            console.log('Botstate changed to evil');
+                            state.state = 'evil';
+                            state.startTime = Date.now();
+                            state.save();
+                        })
+                        .catch((error) => {
+                            console.error('ERROR:', error);
+                        });
                 }
             } else if (boom == 2) {
                 newMessage = await newMessage.reply(`Self destruction canceled, you are safe!`);
             } else if (boom == 3) {
-                //newMessage = await newMessage.reply(`https://media1.tenor.com/m/CpMcOSzFKwYAAAAC/suprised-explosion.gif`);
-                newMessage = await newMessage.reply(`https://c.tenor.com/CpMcOSzFKwYAAAAC/tenor.gif`);
+                await getTenorGifById("26770639")
+                    .then(async (gifUrl) => {
+                        if (!gifUrl.includes("http")) {
+                            console.log("ERROR Element of Surprise gif");
+                            return;
+                        }
+                        newMessage = await newMessage.reply(gifUrl);
+                    })
+                    .catch((error) => {
+                        console.error('ERROR:', error);
+                    });
             }
         } else {
             await message.reply(answers.get(number));

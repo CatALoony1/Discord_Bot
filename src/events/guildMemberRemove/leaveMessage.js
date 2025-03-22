@@ -1,5 +1,7 @@
 require('dotenv').config();
 const { EmbedBuilder } = require('discord.js');
+const getTenorGifById = require('../../utils/getTenorGifById');
+
 /**
  * 
  * @param {import {'discord.js'}.GuildMember} guildMember 
@@ -14,20 +16,29 @@ module.exports = async (guildMember) => {
             console.log('Fehler, Verlassenschannel gibts nicht');
             return;
         }
+        await getTenorGifById("21377384")
+            .then(async (gifUrl) => {
+                if (!gifUrl.includes("http")) {
+                    console.log("ERROR Leave gif");
+                    return;
+                }
+                const leave = new EmbedBuilder()
+                    .setColor(0x0033cc)
+                    .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
+                    .setDescription(`<@${guildMember.id}> wird den Haien zum Fraß vorgeworfen.`)
+                    .setImage(gifUrl);
+                var messageL = await targetChannel.send({ embeds: [leave] });
+                await messageL.react('🇸');
+                await messageL.react('🇵');
+                await messageL.react('🇷');
+                await messageL.react('🇮');
+                await messageL.react('🇳');
+                await messageL.react('🇬');
+            })
+            .catch((error) => {
+                console.error('ERROR:', error);
+            });
 
-        const leave = new EmbedBuilder()
-            .setColor(0x0033cc)
-            .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
-            .setDescription(`<@${guildMember.id}> wird den Haien zum Fraß vorgeworfen.`)
-            //.setImage('https://media1.tenor.com/m/lPVgOtgFbeIAAAAd/gargamel-walk-the-plank.gif');
-            .setImage('https://c.tenor.com/lPVgOtgFbeIAAAAd/tenor.gif');
-        var messageL = await targetChannel.send({ embeds: [leave] });
-        await messageL.react('🇸');
-        await messageL.react('🇵');
-        await messageL.react('🇷');
-        await messageL.react('🇮');
-        await messageL.react('🇳');
-        await messageL.react('🇬');
     } catch (error) {
         console.log(error);
     }

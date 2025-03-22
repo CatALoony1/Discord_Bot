@@ -16,15 +16,13 @@ module.exports = async (client) => {
           let role = guild.roles.cache.find(role => role.name === 'Bump-Ping');
           await getTenorGifById("8978495178385937973")
             .then(async (gifUrl) => {
-              if(!gifUrl.includes("http")){
+              if (!gifUrl.includes("http")) {
                 console.log("ERROR Bump gif");
                 return;
               }
               var bump = new Discord.EmbedBuilder()
                 .setColor(0x0033cc)
                 .setTitle("Es ist Zeit zu bumpen!")
-                //.setImage('https://media1.tenor.com/m/fJoFy21AVjUAAAAd/bump.gif');
-                //.setImage('https://c.tenor.com/fJoFy21AVjUAAAAd/tenor.gif');
                 .setImage(gifUrl);
               var targetChannel = await client.channels.fetch(process.env.BUMP_ID);
               var message = await targetChannel.send(`||${role}||`);
