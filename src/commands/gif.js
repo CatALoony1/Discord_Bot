@@ -47,7 +47,7 @@ function tenorCallback_search(responsetext)
     var response_objects = JSON.parse(responsetext);
 
     gifs = response_objects["results"];
-    console.log(gifs[0]["media_formats"]["gif"]["url"]);
+    //console.log(gifs[0]["media_formats"]["gif"]["url"]);
     return gifs[0]["media_formats"]["gif"]["url"];
 
 }
@@ -58,7 +58,6 @@ function httpGetAsync(theUrl, callback)
     var gif = undefined;
     xmlHttp.onreadystatechange = function()
     {
-        console.log(xmlHttp);
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
         {
             gif = callback(xmlHttp.responseText);
@@ -66,7 +65,6 @@ function httpGetAsync(theUrl, callback)
     }
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.send(null);
-    console.log(gif);
     return gif;
 }
 
