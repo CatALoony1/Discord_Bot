@@ -69,9 +69,12 @@ module.exports = {
       userId: targetUserId,
     });
     console.log(lotto);
+    console.log(lotto.length);
     var lottospiele = 0;
+    console.log(lottospiele);
     if (lotto && lotto.length > 0) {
       lottospiele = lotto.length;
+      console.log(lottospiele);
     }
     const messageEdited = new EmbedBuilder();
     messageEdited.setColor(0x0033cc);
