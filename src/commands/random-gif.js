@@ -1,5 +1,5 @@
 
-const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const getTenorGif = require('../utils/getTenorGif');
 const wordList = ["a",
     "abandon",
