@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, MessageFlags } = require('discord.js');
-require('dotenv').config();
 
 const emojiMap = new Map([
     ['A', '🇦'],
