@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 require('dotenv').config();
 const Bump = require('../../models/Bump');
+const getTenorGifById = require("../../utils/getTenorGifByID");
 
 module.exports = async (client) => {
   setInterval(async () => {
@@ -13,19 +14,26 @@ module.exports = async (client) => {
         if (bumpEntry.endTime < Date.now() && bumpEntry.reminded === 'N') {
           let guild = client.guilds.cache.get(process.env.GUILD_ID);
           let role = guild.roles.cache.find(role => role.name === 'Bump-Ping');
-          var bump = new Discord.EmbedBuilder()
-            .setColor(0x0033cc)
-            .setTitle("Es ist Zeit zu bumpen!")
-            //.setImage('https://media1.tenor.com/m/fJoFy21AVjUAAAAd/bump.gif');
-            .setImage('https://c.tenor.com/fJoFy21AVjUAAAAd/tenor.gif');
-          var targetChannel = await client.channels.fetch(process.env.BUMP_ID);
-          var message = await targetChannel.send(`||${role}||`);
-          var newmessage = await message.reply({ embeds: [bump] });
-          message.delete();
-          console.log('Bump reminded');
-          bumpEntry.remindedId = newmessage.id;
-          bumpEntry.reminded = 'J';
-          bumpEntry.save();
+          await getTenorGifById(8978495178385937973)
+            .then(async (gifUrl) => {
+              var bump = new Discord.EmbedBuilder()
+                .setColor(0x0033cc)
+                .setTitle("Es ist Zeit zu bumpen!")
+                //.setImage('https://media1.tenor.com/m/fJoFy21AVjUAAAAd/bump.gif');
+                //.setImage('https://c.tenor.com/fJoFy21AVjUAAAAd/tenor.gif');
+                .setImage(gifUrl);
+              var targetChannel = await client.channels.fetch(process.env.BUMP_ID);
+              var message = await targetChannel.send(`||${role}||`);
+              var newmessage = await message.reply({ embeds: [bump] });
+              message.delete();
+              console.log('Bump reminded');
+              bumpEntry.remindedId = newmessage.id;
+              bumpEntry.reminded = 'J';
+              bumpEntry.save();
+            })
+            .catch((error) => {
+              console.error('ERROR:', error);
+            });
         }
       }
     } catch (error) {
