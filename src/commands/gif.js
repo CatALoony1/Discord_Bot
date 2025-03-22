@@ -37,17 +37,15 @@ module.exports = {
         }
     },
     options: {
-        devOnly: true,
+        devOnly: false,
     },
 };
 
 async function getTenorGif(searchTerm, apiKey) {
     const url = `https://tenor.googleapis.com/v2/search?q=${searchTerm}&key=${apiKey}&limit=1&random=true`;
-
     try {
         const response = await fetch(url);
         const data = await response.json();
-
         if (data.results && data.results.length > 0) {
             const gifUrl = data.results[0].media_formats.gif.url;
             return gifUrl;
