@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
 require('dotenv').config();
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('gif')
@@ -31,7 +31,6 @@ module.exports = {
                 .catch((error) => {
                     console.error('ERROR:', error);
                 });
-
         } catch (error) {
             console.log(error);
         }
