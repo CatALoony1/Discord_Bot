@@ -55,11 +55,13 @@ function tenorCallback_search(responsetext)
 function httpGetAsync(theUrl, callback)
 {
     var xmlHttp = new XMLHttpRequest();
+    var gif = undefined;
     xmlHttp.onreadystatechange = function()
     {
+        console.log(xmlHttp);
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
         {
-            var gif = callback(xmlHttp.responseText);
+            gif = callback(xmlHttp.responseText);
         }
     }
     xmlHttp.open("GET", theUrl, true);
