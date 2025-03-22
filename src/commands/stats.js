@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('../utils/calculateLevelXp');
 const Level = require('../models/Level');
+const Lottozahlen = require('../models/Lottozahlen');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -63,6 +64,14 @@ module.exports = {
     } else {
       var time = `${fetchedLevel.voicetime}m`;
     }
+    const lotto = await Lottozahlen.findOne({
+      guildId: interaction.guild.id,
+      userId: targetUserId,
+    });
+    var lottospiele = 0;
+    if (lotto && lotto.length > 0) {
+      lottospiele = lotto.length;
+    }
     const messageEdited = new EmbedBuilder();
     messageEdited.setColor(0x0033cc);
     messageEdited.setAuthor({ name: interaction.member.user.username, iconURL: interaction.member.user.displayAvatarURL({ size: 256 }) });
@@ -81,6 +90,7 @@ module.exports = {
     messageEdited.addFields({ name: 'Letzte XP:', value: `${fetchedLevel.lastMessage}` });
     messageEdited.addFields({ name: 'Quizfragen hinzugefügt:', value: `${fetchedLevel.quizadded}` });
     messageEdited.addFields({ name: 'Levelbarfarbe:', value: `${fetchedLevel.color}` });
+    messageEdited.addFields({ name: 'Anzahl Lottospiele', value: `${lottospiele}` });
 
     interaction.editReply({ embeds: [messageEdited] });
   },
