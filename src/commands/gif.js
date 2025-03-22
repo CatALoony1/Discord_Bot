@@ -31,7 +31,7 @@ module.exports = {
 
             var search_url = "https://tenor.googleapis.com/v2/search?q=" + search_term + "&key=" +
                 apikey + "&client_key=" + clientkey + "&limit=" + lmt;
-            var gif = httpGetAsync(search_url,tenorCallback_search);
+            var gif = await httpGetAsync(search_url,tenorCallback_search);
             console.log(gif);
         } catch (error) {
             console.log(error);
@@ -42,7 +42,7 @@ module.exports = {
     },
 };
 
-function tenorCallback_search(responsetext)
+async function tenorCallback_search(responsetext)
 {
     var response_objects = JSON.parse(responsetext);
 
@@ -52,15 +52,15 @@ function tenorCallback_search(responsetext)
 
 }
 
-function httpGetAsync(theUrl, callback)
+async function httpGetAsync(theUrl, callback)
 {
     var xmlHttp = new XMLHttpRequest();
     var gif = undefined;
-    xmlHttp.onreadystatechange = function()
+    xmlHttp.onreadystatechange = async function()
     {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
         {
-            gif = callback(xmlHttp.responseText);
+            gif = await callback(xmlHttp.responseText);
         }
     }
     xmlHttp.open("GET", theUrl, true);
