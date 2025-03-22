@@ -64,17 +64,7 @@ module.exports = async (interaction) => {
             });
             if (level) {
                 if (targetUserObj.roles.cache.some(role => role.name === 'Bumper')) {
-                    let now = new Date();
-                    let lastbump = level.lastBump;
-                    let diffTime = Math.abs(now - lastbump);
-                    let diffHour = Math.floor(diffTime / (1000 * 60 * 60));
-                    if (diffHour >= 24) {
-                        let tempRole = interaction.guild.roles.cache.find(role => role.name === 'Bumper');
-                        await targetUserObj.roles.remove(tempRole);
-                        console.log(`Role Bumper was removed from user ${targetUserObj.user.tag}`);
-                    } else {
-                        xpToGive = Math.ceil(xpToGive * 1.1);
-                    }
+                    xpToGive = Math.ceil(xpToGive * 1.1);
                 };
                 console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (Quiz)`);
                 level.xp += xpToGive;
