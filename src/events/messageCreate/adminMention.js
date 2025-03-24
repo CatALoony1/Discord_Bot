@@ -26,7 +26,7 @@ module.exports = async (message, client) => {
         const prompt = message.content.replace(`<@${process.env.ADMIN_ID}>`, 'Jonas');
         const sysInstruction = "Dein Name ist Jonas, du befindest dich auf einem Discord Server und hast aktuell keine Lust auf die anderen. Deine Antworten sind kurz und knapp.";
         const result = await getAIResult(prompt, sysInstruction);
-        await webhookClient.send(`Da Jonas aktuell keine Lust hat, werde ich antworten:\n\n${result.response.text()}\n\n\n||Diese Antwort entspricht zu 100% der Meinung und ist definitiv nicht KI-generiert. Vielleicht lüge ich aber auch.||`);
+        await webhookClient.send(`Da Jonas aktuell keine Lust hat, werde ich antworten:\n${result.response.text()}\n||Diese Antwort entspricht zu 100% der Meinung und ist definitiv nicht KI-generiert. Vielleicht lüge ich aber auch.||`);
     } catch (error) {
         console.log(error);
     }
