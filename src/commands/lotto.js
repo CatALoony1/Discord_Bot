@@ -110,10 +110,8 @@ module.exports = {
             console.log(`user ${targetUserObj.user.tag} received ${xpToGive} XP`);
             fetchedLevel.xp += xpToGive;
             fetchedLevel.allxp += xpToGive;
-            fetchedLevel.messagexp += (xpToGive - bonusXP);
             fetchedLevel.thismonth += xpToGive;
             fetchedLevel.bonusclaimed += xpToGive;
-            fetchedLevel.messages += 1;
             fetchedLevel.lastMessage = Date.now();
             if (fetchedLevel.xp >= calculateLevelXp(fetchedLevel.level)) {
                 do {
