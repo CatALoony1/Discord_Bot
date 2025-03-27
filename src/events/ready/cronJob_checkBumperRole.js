@@ -3,7 +3,7 @@ const cron = require('node-cron');
 const Level = require('../../models/Level');
 
 module.exports = async (client) => {
-    cron.schedule('*/5 * * * *', async function () {
+    cron.schedule('*/6 * * * *', async function () {
         console.log(`VoiceXP-Job started...`);
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
