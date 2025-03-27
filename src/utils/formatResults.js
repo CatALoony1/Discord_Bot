@@ -11,7 +11,7 @@ function formatResults(upvotes = [], downvotes = []) {
   const totalVotes = upvotes.length + downvotes.length;
   const progressBarLength = 14;
   const filledSquares = Math.round((upvotes.length / totalVotes) * progressBarLength) || 0;
-  const emptySquares = progressBarLength - filledSquares || 0;
+  let emptySquares = progressBarLength - filledSquares || 0;
 
   if (!filledSquares && !emptySquares) {
     emptySquares = progressBarLength;
