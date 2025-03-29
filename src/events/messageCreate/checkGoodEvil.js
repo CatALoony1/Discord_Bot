@@ -77,6 +77,7 @@ module.exports = async (message, client) => {
     if (!message.inGuild() || message.author.bot || message.webhookId) return;
     if(message.content.includes('TESTJG1')){
         await client.user.setAvatar('./img/iglo_good.jpg');
+        let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
         await sleep(2000);
         await client.user.setAvatar('./img/iglo_neutral.jpg');
         return;
