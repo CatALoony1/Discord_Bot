@@ -1,12 +1,34 @@
 require('dotenv').config();
 const { EmbedBuilder, VoiceState } = require('discord.js');
+const { startVoiceXpJob, stopVoiceXpJob, isVoiceXpJobRunning } = require('../../utils/cronJob_voiceXp');
+
+async function checkVoice(client) {
+  await client.channels.cache.forEach(async (channel) => {
+    var isTwoMembers = false;
+    if (channel.type == 2 && channel.id != '1307820687599337602') {
+      if (channel.members.size >= 2) {
+        isTwoMembers = true;
+      }
+    }
+    if (isTwoMembers) {
+      if (!isVoiceXpJobRunning()) {
+        startVoiceXpJob(client);
+      }
+    } else {
+      if (isVoiceXpJobRunning()) {
+        stopVoiceXpJob();
+      }
+    }
+  });
+}
+
 /**
  * 
  * @param {VoiceState} oldState 
  * @param {VoiceState} newState 
  * @returns 
  */
-module.exports = async (oldState, newState) => {
+module.exports = async (oldState, newState, client) => {
   try {
     const targetChannel = newState.guild.channels.cache.get(process.env.LOG_ID) || (await newState.guild.channels.fetch(process.env.LOG_ID));
     if (!targetChannel) {
@@ -35,6 +57,7 @@ module.exports = async (oldState, newState) => {
       voiceUpdate.addFields({ name: 'nach:', value: `${newState.channel}` });
     }
     targetChannel.send({ embeds: [voiceUpdate] });
+    await checkVoice(client);
   } catch (error) {
     console.log(error);
   }

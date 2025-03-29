@@ -1,7 +1,7 @@
 require('dotenv').config();
 const cron = require('node-cron');
-const Config = require('../../models/Config');
-const giveXP = require('../../utils/giveXP');
+const Config = require('../models/Config');
+const giveXP = require('./giveXP');
 
 function getRandomXp(min, max) {
     min = Math.ceil(min);
@@ -9,8 +9,14 @@ function getRandomXp(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-module.exports = async (client) => {
-    cron.schedule('*/5 * * * *', async function () {
+let voiceXpJob = null;
+
+function startVoiceXpJob(client) {
+    if (voiceXpJob) {
+        console.log('VoiceXP-Job is already running.');
+        return;
+    }
+    voiceXpJob = cron.schedule('*/5 * * * *', async function () {
         console.log(`VoiceXP-Job started...`);
         var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
         let confQuery = {
@@ -33,4 +39,25 @@ module.exports = async (client) => {
         });
         console.log(`VoiceXP-Job finished`);
     });
+    console.log('VoiceXP-Job started.');
+}
+
+function stopVoiceXpJob() {
+    if (voiceXpJob) {
+        voiceXpJob.stop();
+        voiceXpJob = null;
+        console.log('VoiceXP-Job stopped.');
+    } else {
+        console.log('VoiceXP-Job is not running.');
+    }
+}
+
+function isVoiceXpJobRunning() {
+    return voiceXpJob !== null;
+}
+
+module.exports = {
+    startVoiceXpJob,
+    stopVoiceXpJob,
+    isVoiceXpJobRunning
 };
