@@ -25,7 +25,7 @@ module.exports = {
         label: rolenames[i],
         value: rolenames[i]
       };
-    };
+    }
     const selectMenu = new StringSelectMenuBuilder()
       .setCustomId('ageselect')
       .setPlaceholder('Alter auswählen')

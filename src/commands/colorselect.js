@@ -12,7 +12,7 @@ module.exports = {
    * @param {Object} param0 
    * @param {import('discord.js').ChatInputCommandInteraction} param0.interaction
    */
-  run: async ({ interaction, client }) => {
+  run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     const rolenames = ['Hering Silber',
       'Thunfisch Grau',

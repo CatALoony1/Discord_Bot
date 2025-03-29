@@ -20,7 +20,7 @@ module.exports = {
     )
     .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
-  run: async ({ interaction, client }) => {
+  run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     if (interaction.user.id != process.env.ADMIN_ID) {
       interaction.reply('Du darfst das nicht!!!!');
