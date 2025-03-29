@@ -3,6 +3,7 @@ require('dotenv').config();
 const Config = require('../../models/Config');
 const Begruessung = require('../../models/Begruessung');
 const getAIResult = require('../../utils/getAIResult');
+const BotState = require('../../models/BotState');
 
 /**
  * 
@@ -13,6 +14,14 @@ module.exports = async (message) => {
     if (!message.inGuild() || message.author.bot || !message.content.includes(process.env.KI_JONAS) || message.webhookId || message.channel.id != process.env.WELCOME_ID) return;
     console.log(`Admin Mentioned`);
     try {
+        const state = await BotState.findOne({
+            guildId: process.env.GUILD_ID,
+        });
+        if (state) {
+            if (state.state != 'neutral') {
+                return;
+            }
+        }
         const config = await Config.findOne({
             key: 'adminAway',
         });
