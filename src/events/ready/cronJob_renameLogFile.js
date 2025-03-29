@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 const fs = require('fs');
 
-module.exports = async (client) => {
+module.exports = async () => {
     cron.schedule('58 23 * * *', async function () {
         console.log(`RenameLogFile-Job started...`);
         if (fs.existsSync("./logs/bot.log")) {

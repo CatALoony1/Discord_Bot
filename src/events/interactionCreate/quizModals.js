@@ -44,7 +44,7 @@ module.exports = async (interaction) => {
         const falsch2 = interaction.fields.getTextInputValue('qaddbyadmin-falsch2');
         const falsch3 = interaction.fields.getTextInputValue('qaddbyadmin-falsch3');
         const [, , mentionedUserId] = interaction.customId.split('-');
-        const wrong = `${falsch1}/${falsch2}/${falsch3}`
+        const wrong = `${falsch1}/${falsch2}/${falsch3}`;
         const participants = [];
         participants[0] = mentionedUserId;
         const newQuestion = new Question({
