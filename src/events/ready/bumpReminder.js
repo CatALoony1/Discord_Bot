@@ -1,10 +1,11 @@
 const Discord = require("discord.js");
+const cron = require('node-cron');
 require('dotenv').config();
 const Bump = require('../../models/Bump');
 const getTenorGifById = require("../../utils/getTenorGifById");
 
 module.exports = async (client) => {
-  setInterval(async () => {
+  cron.schedule('*/5 * * * * *', async function () {
     const query = {
       guildId: process.env.GUILD_ID,
     };
@@ -41,5 +42,5 @@ module.exports = async (client) => {
     } catch (error) {
       console.log(error);
     }
-  }, 5000);
+  });
 };
