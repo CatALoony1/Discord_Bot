@@ -29,7 +29,7 @@ module.exports = {
         console.log(`Error saving updated xpMultiplier ${e}`);
         return;
       });
-      await interaction.editReply({ content: `XP-Multiplier auf ${amount} gesetzt!` })
+      await interaction.editReply({ content: `XP-Multiplier auf ${amount} gesetzt!` });
     } catch (error) {
       console.log(`There was an error when setting xpMultiplier: ${error}`);
     }

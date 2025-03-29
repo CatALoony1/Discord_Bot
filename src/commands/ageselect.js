@@ -12,7 +12,7 @@ module.exports = {
    * @param {Object} param0 
    * @param {import('discord.js').ChatInputCommandInteraction} param0.interaction
    */
-  run: async ({ interaction, client }) => {
+  run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     const rolenames = ['<18',
       '18-21',
@@ -44,7 +44,7 @@ module.exports = {
       .setStyle('Danger');
     const row = new ActionRowBuilder().addComponents(selectMenu);
     const row2 = new ActionRowBuilder().addComponents(button);
-    const reply = await interaction.reply({
+    await interaction.reply({
       content: 'Wähle ein Alter.',
       components: [row, row2],
     });

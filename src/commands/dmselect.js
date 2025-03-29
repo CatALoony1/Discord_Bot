@@ -24,7 +24,7 @@ module.exports = {
         value: rolenames[i],
         emoji: emojis[i]
       };
-    };
+    }
     const selectMenu = new StringSelectMenuBuilder()
       .setCustomId('dmselect')
       .setPlaceholder('DMs offen/geschlossen?')

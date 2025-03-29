@@ -30,7 +30,7 @@ module.exports = {
         let deletedMessages = await interaction.channel.bulkDelete(messages, true);
         actualNumer = deletedMessages.size;
       });
-      await interaction.editReply({ content: `Ich habe mal ${actualNumer} Nachrichten gelöscht!` })
+      await interaction.editReply({ content: `Ich habe mal ${actualNumer} Nachrichten gelöscht!` });
     } catch (error) {
       console.log(`There was an error when deleting Messages: ${error}`);
     }

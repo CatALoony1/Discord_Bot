@@ -63,7 +63,7 @@ module.exports = {
       if (level) {
         if (targetUserObj.roles.cache.some(role => role.name === 'Bumper')) {
           xpToGive = Math.ceil(xpToGive * 1.1);
-        };
+        }
         console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (command)`);
         level.xp += xpToGive;
         level.allxp += xpToGive;
