@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, InteractionContextType, PermissionFlagsBits } = require('discord.js');
-const giveXP = require('../utils/removeXP');
 const removeXP = require('../utils/removeXP');
 
 module.exports = {
