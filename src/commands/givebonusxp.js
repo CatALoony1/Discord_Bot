@@ -1,6 +1,5 @@
-const { SlashCommandBuilder, InteractionContextType, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
-const calculateLevelXp = require('../utils/calculateLevelXp');
-const Level = require('../models/Level');
+const { SlashCommandBuilder, InteractionContextType, PermissionFlagsBits } = require('discord.js');
+const giveXP = require('../utils/giveXP');
 
 const roles = new Map([[0, 'Landratte'],
 [1, 'Deckschrubber'],
@@ -55,83 +54,7 @@ module.exports = {
     const targetUserObj = await interaction.guild.members.fetch(targetUserId);
     var xpToGive = interaction.options.get('xpmenge').value;
     const reason = interaction.options.get('grund').value;
-    try {
-      const level = await Level.findOne({
-        userId: targetUserId,
-        guildId: interaction.guild.id,
-      });
-      if (level) {
-        if (targetUserObj.roles.cache.some(role => role.name === 'Bumper')) {
-          xpToGive = Math.ceil(xpToGive * 1.1);
-        }
-        console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (command)`);
-        level.xp += xpToGive;
-        level.allxp += xpToGive;
-        level.thismonth += xpToGive;
-        level.bonusclaimed += xpToGive;
-        level.lastMessage = Date.now();
-        if (level.xp >= calculateLevelXp(level.level)) {
-          level.xp = level.xp - calculateLevelXp(level.level);
-          level.level += 1;
-          console.log(`user ${targetUserObj.user.tag} reached level ${level.level}`);
-          let description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${level.level}** erreicht!⚓`;
-
-          if (roles.has(level.level)) {
-            let newRole = roles.get(level.level);
-            description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${level.level}** erreicht und bist somit zum ${newRole} aufgestiegen!⚓`;
-
-            for (const value of roles.values()) {
-              if (targetUserObj.roles.cache.some(role => role.name === value)) {
-                let tempRole = interaction.guild.roles.cache.find(role => role.name === value);
-                await interaction.guild.members.cache.get(targetUserObj.id).roles.remove(tempRole);
-                console.log(`Role ${value} was removed from user ${targetUserObj.user.tag}`);
-              }
-            }
-            let role = interaction.guild.roles.cache.find(role => role.name === newRole);
-            await interaction.guild.members.cache.get(targetUserObj.id).roles.add(role);
-            console.log(`Role ${newRole} was given to user ${targetUserObj.user.tag}`);
-            if (level.level === 1) {
-              let memberRole = interaction.guild.roles.cache.find(role => role.name === 'Mitglied');
-              await interaction.guild.members.cache.get(targetUserObj.id).roles.add(memberRole);
-              console.log(`Role Mitglied was given to user ${targetUserObj.user.tag}`);
-            }
-          }
-
-          const embed = new EmbedBuilder()
-            .setTitle('Glückwunsch!')
-            .setDescription(description)
-            .setThumbnail(targetUserObj.user.displayAvatarURL({ format: 'png', dynamic: true }))
-            .setColor(0x0033cc);
-          interaction.channel.send({ embeds: [embed] });
-        }
-        await level.save().catch((e) => {
-          console.log(`Error saving updated level ${e}`);
-          return;
-        });
-        await interaction.editReply(`Nutzer ${targetUserObj} hat ${xpToGive} Bonus XP erhalten!\nGrund: ${reason}`);
-      } else {
-        console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (command)`);
-        console.log(`new user ${targetUserObj.user.tag} added to database`);
-        const newLevel = new Level({
-          userId: targetUserObj.user.id,
-          guildId: interaction.guild.id,
-          xp: xpToGive,
-          allxp: xpToGive,
-          messages: 0,
-          lastMessage: Date.now(),
-          userName: targetUserObj.user.tag,
-          messagexp: 0,
-          voicexp: 0,
-          voicetime: 0,
-          thismonth: xpToGive,
-          bonusclaimed: xpToGive,
-          quizadded: 1
-        });
-        await newLevel.save();
-        await interaction.editReply(`Nutzer ${targetUserObj} hat ${xpToGive} Bonus XP erhalten!\nGrund: ${reason}`);
-      }
-    } catch (error) {
-      console.log(`Error giving bonus xp: ${error}`);
-    }
+    giveXP(targetUserObj, xpToGive, xpToGive, interaction.channel, false, false, false);
+    await interaction.editReply(`Nutzer ${targetUserObj} hat ${xpToGive} Bonus XP erhalten!\nGrund: ${reason}`);
   },
 };

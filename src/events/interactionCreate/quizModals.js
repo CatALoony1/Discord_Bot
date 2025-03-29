@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const Question = require('../../models/QuizQuestion');
-const calculateLevelXp = require('../../utils/calculateLevelXp');
-const Level = require('../../models/Level');
+const giveXP = require('../../utils/giveXP');
 
 const roles = new Map([[0, 'Landratte'],
 [1, 'Deckschrubber'],
@@ -57,81 +56,7 @@ module.exports = async (interaction) => {
         var targetChannel = interaction.guild.channels.cache.get(process.env.QUIZ_ID) || (await interaction.guild.channels.fetch(process.env.QUIZ_ID));
         const targetUserObj = await interaction.guild.members.fetch(mentionedUserId);
         var xpToGive = 40;
-        try {
-            const level = await Level.findOne({
-                userId: mentionedUserId,
-                guildId: interaction.guild.id,
-            });
-            if (level) {
-                if (targetUserObj.roles.cache.some(role => role.name === 'Bumper')) {
-                    xpToGive = Math.ceil(xpToGive * 1.1);
-                }
-                console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (Quiz)`);
-                level.xp += xpToGive;
-                level.allxp += xpToGive;
-                level.thismonth += xpToGive;
-                level.bonusclaimed += xpToGive;
-                level.lastMessage = Date.now();
-                level.quizadded += 1;
-                if (level.xp >= calculateLevelXp(level.level)) {
-                    level.xp = level.xp - calculateLevelXp(level.level);
-                    level.level += 1;
-                    console.log(`user ${targetUserObj.user.tag} reached level ${level.level}`);
-                    let description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${level.level}** erreicht!⚓`;
-                    if (roles.has(level.level)) {
-                        let newRole = roles.get(level.level);
-                        description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${level.level}** erreicht und bist somit zum ${newRole} aufgestiegen!⚓`;
-
-                        for (const value of roles.values()) {
-                            if (targetUserObj.roles.cache.some(role => role.name === value)) {
-                                let tempRole = interaction.guild.roles.cache.find(role => role.name === value);
-                                await interaction.guild.members.cache.get(targetUserObj.id).roles.remove(tempRole);
-                                console.log(`Role ${value} was removed from user ${targetUserObj.user.tag}`);
-                            }
-                        }
-                        let role = interaction.guild.roles.cache.find(role => role.name === newRole);
-                        await interaction.guild.members.cache.get(targetUserObj.id).roles.add(role);
-                        console.log(`Role ${newRole} was given to user ${targetUserObj.user.tag}`);
-                        if (level.level === 1) {
-                            let memberRole = interaction.guild.roles.cache.find(role => role.name === 'Mitglied');
-                            await interaction.guild.members.cache.get(targetUserObj.id).roles.add(memberRole);
-                            console.log(`Role Mitglied was given to user ${targetUserObj.user.tag}`);
-                        }
-                    }
-                    const embed = new Discord.EmbedBuilder()
-                        .setTitle('Glückwunsch!')
-                        .setDescription(description)
-                        .setThumbnail(targetUserObj.user.displayAvatarURL({ format: 'png', dynamic: true }))
-                        .setColor(0x0033cc);
-                    targetChannel.send({ embeds: [embed] });
-                }
-                await level.save().catch((e) => {
-                    console.log(`Error saving updated level ${e}`);
-                    return;
-                });
-            } else {
-                console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (Quiz)`);
-                console.log(`new user ${targetUserObj.user.tag} added to database`);
-                const newLevel = new Level({
-                    userId: targetUserObj.user.id,
-                    guildId: interaction.guild.id,
-                    xp: xpToGive,
-                    allxp: xpToGive,
-                    messages: 0,
-                    lastMessage: Date.now(),
-                    userName: targetUserObj.user.tag,
-                    messagexp: 0,
-                    voicexp: 0,
-                    voicetime: 0,
-                    thismonth: xpToGive,
-                    bonusclaimed: xpToGive,
-                    quizadded: 1
-                });
-                await newLevel.save();
-            }
-        } catch (error) {
-            console.log(`Error giving bonus xp: ${error}`);
-        }
+        giveXP(targetUserObj, xpToGive, xpToGive, targetChannel, false, false, true);
         interaction.editReply('Frage eingetragen!');
     }
 };
