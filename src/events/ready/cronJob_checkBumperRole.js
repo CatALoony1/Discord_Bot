@@ -25,11 +25,11 @@ module.exports = async (client) => {
                             await member.roles.remove(tempRole);
                             console.log(`Role Bumper was removed from user ${member.user.tag}`);
                         }
-                    };
+                    }
                 }
             });
         } catch (error) {
             console.log(error);
         }
     });
-}
+};

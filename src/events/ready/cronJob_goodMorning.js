@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
 
@@ -23,7 +22,7 @@ module.exports = async (client) => {
       verschlafen.start();
     }
   });
-}
+};
 
 /*
   * * * * * *

@@ -11,7 +11,7 @@ var install_hook_to = function (obj) {
             meth_ref;
 
         // Make sure method exists
-        if (!(Object.prototype.toString.call(self[_meth_name]) === '[object Function]')) {
+        if (Object.prototype.toString.call(self[_meth_name]) !== '[object Function]') {
             throw new Error('Invalid method: ' + _meth_name);
         }
 

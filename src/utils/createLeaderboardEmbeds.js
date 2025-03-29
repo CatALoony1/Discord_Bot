@@ -39,20 +39,22 @@ async function createLeaderboardEmbeds(page, interaction) {
     }
     let userObj = await interaction.guild.members.fetch(fetchedLevel[i].userId);
     let value;
+    var time;
     if(fetchedLevel[i].voicetime >= 60){
       var h = 0;
       var m = fetchedLevel[i].voicetime;
-      while(true){
+      var isHour = true;
+      while(isHour){
         if(m >= 60){
           m -= 60;
           h += 1;
         }else{
-          break;
+          isHour = false;
         }
       }
-      var time = `${h}h ${m}m`;
+      time = `${h}h ${m}m`;
     }else{
-      var time = `${fetchedLevel[i].voicetime}m`;
+      time = `${fetchedLevel[i].voicetime}m`;
     }
     if (i === max - 1 || i === fetchedLevel.length - 1) {
       value = `Level: ${fetchedLevel[i].level} XP: ${fetchedLevel[i].allxp}\n Nachrichten: ${fetchedLevel[i].messages} Voice Zeit: ${time}`;

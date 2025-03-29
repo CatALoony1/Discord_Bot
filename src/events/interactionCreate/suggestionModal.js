@@ -54,6 +54,6 @@ module.exports = async (interaction) => {
             content: `${interaction.user} Vorschlag erstellt!`,
             embeds: [suggestionEmbed],
             components: [firstRow, secondRow]
-        })
+        });
     }
 };

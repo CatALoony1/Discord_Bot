@@ -1,11 +1,9 @@
-require('dotenv').config();
 const cron = require('node-cron');
 const fs = require('fs');
 
 module.exports = async (client) => {
     cron.schedule('58 23 * * *', async function () {
         console.log(`RenameLogFile-Job started...`);
-        var targetChannel = await client.channels.fetch(process.env.LOG_ID);
         if (fs.existsSync("./logs/bot.log")) {
             var d = new Date();
             var newFilename = `./logs/bot.log${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}`;
@@ -15,7 +13,7 @@ module.exports = async (client) => {
         }
         console.log(`RenameLogFile-Job finished`);
     });
-}
+};
 
 /*
   * * * * * *

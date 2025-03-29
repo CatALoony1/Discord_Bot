@@ -18,7 +18,6 @@ module.exports = {
 
     await interaction.deferReply();
     const targetUserId = interaction.member.id;
-    const targetUserObj = await interaction.guild.members.fetch(targetUserId);
     const fetchedLevel = await Level.findOne({
       userId: targetUserId,
       guildId: interaction.guild.id,
@@ -49,16 +48,17 @@ module.exports = {
       }
     });
     let currentRank = allLevels.findIndex((lvl) => lvl.userId === targetUserId) + 1;
+    var time;
     if (fetchedLevel.voicetime >= 60) {
       var h = 0;
       var m = fetchedLevel.voicetime;
-      var time;
-      while (true) {
+      var isHour = true;
+      while (isHour) {
         if (m >= 60) {
           m -= 60;
           h += 1;
         } else {
-          break;
+          isHour = false;
         }
       }
       time = `${h}h ${m}m`;
@@ -71,7 +71,7 @@ module.exports = {
     });
     var lottospiele = 0;
     if (lotto && lotto.length > 0) {
-    lottospiele = lotto.length;
+      lottospiele = lotto.length;
     }
     const messageEdited = new EmbedBuilder();
     messageEdited.setColor(0x0033cc);

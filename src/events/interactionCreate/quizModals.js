@@ -19,7 +19,7 @@ module.exports = async (interaction) => {
     if (!interaction.isModalSubmit()) return;
     if (interaction.customId === `qvorschlag-${interaction.user.id}`) {
         const targetUser = await interaction.guild.members.fetch(process.env.ADMIN_ID);
-        await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral })
+        await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
         const frage = interaction.fields.getTextInputValue('qvorschlag-frage');
         const richtig = interaction.fields.getTextInputValue('qvorschlag-richtig');
         const falsch1 = interaction.fields.getTextInputValue('qvorschlag-falsch1');
@@ -37,13 +37,13 @@ module.exports = async (interaction) => {
         await targetUser.send({ embeds: [vorschlag] });
         interaction.editReply('Frage abgegeben!');
     } else if (interaction.customId.includes(`qaddbyadmin-${interaction.user.id}`)) {
-        await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral })
+        await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
         const frage = interaction.fields.getTextInputValue('qaddbyadmin-frage');
         const richtig = interaction.fields.getTextInputValue('qaddbyadmin-richtig');
         const falsch1 = interaction.fields.getTextInputValue('qaddbyadmin-falsch1');
         const falsch2 = interaction.fields.getTextInputValue('qaddbyadmin-falsch2');
         const falsch3 = interaction.fields.getTextInputValue('qaddbyadmin-falsch3');
-        const [type, adminId, mentionedUserId] = interaction.customId.split('-');
+        const [, , mentionedUserId] = interaction.customId.split('-');
         const wrong = `${falsch1}/${falsch2}/${falsch3}`
         const participants = [];
         participants[0] = mentionedUserId;
@@ -65,7 +65,7 @@ module.exports = async (interaction) => {
             if (level) {
                 if (targetUserObj.roles.cache.some(role => role.name === 'Bumper')) {
                     xpToGive = Math.ceil(xpToGive * 1.1);
-                };
+                }
                 console.log(`user ${targetUserObj.user.tag} received ${xpToGive} Bonus XP (Quiz)`);
                 level.xp += xpToGive;
                 level.allxp += xpToGive;

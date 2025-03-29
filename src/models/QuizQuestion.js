@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
 const { randomUUID } = require('crypto');
-const { StringSelectMenuBuilder } = require('discord.js');
 
 const quizQuestionSchema = new Schema({
     questionId: {

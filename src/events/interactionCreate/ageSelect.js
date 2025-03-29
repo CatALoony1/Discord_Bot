@@ -24,7 +24,7 @@ module.exports = async (interaction) => {
         if (interaction.member.roles.cache.some(role => role.name === interaction.values[0])) {
           await interaction.reply({ content: `Du besitzt das Alter ${interaction.values[0]} bereits.`, flags: MessageFlags.Ephemeral });
           return;
-        };
+        }
         for (let i = 0; i < rolenames.length; i++) {
           if (interaction.member.roles.cache.some(role => role.name === rolenames[i])) {
             let tempRole = interaction.guild.roles.cache.find(role => role.name === rolenames[i]);

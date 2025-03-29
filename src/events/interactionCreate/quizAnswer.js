@@ -5,7 +5,7 @@ module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('quiz')) return;
     try {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        const [type, rw, answer, id] = interaction.customId.split('_');
+        const [, rw, answer, id] = interaction.customId.split('_');
         const fetchedQuestion = await Questions.findOne({
             questionId: id,
         });

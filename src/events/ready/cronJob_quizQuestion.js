@@ -52,7 +52,7 @@ module.exports = async (client) => {
                 var count = 0;
                 for (let i = 0; i < 4; i++) {
                     if (i === rightAnswerPosition) {
-                        answers[i] = fetchedQuestions[questionIndex].right
+                        answers[i] = fetchedQuestions[questionIndex].right;
                     } else {
                         answers[i] = wrongAnswers[count];
                         count += 1;
@@ -76,7 +76,7 @@ module.exports = async (client) => {
                 }
                 const aButton = new Discord.ButtonBuilder()
                     .setLabel('A')
-                    .setStyle(Discord.ButtonStyle.Primary)
+                    .setStyle(Discord.ButtonStyle.Primary);
                 if (rightAnswerPosition === 0) {
                     aButton.setCustomId(`quiz_right_A_${fetchedQuestions[questionIndex].questionId}`);
                     rightChar = 'A';
@@ -85,7 +85,7 @@ module.exports = async (client) => {
                 }
                 const bButton = new Discord.ButtonBuilder()
                     .setLabel('B')
-                    .setStyle(Discord.ButtonStyle.Primary)
+                    .setStyle(Discord.ButtonStyle.Primary);
                 if (rightAnswerPosition === 1) {
                     bButton.setCustomId(`quiz_right_B_${fetchedQuestions[questionIndex].questionId}`);
                     rightChar = 'B';
@@ -94,7 +94,7 @@ module.exports = async (client) => {
                 }
                 const cButton = new Discord.ButtonBuilder()
                     .setLabel('C')
-                    .setStyle(Discord.ButtonStyle.Primary)
+                    .setStyle(Discord.ButtonStyle.Primary);
                 if (rightAnswerPosition === 2) {
                     cButton.setCustomId(`quiz_right_C_${fetchedQuestions[questionIndex].questionId}`);
                     rightChar = 'C';
@@ -103,7 +103,7 @@ module.exports = async (client) => {
                 }
                 const dButton = new Discord.ButtonBuilder()
                     .setLabel('D')
-                    .setStyle(Discord.ButtonStyle.Primary)
+                    .setStyle(Discord.ButtonStyle.Primary);
                 if (rightAnswerPosition === 3) {
                     dButton.setCustomId(`quiz_right_D_${fetchedQuestions[questionIndex].questionId}`);
                     rightChar = 'D';
@@ -114,7 +114,7 @@ module.exports = async (client) => {
                 targetChannel.send({
                     embeds: [questionEmbed],
                     components: [firstRow]
-                })
+                });
 
                 const fetchedQuestion = await Questions.findOne({
                     questionId: fetchedQuestions[questionIndex].questionId,
@@ -133,4 +133,4 @@ module.exports = async (client) => {
             console.log(error);
         }
     });
-}
+};

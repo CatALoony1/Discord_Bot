@@ -70,7 +70,7 @@ module.exports = async (message) => {
     if (level) {
       if (message.member.roles.cache.some(role => role.name === 'Bumper')) {
         xpToGive = Math.ceil(xpToGive * 1.1);
-      };
+      }
       console.log(`user ${message.author.tag} received ${xpToGive} XP`);
       level.xp += xpToGive;
       level.allxp += xpToGive;

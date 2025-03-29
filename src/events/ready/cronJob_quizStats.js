@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonStyle, ButtonBuilder, EmbedBuilder } = require('discord.js');
 const createQuizLeaderboardEmbeds = require("../../utils/createQuizLeaderboardEmbeds");
 const cron = require('node-cron');
-const QuizQuestions = require('../../models/QuizQuestion')
+const QuizQuestions = require('../../models/QuizQuestion');
 
 module.exports = async (client) => {
     cron.schedule('11 1 * * 7', async function () {
@@ -25,7 +25,7 @@ module.exports = async (client) => {
             await targetChannel.send({
                 embeds: [embed],
                 components: [firstRow]
-            })
+            });
 
             const fetchedQuestions = await QuizQuestions.find({
                 asked: 'N',

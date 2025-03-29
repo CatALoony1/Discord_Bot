@@ -9,7 +9,7 @@ const getAIResult = require('../../utils/getAIResult');
  * @param {Message} message 
  * @returns 
  */
-module.exports = async (message, client) => {
+module.exports = async (message) => {
     if (!message.inGuild() || message.author.bot || !message.content.includes(process.env.ADMIN_ID) || message.webhookId || message.channel.id != process.env.WELCOME_ID) return;
     console.log(`Admin Mentioned`);
     try {

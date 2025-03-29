@@ -8,10 +8,10 @@ const rolenames = ['League of Legends',
   'Garry\'s Mod'];
 
 module.exports = async (interaction) => {
+  var removedRoles = [];
   if (interaction.isStringSelectMenu()) {
     if (interaction.customId == 'gameselect') {
       var addedRoles = [];
-      var removedRoles = [];
       if (interaction.values.length == 0) {
         for (let i = 0; i < rolenames.length; i++) {
           if (interaction.member.roles.cache.some(role => role.name === rolenames[i])) {
@@ -36,7 +36,7 @@ module.exports = async (interaction) => {
             console.log(`Role ${rolenames[j]} was removed from user ${interaction.member.user.tag}`);
             removedRoles[removedRoles.length] = rolenames[j];
           }
-        };
+        }
       }
       if (addedRoles.length != 0 && removedRoles.length != 0) {
         await interaction.reply({ content: `Die Spiele ${addedRoles} wurde dir zugewiesen.\nDie Spiele ${removedRoles} wurde entfernt.`, flags: MessageFlags.Ephemeral });
@@ -51,7 +51,6 @@ module.exports = async (interaction) => {
   }
   else if (interaction.isButton()) {
     if (interaction.customId == 'removeGames') {
-      var removedRoles = [];
       for (let i = 0; i < rolenames.length; i++) {
         if (interaction.member.roles.cache.some(role => role.name === rolenames[i])) {
           let tempRole = interaction.guild.roles.cache.find(role => role.name === rolenames[i]);

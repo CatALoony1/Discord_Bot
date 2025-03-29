@@ -1,6 +1,7 @@
 const { Message } = require('discord.js');
 const BotState = require('../../models/BotState');
 const getAIResult = require('../../utils/getAIResult');
+const getTenorGifById = require('../../utils/getTenorGifById');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -92,7 +93,7 @@ module.exports = async (message, client) => {
             await sleep(delay);
             newMessage = await newMessage.reply(`1`);
             await sleep(delay);
-            const boom = getRandom(1, 4)
+            const boom = getRandom(1, 4);
             if (boom == 1) {
                 newMessage = await newMessage.reply(`BOOM💥`);
                 if (getRandom(1, 5) == 5) {

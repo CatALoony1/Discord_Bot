@@ -29,7 +29,7 @@ module.exports = async (client) => {
         var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
         let confQuery = {
             key: "xpMultiplier"
-        }
+        };
         let conf = await Config.findOne(confQuery);
         let multiplier = 1;
         if (conf) {
@@ -49,7 +49,7 @@ module.exports = async (client) => {
                             if (level) {
                                 if (member.roles.cache.some(role => role.name === 'Bumper')) {
                                     xpToGive = Math.ceil(xpToGive * 1.1);
-                                };
+                                }
                                 console.log(`user ${member.user.tag} received ${xpToGive} XP (Voice)`);
                                 level.xp += xpToGive;
                                 level.allxp += xpToGive;
@@ -121,4 +121,4 @@ module.exports = async (client) => {
         });
         console.log(`VoiceXP-Job finished`);
     });
-}
+};

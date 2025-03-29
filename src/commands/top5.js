@@ -19,7 +19,7 @@ module.exports = {
       guildId: interaction.guild.id,
     });
     if (fetchedLevel.length === 0) {
-      console.log('ERROR: Niemand auf dem Server hat Level')
+      console.log('ERROR: Niemand auf dem Server hat Level');
       return;
     }
     var oldUsers = [];

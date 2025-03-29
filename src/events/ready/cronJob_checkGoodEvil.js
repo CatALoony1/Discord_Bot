@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
+const BotState = require('../../models/BotState');
 
 /**
  * 
@@ -9,9 +10,8 @@ const cron = require('node-cron');
  */
 module.exports = async (client) => {
   cron.schedule('5 0 * * *', async function () { // 7 Uhr
-    const guild = await client.guilds.cache.get(process.env.GUILD_ID);
     const state = await BotState.findOne({
-      guildId: guild,
+      guildId: process.env.GUILD_ID,
     });
     if (state) {
       if (state.state != 'neutral') {
@@ -34,7 +34,7 @@ module.exports = async (client) => {
     } else {
       console.log(`Botstate entry created`);
       const newBotstate = new BotState({
-        guildId: message.guild.id,
+        guildId: process.env.GUILD_ID,
         evilCount: 0,
         loveCount: 0,
         state: 'neutral'
@@ -42,7 +42,7 @@ module.exports = async (client) => {
       await newBotstate.save();
     }
   });
-}
+};
 
 /*
   * * * * * *

@@ -1,5 +1,6 @@
 require('dotenv').config();
-const { EmbedBuilder, GuildMember } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
+const getTenorGifById = require('../../utils/getTenorGifById');
 module.exports = async (oldMember, newMember) => {
     const oldStatus = oldMember.premiumSince;
     const newStatus = newMember.premiumSince;

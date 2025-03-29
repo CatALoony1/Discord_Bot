@@ -8,7 +8,7 @@ async function createQuizLeaderboardEmbeds(page, client) {
   });
 
   if (fetchedStats.length === 0) {
-    console.log('ERROR: Niemand auf dem Server hat Level')
+    console.log('ERROR: Niemand auf dem Server hat Level');
     return;
   }
   var oldUsers = [];

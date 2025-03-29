@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { EmbedBuilder, GuildMember } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = async (oldMember, newMember) => {
     try {
         const targetChannel = newMember.guild.channels.cache.get(process.env.LOG_ID) || (await newMember.guild.channels.fetch(process.env.LOG_ID));

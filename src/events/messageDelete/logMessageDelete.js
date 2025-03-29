@@ -22,7 +22,7 @@ module.exports = async (message, client) => {
         limit: 1,
       });
       const firstEntry = logs.entries.first();
-      const { executorId, target, targetId } = firstEntry;
+      const { executorId } = firstEntry;
       user = await client.users.fetch(executorId);
       if (user.bot || message.webhookId) return;
     } else {

@@ -6,7 +6,7 @@ module.exports = async (client) => {
     var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
     targetChannel.send(`Der Captain wünscht euch ein schönes und erfolgreiches neues Jahr!`);
   });
-}
+};
 
 /*
   * * * * * *

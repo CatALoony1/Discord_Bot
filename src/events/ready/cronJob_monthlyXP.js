@@ -2,7 +2,7 @@ const cron = require('node-cron');
 const Level = require('../../models/Level');
 require('dotenv').config();
 
-module.exports = async (client) => {
+module.exports = async () => {
   cron.schedule('0 0 1 * *', async function () {
     console.log('Started deleting monthly XP');
     try {
@@ -12,14 +12,14 @@ module.exports = async (client) => {
       fetchedLevel.forEach(async level => {
         level.lastmonth = level.thismonth;
         level.thismonth = 0;
-        await level.save()
+        await level.save();
       });
     } catch (error) {
       console.log(`Error deleting monthly xp: ${error}`);
     }
     console.log('Finished deleting monthly XP');
   });
-}
+};
 
 /*
   * * * * * *

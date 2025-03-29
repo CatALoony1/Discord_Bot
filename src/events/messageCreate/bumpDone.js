@@ -22,7 +22,7 @@ module.exports = async (message) => {
         if (!member.roles.cache.some(role => role.name === 'Bumper')) {
           const role = message.guild.roles.cache.find(role => role.name === 'Bumper');
           await member.roles.add(role);
-        };
+        }
         const embed = new EmbedBuilder()
           .setTitle('Dankeschön für deine Untersützung!❤️')
           .setDescription(`Danke <@${userid}>, dass du den Server gebumpt hast. Um unsere Dankbarkeit zu zeigen bekommst du für 24 Stunden die Rolle **Bumper**, durch diese Rolle erhälst du einen Bonus von 10% auf jegliche erhaltene Erfahrung!`)
@@ -39,7 +39,7 @@ module.exports = async (message) => {
           bumpEntry.endTime = Date.now() + 7200000;
           bumpEntry.reminded = 'N';
           if (bumpEntry.remindedId) {
-            remindedmessage = await message.channel.messages.fetch(bumpEntry.remindedId);
+            const remindedmessage = await message.channel.messages.fetch(bumpEntry.remindedId);
             await remindedmessage.delete();
             bumpEntry.remindedId = undefined;
           }

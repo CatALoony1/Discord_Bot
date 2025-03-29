@@ -9,7 +9,7 @@ module.exports = async (interaction) => {
         if (!type || !suggestionId || !action) return;
         if (type !== 'suggestion') return;
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        const targetSuggestion = await Suggestion.findOne({ suggestionId })
+        const targetSuggestion = await Suggestion.findOne({ suggestionId });
         const targetMessage = await interaction.channel.messages.fetch(targetSuggestion.messageId);
         const targetMessageEmbed = targetMessage.embeds[0];
         if (action === 'approve') {
@@ -25,7 +25,7 @@ module.exports = async (interaction) => {
             targetMessage.edit({
                 embeds: [targetMessageEmbed],
                 components: [],
-            })
+            });
             return;
         }
         if (action === 'reject') {
@@ -41,7 +41,7 @@ module.exports = async (interaction) => {
             targetMessage.edit({
                 embeds: [targetMessageEmbed],
                 components: [],
-            })
+            });
             return;
         }
         if (action === 'upvote') {
