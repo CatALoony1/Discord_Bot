@@ -1,18 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const Lottozahlen = require('../models/Lottozahlen');
 const giveXP = require('../utils/giveXP');
-
-const roles = new Map([[0, 'Landratte'],
-[1, 'Deckschrubber'],
-[5, 'Leichtmatrose'],
-[10, 'Krabbenfänger'],
-[15, 'Steuermann'],
-[20, 'Fischfänger'],
-[25, 'Haijäger'],
-[30, 'Navigationsmeister'],
-[35, 'Schatzsucher'],
-[40, 'Tiefseetaucher']
-]);
+const Level = require('../models/Level');
 
 module.exports = {
     data: new SlashCommandBuilder()

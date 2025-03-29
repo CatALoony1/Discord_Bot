@@ -1,5 +1,6 @@
 const Level = require('../models/Level.js');
 const { EmbedBuilder } = require('discord.js');
+const calculateLevelXp = require('../utils/calculateLevelXp.js');
 
 const roles = new Map([[0, 'Landratte'],
 [1, 'Deckschrubber'],
@@ -73,7 +74,7 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
                         .setThumbnail(member.user.displayAvatarURL({ format: 'png', dynamic: true }))
                         .setColor(0x0033cc);
                     channel.send({ embeds: [embed] });
-                } while (fetchedLevel.xp >= calculateLevelXp(fetchedLevel.level));
+                } while (level.xp >= calculateLevelXp(level.level));
             }
             await level.save().catch((e) => {
                 console.log(`Error saving updated level ${e}`);

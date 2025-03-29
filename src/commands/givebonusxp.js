@@ -1,18 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, PermissionFlagsBits } = require('discord.js');
 const giveXP = require('../utils/giveXP');
 
-const roles = new Map([[0, 'Landratte'],
-[1, 'Deckschrubber'],
-[5, 'Leichtmatrose'],
-[10, 'Krabbenfänger'],
-[15, 'Steuermann'],
-[20, 'Fischfänger'],
-[25, 'Haijäger'],
-[30, 'Navigationsmeister'],
-[35, 'Schatzsucher'],
-[40, 'Tiefseetaucher']
-]);
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('givebonusxp')

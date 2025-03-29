@@ -4,18 +4,6 @@ const cron = require('node-cron');
 const Config = require('../../models/Config');
 const giveXP = require('../../utils/giveXP');
 
-const roles = new Map([[0, 'Landratte'],
-[1, 'Deckschrubber'],
-[5, 'Leichtmatrose'],
-[10, 'Krabbenfänger'],
-[15, 'Steuermann'],
-[20, 'Fischfänger'],
-[25, 'Haijäger'],
-[30, 'Navigationsmeister'],
-[35, 'Schatzsucher'],
-[40, 'Tiefseetaucher']
-]);
-
 function getRandomXp(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -39,7 +27,7 @@ module.exports = async (client) => {
                 if (channel.members.size >= 2) {
                     channel.members.forEach(async (member) => {
                         let xpToGive = 5 * getRandomXp(1, 5) * multiplier;
-                        giveXP(member, xpToGive, 0, channel, false, true, false);
+                        giveXP(member, xpToGive, 0, targetChannel, false, true, false);
                     });
                 }
             }
