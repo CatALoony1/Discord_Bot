@@ -44,11 +44,11 @@ module.exports = async (message) => {
   if (messageLength == 69) {
     bonusXP += 69;
   } else if (messageLength == 666) {
-    bonusXP += 66;
+    bonusXP += 666;
   } else if (messageLength >= 1500) {
-    bonusXP += 100;
+    bonusXP += 200;
     if (messageLength >= 3000) {
-      bonusXP += 150;
+      bonusXP += 500;
     }
   }
   bonusWordList.forEach(word => {
