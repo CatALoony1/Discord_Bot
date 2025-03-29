@@ -3,15 +3,15 @@ const { EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('./calculateLevelXp.js');
 
 const roles = new Map([[0, 'Landratte'],
-[1, 'Deckschrubber'],
-[5, 'Leichtmatrose'],
-[10, 'Krabbenfänger'],
-[15, 'Steuermann'],
-[20, 'Fischfänger'],
-[25, 'Haijäger'],
-[30, 'Navigationsmeister'],
-[35, 'Schatzsucher'],
-[40, 'Tiefseetaucher']
+[4, 'Deckschrubber'],
+[9, 'Leichtmatrose'],
+[14, 'Krabbenfänger'],
+[19, 'Steuermann'],
+[24, 'Fischfänger'],
+[29, 'Haijäger'],
+[34, 'Navigationsmeister'],
+[39, 'Schatzsucher'],
+[44, 'Tiefseetaucher']
 ]);
 
 async function removeXP(member, xpToRemove, channel) {
@@ -61,6 +61,7 @@ async function removeXP(member, xpToRemove, channel) {
                 return;
             });
         }
+        return xpToRemove;
     } catch (error) {
         console.log(error);
     }

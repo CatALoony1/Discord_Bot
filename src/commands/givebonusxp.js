@@ -42,7 +42,7 @@ module.exports = {
     const targetUserObj = await interaction.guild.members.fetch(targetUserId);
     var xpToGive = interaction.options.get('xpmenge').value;
     const reason = interaction.options.get('grund').value;
-    giveXP(targetUserObj, xpToGive, xpToGive, interaction.channel, false, false, false);
+    xpToGive = giveXP(targetUserObj, xpToGive, xpToGive, interaction.channel, false, false, false);
     await interaction.editReply(`Nutzer ${targetUserObj} hat ${xpToGive} Bonus XP erhalten!\nGrund: ${reason}`);
   },
 };

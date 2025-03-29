@@ -110,6 +110,7 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
             }
             await newLevel.save();
         }
+        return xpToGive;
     } catch (error) {
         console.log(error);
     }
