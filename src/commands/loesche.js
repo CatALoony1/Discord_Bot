@@ -32,7 +32,7 @@ module.exports = {
       });
       await interaction.editReply({ content: `Ich habe mal ${actualNumer} Nachrichten gelöscht!` });
     } catch (error) {
-      console.log(`There was an error when deleting Messages: ${error}`);
+      console.log(error);
     }
   },
 };

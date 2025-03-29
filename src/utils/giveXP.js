@@ -111,7 +111,7 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
             await newLevel.save();
         }
     } catch (error) {
-        console.log(`Error giving xp: ${error}`);
+        console.log(error);
     }
 }
 

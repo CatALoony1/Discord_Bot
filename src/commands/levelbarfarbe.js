@@ -40,7 +40,7 @@ module.exports = {
           await interaction.reply({ content: `Du bist noch nicht in der DB, chatte mal bisschen.`, flags: MessageFlags.Ephemeral });
         }
       } catch (error) {
-        console.log(`Error giving xp: ${error}`);
+        console.log(error);
       }
     } else {
       await interaction.reply({ content: `Der eingegebene Wert muss ein Hex-Farbcde sein Bsp.: #1f7da2`, flags: MessageFlags.Ephemeral });

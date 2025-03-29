@@ -31,7 +31,7 @@ module.exports = {
       });
       await interaction.editReply({ content: `XP-Multiplier auf ${amount} gesetzt!` });
     } catch (error) {
-      console.log(`There was an error when setting xpMultiplier: ${error}`);
+      console.log(error);
     }
   },
 };

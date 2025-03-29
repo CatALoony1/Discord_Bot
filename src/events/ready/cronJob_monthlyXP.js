@@ -15,7 +15,7 @@ module.exports = async () => {
         await level.save();
       });
     } catch (error) {
-      console.log(`Error deleting monthly xp: ${error}`);
+      console.log(error);
     }
     console.log('Finished deleting monthly XP');
   });

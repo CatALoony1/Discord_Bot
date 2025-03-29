@@ -71,6 +71,9 @@ const levelSchema = new Schema({
   removedxp: {
     type: Number,
     default: 0,
+  },
+  geburtstag: {
+    type: Date,
   }
 });
 

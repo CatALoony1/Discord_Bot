@@ -62,7 +62,7 @@ async function removeXP(member, xpToRemove, channel) {
             });
         }
     } catch (error) {
-        console.log(`Error giving xp: ${error}`);
+        console.log(error);
     }
 }
 
