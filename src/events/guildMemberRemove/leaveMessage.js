@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { EmbedBuilder } = require('discord.js');
 const getTenorGifById = require('../../utils/getTenorGifById');
+const { letterEmojiMap } = require('../../utils/letterEmojiMap');
 
 /**
  * 
@@ -28,12 +29,12 @@ module.exports = async (guildMember) => {
                     .setDescription(`<@${guildMember.id}> wird den Haien zum Fraß vorgeworfen.`)
                     .setImage(gifUrl);
                 var messageL = await targetChannel.send({ embeds: [leave] });
-                await messageL.react('🇸');
-                await messageL.react('🇵');
-                await messageL.react('🇷');
-                await messageL.react('🇮');
-                await messageL.react('🇳');
-                await messageL.react('🇬');
+                await messageL.react(letterEmojiMap.get('S'));
+                await messageL.react(letterEmojiMap.get('P'));
+                await messageL.react(letterEmojiMap.get('R'));
+                await messageL.react(letterEmojiMap.get('I'));
+                await messageL.react(letterEmojiMap.get('N'));
+                await messageL.react(letterEmojiMap.get('G'));
             })
             .catch((error) => {
                 console.error('ERROR:', error);

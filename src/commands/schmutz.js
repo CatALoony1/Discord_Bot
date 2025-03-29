@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 require('dotenv').config();
+const { letterEmojiMap } = require('../utils/letterEmojiMap');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('schmutz')
@@ -21,13 +22,13 @@ module.exports = {
             await interaction.deferReply({ flags: MessageFlags.Ephemeral });
             const id = interaction.options.get('messageid').value;
             const fetchedMessage = await interaction.channel.messages.fetch(id);
-            await fetchedMessage.react('🇸');
-            await fetchedMessage.react('🇨');
-            await fetchedMessage.react('🇭');
-            await fetchedMessage.react('🇲');
-            await fetchedMessage.react('🇺');
-            await fetchedMessage.react('🇹');
-            await fetchedMessage.react('🇿');
+            await fetchedMessage.react(letterEmojiMap.get('S'));
+            await fetchedMessage.react(letterEmojiMap.get('C'));
+            await fetchedMessage.react(letterEmojiMap.get('H'));
+            await fetchedMessage.react(letterEmojiMap.get('M'));
+            await fetchedMessage.react(letterEmojiMap.get('U'));
+            await fetchedMessage.react(letterEmojiMap.get('T'));
+            await fetchedMessage.react(letterEmojiMap.get('Z'));
             await interaction.editReply('Erledigt!');
         } catch (err) {
             console.log(err);

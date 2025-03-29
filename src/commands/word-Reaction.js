@@ -1,35 +1,5 @@
 const { SlashCommandBuilder, MessageFlags } = require('discord.js');
-
-const emojiMap = new Map([
-    ['A', '🇦'],
-    ['B', '🇧'],
-    ['C', '🇨'],
-    ['D', '🇩'],
-    ['E', '🇪'],
-    ['F', '🇫'],
-    ['G', '🇬'],
-    ['H', '🇭'],
-    ['I', '🇮'],
-    ['J', '🇯'],
-    ['K', '🇰'],
-    ['L', '🇱'],
-    ['M', '🇲'],
-    ['N', '🇳'],
-    ['O', '🇴'],
-    ['P', '🇵'],
-    ['Q', '🇶'],
-    ['R', '🇷'],
-    ['S', '🇸'],
-    ['T', '🇹'],
-    ['U', '🇺'],
-    ['V', '🇻'],
-    ['W', '🇼'],
-    ['X', '🇽'],
-    ['Y', '🇾'],
-    ['Z', '🇿'],
-    ['!', '❗'],
-    ['?', '❓']
-]);
+const { letterEmojiMap } = require('../utils/letterEmojiMap');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -62,7 +32,7 @@ module.exports = {
             const id = interaction.options.get('messageid').value;
             const fetchedMessage = await interaction.channel.messages.fetch(id);
             for (const key of wordArray) {
-                await fetchedMessage.react(emojiMap.get(key));
+                await fetchedMessage.react(letterEmojiMap.get(key));
             }
             await interaction.editReply('Erledigt!');
         } catch (err) {

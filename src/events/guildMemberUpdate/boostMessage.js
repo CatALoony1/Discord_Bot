@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { EmbedBuilder } = require('discord.js');
 const getTenorGifById = require('../../utils/getTenorGifById');
+const { letterEmojiMap } = require('../../utils/letterEmojiMap');
 module.exports = async (oldMember, newMember) => {
     const oldStatus = oldMember.premiumSince;
     const newStatus = newMember.premiumSince;
@@ -26,12 +27,12 @@ module.exports = async (oldMember, newMember) => {
                     var message = await targetChannel.send(`||<@${newMember.id}>||`);
                     var reply = await message.reply({ embeds: [boost] });
                     message.delete();
-                    await reply.react('🇩');
-                    await reply.react('🇦');
-                    await reply.react('🇳');
-                    await reply.react('🇰');
-                    await reply.react('🇪');
-                    await reply.react('‼️');
+                    await reply.react(letterEmojiMap.get('D'));
+                    await reply.react(letterEmojiMap.get('A'));
+                    await reply.react(letterEmojiMap.get('N'));
+                    await reply.react(letterEmojiMap.get('K'));
+                    await reply.react(letterEmojiMap.get('E'));
+                    await reply.react(letterEmojiMap.get('!'));
                 })
                 .catch((error) => {
                     console.error('ERROR:', error);
