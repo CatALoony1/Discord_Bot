@@ -91,7 +91,8 @@ module.exports = {
     messageEdited.addFields({ name: 'Letzte XP:', value: `${fetchedLevel.lastMessage}` });
     messageEdited.addFields({ name: 'Quizfragen hinzugefügt:', value: `${fetchedLevel.quizadded}` });
     messageEdited.addFields({ name: 'Levelbarfarbe:', value: `${fetchedLevel.color}` });
-    messageEdited.addFields({ name: 'Anzahl Lottospiele', value: `${lottospiele}` });
+    messageEdited.addFields({ name: 'Anzahl Lottospiele:', value: `${lottospiele}` });
+    messageEdited.addFields({ name: 'XP abgezogen:', value: `${fetchedLevel.removedxp}` });
 
     interaction.editReply({ embeds: [messageEdited] });
   },

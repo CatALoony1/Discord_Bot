@@ -67,6 +67,10 @@ const levelSchema = new Schema({
   },
   lastBump: {
     type: Date,
+  },
+  removedxp: {
+    type: Number,
+    default: 0,
   }
 });
 

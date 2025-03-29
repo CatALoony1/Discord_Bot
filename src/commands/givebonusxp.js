@@ -7,7 +7,7 @@ module.exports = {
     .setDescription('Gibt einem Nutzer Bonus XP')
     .addMentionableOption(option =>
       option.setName('nutzer')
-        .setDescription('Nutzer dessen Level dich interessiert')
+        .setDescription('Nutzer der XP erhalten soll')
         .setRequired(true)
     )
     .addIntegerOption(option =>
