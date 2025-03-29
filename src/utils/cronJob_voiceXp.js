@@ -32,7 +32,7 @@ function startVoiceXpJob(client) {
                 if (channel.members.size >= 2) {
                     channel.members.forEach(async (member) => {
                         let xpToGive = 5 * getRandomXp(1, 5) * multiplier;
-                        giveXP(member, xpToGive, 0, targetChannel, false, true, false);
+                        await giveXP(member, xpToGive, 0, targetChannel, false, true, false);
                     });
                 }
             }

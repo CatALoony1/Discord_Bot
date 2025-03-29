@@ -44,7 +44,7 @@ module.exports = async (interaction) => {
         var targetChannel = interaction.guild.channels.cache.get(process.env.QUIZ_ID) || (await interaction.guild.channels.fetch(process.env.QUIZ_ID));
         const targetUserObj = await interaction.guild.members.fetch(mentionedUserId);
         var xpToGive = 40;
-        giveXP(targetUserObj, xpToGive, xpToGive, targetChannel, false, false, true);
+        await giveXP(targetUserObj, xpToGive, xpToGive, targetChannel, false, false, true);
         interaction.editReply('Frage eingetragen!');
     }
 };

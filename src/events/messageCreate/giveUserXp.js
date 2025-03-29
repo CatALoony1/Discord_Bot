@@ -49,7 +49,7 @@ module.exports = async (message) => {
     console.log(`user ${message.author.tag} received ${bonusXP} Bonus XP`);
   }
   var xpToGive = (getRandomXp(5, 15) * multiplier) + bonusXP;
-  giveXP(message.member, xpToGive, bonusXP, message.channel, true, false, false);
+  await giveXP(message.member, xpToGive, bonusXP, message.channel, true, false, false);
   cooldowns.add(message.author.id);
   setTimeout(() => {
     cooldowns.delete(message.author.id);

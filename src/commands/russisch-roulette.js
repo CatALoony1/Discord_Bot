@@ -29,7 +29,7 @@ module.exports = {
         const zufallsZahl = Math.floor(Math.random() * 6) + 1;
         const targetUserObj = await interaction.guild.members.fetch(targetUserId);
         if (zufallsZahl == 6) {
-            removeXP(targetUserObj, 1000, interaction.channel);
+            await removeXP(targetUserObj, 1000, interaction.channel);
             await interaction.editReply(`${targetUserObj} hat beim Russisch Roulette verloren und hat 1000XP verloren!`);
         } else {
             await interaction.editReply(`${targetUserObj} hatte Glück und hat überlebt!`);

@@ -94,6 +94,6 @@ module.exports = {
             await targetUserObj.roles.add(lottoRole);
             console.log(`Role Lottogewinner was given to user ${targetUserObj.user.tag}`);
         }
-        giveXP(targetUserObj, xpToGive, xpToGive, interaction.channel, false, false, false);
+        await giveXP(targetUserObj, xpToGive, xpToGive, interaction.channel, false, false, false);
     },
 };

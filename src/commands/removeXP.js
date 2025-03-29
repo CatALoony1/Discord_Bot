@@ -41,7 +41,7 @@ module.exports = {
         const targetUserObj = await interaction.guild.members.fetch(targetUserId);
         var xpToRemove = interaction.options.get('xpmenge').value;
         const reason = interaction.options.get('grund').value;
-        xpToRemove = removeXP(targetUserObj, xpToRemove, interaction.channel);
+        xpToRemove = await removeXP(targetUserObj, xpToRemove, interaction.channel);
         await interaction.editReply(`Nutzer ${targetUserObj} wurden ${xpToRemove} XP abgezogen!\nGrund: ${reason}`);
     },
 };
