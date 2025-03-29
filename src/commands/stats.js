@@ -93,6 +93,7 @@ module.exports = {
     messageEdited.addFields({ name: 'Levelbarfarbe:', value: `${fetchedLevel.color}` });
     messageEdited.addFields({ name: 'Anzahl Lottospiele:', value: `${lottospiele}` });
     messageEdited.addFields({ name: 'XP abgezogen:', value: `${fetchedLevel.removedxp}` });
+    messageEdited.addFields({ name: 'Geburtstag:', value: `${fetchedLevel.geburtstag}` });
 
     interaction.editReply({ embeds: [messageEdited] });
   },
