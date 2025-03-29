@@ -21,7 +21,7 @@ module.exports = {
         .setDescription('Spiele 1x täglich Lotto.')
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
-    run: async ({ interaction, client }) => {
+    run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         await interaction.deferReply();
         const targetUserId = interaction.member.id;
@@ -106,51 +106,49 @@ module.exports = {
             await targetUserObj.roles.add(lottoRole);
             console.log(`Role Lottogewinner was given to user ${targetUserObj.user.tag}`);
         }
-        if (xpToGive != 0) {
-            console.log(`user ${targetUserObj.user.tag} received ${xpToGive} XP`);
-            fetchedLevel.xp += xpToGive;
-            fetchedLevel.allxp += xpToGive;
-            fetchedLevel.thismonth += xpToGive;
-            fetchedLevel.bonusclaimed += xpToGive;
-            fetchedLevel.lastMessage = Date.now();
-            if (fetchedLevel.xp >= calculateLevelXp(fetchedLevel.level)) {
-                do {
-                    fetchedLevel.xp = fetchedLevel.xp - calculateLevelXp(fetchedLevel.level);
-                    fetchedLevel.level += 1;
-                    console.log(`user ${targetUserObj.user.tag} reached level ${fetchedLevel.level}`);
-                    let description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${fetchedLevel.level}** erreicht!⚓`;
-                    if (roles.has(fetchedLevel.level)) {
-                        let newRole = roles.get(fetchedLevel.level);
-                        description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${fetchedLevel.level}** erreicht und bist somit zum ${newRole} aufgestiegen!⚓`;
+        console.log(`user ${targetUserObj.user.tag} received ${xpToGive} XP`);
+        fetchedLevel.xp += xpToGive;
+        fetchedLevel.allxp += xpToGive;
+        fetchedLevel.thismonth += xpToGive;
+        fetchedLevel.bonusclaimed += xpToGive;
+        fetchedLevel.lastMessage = Date.now();
+        if (fetchedLevel.xp >= calculateLevelXp(fetchedLevel.level)) {
+            do {
+                fetchedLevel.xp = fetchedLevel.xp - calculateLevelXp(fetchedLevel.level);
+                fetchedLevel.level += 1;
+                console.log(`user ${targetUserObj.user.tag} reached level ${fetchedLevel.level}`);
+                let description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${fetchedLevel.level}** erreicht!⚓`;
+                if (roles.has(fetchedLevel.level)) {
+                    let newRole = roles.get(fetchedLevel.level);
+                    description = `🎉 Glückwunsch ${targetUserObj}! Du hast **Level ${fetchedLevel.level}** erreicht und bist somit zum ${newRole} aufgestiegen!⚓`;
 
-                        for (const value of roles.values()) {
-                            if (targetUserObj.roles.cache.some(role => role.name === value)) {
-                                let tempRole = interaction.guild.roles.cache.find(role => role.name === value);
-                                await targetUserObj.roles.remove(tempRole);
-                                console.log(`Role ${value} was removed from user ${targetUserObj.user.tag}`);
-                            }
-                        }
-                        let role = interaction.guild.roles.cache.find(role => role.name === newRole);
-                        await targetUserObj.roles.add(role);
-                        console.log(`Role ${newRole} was given to user ${targetUserObj.user.tag}`);
-                        if (fetchedLevel.level === 1) {
-                            let memberRole = interaction.guild.roles.cache.find(role => role.name === 'Mitglied');
-                            await targetUserObj.roles.add(memberRole);
-                            console.log(`Role Mitglied was given to user ${targetUserObj.user.tag}`);
+                    for (const value of roles.values()) {
+                        if (targetUserObj.roles.cache.some(role => role.name === value)) {
+                            let tempRole = interaction.guild.roles.cache.find(role => role.name === value);
+                            await targetUserObj.roles.remove(tempRole);
+                            console.log(`Role ${value} was removed from user ${targetUserObj.user.tag}`);
                         }
                     }
-                    const embed = new EmbedBuilder()
-                        .setTitle('Glückwunsch!')
-                        .setDescription(description)
-                        .setThumbnail(targetUserObj.user.displayAvatarURL({ format: 'png', dynamic: true }))
-                        .setColor(0x0033cc);
-                    interaction.channel.send({ embeds: [embed] });
-                } while (fetchedLevel.xp >= calculateLevelXp(fetchedLevel.level));
-            }
-            await fetchedLevel.save().catch((e) => {
-                console.log(`Error saving updated level ${e}`);
-                return;
-            });
+                    let role = interaction.guild.roles.cache.find(role => role.name === newRole);
+                    await targetUserObj.roles.add(role);
+                    console.log(`Role ${newRole} was given to user ${targetUserObj.user.tag}`);
+                    if (fetchedLevel.level === 1) {
+                        let memberRole = interaction.guild.roles.cache.find(role => role.name === 'Mitglied');
+                        await targetUserObj.roles.add(memberRole);
+                        console.log(`Role Mitglied was given to user ${targetUserObj.user.tag}`);
+                    }
+                }
+                const embed = new EmbedBuilder()
+                    .setTitle('Glückwunsch!')
+                    .setDescription(description)
+                    .setThumbnail(targetUserObj.user.displayAvatarURL({ format: 'png', dynamic: true }))
+                    .setColor(0x0033cc);
+                interaction.channel.send({ embeds: [embed] });
+            } while (fetchedLevel.xp >= calculateLevelXp(fetchedLevel.level));
         }
+        await fetchedLevel.save().catch((e) => {
+            console.log(`Error saving updated level ${e}`);
+            return;
+        });
     },
 };

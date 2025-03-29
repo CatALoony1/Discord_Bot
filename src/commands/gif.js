@@ -12,7 +12,7 @@ module.exports = {
         )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
-    run: async ({ interaction, client }) => {
+    run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         const suchwort = interaction.options.get('suchwort').value;
         const regex = /^[\u0041-\u005A\u00C4\u00D6\u00DC\u00DF\s]+$/i; //A-Z, ÄÖÜ, ß

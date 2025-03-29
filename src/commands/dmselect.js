@@ -44,7 +44,7 @@ module.exports = {
       .setStyle('Danger');
     const row = new ActionRowBuilder().addComponents(selectMenu);
     const row2 = new ActionRowBuilder().addComponents(button);
-    const reply = await interaction.reply({
+    await interaction.reply({
       content: 'Wähle aus, ob deine DMs offen oder geschlossen sind.',
       components: [row, row2],
     });

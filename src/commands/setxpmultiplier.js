@@ -14,14 +14,14 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
-  run: async ({ interaction, client }) => {
+  run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     const amount = interaction.options.get('multiplier').value;
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     try {
       let confQuery = {
         key: "xpMultiplier"
-      }
+      };
       let conf = await Config.findOne(confQuery);
       conf.value = amount;
 

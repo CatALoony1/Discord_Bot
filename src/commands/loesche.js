@@ -14,7 +14,7 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
-  run: async ({ interaction, client }) => {
+  run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     const amount = interaction.options.get('anzahl').value;
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });

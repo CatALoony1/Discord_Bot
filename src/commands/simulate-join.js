@@ -15,8 +15,9 @@ module.exports = {
  * @param {import('commandkit').SlashCommandProps} param0
  */
   run: async ({ interaction, client }) => {
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     if (interaction.user.id != process.env.ADMIN_ID) {
-      interaction.reply('Du darfst das nicht!!!!');
+      await interaction.editReply('Du darfst das nicht!!!!');
       return;
     }
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
@@ -34,7 +35,7 @@ module.exports = {
 
     client.emit('guildMemberAdd', member);
 
-    interaction.reply('Simulated join!');
+    await interaction.editReply('Simulated join!');
   },
   options: {
     devOnly: true,

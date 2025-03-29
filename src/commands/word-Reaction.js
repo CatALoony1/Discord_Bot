@@ -48,7 +48,7 @@ module.exports = {
                 .setRequired(true)
         ),
 
-    run: async ({ interaction, client }) => {
+    run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag} with value ${interaction.options.get('wort').value}`);
         try {
             await interaction.deferReply({ flags: MessageFlags.Ephemeral });

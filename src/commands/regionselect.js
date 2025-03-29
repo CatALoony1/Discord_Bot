@@ -12,7 +12,7 @@ module.exports = {
    * @param {Object} param0 
    * @param {import('discord.js').ChatInputCommandInteraction} param0.interaction
    */
-  run: async ({ interaction, client }) => {
+  run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     const rolenames = ['Niedersachsen',
       'Bayern',
@@ -36,7 +36,7 @@ module.exports = {
         label: rolenames[i],
         value: rolenames[i]
       };
-    };
+    }
     const selectMenu = new StringSelectMenuBuilder()
       .setCustomId('regionselect')
       .setPlaceholder('Bundesland auswählen')
@@ -55,7 +55,7 @@ module.exports = {
       .setStyle('Danger');
     const row = new ActionRowBuilder().addComponents(selectMenu);
     const row2 = new ActionRowBuilder().addComponents(button);
-    const reply = await interaction.reply({
+    await interaction.reply({
       content: 'Wähle dein Bundesland.',
       components: [row, row2],
     });

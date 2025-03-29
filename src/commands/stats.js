@@ -9,7 +9,7 @@ module.exports = {
     .setDescription('Zeigt all deine Level-Bezogenen Daten.')
     .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
-  run: async ({ interaction, client }) => {
+  run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     if (!interaction.inGuild()) {
       interaction.reply('Hier ist doch kein Server!');
@@ -52,6 +52,7 @@ module.exports = {
     if (fetchedLevel.voicetime >= 60) {
       var h = 0;
       var m = fetchedLevel.voicetime;
+      var time;
       while (true) {
         if (m >= 60) {
           m -= 60;
@@ -60,9 +61,9 @@ module.exports = {
           break;
         }
       }
-      var time = `${h}h ${m}m`;
+      time = `${h}h ${m}m`;
     } else {
-      var time = `${fetchedLevel.voicetime}m`;
+      time = `${fetchedLevel.voicetime}m`;
     }
     let lotto = await Lottozahlen.find({
       guildId: interaction.guild.id,

@@ -18,7 +18,7 @@ module.exports = {
    * @param {Object} param0 
    * @param {import('discord.js').ChatInputCommandInteraction} param0.interaction
    */
-  run: async ({ interaction, client }) => {
+  run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     const farbe = interaction.options.get('farbe').value;
     const hexregex = /^#(?:[0-9a-fA-F]{3}){1,2}$/;

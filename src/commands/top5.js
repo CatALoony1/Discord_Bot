@@ -8,7 +8,7 @@ module.exports = {
     .setDescription('Zeigt die top 5 an.')
     .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
-  run: async ({ interaction, client }) => {
+  run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     if (!interaction.inGuild()) {
       interaction.reply('Hier ist doch kein Server!');
@@ -49,7 +49,7 @@ module.exports = {
         level: fetchedLevel[i].level,
         xp: fetchedLevel[i].allxp,
         rank: i + 1,
-      }
+      };
     }
     canvacord.Font.loadDefault();
     const lb = new canvacord.LeaderboardBuilder()

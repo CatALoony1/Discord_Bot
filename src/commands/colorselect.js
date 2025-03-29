@@ -61,7 +61,7 @@ module.exports = {
       .setStyle('Danger');
     const row = new ActionRowBuilder().addComponents(selectMenu);
     const row2 = new ActionRowBuilder().addComponents(button);
-    const reply = await interaction.reply({
+    await interaction.reply({
       content: 'Wähle eine Farbe.',
       components: [row, row2],
     });

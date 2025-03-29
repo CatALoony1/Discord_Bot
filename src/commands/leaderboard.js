@@ -8,7 +8,7 @@ module.exports = {
     .setDescription('Zeigt das Leaderboard.')
     .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
-  run: async ({ interaction, client }) => {
+  run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     if (!interaction.inGuild()) {
       interaction.reply('Hier ist doch kein Server!');
@@ -35,6 +35,6 @@ module.exports = {
     interaction.editReply({
       embeds: [embed],
       components: [firstRow]
-    })
+    });
   },
 };

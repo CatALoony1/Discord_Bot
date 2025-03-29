@@ -11,7 +11,7 @@ module.exports = {
                 .setRequired(true)
         ),
 
-    run: async ({ interaction, client }) => {
+    run: async ({ interaction }) => {
         if (interaction.user.id != process.env.ADMIN_ID) {
             interaction.reply('Du darfst das nicht!!!!');
             return;

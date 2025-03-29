@@ -3202,7 +3202,7 @@ module.exports = {
         .setDescription('Sendet ein zufälliges GIF.')
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
-    run: async ({ interaction, client }) => {
+    run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         const suchwort = wordList[getRandom(0, wordList.length - 1)];
         try {

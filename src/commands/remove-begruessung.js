@@ -6,7 +6,7 @@ module.exports = {
         .setName('remove-begruessung')
         .setDescription('Deaktiviert deine Begrüßung.')
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
-    run: async ({ interaction, client }) => {
+    run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
             await interaction.deferReply({ flags: MessageFlags.Ephemeral });

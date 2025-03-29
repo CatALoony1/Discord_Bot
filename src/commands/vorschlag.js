@@ -6,7 +6,7 @@ module.exports = {
     .setDescription('Erstelle einen Vorschlag')
     .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
-  run: async ({ interaction, client }) => {
+  run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     try {
       const modal = new ModalBuilder()
