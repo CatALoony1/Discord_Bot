@@ -20,7 +20,7 @@ module.exports = async (client) => {
                         if (targetUserObj.roles.cache.some(role => role.name === 'Bumper')) {
                             let tempRole = guild.roles.cache.find(role => role.name === 'Bumper');
                             await targetUserObj.roles.remove(tempRole);
-                            console.log(`Role Bumper was removed from user ${member.user.tag}`);
+                            console.log(`Role Bumper was removed from user ${level.userName}`);
                         }
                     }
                 }
