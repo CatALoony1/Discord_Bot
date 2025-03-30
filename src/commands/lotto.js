@@ -40,9 +40,14 @@ module.exports = {
         var lottozahl = -1;
         if (allLotto && allLotto.length > 0) {
             const lottozahlenArray = allLotto.map(dokument => dokument.lottozahl);
+            console.time("Lottozahlgenerierung");
+            let counter = 0;
             do {
                 lottozahl = Math.floor(Math.random() * 140000000);
+                counter++;
             } while (lottozahlenArray.includes(lottozahl));
+            console.timeEnd("Lottozahlgenerierung");
+            console.log(`Lottozahl ${lottozahl} was generated after ${counter} tries`);
         } else {
             lottozahl = Math.floor(Math.random() * 140000000);
         }
