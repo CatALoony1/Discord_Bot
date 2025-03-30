@@ -11,7 +11,27 @@ const roles = new Map([[0, 'Landratte'],
 [29, 'Haijäger'],
 [34, 'Navigationsmeister'],
 [39, 'Schatzsucher'],
-[44, 'Tiefseetaucher']
+[44, 'Tiefseetaucher'],
+[49, "Meereshüter"],
+[54, "Poseidons Botschafter"],
+[59, "Seetag-Schnupperer"],
+[64, "Backfisch Buddy"],
+[69, "Panaden Profi"],
+[74, "Tiefkühl Experte"],
+[79, "Schollen Schmoller"],
+[84, "Krabben Kommandant"],
+[89, "Deck Offizier"],
+[94, "Legende der Lachse"],
+[99, "Ozean Operator"],
+[104, "Goldene Gabel"],
+[109, "Algen Architekt"],
+[114, "Plankton Pionier"],
+[119, "Reisender der Riffe"],
+[124, "Sturmbezwinger"],
+[129, "Tiefsee Titan"],
+[134, "Kraken König"],
+[139, "Poseidons Erbe"],
+[144, "Seelenfischer"]
 ]);
 
 async function removeXP(member, xpToRemove, channel) {

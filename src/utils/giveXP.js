@@ -11,7 +11,27 @@ const roles = new Map([[0, 'Landratte'],
 [25, 'Haijäger'],
 [30, 'Navigationsmeister'],
 [35, 'Schatzsucher'],
-[40, 'Tiefseetaucher']
+[40, 'Tiefseetaucher'],
+[45, "Meereshüter"],
+[50, "Poseidons Botschafter"],
+[55, "Seetag-Schnupperer"],
+[60, "Backfisch Buddy"],
+[65, "Panaden Profi"],
+[70, "Tiefkühl Experte"],
+[75, "Schollen Schmoller"],
+[80, "Krabben Kommandant"],
+[85, "Deck Offizier"],
+[90, "Legende der Lachse"],
+[95, "Ozean Operator"],
+[100, "Goldene Gabel"],
+[105, "Algen Architekt"],
+[110, "Plankton Pionier"],
+[115, "Reisender der Riffe"],
+[120, "Sturmbezwinger"],
+[125, "Tiefsee Titan"],
+[130, "Kraken König"],
+[135, "Poseidons Erbe"],
+[140, "Seelenfischer"]
 ]);
 
 async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizadded) {
