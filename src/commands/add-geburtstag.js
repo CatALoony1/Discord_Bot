@@ -34,6 +34,7 @@ module.exports = {
      */
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         const tag = interaction.options.get('tag').value;
         const monat = interaction.options.get('monat').value;
         const jahr = interaction.options.get('jahr').value;
@@ -51,15 +52,15 @@ module.exports = {
                         console.log(`Error saving updated geburtstag ${e}`);
                         return;
                     });
-                    await interaction.reply({ content: `Geburtstag erfolgreich geaendert.`, flags: MessageFlags.Ephemeral });
+                    await interaction.editReply(`Geburtstag erfolgreich geaendert.`);
                 } else {
-                    await interaction.reply({ content: `Du bist noch nicht in der DB, chatte mal bisschen.`, flags: MessageFlags.Ephemeral });
+                    await interaction.editReply(`Du bist noch nicht in der DB, chatte mal bisschen.`);
                 }
             } catch (error) {
                 console.log(error);
             }
         } else {
-            await interaction.reply({ content: `Der eingegebene Wert muss ein gueltiges Datum sein.`, flags: MessageFlags.Ephemeral });
+            await interaction.editReply(`Der eingegebene Wert muss ein gueltiges Datum sein.`);
         }
     },
 };

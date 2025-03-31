@@ -11,6 +11,7 @@ module.exports = {
 
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         const query = {
             guildId: interaction.guild.id,
         };
@@ -20,17 +21,17 @@ module.exports = {
                 bumpEntry.endTime = Date.now() + 7200000;
                 bumpEntry.reminded = 'N';
                 await bumpEntry.save();
-                await interaction.reply({ content: `Bump Reminder erstellt!`, flags: MessageFlags.Ephemeral });
+                await interaction.editReply(`Bump Reminder erstellt!`);
             } else {
                 const newBump = new Bump({
                     guildId: interaction.guild.id,
                     endTime: Date.now() + 7200000,
                 });
                 await newBump.save();
-                await interaction.reply({ content: `Bump Reminder erstellt!`, flags: MessageFlags.Ephemeral });
+                await interaction.editReply(`Bump Reminder erstellt!`);
             }
         } catch (error) {
-            interaction.reply('Fehler bei erstellen des Bump Reminders.');
+            interaction.editReply('Fehler bei erstellen des Bump Reminders.');
             console.log(error);
         }
     },

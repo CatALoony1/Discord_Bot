@@ -3204,11 +3204,12 @@ module.exports = {
 
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+        await interaction.deferReply();
         const suchwort = wordList[getRandom(0, wordList.length - 1)];
         try {
             await getTenorGif(suchwort)
                 .then((gifUrl) => {
-                    interaction.reply(gifUrl);
+                    interaction.editReply(gifUrl);
                 })
                 .catch((error) => {
                     console.error('ERROR:', error);

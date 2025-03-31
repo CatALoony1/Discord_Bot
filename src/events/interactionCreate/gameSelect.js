@@ -11,6 +11,7 @@ module.exports = async (interaction) => {
   var removedRoles = [];
   if (interaction.isStringSelectMenu()) {
     if (interaction.customId == 'gameselect') {
+      await interaction.deferReply({ flags: MessageFlags.Ephemeral });
       var addedRoles = [];
       if (interaction.values.length == 0) {
         for (let i = 0; i < rolenames.length; i++) {
@@ -39,13 +40,13 @@ module.exports = async (interaction) => {
         }
       }
       if (addedRoles.length != 0 && removedRoles.length != 0) {
-        await interaction.reply({ content: `Die Spiele ${addedRoles} wurde dir zugewiesen.\nDie Spiele ${removedRoles} wurde entfernt.`, flags: MessageFlags.Ephemeral });
+        await interaction.editReply(`Die Spiele ${addedRoles} wurde dir zugewiesen.\nDie Spiele ${removedRoles} wurde entfernt.`);
       } else if (addedRoles.length != 0) {
-        await interaction.reply({ content: `Die Spiele ${addedRoles} wurde dir zugewiesen.`, flags: MessageFlags.Ephemeral });
+        await interaction.editReply(`Die Spiele ${addedRoles} wurde dir zugewiesen.`);
       } else if (removedRoles.length != 0) {
-        await interaction.reply({ content: `Die Spiele ${removedRoles} wurde entfernt.`, flags: MessageFlags.Ephemeral });
+        await interaction.editReply(`Die Spiele ${removedRoles} wurde entfernt.`);
       } else {
-        await interaction.reply({ content: `Du besitzt alle Rollen die du ausgewählt hast.`, flags: MessageFlags.Ephemeral });
+        await interaction.editReply(`Du besitzt alle Rollen die du ausgewählt hast.`);
       }
     }
   }
@@ -60,9 +61,9 @@ module.exports = async (interaction) => {
         }
       }
       if (removedRoles.length != 0) {
-        await interaction.reply({ content: `Die Spiele ${removedRoles} wurde entfernt.`, flags: MessageFlags.Ephemeral });
+        await interaction.editReply(`Die Spiele ${removedRoles} wurde entfernt.`);
       } else {
-        await interaction.reply({ content: `Du hattest gar keine Spiele-Rolle.`, flags: MessageFlags.Ephemeral });
+        await interaction.editReply(`Du hattest gar keine Spiele-Rolle.`);
       }
     }
   }

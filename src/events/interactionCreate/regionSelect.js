@@ -19,8 +19,9 @@ const rolenames = ['Niedersachsen',
 module.exports = async (interaction) => {
   if (interaction.isStringSelectMenu()) {
     if (interaction.customId == 'regionselect') {
+      await interaction.deferReply({ flags: MessageFlags.Ephemeral });
       if (interaction.member.roles.cache.some(role => role.name === interaction.values[0])) {
-        await interaction.reply({ content: `Du besitzt das Bundesland ${interaction.values[0]} bereits.`, flags: MessageFlags.Ephemeral });
+        await interaction.editReply(`Du besitzt das Bundesland ${interaction.values[0]} bereits.`);
         return;
       }
       for (let i = 0; i < rolenames.length; i++) {
@@ -33,7 +34,7 @@ module.exports = async (interaction) => {
       const role = interaction.guild.roles.cache.find(role => role.name === interaction.values[0]);
       await interaction.guild.members.cache.get(interaction.member.id).roles.add(role);
       console.log(`Role ${interaction.values[0]} was given to user ${interaction.member.user.tag}`);
-      await interaction.reply({ content: `Das Bundesland ${interaction.values[0]} wurde dir zugewiesen.`, flags: MessageFlags.Ephemeral });
+      await interaction.editReply(`Das Bundesland ${interaction.values[0]} wurde dir zugewiesen.`);
     }
   }
   else if (interaction.isButton()) {
@@ -43,11 +44,11 @@ module.exports = async (interaction) => {
           let tempRole = interaction.guild.roles.cache.find(role => role.name === rolenames[i]);
           await interaction.guild.members.cache.get(interaction.member.id).roles.remove(tempRole);
           console.log(`Role ${rolenames[i]} was removed from user ${interaction.member.user.tag}`);
-          await interaction.reply({ content: `Das Bundesland ${rolenames[i]} wurde dir entzogen.`, flags: MessageFlags.Ephemeral });
+          await interaction.editReply(`Das Bundesland ${rolenames[i]} wurde dir entzogen.`);
           return;
         }
       }
-      await interaction.reply({ content: `Du hattest gar keine Bundeslandrolle.`, flags: MessageFlags.Ephemeral });
+      await interaction.editReply(`Du hattest gar keine Bundeslandrolle.`);
 
     }
   }

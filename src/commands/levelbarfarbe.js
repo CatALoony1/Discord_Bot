@@ -20,6 +20,7 @@ module.exports = {
    */
   run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     const farbe = interaction.options.get('farbe').value;
     const hexregex = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
     if (farbe.match(hexregex)) {
@@ -35,15 +36,15 @@ module.exports = {
             console.log(`Error saving updated level ${e}`);
             return;
           });
-          await interaction.reply({ content: `Farbe erfolgreich geaendert.`, flags: MessageFlags.Ephemeral });
+          await interaction.editReply(`Farbe erfolgreich geaendert.`);
         } else {
-          await interaction.reply({ content: `Du bist noch nicht in der DB, chatte mal bisschen.`, flags: MessageFlags.Ephemeral });
+          await interaction.editReply(`Du bist noch nicht in der DB, chatte mal bisschen.`);
         }
       } catch (error) {
         console.log(error);
       }
     } else {
-      await interaction.reply({ content: `Der eingegebene Wert muss ein Hex-Farbcde sein Bsp.: #1f7da2`, flags: MessageFlags.Ephemeral });
+      await interaction.editReply(`Der eingegebene Wert muss ein Hex-Farbcde sein Bsp.: #1f7da2`);
     }
   },
 };

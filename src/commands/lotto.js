@@ -10,8 +10,8 @@ module.exports = {
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
     run: async ({ interaction }) => {
-        console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         await interaction.deferReply();
+        console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         const targetUserId = interaction.member.id;
         const targetUserObj = await interaction.guild.members.fetch(targetUserId);
         const fetchedLevel = await Level.findOne({

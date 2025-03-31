@@ -22,8 +22,9 @@ module.exports = {
 
   run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     if (interaction.user.id != process.env.ADMIN_ID) {
-      interaction.reply('Du darfst das nicht!!!!');
+      interaction.editReply('Du darfst das nicht!!!!');
       return;
     }
     let bonusWords = await Config.findOne({
@@ -35,9 +36,9 @@ module.exports = {
       bonusWords.value = bonusWords.value.replace(oldWord, newWord);
       await bonusWords.save();
       console.log(`Word ${oldWord} replaced by ${newWord}.`);
-      await interaction.reply({ content: `Wort ${oldWord} durch ${newWord} ersetzt.`, flags: MessageFlags.Ephemeral });
+      await interaction.editReply(`Wort ${oldWord} durch ${newWord} ersetzt.`);
     } else {
-      await interaction.reply({ content: `Das Wort ist nicht vorhanden`, flags: MessageFlags.Ephemeral });
+      await interaction.editReply(`Das Wort ist nicht vorhanden`);
     }
   },
   options: {

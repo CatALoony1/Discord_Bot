@@ -14,6 +14,7 @@ module.exports = {
 
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+        await interaction.deferReply();
         const suchwort = interaction.options.get('suchwort').value;
         const regex = /^[\u0041-\u005A\u00C4\u00D6\u00DC\u00DF\s]+$/i; //A-Z, ÄÖÜ, ß
         if (!regex.test(suchwort)) {
@@ -24,7 +25,7 @@ module.exports = {
         try {
             await getTenorGif(suchwort)
                 .then((gifUrl) => {
-                    interaction.reply(gifUrl);
+                    interaction.editReply(gifUrl);
                 })
                 .catch((error) => {
                     console.error('ERROR:', error);
