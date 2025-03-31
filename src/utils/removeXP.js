@@ -45,7 +45,7 @@ async function removeXP(member, xpToRemove, channel) {
             console.log(`user ${member.user.tag} lost ${xpToRemove} XP`);
             level.xp -= xpToRemove;
             level.allxp -= xpToRemove;
-            level.xpToRemove += xpToRemove;
+            level.removedxp += xpToRemove;
             level.thismonth -= xpToRemove;
             level.lastMessage = Date.now();
             if (level.xp < 0 && level.level > 0) {
