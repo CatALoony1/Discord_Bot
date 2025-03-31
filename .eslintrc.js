@@ -3,13 +3,7 @@ module.exports = {
       node: true,
       es2021: true,
     },
-    extends: [
-      'eslint:recommended',
-      'plugin:node/recommended' // Aktiviert die empfohlenen Regeln von eslint-plugin-node
-    ],
-    plugins: [
-      'node' // Fügt eslint-plugin-node hinzu
-    ],
+    extends: 'eslint:recommended',
     parserOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
