@@ -1,4 +1,6 @@
-const { SlashCommandBuilder, PermissionFlagsBits, InteractionContextType, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
+const removeXP = require('../utils/removeXP');
+const giveXP = require('../utils/giveXP');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -55,7 +57,7 @@ module.exports = {
             await interaction.deferReply();
             const einsatz = interaction.options.get('einsatz')?.value;
             const targetUserId = interaction.member.id;
-            const zufallsZahl = getRandom(1, answers.size);
+            const zufallsZahl = getRandom(1, gewinne.size);
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
             const result = Math.ceil(einsatz * gewinne.get(zufallsZahl));
             await removeXP(targetUserObj, einsatz, interaction.channel);
