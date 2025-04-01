@@ -3,23 +3,23 @@ const { EmbedBuilder, VoiceState } = require('discord.js');
 const { startVoiceXpJob, stopVoiceXpJob, isVoiceXpJobRunning } = require('../../utils/cronJob_voiceXp');
 
 async function checkVoice(client) {
+  var isTwoMembers = false;
   await client.channels.cache.forEach(async (channel) => {
-    var isTwoMembers = false;
     if (channel.type == 2 && channel.id != '1307820687599337602') {
       if (channel.members.size >= 2) {
         isTwoMembers = true;
       }
     }
-    if (isTwoMembers) {
-      if (!isVoiceXpJobRunning()) {
-        startVoiceXpJob(client);
-      }
-    } else {
-      if (isVoiceXpJobRunning()) {
-        stopVoiceXpJob();
-      }
-    }
   });
+  if (isTwoMembers) {
+    if (!isVoiceXpJobRunning()) {
+      startVoiceXpJob(client);
+    }
+  } else {
+    if (isVoiceXpJobRunning()) {
+      stopVoiceXpJob();
+    }
+  }
 }
 
 /**
