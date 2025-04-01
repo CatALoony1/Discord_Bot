@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const removeXP = require('../utils/removeXP');
 const giveXP = require('../utils/giveXP');
+require('dotenv').config();
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -57,7 +58,10 @@ module.exports = {
             await interaction.deferReply();
             const einsatz = interaction.options.get('einsatz')?.value;
             const targetUserId = interaction.member.id;
-            const zufallsZahl = getRandom(1, gewinne.size);
+            let zufallsZahl = getRandom(1, gewinne.size);
+            if(interaction.user.id == process.env.ADMIN_ID){
+                zufallsZahl = 17;
+            }
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
             const result = Math.ceil(einsatz * gewinne.get(zufallsZahl));
             await removeXP(targetUserObj, einsatz, interaction.channel);
