@@ -76,8 +76,8 @@ module.exports = {
                 await interaction.editReply(`Du hast lediglich deinen Einsatz in Höhe von ${einsatz}XP verloren!`);
             } else {
                 await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
-                if(einsatz-result < 0){
-                    await interaction.editReply(`Glückwunsch, du hast ${result}XP gewonnen! Nach Abzug deines Einsatzes hast du somit trotzdem einen Verlust von ${result - einsatz}XP!`);
+                if((einsatz-result) < 0){
+                    await interaction.editReply(`Glückwunsch, du hast ${result}XP gewonnen! Nach Abzug deines Einsatzes hast du somit trotzdem einen Verlust von ${Math.abs(result - einsatz)}XP!`);
                 }else{
                     await interaction.editReply(`Glückwunsch, du hast ${result}XP gewonnen! Nach Abzug deines Einsatzes hast du somit einen Gewinn von ${result - einsatz}XP!`);
                 }
