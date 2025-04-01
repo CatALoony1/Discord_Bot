@@ -2,7 +2,7 @@ const { MessageFlags } = require('discord.js');
 const createQuizLeaderboardEmbeds = require("../../utils/createQuizLeaderboardEmbeds");
 
 module.exports = async (interaction, client) => {
-    if (!interaction.isButton() || !interaction.customId) return;
+    if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('qPage')) return;
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     let targetMessage = await interaction.channel.messages.fetch(interaction.message.id);
             let targetMessageEmbed = targetMessage.embeds[0];
