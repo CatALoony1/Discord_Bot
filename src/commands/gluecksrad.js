@@ -43,7 +43,7 @@ module.exports = {
             option.setName('einsatz')
                 .setDescription('Anzahl an XP die du setzen möchtest.')
                 .setRequired(true)
-                .setMaxValue(1000)
+                .setMaxValue(100)
                 .setMinValue(1)
         )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),

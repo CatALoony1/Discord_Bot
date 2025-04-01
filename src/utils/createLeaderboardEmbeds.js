@@ -21,7 +21,7 @@ async function createLeaderboardEmbeds(page, interaction) {
   }
   fetchedLevel.sort((a, b) => {
     if (a.level === b.level) {
-      return b.xp - a.xp;
+      return b.allxp - a.allxp;
     } else {
       return b.level - a.level;
     }
