@@ -60,29 +60,25 @@ module.exports = {
             const targetUserId = interaction.member.id;
             const zufallsZahl = getRandom(1, gewinne.size);
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
-            const result = Math.ceil(einsatz * gewinne.get(zufallsZahl));
+            let result = Math.ceil(einsatz * gewinne.get(zufallsZahl));
             await removeXP(targetUserObj, einsatz, interaction.channel);
             await interaction.editReply(`Dein Einsatz in Höhe von ${einsatz}XP wurde abgezogen!`);
             var delay = 2000;
             let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
             await sleep(delay);
             if (istGerade(zufallsZahl) || zufallsZahl == 1) {
-                await removeXP(targetUserObj, result, interaction.channel);
-                    await interaction.editReply(`Du hast ${result}XP verloren! Mit deinem Einsatz eingerechnet sind das ${einsatz + result}XP Verlust!`);
+                result = await removeXP(targetUserObj, result, interaction.channel);
+                await interaction.editReply(`Du hast ${result}XP verloren! Mit deinem Einsatz eingerechnet sind das ${einsatz + result}XP Verlust!`);
             } else if (zufallsZahl == 9) {
-                await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
+                result = await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
                 await interaction.editReply(`Du erhälst deinen Einsatz zurück! Versuche es doch einfach erneut`);
             } else if (zufallsZahl == 11) {
                 await interaction.editReply(`Du hast lediglich deinen Einsatz in Höhe von ${einsatz}XP verloren!`);
             } else {
-                await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
-                console.log(einsatz);
-                console.log(result);
-                console.log(einsatz-result);
-                console.log((einsatz-result) < 0)
-                if((einsatz-result) < 0){
+                result = await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
+                if ((einsatz - result) < 0) {
                     await interaction.editReply(`Glückwunsch, du hast ${result}XP gewonnen! Nach Abzug deines Einsatzes hast du somit trotzdem einen Verlust von ${Math.abs(result - einsatz)}XP!`);
-                }else{
+                } else {
                     await interaction.editReply(`Glückwunsch, du hast ${result}XP gewonnen! Nach Abzug deines Einsatzes hast du somit einen Gewinn von ${result - einsatz}XP!`);
                 }
             }
