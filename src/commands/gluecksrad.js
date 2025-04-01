@@ -13,10 +13,10 @@ function istGerade(zahl) {
     return zahl % 2 === 0;
 }
 
-const gewinne = new Map([[1, 1.5],
-[3, 2],
-[5, 2.5],
-[7, 3],
+const gewinne = new Map([[1, 2],
+[3, 3],
+[5, 3.5],
+[7, 4],
 [9, 1],//erhält Einsatz zurück
 [11, 0],//verliert lediglich Einsatz
 [13, 8.5],
