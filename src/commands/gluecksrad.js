@@ -68,7 +68,7 @@ module.exports = {
             await sleep(delay);
             if (istGerade(zufallsZahl) || zufallsZahl == 1) {
                 await removeXP(targetUserObj, result, interaction.channel);
-                await interaction.editReply(`Du hast ${result}XP verloren! Mit deinem Einsatz eingerechnet sind das ${einsatz + result}XP verlust!`);
+                    await interaction.editReply(`Du hast ${result}XP verloren! Mit deinem Einsatz eingerechnet sind das ${einsatz + result}XP Verlust!`);
             } else if (zufallsZahl == 9) {
                 await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
                 await interaction.editReply(`Du erhälst deinen Einsatz zurück! Versuche es doch einfach erneut`);
@@ -76,7 +76,11 @@ module.exports = {
                 await interaction.editReply(`Du hast lediglich deinen Einsatz in Höhe von ${einsatz}XP verloren!`);
             } else {
                 await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
-                await interaction.editReply(`Glückwunsch, du hast ${result}XP gewonnen! Nach abzug deines Einsatzes hast du somit einen Gewinn von ${result - einsatz}XP!`);
+                if(einsatz-result < 0){
+                    await interaction.editReply(`Glückwunsch, du hast ${result}XP gewonnen! Nach Abzug deines Einsatzes hast du somit trotzdem einen Verlust von ${result - einsatz}XP!`);
+                }else{
+                    await interaction.editReply(`Glückwunsch, du hast ${result}XP gewonnen! Nach Abzug deines Einsatzes hast du somit einen Gewinn von ${result - einsatz}XP!`);
+                }
             }
         } catch (error) {
             console.log(error);
