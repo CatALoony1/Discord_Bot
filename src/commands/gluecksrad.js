@@ -1,0 +1,88 @@
+const { SlashCommandBuilder, PermissionFlagsBits, InteractionContextType, MessageFlags } = require('discord.js');
+
+function getRandom(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function istGerade(zahl) {
+    return zahl % 2 === 0;
+}
+
+const gewinne = new Map([[1, 1.5],
+[3, 2],
+[5, 2.5],
+[7, 3],
+[9, 1],//erhält Einsatz zurück
+[11, 0],//verliert lediglich Einsatz
+[13, 8.5],
+[15, 11],
+[17, 21],
+[19, 0.5],//erhält halben Einsatz zurück
+[2, 1.5],
+[4, 2],
+[6, 2.5],
+[8, 3],
+[10, 3.5],
+[12, 4],
+[14, 4.5],
+[16, 5],
+[18, 6],
+[20, 9],
+]);
+
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('gluecksrad')
+        .setDescription('Spiele um zu gewinnen oder zu verlieren.')
+        .addIntegerOption(option =>
+            option.setName('einsatz')
+                .setDescription('Anzahl an XP die du setzen möchtest.')
+                .setRequired(true)
+                .setMaxValue(1000)
+                .setMinValue(1)
+        )
+        .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
+
+    run: async ({ interaction }) => {
+        console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+        try {
+            if (!interaction.inGuild()) {
+                interaction.reply('Hier ist doch kein Server!');
+                return;
+            }
+            await interaction.deferReply();
+            const einsatz = interaction.options.get('einsatz')?.value;
+            const targetUserId = interaction.member.id;
+            const zufallsZahl = getRandom(1, answers.size);
+            const targetUserObj = await interaction.guild.members.fetch(targetUserId);
+            const result = Math.ceil(einsatz * gewinne.get(zufallsZahl));
+            await removeXP(targetUserObj, einsatz, interaction.channel);
+            await interaction.editReply(`Dein Einsatz in höhe von ${einsatz}XP wurde abgezogen!`);
+            var delay = 3000;
+            let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
+            await sleep(delay);
+            if (istGerade(zufallsZahl) || zufallsZahl == 1) {
+                await removeXP(targetUserObj, result, interaction.channel);
+                await interaction.editReply(`Du hast ${result}XP verloren! Mit deinem Einsatz eingerechnet sind das ${einsatz + result}XP verlust!`);
+            } else if (zufallsZahl == 9) {
+                await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
+                await interaction.editReply(`Du erhälst deinen Einsatz zurück! Versuche es doch einfach erneut`);
+            } else if (zufallsZahl == 11) {
+                await interaction.editReply(`Du hast lediglich deinen Einsatz in höhe von ${einsatz}XP verloren!`);
+            } else if (zufallsZahl == 19) {
+                await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
+                await interaction.editReply(`Weder Glück noch Pech, du hast nur die Hälfte deines Einsatzes und somit ${result}XP verloren!`);
+            } else {
+                await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
+                await interaction.editReply(`Glückwunsch, du hast ${result}XP gewonnen! Nach abzug deines Einsatzes hast du somit einen Gewinn von ${result - einsatz}XP!`);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    options: {
+        devOnly: true,
+    },
+};
