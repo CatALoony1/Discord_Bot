@@ -3,7 +3,6 @@ const createLeaderboardEmbeds = require("../../utils/createLeaderboardEmbeds");
 
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('lPage')) return;
-    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     let targetMessage = await interaction.channel.messages.fetch(interaction.message.id);
     let targetMessageEmbed = targetMessage.embeds[0];
     let [page, maxpage] = targetMessageEmbed.description.split("/");
@@ -17,7 +16,7 @@ module.exports = async (interaction) => {
                 });
                 return;
             } else {
-                await interaction.editReply(`Du bist bereits auf Seite 1.`);
+                await interaction.reply({content:`Du bist bereits auf Seite 1.`, flags: MessageFlags.Ephemeral });
                 return;
             }
         } catch (error) {
@@ -33,7 +32,7 @@ module.exports = async (interaction) => {
                 });
                 return;
             } else {
-                await interaction.editReply(`Du bist bereits auf der letzten Seite.`);
+                await interaction.reply({content:`Du bist bereits auf der letzten Seite.`, flags: MessageFlags.Ephemeral });
                 return;
             }
         } catch (error) {
