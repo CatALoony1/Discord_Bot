@@ -80,7 +80,7 @@ module.exports = async (message, client) => {
         state = newBotstate;
     }
     if (botstatevar == 'neutral') {
-        var number = getRandom(1, answers.size - 1);
+        var number = getRandom(1, answers.size);
         var delay = 2000;
         if (number == 22) {
             let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
