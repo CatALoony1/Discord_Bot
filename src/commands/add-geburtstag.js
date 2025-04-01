@@ -52,7 +52,7 @@ module.exports = {
                         console.log(`Error saving updated geburtstag ${e}`);
                         return;
                     });
-                    await interaction.editReply(`Geburtstag erfolgreich geaendert.`);
+                    await interaction.editReply(`Geburtstag erfolgreich eingetragen.`);
                 } else {
                     await interaction.editReply(`Du bist noch nicht in der DB, chatte mal bisschen.`);
                 }
@@ -60,7 +60,7 @@ module.exports = {
                 console.log(error);
             }
         } else {
-            await interaction.editReply(`Der eingegebene Wert muss ein gueltiges Datum sein.`);
+            await interaction.editReply(`Der eingegebene Wert muss ein gültiges Datum sein.`);
         }
     },
 };
