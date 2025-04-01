@@ -5,8 +5,8 @@ module.exports = async (interaction, client) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('qPage')) return;
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     let targetMessage = await interaction.channel.messages.fetch(interaction.message.id);
-            let targetMessageEmbed = targetMessage.embeds[0];
-            let [page, maxpage] = targetMessageEmbed.description.split("/");
+    let targetMessageEmbed = targetMessage.embeds[0];
+    let [page, maxpage] = targetMessageEmbed.description.split("/");
     if (interaction.customId === 'qPageDown') {
         try {
             if (page != 1) {
