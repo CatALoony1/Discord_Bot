@@ -58,10 +58,7 @@ module.exports = {
             await interaction.deferReply();
             const einsatz = interaction.options.get('einsatz')?.value;
             const targetUserId = interaction.member.id;
-            let zufallsZahl = getRandom(1, gewinne.size);
-            if(interaction.user.id == process.env.ADMIN_ID){
-                zufallsZahl = 17;
-            }
+            const zufallsZahl = getRandom(1, gewinne.size);
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
             const result = Math.ceil(einsatz * gewinne.get(zufallsZahl));
             await removeXP(targetUserObj, einsatz, interaction.channel);
