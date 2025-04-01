@@ -61,8 +61,8 @@ module.exports = {
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
             const result = Math.ceil(einsatz * gewinne.get(zufallsZahl));
             await removeXP(targetUserObj, einsatz, interaction.channel);
-            await interaction.editReply(`Dein Einsatz in höhe von ${einsatz}XP wurde abgezogen!`);
-            var delay = 3000;
+            await interaction.editReply(`Dein Einsatz in Höhe von ${einsatz}XP wurde abgezogen!`);
+            var delay = 2000;
             let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
             await sleep(delay);
             if (istGerade(zufallsZahl) || zufallsZahl == 1) {
@@ -72,10 +72,7 @@ module.exports = {
                 await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
                 await interaction.editReply(`Du erhälst deinen Einsatz zurück! Versuche es doch einfach erneut`);
             } else if (zufallsZahl == 11) {
-                await interaction.editReply(`Du hast lediglich deinen Einsatz in höhe von ${einsatz}XP verloren!`);
-            } else if (zufallsZahl == 19) {
-                await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
-                await interaction.editReply(`Weder Glück noch Pech, du hast nur die Hälfte deines Einsatzes und somit ${result}XP verloren!`);
+                await interaction.editReply(`Du hast lediglich deinen Einsatz in Höhe von ${einsatz}XP verloren!`);
             } else {
                 await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
                 await interaction.editReply(`Glückwunsch, du hast ${result}XP gewonnen! Nach abzug deines Einsatzes hast du somit einen Gewinn von ${result - einsatz}XP!`);
@@ -85,6 +82,6 @@ module.exports = {
         }
     },
     options: {
-        devOnly: true,
+        devOnly: false,
     },
 };
