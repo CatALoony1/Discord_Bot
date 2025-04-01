@@ -2,7 +2,7 @@ const { MessageFlags } = require('discord.js');
 const createLeaderboardEmbeds = require("../../utils/createLeaderboardEmbeds");
 
 module.exports = async (interaction) => {
-    if (!interaction.isButton() || !interaction.customId) return;
+    if (!interaction.isButton() || !interaction.customId || (interaction.customId !== 'lPageDown' && interaction.customId !== 'lPageUp')) return;
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     let targetMessage = await interaction.channel.messages.fetch(interaction.message.id);
     let targetMessageEmbed = targetMessage.embeds[0];
