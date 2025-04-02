@@ -26,7 +26,7 @@ module.exports = async (client) => {
                 .setTitle("Es ist Zeit zu bumpen!")
                 .setImage(gifUrl);
               var targetChannel = await client.channels.fetch(process.env.BUMP_ID);
-              var message = await targetChannel.send({ contens: `||${role}||`, embeds: [bump] });
+              var message = await targetChannel.send({ content: `||${role}||`, embeds: [bump] });
               console.log('Bump reminded');
               bumpEntry.remindedId = message.id;
               bumpEntry.reminded = 'J';
