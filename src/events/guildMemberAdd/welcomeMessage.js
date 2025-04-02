@@ -29,9 +29,7 @@ module.exports = async (guildMember) => {
                     .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
                     .setTitle(`⚓ Willkommen an Bord des Captain Iglo Servers! 🐟\nBereite dich auf spannende Abenteuer auf den sieben Weltmeeren vor! 🌊`)
                     .setImage(gifUrl);
-                var message = await targetChannel.send(`||${role} <@${guildMember.id}>||`);
-                await message.reply({ embeds: [welcome] });
-                message.delete();
+                await targetChannel.send({ content: `||${role} <@${guildMember.id}>||`, embeds: [welcome] });
                 var allbegruessungen = await Begruessung.find({ guildId: guildMember.guild.id, zugestimmt: 'J' });
                 if (allbegruessungen.length > 0) {
                     for (const begruessung of allbegruessungen) {

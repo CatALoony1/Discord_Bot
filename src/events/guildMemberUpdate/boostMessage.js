@@ -24,15 +24,13 @@ module.exports = async (oldMember, newMember) => {
                         .setAuthor({ name: newMember.user.username, iconURL: newMember.user.displayAvatarURL({ size: 256 }) })
                         .setTitle(`Danke für den Serverboost!❤️`)
                         .setImage(gifUrl);
-                    var message = await targetChannel.send(`||<@${newMember.id}>||`);
-                    var reply = await message.reply({ embeds: [boost] });
-                    message.delete();
-                    await reply.react(letterEmojiMap.get('D'));
-                    await reply.react(letterEmojiMap.get('A'));
-                    await reply.react(letterEmojiMap.get('N'));
-                    await reply.react(letterEmojiMap.get('K'));
-                    await reply.react(letterEmojiMap.get('E'));
-                    await reply.react(letterEmojiMap.get('!'));
+                    var message = await targetChannel.send({ content: `||<@${newMember.id}>||`, embeds: [boost] });
+                    await message.react(letterEmojiMap.get('D'));
+                    await message.react(letterEmojiMap.get('A'));
+                    await message.react(letterEmojiMap.get('N'));
+                    await message.react(letterEmojiMap.get('K'));
+                    await message.react(letterEmojiMap.get('E'));
+                    await message.react(letterEmojiMap.get('!'));
                 })
                 .catch((error) => {
                     console.error('ERROR:', error);
