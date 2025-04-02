@@ -50,8 +50,8 @@ async function removeXP(member, xpToRemove, channel) {
             level.lastMessage = Date.now();
             if (level.xp < 0 && level.level > 0) {
                 do {
+level.level -= 1;
                     level.xp = level.xp + calculateLevelXp(level.level);
-                    level.level -= 1;
                     console.log(`user ${member.user.tag} fell down to level ${level.level}`);
                     let description = `Oh nein ${member}! Du bist auf **Level ${level.level}** gefallen!`;
                     if (roles.has(level.level)) {
