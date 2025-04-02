@@ -13,7 +13,7 @@ module.exports = {
                 .setCustomId(`begruessung-${interaction.user.id}`);
             const textInput = new TextInputBuilder()
                 .setCustomId('begruessung-text')
-                .setLabel('Frage:')
+                .setLabel('Begrüßung:')
                 .setPlaceholder('Placeholders:\n<me> - du\n<new> - der/die neue\n <#CHANNELID> - CHANNELID ersetzen')
                 .setStyle(TextInputStyle.Paragraph)
                 .setRequired(true)
