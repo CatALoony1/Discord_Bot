@@ -70,7 +70,7 @@ module.exports = {
                 result = await removeXP(targetUserObj, result, interaction.channel);
                 await interaction.editReply(`Du hast ${result}XP verloren! Mit deinem Einsatz eingerechnet sind das ${einsatz + result}XP Verlust!`);
             } else if (zufallsZahl == 9) {
-                result = await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
+                await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
                 await interaction.editReply(`Du erhälst deinen Einsatz zurück! Versuche es doch einfach erneut`);
             } else if (zufallsZahl == 11) {
                 await interaction.editReply(`Du hast lediglich deinen Einsatz in Höhe von ${einsatz}XP verloren!`);
