@@ -145,7 +145,7 @@ module.exports = {
                     placeholder = 'Wähle dein Lieblingsspielgenre';
                     content = 'Bitte wähle deine Lieblingsspiele aus:';
                     bCustomId = 'removeGame';
-                    bLabel = 'Spielerolle entfernen';
+                    bLabel = 'Spielerollen entfernen';
                     min = 0;
                     max = rolenames.length;
                     break;
@@ -155,7 +155,7 @@ module.exports = {
                     placeholder = 'Ping-Einstellungen';
                     content = 'Bitte wähle deine Ping-Einstellungen aus:';
                     bCustomId = 'removePingRoles';
-                    bLabel = 'Pingrollen entfernen';
+                    bLabel = 'Pingrolle entfernen';
                     emoji = pingEmojis;
                     break;
                 case 'platform':
@@ -174,7 +174,7 @@ module.exports = {
                     placeholder = 'Wähle dein Pronomen';
                     content = 'Bitte wähle dein Pronomen aus:';
                     bCustomId = 'removePronouns';
-                    bLabel = 'Pronomenrolle entfernen';
+                    bLabel = 'Pronomenrollen entfernen';
                     min = 0;
                     max = rolenames.length;
                     break;
