@@ -43,7 +43,7 @@ module.exports = {
     for (let i = 0; i < fetchedLevel.length; i++) {
       if (i === 5) break;
       let userObj = await interaction.guild.members.fetch(fetchedLevel[i].userId);
-      const imgUrl = gifToPngDataUri(userObj.user.displayAvatarURL({ size: 256 }));
+      const imgUrl = await gifToPngDataUri(userObj.user.displayAvatarURL({ size: 256 }));
       players[i] = {
         avatar: userObj.user.displayAvatarURL({ size: 256 }),
         username: userObj.user.tag,
