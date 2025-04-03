@@ -68,6 +68,7 @@ module.exports = {
     }
     let currentRank = allLevels.findIndex((lvl) => lvl.userId === targetUserId) + 1;
     const imgUrl = gifToPngDataUri(targetUserObj.user.displayAvatarURL({ size: 256 }));
+    console.log(imgUrl);
     const rank = new canvacord.RankCardBuilder()
       .setAvatar(imgUrl)
       .setRank(currentRank)
