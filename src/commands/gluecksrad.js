@@ -87,6 +87,6 @@ module.exports = {
         }
     },
     options: {
-        devOnly: false,
+        devOnly: true,
     },
 };
