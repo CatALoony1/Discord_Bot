@@ -20,7 +20,7 @@ module.exports = async (client) => {
     customStatusJob.startCustomStatusJob(client);
     geburtstagJob.startGeburtstagJob(client);
     goodMorningJob.startGoodMorningJob(client);
-    monthlyXPJob.startMonthlyXPJob(client);
+    monthlyXPJob.startMonthlyXpJob(client);
     newYearJob.startNewYearJob(client);
     quizQuestionJob.startQuizQuestionJob(client);
     quizStatsJob.startQuizStatsJob(client);
