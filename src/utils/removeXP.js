@@ -40,19 +40,14 @@ async function removeXP(member, xpToRemove, channel) {
         guildId: member.guild.id,
     };
     try {
-console.log(xpToRemove);
         const level = await Level.findOne(query);
         if (level) {
-console.log(level.xp);
-console.log(level.allxp);
             console.log(`user ${member.user.tag} lost ${xpToRemove} XP`);
             level.xp -= xpToRemove;
             level.allxp -= xpToRemove;
             level.removedxp += xpToRemove;
             level.thismonth -= xpToRemove;
             level.lastMessage = Date.now();
-console.log(level.xp);
-console.log(level.allxp);
             if (level.xp < 0 && level.level > 0) {
                 do {
                     level.level -= 1;
@@ -81,14 +76,11 @@ console.log(level.allxp);
                     channel.send({ embeds: [embed] });
                 } while (level.xp < 0 && level.level > 0);
             }
-console.log(level);
-console.log(xpToRemove);
             await level.save().catch((e) => {
                 console.log(`Error saving updated level ${e}`);
                 return;
             });
         }
-console.log('END');
         return xpToRemove;
     } catch (error) {
         console.log(error);
