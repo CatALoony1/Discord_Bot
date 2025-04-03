@@ -3,7 +3,7 @@ const fs = require('fs');
 
 let renameLogFileJob = null;
 
-function startRenameLogFileJob(client) {
+function startJob(client) {
     if (renameLogFileJob) {
         console.log('RenameLogFile-Job is already running.');
         return;
@@ -22,7 +22,7 @@ function startRenameLogFileJob(client) {
     console.log('RenameLogFile-Job started.');
 }
 
-function stopRenameLogFileJob() {
+function stopJob() {
     if (renameLogFileJob) {
         renameLogFileJob.stop();
         renameLogFileJob = null;
@@ -32,14 +32,14 @@ function stopRenameLogFileJob() {
     }
 }
 
-function isRenameLogFileJobRunning() {
+function isRunning() {
     return renameLogFileJob !== null;
 }
 
 module.exports = {
-    startRenameLogFileJob,
-    stopRenameLogFileJob,
-    isRenameLogFileJobRunning
+    startJob,
+    stopJob,
+    isRunning
 };
 
 /*

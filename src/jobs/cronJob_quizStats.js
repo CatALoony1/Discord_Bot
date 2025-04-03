@@ -5,7 +5,7 @@ const QuizQuestions = require('../models/QuizQuestion');
 
 let quizStatsJob = null;
 
-function startQuizStatsJob(client) {
+function startJob(client) {
     if (quizStatsJob) {
         console.log('QuizStats-Job is already running.');
         return;
@@ -48,7 +48,7 @@ function startQuizStatsJob(client) {
     console.log('QuizStats-Job started.');
 }
 
-function stopQuizStatsJob() {
+function stopJob() {
     if (quizStatsJob) {
         quizStatsJob.stop();
         quizStatsJob = null;
@@ -58,12 +58,12 @@ function stopQuizStatsJob() {
     }
 }
 
-function isQuizStatsJobRunning() {
+function isRunning() {
     return quizStatsJob !== null;
 }
 
 module.exports = {
-    startQuizStatsJob,
-    stopQuizStatsJob,
-    isQuizStatsJobRunning
+    startJob,
+    stopJob,
+    isRunning
 };

@@ -4,7 +4,7 @@ const Level = require('../models/Level');
 
 let geburtstagJob = null;
 
-function startGeburtstagJob(client) {
+function startJob(client) {
     if (geburtstagJob) {
         console.log('Geburtstag-Job is already running.');
         return;
@@ -28,7 +28,7 @@ function startGeburtstagJob(client) {
     console.log('Geburtstag-Job started.');
 }
 
-function stopGeburtstagJob() {
+function stopJob() {
     if (geburtstagJob) {
         geburtstagJob.stop();
         geburtstagJob = null;
@@ -38,12 +38,12 @@ function stopGeburtstagJob() {
     }
 }
 
-function isGeburtstagJobRunning() {
+function isRunning() {
     return geburtstagJob !== null;
 }
 
 module.exports = {
-    startGeburtstagJob,
-    stopGeburtstagJob,
-    isGeburtstagJobRunning
+    startJob,
+    stopJob,
+    isRunning
 };

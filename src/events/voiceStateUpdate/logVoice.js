@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { EmbedBuilder, VoiceState } = require('discord.js');
-const { startVoiceXpJob, stopVoiceXpJob, isVoiceXpJobRunning } = require('../../jobs/cronJob_voiceXp');
+const { startJob, stopJob, isRunning } = require('../../jobs/cronJob_voiceXp');
 
 async function checkVoice(client) {
   var isTwoMembers = false;
@@ -12,12 +12,12 @@ async function checkVoice(client) {
     }
   });
   if (isTwoMembers) {
-    if (!isVoiceXpJobRunning()) {
-      startVoiceXpJob(client);
+    if (!isRunning()) {
+      startJob(client);
     }
   } else {
-    if (isVoiceXpJobRunning()) {
-      stopVoiceXpJob();
+    if (isRunning()) {
+      stopJob();
     }
   }
 }

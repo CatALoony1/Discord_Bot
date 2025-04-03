@@ -11,7 +11,7 @@ function getRandomXp(min, max) {
 
 let voiceXpJob = null;
 
-function startVoiceXpJob(client) {
+function startJob(client) {
     if (voiceXpJob) {
         console.log('VoiceXP-Job is already running.');
         return;
@@ -42,7 +42,7 @@ function startVoiceXpJob(client) {
     console.log('VoiceXP-Job started.');
 }
 
-function stopVoiceXpJob() {
+function stopJob() {
     if (voiceXpJob) {
         voiceXpJob.stop();
         voiceXpJob = null;
@@ -52,12 +52,12 @@ function stopVoiceXpJob() {
     }
 }
 
-function isVoiceXpJobRunning() {
+function isRunning() {
     return voiceXpJob !== null;
 }
 
 module.exports = {
-    startVoiceXpJob,
-    stopVoiceXpJob,
-    isVoiceXpJobRunning
+    startJob,
+    stopJob,
+    isRunning
 };

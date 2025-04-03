@@ -4,7 +4,7 @@ const Level = require('../models/Level');
 
 let checkBumperRoleJob = null;
 
-function startCheckBumperRoleJob(client) {
+function startJob(client) {
     if (checkBumperRoleJob) {
         console.log('CheckBumperRole-Job is already running.');
         return;
@@ -38,7 +38,7 @@ function startCheckBumperRoleJob(client) {
     console.log('CheckBumperRole-Job started.');
 }
 
-function stopCheckBumperRoleJob() {
+function stopJob() {
     if (checkBumperRoleJob) {
         checkBumperRoleJob.stop();
         checkBumperRoleJob = null;
@@ -48,12 +48,12 @@ function stopCheckBumperRoleJob() {
     }
 }
 
-function isCheckBumperRoleJobRunning() {
+function isRunning() {
     return checkBumperRoleJob !== null;
 }
 
 module.exports = {
-    startCheckBumperRoleJob,
-    stopCheckBumperRoleJob,
-    isCheckBumperRoleJobRunning
+    startJob,
+    stopJob,
+    isRunning
 };

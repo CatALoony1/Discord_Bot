@@ -5,7 +5,7 @@ const BotState = require('../models/BotState');
 
 let checkGoodEvilJob = null;
 
-function startCheckGoodEvilJob(client) {
+function startJob(client) {
   if (checkGoodEvilJob) {
     console.log('CheckGoodEvil-Job is already running.');
     return;
@@ -46,7 +46,7 @@ function startCheckGoodEvilJob(client) {
   console.log('CheckGoodEvil-Job started.');
 }
 
-function stopCheckGoodEvilJob() {
+function stopJob() {
   if (checkGoodEvilJob) {
     checkGoodEvilJob.stop();
     checkGoodEvilJob = null;
@@ -56,14 +56,14 @@ function stopCheckGoodEvilJob() {
   }
 }
 
-function isCheckGoodEvilJobRunning() {
+function isRunning() {
   return checkGoodEvilJob !== null;
 }
 
 module.exports = {
-  startCheckGoodEvilJob,
-  stopCheckGoodEvilJob,
-  isCheckGoodEvilJobRunning
+  startJob,
+  stopJob,
+  isRunning
 };
 
 /*

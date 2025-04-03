@@ -3,7 +3,7 @@ const cron = require('node-cron');
 
 let newYearJob = null;
 
-function startNewYearJob(client) {
+function startJob(client) {
   if (newYearJob) {
     console.log('NewYear-Job is already running.');
     return;
@@ -15,7 +15,7 @@ function startNewYearJob(client) {
   console.log('NewYear-Job started.');
 }
 
-function stopNewYearJob() {
+function stopJob() {
   if (newYearJob) {
     newYearJob.stop();
     newYearJob = null;
@@ -25,14 +25,14 @@ function stopNewYearJob() {
   }
 }
 
-function isNewYearJobRunning() {
+function isRunning() {
   return newYearJob !== null;
 }
 
 module.exports = {
-  startNewYearJob,
-  stopNewYearJob,
-  isNewYearJobRunning
+  startJob,
+  stopJob,
+  isRunning
 };
 
 /*

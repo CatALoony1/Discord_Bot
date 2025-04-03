@@ -318,7 +318,7 @@ function getRandom(min, max) {
 
 let customStatusJob = null;
 
-function startCustomStatusJob(client) {
+function startJob(client) {
   if (customStatusJob) {
     console.log('CustomStatus-Job is already running.');
     return;
@@ -346,7 +346,7 @@ function startCustomStatusJob(client) {
   console.log('CustomStatus-Job started.');
 }
 
-function stopCustomStatusJob() {
+function stopJob() {
   if (customStatusJob) {
     customStatusJob.stop();
     customStatusJob = null;
@@ -356,12 +356,12 @@ function stopCustomStatusJob() {
   }
 }
 
-function isCustomStatusJobRunning() {
+function isRunning() {
   return customStatusJob !== null;
 }
 
 module.exports = {
-  startCustomStatusJob,
-  stopCustomStatusJob,
-  isCustomStatusJobRunning
+  startJob,
+  stopJob,
+  isRunning
 };

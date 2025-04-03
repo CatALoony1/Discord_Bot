@@ -11,7 +11,7 @@ function getRandom(min, max) {
 
 let quizQuestionJob = null;
 
-function startQuizQuestionJob(client) {
+function startJob(client) {
     if (quizQuestionJob) {
         console.log('QuizQuestion-Job is already running.');
         return;
@@ -142,7 +142,7 @@ function startQuizQuestionJob(client) {
     console.log('QuizQuestion-Job started.');
 }
 
-function stopQuizQuestionJob() {
+function stopJob() {
     if (quizQuestionJob) {
         quizQuestionJob.stop();
         quizQuestionJob = null;
@@ -152,12 +152,12 @@ function stopQuizQuestionJob() {
     }
 }
 
-function isQuizQuestionJobRunning() {
+function isRunning() {
     return quizQuestionJob !== null;
 }
 
 module.exports = {
-    startQuizQuestionJob,
-    stopQuizQuestionJob,
-    isQuizQuestionJobRunning
+    startJob,
+    stopJob,
+    isRunning
 };

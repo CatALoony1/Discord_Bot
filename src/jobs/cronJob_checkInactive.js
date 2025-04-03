@@ -7,7 +7,7 @@ const QuizStats = require('../models/QuizStats');
 
 let checkInactiveJob = null;
 
-function startCheckInactiveJob(client) {
+function startJob(client) {
     if (checkInactiveJob) {
         console.log('CheckInactive-Job is already running.');
         return;
@@ -153,7 +153,7 @@ function startCheckInactiveJob(client) {
     console.log('CheckInactive-Job started.');
 }
 
-function stopCheckInactiveJob() {
+function stopJob() {
     if (checkInactiveJob) {
         checkInactiveJob.stop();
         checkInactiveJob = null;
@@ -163,12 +163,12 @@ function stopCheckInactiveJob() {
     }
 }
 
-function isCheckInactiveJobRunning() {
+function isRunning() {
     return checkInactiveJob !== null;
 }
 
 module.exports = {
-    startCheckInactiveJob,
-    stopCheckInactiveJob,
-    isCheckInactiveJobRunning
+    startJob,
+    stopJob,
+    isRunning
 };

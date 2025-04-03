@@ -9,7 +9,7 @@ function getRandom(min, max) {
 
 let goodMorningJob = null;
 
-function startGoodMorningJob(client) {
+function startJob(client) {
   if (goodMorningJob) {
     console.log('GoodMorning-Job is already running.');
     return;
@@ -31,7 +31,7 @@ function startGoodMorningJob(client) {
   console.log('GoodMorning-Job started.');
 }
 
-function stopGoodMorningJob() {
+function stopJob() {
   if (goodMorningJob) {
     goodMorningJob.stop();
     goodMorningJob = null;
@@ -41,14 +41,14 @@ function stopGoodMorningJob() {
   }
 }
 
-function isGoodMorningJobRunning() {
+function isRunning() {
   return goodMorningJob !== null;
 }
 
 module.exports = {
-  startGoodMorningJob,
-  stopGoodMorningJob,
-  isGoodMorningJobRunning
+  startJob,
+  stopJob,
+  isRunning
 };
 
 /*

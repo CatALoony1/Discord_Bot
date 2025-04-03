@@ -4,7 +4,7 @@ require('dotenv').config();
 
 let monthlyXpJob = null;
 
-function startMonthlyXpJob(client) {
+function startJob(client) {
   if (monthlyXpJob) {
     console.log('MonthlyXp-Job is already running.');
     return;
@@ -28,7 +28,7 @@ function startMonthlyXpJob(client) {
   console.log('MonthlyXp-Job started.');
 }
 
-function stopMonthlyXpJob() {
+function stopJob() {
   if (monthlyXpJob) {
     monthlyXpJob.stop();
     monthlyXpJob = null;
@@ -38,14 +38,14 @@ function stopMonthlyXpJob() {
   }
 }
 
-function isMonthlyXpJobRunning() {
+function isRunning() {
   return monthlyXpJob !== null;
 }
 
 module.exports = {
-  startMonthlyXpJob,
-  stopMonthlyXpJob,
-  isMonthlyXpJobRunning
+  startJob,
+  stopJob,
+  isRunning
 };
 
 /*

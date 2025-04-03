@@ -6,7 +6,7 @@ const getTenorGifById = require("../utils/getTenorGifById");
 
 let bumpReminderJob = null;
 
-function startBumpReminderJob(client) {
+function startJob(client) {
   if (bumpReminderJob) {
     console.log('BumpReminder-Job is already running.');
     return;
@@ -50,7 +50,7 @@ function startBumpReminderJob(client) {
   console.log('BumpReminder-Job started.');
 }
 
-function stopBumpReminderJob() {
+function stopJob() {
   if (bumpReminderJob) {
     bumpReminderJob.stop();
     bumpReminderJob = null;
@@ -60,12 +60,12 @@ function stopBumpReminderJob() {
   }
 }
 
-function isBumpReminderJobRunning() {
+function isRunning() {
   return bumpReminderJob !== null;
 }
 
 module.exports = {
-  startBumpReminderJob,
-  stopBumpReminderJob,
-  isBumpReminderJobRunning
+  startJob,
+  stopJob,
+  isRunning
 };
