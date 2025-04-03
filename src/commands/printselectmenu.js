@@ -142,7 +142,7 @@ module.exports = {
                 case 'game':
                     rolenames = gameRoles;
                     smCustomId = 'gameselect';
-                    placeholder = 'Wähle dein Lieblingsspielgenre';
+                    placeholder = 'Wähle deine Lieblingsspiele';
                     content = 'Bitte wähle deine Lieblingsspiele aus:';
                     bCustomId = 'removeGame';
                     bLabel = 'Spielerollen entfernen';
