@@ -45,7 +45,7 @@ module.exports = {
       let userObj = await interaction.guild.members.fetch(fetchedLevel[i].userId);
       const imgUrl = await gifToPngDataUri(userObj.user.displayAvatarURL({ size: 256 }));
       players[i] = {
-        avatar: userObj.user.displayAvatarURL({ size: 256 }),
+        avatar: imgUrl,
         username: userObj.user.tag,
         displayName: userObj.user.displayName,
         level: fetchedLevel[i].level,
