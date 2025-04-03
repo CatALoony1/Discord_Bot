@@ -71,7 +71,7 @@ module.exports = {
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
     run: async ({ interaction, client }) => {
-        console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+        console.log(`SlashCommand ${interaction.commandName} ${interaction.options.getSubcommand()} was executed by user ${interaction.member.user.tag}`);
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         try {
             const subcommand = interaction.options.getSubcommand();

@@ -4,7 +4,7 @@ const Begruessung = require('../models/Begruessung');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('begruessung')
-        .setDescription('Stelle deine Begrüßung ein.')
+        .setDescription('Begrüßung')
         .addSubcommand(subcommand =>
             subcommand
                 .setName('add')
@@ -17,7 +17,7 @@ module.exports = {
         )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
     run: async ({ interaction }) => {
-        console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+        console.log(`SlashCommand ${interaction.commandName} ${interaction.options.getSubcommand()} was executed by user ${interaction.member.user.tag}`);
         try {
             const subcommand = interaction.options.getSubcommand();
             if (subcommand == 'add') {
