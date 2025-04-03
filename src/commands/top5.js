@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, AttachmentBuilder, InteractionContextType } = require('discord.js');
 const canvacord = require('canvacord');
 const Level = require('../models/Level');
+const gifToPngDataUri = require('../utils/gifToPngDataUri');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -29,7 +30,7 @@ module.exports = {
       }
     }
     for (let j = 0; j < oldUsers.length; j++) {
-      fetchedLevel.splice(oldUsers[j]-j, 1);
+      fetchedLevel.splice(oldUsers[j] - j, 1);
     }
     fetchedLevel.sort((a, b) => {
       if (a.level === b.level) {
@@ -42,6 +43,7 @@ module.exports = {
     for (let i = 0; i < fetchedLevel.length; i++) {
       if (i === 5) break;
       let userObj = await interaction.guild.members.fetch(fetchedLevel[i].userId);
+      const imgUrl = gifToPngDataUri(userObj.user.displayAvatarURL({ size: 256 }));
       players[i] = {
         avatar: userObj.user.displayAvatarURL({ size: 256 }),
         username: userObj.user.tag,

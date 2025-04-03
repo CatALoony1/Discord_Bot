@@ -2,6 +2,7 @@ const { SlashCommandBuilder, AttachmentBuilder, InteractionContextType } = requi
 const canvacord = require('canvacord');
 const calculateLevelXp = require('../utils/calculateLevelXp');
 const Level = require('../models/Level');
+const gifToPngDataUri = require('../utils/gifToPngDataUri');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -51,7 +52,7 @@ module.exports = {
       }
     }
     for (let j = 0; j < oldUsers.length; j++) {
-      allLevels.splice(oldUsers[j]-j, 1);
+      allLevels.splice(oldUsers[j] - j, 1);
     }
 
     allLevels.sort((a, b) => {
@@ -66,9 +67,9 @@ module.exports = {
       status = targetUserObj.presence.status;
     }
     let currentRank = allLevels.findIndex((lvl) => lvl.userId === targetUserId) + 1;
-
+    const imgUrl = gifToPngDataUri(targetUserObj.user.displayAvatarURL({ size: 256 }));
     const rank = new canvacord.RankCardBuilder()
-      .setAvatar(targetUserObj.user.displayAvatarURL({ size: 256 }))
+      .setAvatar(imgUrl)
       .setRank(currentRank)
       .setLevel(fetchedLevel.level)
       .setCurrentXP(fetchedLevel.xp)
