@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
-const Questions = require('../../models/QuizQuestion');
+const Questions = require('../models/QuizQuestion');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -9,8 +9,14 @@ function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-module.exports = async (client) => {
-    cron.schedule('0 0 * * *', async function () {
+let quizQuestionJob = null;
+
+function startQuizQuestionJob(client) {
+    if (quizQuestionJob) {
+        console.log('QuizQuestion-Job is already running.');
+        return;
+    }
+    quizQuestionJob = cron.schedule('0 0 * * *', async function () {
         console.log('Quiz started');
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         try {
@@ -70,7 +76,7 @@ module.exports = async (client) => {
                 const targetUserId = fetchedQuestions[questionIndex].participants[0];
                 if (!(guild.members.cache.find(m => m.id === targetUserId)?.id)) {
                     console.log(`ERROR Quiz ${targetUserId} ist kein User`);
-                }else{
+                } else {
                     const targetUserObj = await guild.members.fetch(targetUserId);
                     questionEmbed.setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) });
                 }
@@ -133,4 +139,25 @@ module.exports = async (client) => {
             console.log(error);
         }
     });
+    console.log('QuizQuestion-Job started.');
+}
+
+function stopQuizQuestionJob() {
+    if (quizQuestionJob) {
+        quizQuestionJob.stop();
+        quizQuestionJob = null;
+        console.log('QuizQuestion-Job stopped.');
+    } else {
+        console.log('QuizQuestion-Job is not running.');
+    }
+}
+
+function isQuizQuestionJobRunning() {
+    return quizQuestionJob !== null;
+}
+
+module.exports = {
+    startQuizQuestionJob,
+    stopQuizQuestionJob,
+    isQuizQuestionJobRunning
 };

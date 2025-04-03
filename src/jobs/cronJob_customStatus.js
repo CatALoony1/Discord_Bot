@@ -316,13 +316,14 @@ function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-/**
- * 
- * @param {Client} client 
- * @returns 
- */
-module.exports = (client) => {
-  cron.schedule('*/30 * * * * *', async function () { //30sec
+let customStatusJob = null;
+
+function startCustomStatusJob(client) {
+  if (customStatusJob) {
+    console.log('CustomStatus-Job is already running.');
+    return;
+  }
+  customStatusJob = cron.schedule('*/30 * * * * *', async function () { //30sec
     try {
       const guild = await client.guilds.cache.get(process.env.GUILD_ID);
       const targetUser = await guild.members.fetch(process.env.ADMIN_ID);
@@ -342,4 +343,25 @@ module.exports = (client) => {
       console.log(error);
     }
   });
+  console.log('CustomStatus-Job started.');
+}
+
+function stopCustomStatusJob() {
+  if (customStatusJob) {
+    customStatusJob.stop();
+    customStatusJob = null;
+    console.log('CustomStatus-Job stopped.');
+  } else {
+    console.log('CustomStatus-Job is not running.');
+  }
+}
+
+function isCustomStatusJobRunning() {
+  return customStatusJob !== null;
+}
+
+module.exports = {
+  startCustomStatusJob,
+  stopCustomStatusJob,
+  isCustomStatusJobRunning
 };

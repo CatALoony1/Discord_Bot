@@ -1,0 +1,63 @@
+const cron = require('node-cron');
+const Level = require('../models/Level');
+require('dotenv').config();
+
+let monthlyXpJob = null;
+
+function startMonthlyXpJob(client) {
+  if (monthlyXpJob) {
+    console.log('MonthlyXp-Job is already running.');
+    return;
+  }
+  monthlyXpJob = cron.schedule('0 0 1 * *', async function () {
+    console.log('Started deleting monthly XP');
+    try {
+      const fetchedLevel = await Level.find({
+        guildId: process.env.GUILD_ID,
+      });
+      fetchedLevel.forEach(async level => {
+        level.lastmonth = level.thismonth;
+        level.thismonth = 0;
+        await level.save();
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    console.log('Finished deleting monthly XP');
+  });
+  console.log('MonthlyXp-Job started.');
+}
+
+function stopMonthlyXpJob() {
+  if (monthlyXpJob) {
+    monthlyXpJob.stop();
+    monthlyXpJob = null;
+    console.log('MonthlyXp-Job stopped.');
+  } else {
+    console.log('MonthlyXp-Job is not running.');
+  }
+}
+
+function isMonthlyXpJobRunning() {
+  return monthlyXpJob !== null;
+}
+
+module.exports = {
+  startMonthlyXpJob,
+  stopMonthlyXpJob,
+  isMonthlyXpJobRunning
+};
+
+/*
+  * * * * * *
+  | | | | | |
+  | | | | | day of week
+  | | | | month
+  | | | day of month
+  | | hour
+  | minute
+  second ( optional )
+
+  * = jede
+
+*/

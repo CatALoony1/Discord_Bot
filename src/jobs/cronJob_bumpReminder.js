@@ -1,11 +1,17 @@
 const Discord = require("discord.js");
 const cron = require('node-cron');
 require('dotenv').config();
-const Bump = require('../../models/Bump');
-const getTenorGifById = require("../../utils/getTenorGifById");
+const Bump = require('../models/Bump');
+const getTenorGifById = require("../utils/getTenorGifById");
 
-module.exports = async (client) => {
-  cron.schedule('*/5 * * * * *', async function () {
+let bumpReminderJob = null;
+
+function startBumpReminderJob(client) {
+  if (bumpReminderJob) {
+    console.log('BumpReminder-Job is already running.');
+    return;
+  }
+  bumpReminderJob = cron.schedule('*/5 * * * * *', async function () {
     const query = {
       guildId: process.env.GUILD_ID,
     };
@@ -41,4 +47,25 @@ module.exports = async (client) => {
       console.log(error);
     }
   });
+  console.log('BumpReminder-Job started.');
+}
+
+function stopBumpReminderJob() {
+  if (bumpReminderJob) {
+    bumpReminderJob.stop();
+    bumpReminderJob = null;
+    console.log('BumpReminder-Job stopped.');
+  } else {
+    console.log('BumpReminder-Job is not running.');
+  }
+}
+
+function isBumpReminderJobRunning() {
+  return bumpReminderJob !== null;
+}
+
+module.exports = {
+  startBumpReminderJob,
+  stopBumpReminderJob,
+  isBumpReminderJobRunning
 };

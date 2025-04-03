@@ -1,9 +1,15 @@
 require('dotenv').config();
 const cron = require('node-cron');
-const Level = require('../../models/Level');
+const Level = require('../models/Level');
 
-module.exports = async (client) => {
-    cron.schedule('0 0 * * *', async function () {
+let geburtstagJob = null;
+
+function startGeburtstagJob(client) {
+    if (geburtstagJob) {
+        console.log('Geburtstag-Job is already running.');
+        return;
+    }
+    geburtstagJob = cron.schedule('0 0 * * *', async function () {
         var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
         const allLevels = await Level.find({
             guildId: process.env.GUILD_ID,
@@ -19,4 +25,25 @@ module.exports = async (client) => {
             }
         }
     });
+    console.log('Geburtstag-Job started.');
+}
+
+function stopGeburtstagJob() {
+    if (geburtstagJob) {
+        geburtstagJob.stop();
+        geburtstagJob = null;
+        console.log('Geburtstag-Job stopped.');
+    } else {
+        console.log('Geburtstag-Job is not running.');
+    }
+}
+
+function isGeburtstagJobRunning() {
+    return geburtstagJob !== null;
+}
+
+module.exports = {
+    startGeburtstagJob,
+    stopGeburtstagJob,
+    isGeburtstagJobRunning
 };

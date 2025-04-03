@@ -1,7 +1,7 @@
 require('dotenv').config();
 const cron = require('node-cron');
 const Config = require('../models/Config');
-const giveXP = require('./giveXP');
+const giveXP = require('../utils/giveXP');
 
 function getRandomXp(min, max) {
     min = Math.ceil(min);

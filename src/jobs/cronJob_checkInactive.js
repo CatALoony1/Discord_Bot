@@ -1,12 +1,18 @@
 const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
-const Level = require('../../models/Level');
-const Config = require('../../models/Config');
-const QuizStats = require('../../models/QuizStats');
+const Level = require('../models/Level');
+const Config = require('../models/Config');
+const QuizStats = require('../models/QuizStats');
 
-module.exports = async (client) => {
-    cron.schedule('0 1 * * *', async function () { // 1 Uhr
+let checkInactiveJob = null;
+
+function startCheckInactiveJob(client) {
+    if (checkInactiveJob) {
+        console.log('CheckInactive-Job is already running.');
+        return;
+    }
+    checkInactiveJob = cron.schedule('0 1 * * *', async function () { // 1 Uhr
         console.log(`CheckInactive-Job started...`);
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -144,4 +150,25 @@ module.exports = async (client) => {
         }
         console.log(`CheckInactive-Job finished...`);
     });
+    console.log('CheckInactive-Job started.');
+}
+
+function stopCheckInactiveJob() {
+    if (checkInactiveJob) {
+        checkInactiveJob.stop();
+        checkInactiveJob = null;
+        console.log('CheckInactive-Job stopped.');
+    } else {
+        console.log('CheckInactive-Job is not running.');
+    }
+}
+
+function isCheckInactiveJobRunning() {
+    return checkInactiveJob !== null;
+}
+
+module.exports = {
+    startCheckInactiveJob,
+    stopCheckInactiveJob,
+    isCheckInactiveJobRunning
 };

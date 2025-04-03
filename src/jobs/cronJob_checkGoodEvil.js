@@ -1,15 +1,16 @@
 const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
-const BotState = require('../../models/BotState');
+const BotState = require('../models/BotState');
 
-/**
- * 
- * @param {Discord.Client} client 
- * @returns 
- */
-module.exports = async (client) => {
-  cron.schedule('5 0 * * *', async function () { // 7 Uhr
+let checkGoodEvilJob = null;
+
+function startCheckGoodEvilJob(client) {
+  if (checkGoodEvilJob) {
+    console.log('CheckGoodEvil-Job is already running.');
+    return;
+  }
+  checkGoodEvilJob = cron.schedule('5 0 * * *', async function () { // 7 Uhr
     const state = await BotState.findOne({
       guildId: process.env.GUILD_ID,
     });
@@ -42,6 +43,27 @@ module.exports = async (client) => {
       await newBotstate.save();
     }
   });
+  console.log('CheckGoodEvil-Job started.');
+}
+
+function stopCheckGoodEvilJob() {
+  if (checkGoodEvilJob) {
+    checkGoodEvilJob.stop();
+    checkGoodEvilJob = null;
+    console.log('CheckGoodEvil-Job stopped.');
+  } else {
+    console.log('CheckGoodEvil-Job is not running.');
+  }
+}
+
+function isCheckGoodEvilJobRunning() {
+  return checkGoodEvilJob !== null;
+}
+
+module.exports = {
+  startCheckGoodEvilJob,
+  stopCheckGoodEvilJob,
+  isCheckGoodEvilJobRunning
 };
 
 /*

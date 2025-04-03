@@ -1,9 +1,15 @@
 require('dotenv').config();
 const cron = require('node-cron');
-const Level = require('../../models/Level');
+const Level = require('../models/Level');
 
-module.exports = async (client) => {
-    cron.schedule('*/5 * * * *', async function () {
+let checkBumperRoleJob = null;
+
+function startCheckBumperRoleJob(client) {
+    if (checkBumperRoleJob) {
+        console.log('CheckBumperRole-Job is already running.');
+        return;
+    }
+    checkBumperRoleJob = cron.schedule('*/5 * * * *', async function () {
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
             const allLevels = await Level.find({
@@ -29,4 +35,25 @@ module.exports = async (client) => {
             console.log(error);
         }
     });
+    console.log('CheckBumperRole-Job started.');
+}
+
+function stopCheckBumperRoleJob() {
+    if (checkBumperRoleJob) {
+        checkBumperRoleJob.stop();
+        checkBumperRoleJob = null;
+        console.log('CheckBumperRole-Job stopped.');
+    } else {
+        console.log('CheckBumperRole-Job is not running.');
+    }
+}
+
+function isCheckBumperRoleJobRunning() {
+    return checkBumperRoleJob !== null;
+}
+
+module.exports = {
+    startCheckBumperRoleJob,
+    stopCheckBumperRoleJob,
+    isCheckBumperRoleJobRunning
 };

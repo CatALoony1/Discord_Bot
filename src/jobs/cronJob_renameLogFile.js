@@ -1,8 +1,14 @@
 const cron = require('node-cron');
 const fs = require('fs');
 
-module.exports = async () => {
-    cron.schedule('58 23 * * *', async function () {
+let renameLogFileJob = null;
+
+function startRenameLogFileJob(client) {
+    if (renameLogFileJob) {
+        console.log('RenameLogFile-Job is already running.');
+        return;
+    }
+    renameLogFileJob = cron.schedule('58 23 * * *', async function () {
         console.log(`RenameLogFile-Job started...`);
         if (fs.existsSync("./logs/bot.log")) {
             var d = new Date();
@@ -13,6 +19,27 @@ module.exports = async () => {
         }
         console.log(`RenameLogFile-Job finished`);
     });
+    console.log('RenameLogFile-Job started.');
+}
+
+function stopRenameLogFileJob() {
+    if (renameLogFileJob) {
+        renameLogFileJob.stop();
+        renameLogFileJob = null;
+        console.log('RenameLogFile-Job stopped.');
+    } else {
+        console.log('RenameLogFile-Job is not running.');
+    }
+}
+
+function isRenameLogFileJobRunning() {
+    return renameLogFileJob !== null;
+}
+
+module.exports = {
+    startRenameLogFileJob,
+    stopRenameLogFileJob,
+    isRenameLogFileJobRunning
 };
 
 /*

@@ -1,10 +1,16 @@
 const { ActionRowBuilder, ButtonStyle, ButtonBuilder, EmbedBuilder } = require('discord.js');
-const createQuizLeaderboardEmbeds = require("../../utils/createQuizLeaderboardEmbeds");
+const createQuizLeaderboardEmbeds = require("../utils/createQuizLeaderboardEmbeds");
 const cron = require('node-cron');
-const QuizQuestions = require('../../models/QuizQuestion');
+const QuizQuestions = require('../models/QuizQuestion');
 
-module.exports = async (client) => {
-    cron.schedule('11 1 * * 7', async function () {
+let quizStatsJob = null;
+
+function startQuizStatsJob(client) {
+    if (quizStatsJob) {
+        console.log('QuizStats-Job is already running.');
+        return;
+    }
+    quizStatsJob = cron.schedule('11 1 * * 7', async function () {
         try {
             var targetChannel = await client.channels.fetch(process.env.QUIZ_ID);
             const embed = await createQuizLeaderboardEmbeds(0, client);
@@ -39,4 +45,25 @@ module.exports = async (client) => {
             console.log(error);
         }
     });
+    console.log('QuizStats-Job started.');
+}
+
+function stopQuizStatsJob() {
+    if (quizStatsJob) {
+        quizStatsJob.stop();
+        quizStatsJob = null;
+        console.log('QuizStats-Job stopped.');
+    } else {
+        console.log('QuizStats-Job is not running.');
+    }
+}
+
+function isQuizStatsJobRunning() {
+    return quizStatsJob !== null;
+}
+
+module.exports = {
+    startQuizStatsJob,
+    stopQuizStatsJob,
+    isQuizStatsJobRunning
 };
