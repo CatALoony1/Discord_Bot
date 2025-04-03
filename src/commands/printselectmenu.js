@@ -145,7 +145,7 @@ module.exports = {
                     placeholder = 'Wähle dein Lieblingsspielgenre';
                     content = 'Bitte wähle deine Lieblingsspiele aus:';
                     bCustomId = 'removeGame';
-                    bLabel = 'Spielesrolle entfernen';
+                    bLabel = 'Spielerolle entfernen';
                     min = 0;
                     max = rolenames.length;
                     break;
@@ -174,7 +174,7 @@ module.exports = {
                     placeholder = 'Wähle dein Pronomen';
                     content = 'Bitte wähle dein Pronomen aus:';
                     bCustomId = 'removePronouns';
-                    bLabel = 'Pronomensrolle entfernen';
+                    bLabel = 'Pronomenrolle entfernen';
                     min = 0;
                     max = rolenames.length;
                     break;
