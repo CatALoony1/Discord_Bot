@@ -113,7 +113,6 @@ module.exports = {
             let bCustomId = '';
             let bLabel = '';
             let emoji = null;
-
             switch (selectmenu) {
                 case 'age':
                     rolenames = ageRoles;
@@ -190,9 +189,8 @@ module.exports = {
                 default:
                     throw new Error('Ungültiges SelectMenu gewählt.');
             }
-
             let roles = [];
-
+            let selectMenu = null;
             if (emoji != null) {
                 for (let i = 0; i < rolenames.length; i++) {
                     roles[i] = {
@@ -201,8 +199,7 @@ module.exports = {
                         emoji: emoji[i]
                     };
                 }
-
-                const selectMenu = new StringSelectMenuBuilder()
+                selectMenu = new StringSelectMenuBuilder()
                     .setCustomId(smCustomId)
                     .setPlaceholder(placeholder)
                     .setMinValues(min)
@@ -222,7 +219,7 @@ module.exports = {
                         value: rolenames[i]
                     };
                 }
-                const selectMenu = new StringSelectMenuBuilder()
+                selectMenu = new StringSelectMenuBuilder()
                     .setCustomId(smCustomId)
                     .setPlaceholder(placeholder)
                     .setMinValues(min)
