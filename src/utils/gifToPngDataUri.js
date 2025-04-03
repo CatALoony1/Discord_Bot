@@ -10,8 +10,8 @@ async function gifToPngDataUri(gifUrl) {
     });
     const buffer = response.data;
 
-    const pngBuffer = await sharp(buffer, { animated: true }).png().toBuffer();
-    const dataUri = `data:image/png;base64,${pngBuffer.toString('base64')}`;
+    const pngBuffer = await sharp(buffer, { animated: true }).webp().toBuffer();
+    const dataUri = `data:image/webp;base64,${pngBuffer.toString('base64')}`;
 
     return dataUri;
   } catch (error) {
