@@ -5,7 +5,8 @@ const rolenames = ['League of Legends',
   'Fortnite',
   'Overwatch',
   'Call of Duty',
-  'Garry\'s Mod'];
+  'Garry\'s Mod',
+  'Rocket League'];
 
 module.exports = async (interaction) => {
   var removedRoles = [];
