@@ -75,7 +75,7 @@ const regionRoles = ['Niedersachsen',
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('printRoleSelect')
+        .setName('printroleselect')
         .setDescription('Erzeugt ein Rollenselect.')
         .addStringOption(option =>
             option.setName('selectmenu')
