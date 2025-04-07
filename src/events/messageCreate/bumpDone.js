@@ -11,10 +11,13 @@ module.exports = async (message) => {
   if (message.author.id === process.env.DISBOARD_ID) {
     if (message.embeds[0] != null && message.embeds[0].description.includes("Bump erfolgreich")) {
       const userid = message.interactionMetadata.user.id;
+      const guildId = message.guild.id;
+      const channel = message.channel;
       const level = await Level.findOne({
         userId: userid,
-        guildId: message.guild.id,
+        guildId: guildId,
       });
+      var newMessage = undefined;
       if (level) {
         level.lastBump = new Date();
         level.save();
@@ -28,35 +31,42 @@ module.exports = async (message) => {
           .setDescription(`Danke <@${userid}>, dass du den Server gebumpt hast. Um unsere Dankbarkeit zu zeigen bekommst du für 24 Stunden die Rolle **Bumper**, durch diese Rolle erhälst du einen Bonus von 10% auf jegliche erhaltene Erfahrung!`)
           .setThumbnail(member.user.displayAvatarURL({ format: 'png', dynamic: true }))
           .setColor(0x0033cc);
-        message.channel.send({ embeds: [embed] });
+        newMessage = await channel.send({ embeds: [embed] });
       }
       const query = {
-        guildId: message.guild.id,
+        guildId: guildId,
       };
+      var messageToReact = undefined;
+      if (newMessage != undefined) {
+        messageToReact = newMessage;
+        await message.delete();
+      } else {
+        messageToReact = message;
+      }
       try {
         const bumpEntry = await Bump.findOne(query);
         if (bumpEntry) {
           bumpEntry.endTime = Date.now() + 7200000;
           bumpEntry.reminded = 'N';
           if (bumpEntry.remindedId) {
-            const remindedmessage = await message.channel.messages.fetch(bumpEntry.remindedId);
+            const remindedmessage = await channel.messages.fetch(bumpEntry.remindedId);
             await remindedmessage.delete();
             bumpEntry.remindedId = undefined;
           }
           bumpEntry.save();
           console.log('Bump entry updated');
-          message.react("⏰");
+          messageToReact.react("⏰");
         } else {
           const newBump = new Bump({
-            guildId: message.guild.id,
+            guildId: guildId,
             endTime: Date.now() + 7200000,
           });
           await newBump.save();
           console.log('Bump entry created');
-          message.react("⏰");
+          messageToReact.react("⏰");
         }
       } catch (error) {
-        message.reply('Fehler bei erstellen des Bump Reminders.');
+        messageToReact.reply('Fehler bei erstellen des Bump Reminders.');
         console.log(error);
       }
     }
