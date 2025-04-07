@@ -51,12 +51,12 @@ const answers = new Map([[1, 'Ja!'],
 [40, 'Wenn du mich sowas nochmal fragst, schicke ich dich von der Planke!'],
 [41, 'What would Jesus do?'],
 [42, 'Nur wenn du mir Kekse gibst.'],
-[43, 'Gegen eine kleine Spende könnte ich dem zustimmen.']
-[44, './img/DAUMEN_HOCH.jpg']
-[45, './img/DAUMEN_RUNTER.jpg']
-[46, './img/DAUMEN_JA.jpg']
-[47, './img/DAUMEN_NEIN.jpg']
-[48, './img/JA_BOOT.jpg']
+[43, 'Gegen eine kleine Spende könnte ich dem zustimmen.'],
+[44, './img/DAUMEN_HOCH.jpg'],
+[45, './img/DAUMEN_RUNTER.jpg'],
+[46, './img/DAUMEN_JA.jpg'],
+[47, './img/DAUMEN_NEIN.jpg'],
+[48, './img/JA_BOOT.jpg'],
 [49, './img/NEIN_BOOT.jpg']
 ]);
 
@@ -140,7 +140,7 @@ module.exports = async (message, client) => {
                         console.error('ERROR:', error);
                     });
             }
-        } else if(numer >= 44 && number <= 49) {
+        } else if(number >= 44 && number <= 49) {
             const image = answers.get(number);
             await message.reply({ files: [image] });
         } else {
