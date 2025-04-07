@@ -13,7 +13,7 @@ async function getAIResult(prompt, sysInstruction) {
             },
             {
                 category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-                threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
             },
             {
                 category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
