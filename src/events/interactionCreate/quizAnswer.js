@@ -1,6 +1,7 @@
 const { MessageFlags } = require('discord.js');
 const Questions = require('../../models/QuizQuestion');
 const QuizStats = require('../../models/QuizStats');
+const Config = require('../../models/Config');
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('quiz')) return;
     try {
@@ -17,6 +18,17 @@ module.exports = async (interaction) => {
                 return;
             } else {
                 fetchedQuestion.participants.push(interaction.user.id);
+            }
+            const config = await Config.findOne({
+                key: 'quizTimeout',
+            });
+            if(config.value.includes(interaction.user.id)){
+                console.log('Quiz: User Timed out');
+                await interaction.editReply('Du hast einfach einen Geheimen Befehl benutzt, deshalb darfst du heute nicht.');
+                await fetchedQuestion.save();
+                config.value = config.value.replace(`${interaction.user.id},`, '');
+                await config.save();
+                return;
             }
             if (answer == 'A') {
                 fetchedQuestion.answerA += 1;

@@ -87,6 +87,14 @@ module.exports = async (message, client) => {
     }
     if (botstatevar == 'neutral') {
         var number = getRandom(1, answers.size);
+        const contentOhneCaptain = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo');
+        const zahlMatch = contentOhneCaptain.content.match(/\d+/);
+        if (message.content.includes('Grünkohl') && zahlMatch) {
+            const gefundeneZahl = parseInt(zahlMatch[0], 10);
+            if (gefundeneZahl >= 1 && gefundeneZahl <= answers.size) {
+                number = gefundeneZahl;
+            }
+        }
         var delay = 2000;
         if (number == 22) {
             let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
@@ -140,7 +148,7 @@ module.exports = async (message, client) => {
                         console.error('ERROR:', error);
                     });
             }
-        } else if(number >= 44 && number <= 49) {
+        } else if (number >= 44 && number <= 49) {
             const image = answers.get(number);
             await message.reply({ files: [image] });
         } else {
@@ -156,6 +164,12 @@ module.exports = async (message, client) => {
         console.log('contacting good AI');
         const prompt = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo');
         const sysInstruction = "Dein Name ist Captain Iglo. Du sprichst wie ein wirklich sehr freundlicher seemann, der mit jeder Anwort viel Liebe ausdrückt.";
+        const result = await getAIResult(prompt, sysInstruction);
+        await message.reply(`${result.response.text()}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
+    } else if (botstatevar == 'horny') {
+        console.log('contacting horny AI');
+        const prompt = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo');
+        const sysInstruction = "Dein Name ist Captain Iglo. Du bist super horny und willst jedem an die Wäsche.";
         const result = await getAIResult(prompt, sysInstruction);
         await message.reply(`${result.response.text()}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else {

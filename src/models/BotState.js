@@ -17,6 +17,10 @@ const botStateSchema = new Schema({
     type: Number,
     default: 0,
   },
+  hornyCount: {
+    type: Number,
+    default: 0,
+  },
   startTime: {
     type: Date,
   }

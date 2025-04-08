@@ -27,8 +27,10 @@ function startJob(client) {
         var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
         if (oldState == 'evil') {
           await targetChannel.send(`Ach, ich habe mich wieder etwas beruhigt, diese Wut war echt anstrengend.`);
-        } else {
+        } else if (oldState == 'good') {
           await targetChannel.send(`Auch die schönste Zeit vergeht mal, schade! :(`);
+        } else {
+          await targetChannel.send(`Mein Höschen ist nun wieder trocken.`);
         }
         await client.user.setAvatar('./img/iglo_neutral.jpg');
       }
