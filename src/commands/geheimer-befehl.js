@@ -17,7 +17,7 @@ module.exports = {
         .setDescription('Geheim!')
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
-    run: async ({ interaction }) => {
+    run: async ({ interaction, client }) => {
         await interaction.deferReply();
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
@@ -31,12 +31,12 @@ module.exports = {
                     .catch(console.error);
                 await interaction.editReply(`Du wurdest für ${duration} Sekunden getimeoutet!`);
             } else if (zufallszahl == 2) {
-                var amount = getRandom(1, 100);
-                amount = giveXP(targetUserId, amount, amount, interaction.channel, false, false, false);
+                let amount = getRandom(1, 100);
+                amount = await giveXP(targetUserId, amount, amount, interaction.channel, false, false, false);
                 await interaction.editReply(`Dieser Befehl ist geheim, deshalb erhälst du ${amount}XP Schweigegeld!`);
             } else if (zufallszahl == 3) {
-                var amount = getRandom(1, 200);
-                amount = removeXP(targetUserObj, amount, interaction.channel);
+                let amount = getRandom(1, 200);
+                amount = await removeXP(targetUserObj, amount, interaction.channel);
                 await interaction.editReply(`Hör auf diesen Befehl zu benutzen, ich ziehe dir als Strafe ${amount}XP ab!`);
             } else if (zufallszahl == 4) {
                 await getTenorGif('Stop it')
@@ -68,7 +68,7 @@ module.exports = {
                     const role = interaction.guild.roles.cache.find(role => role.name === 'Geheimniswahrer');
                     await targetUserObj.roles.add(role);
                     console.log(`Role Geheimniswahrer was given to user ${targetUserObj.user.tag}`);
-                    await interaction.editReply({ content: `Das Geheimnis ist \"Grünkohl\".`, flags: MessageFlags.Ephemeral });
+                    await interaction.editReply({ content: `Das Geheimnis ist "Grünkohl".`, flags: MessageFlags.Ephemeral });
                 } else {
                     console.log(`User is already Geheimniswahrer`);
                     await interaction.editReply('Du bist bereits im Wissen des Geheimnisses.');
