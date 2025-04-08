@@ -25,14 +25,17 @@ function startJob(client) {
         }
         state.save();
         var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
+        await client.user.setAvatar('./img/iglo_neutral.jpg');
         if (oldState == 'evil') {
           await targetChannel.send(`Ach, ich habe mich wieder etwas beruhigt, diese Wut war echt anstrengend.`);
         } else if (oldState == 'good') {
           await targetChannel.send(`Auch die schönste Zeit vergeht mal, schade! :(`);
-        } else {
+        } else if (oldState == 'fischstäbchen') {
+          await client.user.setUsername('Captain Iglo');
+          await targetChannel.send(`Endlich wieder ein Mensch!`);
+        } {
           await targetChannel.send(`Mein Höschen ist nun wieder trocken.`);
         }
-        await client.user.setAvatar('./img/iglo_neutral.jpg');
       }
     } else {
       console.log(`Botstate entry created`);

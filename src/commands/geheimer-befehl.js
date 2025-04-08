@@ -47,13 +47,15 @@ module.exports = {
                         console.error('ERROR:', error);
                     });
             } else if (zufallszahl == 5) {
-                await getTenorGif('Please die')
-                    .then((gifUrl) => {
-                        interaction.editReply(gifUrl);
-                    })
-                    .catch((error) => {
-                        console.error('ERROR:', error);
-                    });
+                let state = await BotState.findOne({
+                    guildId: interaction.guild.id,
+                });
+                state.state = 'fischstäbchen';
+                state.startTime = Date.now();
+                await state.save();
+                await client.user.setAvatar('./img/iglo_fisch.jpg');
+                await client.user.setUsername('Fischstäbchen');
+                await interaction.editReply('...');
             } else if (zufallszahl == 6) {
                 client.emit('guildMemberRemove', targetUserObj);
                 await interaction.editReply(`Bye`);
@@ -74,19 +76,20 @@ module.exports = {
                     await interaction.editReply('Du bist bereits im Wissen des Geheimnisses.');
                 }
             } else if (zufallszahl == 9) {
-                var state = await BotState.findOne({
+                let state = await BotState.findOne({
                     guildId: interaction.guild.id,
                 });
                 var hornycount = state.hornyCount + 1;
                 await interaction.editReply('Ein geheimnisvoller Zähler wurde soeben hochgetählt!');
-                if (hornycount == 100) {
+                if (hornycount == 50) {
                     hornycount = 0;
                     state.state = 'horny';
                     state.startTime = Date.now();
                     await interaction.editReply('Ich bin jetzt horny!💦');
+                    await client.user.setAvatar('./img/iglo_horny.jpg');
                 }
                 state.hornyCount = hornycount;
-                state.save();
+                await state.save();
             } else if (zufallszahl == 10) {
                 await targetUserObj.setNickname('Neugieriges Stück', 'Wollte das Geheimnis wissen.')
                     .then(member => console.log(`Set nickname of ${member.user.username}`))
