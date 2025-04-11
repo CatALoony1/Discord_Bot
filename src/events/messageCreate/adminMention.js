@@ -37,7 +37,7 @@ module.exports = async (message) => {
         //const sysInstruction = "Dein Name ist Jonas, du befindest dich auf einem Discord Server und bist sehr kokett. Du Antwortest mit maximal einem Satz.";
         const sysInstruction = "Dein Name ist Jonas und du befindest dich auf einem Discord Server. Du Antwortest mit maximal einem Satz. Du schreibst wie ein möchtegern Gangster und benutzt sehr viel Slang.";
         const result = await getAIResult(prompt, sysInstruction);
-        await webhookClient.send(`Da Jonas aktuell keine Lust hat, werde ich antworten:\n${result.response.text()}\n||Diese Antwort entspricht zu 100% meiner Meinung und ist definitiv nicht KI-generiert. Vielleicht lüge ich aber auch.||`);
+        await webhookClient.send(`${result.response.text()}\n||Diese Antwort entspricht zu 100% meiner Meinung und ist definitiv nicht KI-generiert. Vielleicht lüge ich aber auch.||`);
     } catch (error) {
         console.log(error);
     }
