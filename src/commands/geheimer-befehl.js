@@ -70,7 +70,7 @@ module.exports = {
                     const role = interaction.guild.roles.cache.find(role => role.name === 'Geheimniswahrer');
                     await targetUserObj.roles.add(role);
                     console.log(`Role Geheimniswahrer was given to user ${targetUserObj.user.tag}`);
-                    await interaction.editReply({ content: `Das Geheimnis ist "Grünkohl".`, flags: MessageFlags.Ephemeral });
+                await interaction.editReply({content:`Das Geheimnis ist "Grünkohl".`, flags: MessageFlags.Ephemeral });
                 } else {
                     console.log(`User is already Geheimniswahrer`);
                     await interaction.editReply('Du bist bereits im Wissen des Geheimnisses.');
