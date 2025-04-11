@@ -88,7 +88,7 @@ module.exports = async (message, client) => {
     if (botstatevar == 'neutral') {
         var number = getRandom(1, answers.size);
         const contentOhneCaptain = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo');
-        const zahlMatch = contentOhneCaptain.content.match(/\d+/);
+        const zahlMatch = contentOhneCaptain.match(/\d+/);
         if (message.content.includes('Grünkohl') && zahlMatch) {
             const gefundeneZahl = parseInt(zahlMatch[0], 10);
             if (gefundeneZahl >= 1 && gefundeneZahl <= answers.size) {
