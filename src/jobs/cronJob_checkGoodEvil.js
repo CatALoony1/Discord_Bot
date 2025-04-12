@@ -33,7 +33,7 @@ function startJob(client) {
         } else if (oldState == 'fischstäbchen') {
           await client.user.setUsername('Captain Iglo');
           await targetChannel.send(`Endlich wieder ein Mensch!`);
-        } {
+        } else {
           await targetChannel.send(`Mein Höschen ist nun wieder trocken.`);
         }
       }
