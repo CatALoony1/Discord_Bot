@@ -24,11 +24,11 @@ module.exports = {
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
             let zufallszahl = getRandom(1, 10);
             if(targetUserId == process.env.ADMIN_ID) {
-                zufallszahl = 1;
+                zufallszahl = 7;
             }
             if (zufallszahl == 1) {
                 const duration = getRandom(1, 7200);
-                targetUserObj.timeout(5 * 60 * 1000, 'Berühre keine Sachen, die du nicht berühren solltest!')
+                targetUserObj.timeout(duration, 'Berühre keine Sachen, die du nicht berühren solltest!')
                     .then(console.log)
                     .catch(console.error);
                 await interaction.reply(`Du wurdest für ${duration} Sekunden getimeoutet!`);
@@ -83,7 +83,7 @@ module.exports = {
                 });
                 var hornycount = state.hornyCount + 1;
                 await interaction.reply('Ein geheimnisvoller Zähler wurde soeben hochgetählt!');
-                if (hornycount == 50) {
+                if (hornycount == 20) {
                     hornycount = 0;
                     state.state = 'horny';
                     state.startTime = Date.now();
