@@ -40,6 +40,7 @@ module.exports = {
                             { name: 'quizStats', value: 'quizStats' },
                             { name: 'renameLogFile', value: 'renameLogFile' },
                             { name: 'voiceXP', value: 'voiceXP' },
+                            {name: 'missingXp', value: 'missingXp'},
                         )
                 )
         )
@@ -65,6 +66,7 @@ module.exports = {
                             { name: 'quizStats', value: 'quizStats' },
                             { name: 'renameLogFile', value: 'renameLogFile' },
                             { name: 'voiceXP', value: 'voiceXP' },
+                            {name: 'missingXp', value: 'missingXp'},
                         )
                 )
         )
@@ -116,6 +118,9 @@ module.exports = {
                     break;
                 case 'voiceXP':
                     jobClass = voiceXPJob;
+                    break;
+                case 'missingXp':
+                    jobClass = missingXpJob;
                     break;
                 default:
                     throw new Error(`Unbekannter Job: ${job}`);
