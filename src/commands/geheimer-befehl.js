@@ -18,7 +18,7 @@ module.exports = {
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
     run: async ({ interaction, client }) => {
-        await interaction.deferReply();
+        //await interaction.deferReply();
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
             const targetUserId = interaction.member.id;
@@ -32,19 +32,19 @@ module.exports = {
                 targetUserObj.timeout(5 * 60 * 1000, 'Berühre keine Sachen, die du nicht berühren solltest!')
                     .then(console.log)
                     .catch(console.error);
-                await interaction.editReply(`Du wurdest für ${duration} Sekunden getimeoutet!`);
+                await interaction.reply(`Du wurdest für ${duration} Sekunden getimeoutet!`);
             } else if (zufallszahl == 2) {
                 let amount = getRandom(1, 100);
                 amount = await giveXP(targetUserId, amount, amount, interaction.channel, false, false, false);
-                await interaction.editReply(`Dieser Befehl ist geheim, deshalb erhälst du ${amount}XP Schweigegeld!`);
+                await interaction.reply(`Dieser Befehl ist geheim, deshalb erhälst du ${amount}XP Schweigegeld!`);
             } else if (zufallszahl == 3) {
                 let amount = getRandom(1, 200);
                 amount = await removeXP(targetUserObj, amount, interaction.channel);
-                await interaction.editReply(`Hör auf diesen Befehl zu benutzen, ich ziehe dir als Strafe ${amount}XP ab!`);
+                await interaction.reply(`Hör auf diesen Befehl zu benutzen, ich ziehe dir als Strafe ${amount}XP ab!`);
             } else if (zufallszahl == 4) {
                 await getTenorGif('Stop it')
                     .then((gifUrl) => {
-                        interaction.editReply(gifUrl);
+                        interaction.reply(gifUrl);
                     })
                     .catch((error) => {
                         console.error('ERROR:', error);
@@ -58,37 +58,37 @@ module.exports = {
                 await state.save();
                 await client.user.setAvatar('./img/iglo_fisch.jpg');
                 await client.user.setUsername('Fischstäbchen');
-                await interaction.editReply('...');
+                await interaction.reply('...');
             } else if (zufallszahl == 6) {
                 client.emit('guildMemberRemove', targetUserObj);
-                await interaction.editReply(`Bye`);
+                await interaction.reply(`Bye`);
             } else if (zufallszahl == 7) {
                 const config = await Config.findOne({
                     key: 'quizTimeout',
                 });
                 config.value = `${config.value}${targetUserId},`;
-                await interaction.editReply(`Hier passieren geheime Sachen!`);
+                await interaction.reply(`Hier passieren geheime Sachen!`);
             } else if (zufallszahl == 8) {
                 if (!targetUserObj.roles.cache.some(role => role.name === 'Geheimniswahrer')) {
                     const role = interaction.guild.roles.cache.find(role => role.name === 'Geheimniswahrer');
                     await targetUserObj.roles.add(role);
                     console.log(`Role Geheimniswahrer was given to user ${targetUserObj.user.tag}`);
-                await interaction.editReply({content:`Das Geheimnis ist "Grünkohl".`, flags: MessageFlags.Ephemeral });
+                await interaction.reply({content:`Das Geheimnis ist "Grünkohl".`, flags: MessageFlags.Ephemeral });
                 } else {
                     console.log(`User is already Geheimniswahrer`);
-                    await interaction.editReply('Du bist bereits im Wissen des Geheimnisses.');
+                    await interaction.reply('Du bist bereits im Wissen des Geheimnisses.');
                 }
             } else if (zufallszahl == 9) {
                 let state = await BotState.findOne({
                     guildId: interaction.guild.id,
                 });
                 var hornycount = state.hornyCount + 1;
-                await interaction.editReply('Ein geheimnisvoller Zähler wurde soeben hochgetählt!');
+                await interaction.reply('Ein geheimnisvoller Zähler wurde soeben hochgetählt!');
                 if (hornycount == 50) {
                     hornycount = 0;
                     state.state = 'horny';
                     state.startTime = Date.now();
-                    await interaction.editReply('Ich bin jetzt horny!💦');
+                    await interaction.reply('Ich bin jetzt horny!💦');
                     await client.user.setAvatar('./img/iglo_horny.jpg');
                 }
                 state.hornyCount = hornycount;
@@ -97,7 +97,7 @@ module.exports = {
                 await targetUserObj.setNickname('Neugieriges Stück', 'Wollte das Geheimnis wissen.')
                     .then(member => console.log(`Set nickname of ${member.user.username}`))
                     .catch(console.error);
-                await interaction.editReply('Dein neuer Name passt besser zu dir!');
+                await interaction.reply('Dein neuer Name passt besser zu dir!');
             }
         } catch (error) {
             console.log(error);
