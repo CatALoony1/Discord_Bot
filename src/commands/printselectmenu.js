@@ -10,7 +10,8 @@ const {
     pingEmojis,
     platformRoles,
     pronounRoles,
-    regionRoles
+    regionRoles,
+    countryRoles
 } = require('../utils/selectMenuRoles');
 
 module.exports = {
@@ -30,6 +31,7 @@ module.exports = {
                     { name: 'platform', value: 'platform' },
                     { name: 'pronoun', value: 'pronoun' },
                     { name: 'region', value: 'region' },
+                    { name: 'country', value: 'country' }
                 )
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
@@ -125,6 +127,14 @@ module.exports = {
                     content = 'Bitte wähle dein Bundesland aus:';
                     bCustomId = 'removeRegion';
                     bLabel = 'Bundesland entfernen';
+                    break;
+                case 'country':
+                    rolenames = countryRoles;
+                    smCustomId = 'countryselect';
+                    placeholder = 'Land auswählen';
+                    content = 'Bitte wähle dein Land aus:';
+                    bCustomId = 'removeCountry';
+                    bLabel = 'Land entfernen';
                     break;
                 default:
                     throw new Error('Ungültiges SelectMenu gewählt.');

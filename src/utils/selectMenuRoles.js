@@ -71,6 +71,11 @@ const regionRoles = ['Niedersachsen',
     'Hamburg',
     'Rheinland-Pfalz'];
 
+const countryRoles = ['Deutschland',
+    'Österreich',
+    'Schweiz'
+];
+
 module.exports = {
     ageRoles,
     colorRoles,
@@ -81,5 +86,6 @@ module.exports = {
     pingEmojis,
     platformRoles,
     pronounRoles,
-    regionRoles
+    regionRoles,
+    countryRoles
 };

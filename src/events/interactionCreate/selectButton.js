@@ -8,7 +8,8 @@ const {
     pingRoles,
     platformRoles,
     pronounRoles,
-    regionRoles
+    regionRoles,
+    countryRoles
 } = require('../../utils/selectMenuRoles');
 
 module.exports = async (interaction) => {
@@ -49,6 +50,10 @@ module.exports = async (interaction) => {
             case 'removeRegion':
                 variant = 1;
                 roleArray = regionRoles;
+                break;
+            case 'removeCountry':
+                variant = 1;
+                roleArray = countryRoles;
                 break;
             default:
                 console.log('Unknown customId');
