@@ -35,7 +35,7 @@ module.exports = {
                 }
             } else if (zufallszahl == 2) {
                 let amount = getRandom(1, 100);
-                amount = await giveXP(targetUserId, amount, amount, interaction.channel, false, false, false);
+                amount = await giveXP(targetUserObj, amount, amount, interaction.channel, false, false, false);
                 await interaction.reply(`Dieser Befehl ist geheim, deshalb erhälst du ${amount}XP Schweigegeld!`);
             } else if (zufallszahl == 3) {
                 let amount = getRandom(1, 200);
