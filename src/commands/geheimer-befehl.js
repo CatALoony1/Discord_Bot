@@ -23,7 +23,7 @@ module.exports = {
         try {
             const targetUserId = interaction.member.id;
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
-            const zufallszahl = getRandom(1, 10);
+            let zufallszahl = getRandom(1, 10);
             if(targetUserId == process.env.ADMIN_ID) {
                 zufallszahl = 8;
             }
