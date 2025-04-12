@@ -66,6 +66,7 @@ module.exports = {
                     key: 'quizTimeout',
                 });
                 config.value = `${config.value}${targetUserId},`;
+                await config.save();
                 await interaction.reply(`Hier passieren geheime Sachen!`);
             } else if (zufallszahl == 8) {
                 if (!targetUserObj.roles.cache.some(role => role.name === 'Geheimniswahrer')) {
