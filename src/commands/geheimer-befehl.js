@@ -80,7 +80,7 @@ module.exports = {
                     guildId: interaction.guild.id,
                 });
                 var hornycount = state.hornyCount + 1;
-                await interaction.reply('Ein geheimnisvoller Zähler wurde soeben hochgetählt!');
+                await interaction.reply('Ein geheimnisvoller Zähler wurde soeben hochgezählt!');
                 if (hornycount == 20) {
                     hornycount = 0;
                     state.state = 'horny';
