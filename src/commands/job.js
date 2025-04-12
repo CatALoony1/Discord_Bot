@@ -11,6 +11,7 @@ const quizQuestionJob = require('../jobs/cronJob_quizQuestion');
 const quizStatsJob = require('../jobs/cronJob_quizStats');
 const renameLogFileJob = require('../jobs/cronJob_renameLogFile');
 const voiceXPJob = require('../jobs/cronJob_voiceXp');
+const missingXpJob = require('../jobs/cronJob_checkMissingXP');
 
 
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
