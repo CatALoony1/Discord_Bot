@@ -18,14 +18,13 @@ module.exports = {
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
     run: async ({ interaction, client }) => {
-        //await interaction.deferReply();
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
             const targetUserId = interaction.member.id;
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
             let zufallszahl = getRandom(1, 10);
             if(targetUserId == process.env.ADMIN_ID) {
-                zufallszahl = 8;
+                zufallszahl = 1;
             }
             if (zufallszahl == 1) {
                 const duration = getRandom(1, 7200);
