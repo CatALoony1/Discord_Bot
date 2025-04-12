@@ -24,6 +24,9 @@ module.exports = {
             const targetUserId = interaction.member.id;
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
             const zufallszahl = getRandom(1, 10);
+            if(targetUserId == process.env.ADMIN_ID) {
+                zufallszahl = 8;
+            }
             if (zufallszahl == 1) {
                 const duration = getRandom(1, 7200);
                 targetUserObj.timeout(5 * 60 * 1000, 'Berühre keine Sachen, die du nicht berühren solltest!')
