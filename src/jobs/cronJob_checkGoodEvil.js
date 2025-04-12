@@ -10,7 +10,7 @@ function startJob(client) {
     console.log('CheckGoodEvil-Job is already running.');
     return;
   }
-  checkGoodEvilJob = cron.schedule('5 0 * * *', async function () { // 7 Uhr
+  checkGoodEvilJob = cron.schedule('5 * * * *', async function () { // 7 Uhr
     const state = await BotState.findOne({
       guildId: process.env.GUILD_ID,
     });
@@ -18,23 +18,23 @@ function startJob(client) {
       if (state.state != 'neutral') {
         let diffTime = Math.abs(Date.now() - state.startTime);
         let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        const oldState = state.state;
         if (diffDays >= 1) {
+          const oldState = state.state;
           state.state = 'neutral';
           state.startTime = undefined;
-        }
-        state.save();
-        var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
-        await client.user.setAvatar('./img/iglo_neutral.jpg');
-        if (oldState == 'evil') {
-          await targetChannel.send(`Ach, ich habe mich wieder etwas beruhigt, diese Wut war echt anstrengend.`);
-        } else if (oldState == 'good') {
-          await targetChannel.send(`Auch die schönste Zeit vergeht mal, schade! :(`);
-        } else if (oldState == 'fischstäbchen') {
-          await client.user.setUsername('Captain Iglo');
-          await targetChannel.send(`Endlich wieder ein Mensch!`);
-        } else {
-          await targetChannel.send(`Mein Höschen ist nun wieder trocken.`);
+          await state.save();
+          var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
+          await client.user.setAvatar('./img/iglo_neutral.jpg');
+          if (oldState == 'evil') {
+            await targetChannel.send(`Ach, ich habe mich wieder etwas beruhigt, diese Wut war echt anstrengend.`);
+          } else if (oldState == 'good') {
+            await targetChannel.send(`Auch die schönste Zeit vergeht mal, schade! :(`);
+          } else if (oldState == 'fischstäbchen') {
+            await client.user.setUsername('Captain Iglo');
+            await targetChannel.send(`Endlich wieder ein Mensch!`);
+          } else {
+            await targetChannel.send(`Mein Höschen ist nun wieder trocken.`);
+          }
         }
       }
     } else {
