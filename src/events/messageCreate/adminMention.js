@@ -1,6 +1,5 @@
 const { Message, WebhookClient } = require('discord.js');
 require('dotenv').config();
-const Config = require('../../models/Config');
 const Begruessung = require('../../models/Begruessung');
 const getAIResult = require('../../utils/getAIResult');
 const BotState = require('../../models/BotState');
@@ -22,10 +21,6 @@ module.exports = async (message) => {
                 return;
             }
         }
-        const config = await Config.findOne({
-            key: 'adminAway',
-        });
-        if (!config || config.value != 'J') return;
         const begruessung = await Begruessung.findOne({
             guildId: process.env.GUILD_ID,
             authorId: process.env.ADMIN_ID,
