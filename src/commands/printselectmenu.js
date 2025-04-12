@@ -11,7 +11,8 @@ const {
     platformRoles,
     pronounRoles,
     regionRoles,
-    countryRoles
+    countryRoles,
+    countryEmojis
 } = require('../utils/selectMenuRoles');
 
 module.exports = {
@@ -135,6 +136,7 @@ module.exports = {
                     content = 'Bitte wähle dein Land aus:';
                     bCustomId = 'removeCountry';
                     bLabel = 'Land entfernen';
+                    emoji = countryEmojis;
                     break;
                 default:
                     throw new Error('Ungültiges SelectMenu gewählt.');

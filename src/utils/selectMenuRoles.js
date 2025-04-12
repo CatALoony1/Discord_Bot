@@ -76,6 +76,8 @@ const countryRoles = ['Deutschland',
     'Schweiz'
 ];
 
+const countryEmojis = ['🇩🇪', '🇦🇹', '🇨🇭'];
+
 module.exports = {
     ageRoles,
     colorRoles,
@@ -87,5 +89,6 @@ module.exports = {
     platformRoles,
     pronounRoles,
     regionRoles,
-    countryRoles
+    countryRoles,
+    countryEmojis
 };
