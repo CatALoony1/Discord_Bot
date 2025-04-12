@@ -24,11 +24,15 @@ module.exports = {
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
             let zufallszahl = getRandom(1, 10);
             if (zufallszahl == 1) {
+                if (!targetUserObj.roles.cache.some(role => role.name === 'Captains')) {
                 const duration = getRandom(1, 7200);
                 targetUserObj.timeout(duration, 'Berühre keine Sachen, die du nicht berühren solltest!')
                     .then(console.log)
                     .catch(console.error);
                 await interaction.reply(`Du wurdest für ${duration} Sekunden getimeoutet!`);
+                } else {
+                    await interaction.reply(`Ich kann doch niemand höhergestelltem einen Timeout geben! Bitte verzeihen Sie mir!`);
+                }
             } else if (zufallszahl == 2) {
                 let amount = getRandom(1, 100);
                 amount = await giveXP(targetUserId, amount, amount, interaction.channel, false, false, false);
