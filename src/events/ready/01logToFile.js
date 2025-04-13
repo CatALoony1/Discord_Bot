@@ -72,7 +72,7 @@ module.exports = async (client) => {
     stdout.hook('write', async function (string) {
         var targetChannel = await client.channels.fetch(process.env.LOG_ID);
         let d = new Date();
-        string = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}|${string}`;
+        string = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()},${d.getMilliseconds()}|${string}`;
         await fs.appendFile('./logs/bot.log', string, function (err) {
             if (err) throw err;
         });
