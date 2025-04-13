@@ -32,8 +32,10 @@ function startJob(client) {
                     missingXPUsers[missingXPUsers.length] = level.userName;
                 }
             });
+console.log(missingXPUsers);
             if (missingXPUsers.length > 0) {
                 const targetChannel = await client.channels.fetch(process.env.LOG_ID);
+console.log(missingXPUsers.join(', '));
                 targetChannel.send(`Missing XP for users: ${missingXPUsers.join(', ')}`);
             }
         } catch (error) {
