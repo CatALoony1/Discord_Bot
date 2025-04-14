@@ -21,7 +21,7 @@ module.exports = {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
             const targetUserId = interaction.member.id;
-            const targetUserObj = await interaction.guild.members.fetch(targetUserId);
+            const targetUserObj = interaction.member;
             let zufallszahl = getRandom(1, 10);
             if (zufallszahl == 1) {
                 if (!targetUserObj.roles.cache.some(role => role.name === 'Captains')) {
