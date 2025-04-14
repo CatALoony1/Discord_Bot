@@ -125,6 +125,9 @@ module.exports = async (message, client) => {
                             }
                             newMessage = await newMessage.reply(gifUrl);
                             console.log('Botstate changed to evil');
+if (state.state == 'fischstäbchen') {
+await client.user.setUsername('Captain Iglo');
+}
                             state.state = 'evil';
                             state.startTime = Date.now();
                             state.save();
