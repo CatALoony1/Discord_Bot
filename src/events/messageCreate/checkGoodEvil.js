@@ -94,12 +94,12 @@ module.exports = async (message, client) => {
     if (goodYN) {
         var loveCount = state.loveCount + 1;
         if (loveCount == 100) {
-            loveCount = 0;
-            state.state = 'good';
-            state.startTime = Date.now();
 if (state.state == 'fischstäbchen') {
 await client.user.setUsername('Captain Iglo');
 }
+            loveCount = 0;
+            state.state = 'good';
+            state.startTime = Date.now();
         }
         state.loveCount = loveCount;
         state.save();
@@ -112,12 +112,12 @@ await client.user.setUsername('Captain Iglo');
         if (evilYN) {
             var evilCount = state.evilCount + 1;
             if (evilCount == 100) {
-                evilCount = 0;
-                state.state = 'evil';
-                state.startTime = Date.now();
 if (state.state == 'fischstäbchen') {
 await client.user.setUsername('Captain Iglo');
 }
+                evilCount = 0;
+                state.state = 'evil';
+                state.startTime = Date.now();
             }
             state.evilCount = evilCount;
             state.save();
