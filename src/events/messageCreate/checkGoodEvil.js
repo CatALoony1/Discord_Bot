@@ -97,6 +97,9 @@ module.exports = async (message, client) => {
             loveCount = 0;
             state.state = 'good';
             state.startTime = Date.now();
+if (state.state == 'fischstäbchen') {
+await client.user.setUsername('Captain Iglo');
+}
         }
         state.loveCount = loveCount;
         state.save();
@@ -112,6 +115,9 @@ module.exports = async (message, client) => {
                 evilCount = 0;
                 state.state = 'evil';
                 state.startTime = Date.now();
+if (state.state == 'fischstäbchen') {
+await client.user.setUsername('Captain Iglo');
+}
             }
             state.evilCount = evilCount;
             state.save();
