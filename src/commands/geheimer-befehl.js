@@ -27,7 +27,7 @@ module.exports = {
                 if (!targetUserObj.roles.cache.some(role => role.name === 'Captains')) {
                 const duration = getRandom(1, 7200);
                 targetUserObj.timeout(duration, 'Berühre keine Sachen, die du nicht berühren solltest!')
-                    .then(console.log)
+                    .then(console.log(`Timeouted for ${duration} seconds.`))
                     .catch(console.error);
                 await interaction.reply(`Du wurdest für ${duration} Sekunden getimeoutet!`);
                 } else {
