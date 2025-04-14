@@ -81,17 +81,21 @@ module.exports = {
                     await interaction.reply('Du bist bereits im Wissen des Geheimnisses.');
                 }
             } else if (zufallszahl == 9) {
+await interaction.deferReply();
                 let state = await BotState.findOne({
                     guildId: interaction.guild.id,
                 });
                 var hornycount = state.hornyCount + 1;
-                await interaction.reply('Ein geheimnisvoller Zähler wurde soeben hochgezählt!');
+                await interaction.editReply('Ein geheimnisvoller Zähler wurde soeben hochgezählt!');
                 if (hornycount == 20) {
+if (state.state == 'fischstäbchen') {
+await client.user.setUsername('Captain Iglo');
+}
                     hornycount = 0;
                     state.state = 'horny';
                     state.startTime = Date.now();
-                    await interaction.reply('Ich bin jetzt horny!💦');
                     await client.user.setAvatar('./img/iglo_horny.jpg');
+await interaction.editReply('Ich bin jetzt horny!💦');
                 }
                 state.hornyCount = hornycount;
                 await state.save();
