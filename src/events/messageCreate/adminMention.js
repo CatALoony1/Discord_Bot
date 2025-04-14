@@ -17,7 +17,7 @@ module.exports = async (message) => {
             guildId: process.env.GUILD_ID,
         });
         if (state) {
-            if (state.state != 'neutral') {
+            if (state.state != 'neutral' && state.state != 'fischstäbchen') {
                 return;
             }
         }
