@@ -28,7 +28,7 @@ zufallszahl = 1;
 }
             if (zufallszahl == 1) {
                 if (!targetUserObj.roles.cache.some(role => role.name === 'Captains')) {
-                const duration = getRandom(1, 7200);
+                const duration = (getRandom(1, 7200) * 1000);
                 targetUserObj.timeout(duration, 'Berühre keine Sachen, die du nicht berühren solltest!')
                     .then(console.log(`Timeouted for ${duration} seconds.`))
                     .catch(console.error);
