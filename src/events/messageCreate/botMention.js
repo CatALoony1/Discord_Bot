@@ -131,6 +131,7 @@ await client.user.setUsername('Captain Iglo');
                             state.state = 'evil';
                             state.startTime = Date.now();
                             state.save();
+await client.user.setAvatar('./img/iglo_evil.jpg');
                         })
                         .catch((error) => {
                             console.error('ERROR:', error);
