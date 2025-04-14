@@ -23,13 +23,10 @@ module.exports = {
             const targetUserId = interaction.member.id;
             const targetUserObj = interaction.member;
             let zufallszahl = getRandom(1, 10);
-if(targetUserId == '1182304009877459005'){
-zufallszahl = 1;
-}
             if (zufallszahl == 1) {
                 if (!targetUserObj.roles.cache.some(role => role.name === 'Captains')) {
-                const duration = (getRandom(1, 7200) * 1000);
-                targetUserObj.timeout(duration, 'Berühre keine Sachen, die du nicht berühren solltest!')
+                const duration = getRandom(1, 7200);
+                targetUserObj.timeout(duration * 1000, 'Berühre keine Sachen, die du nicht berühren solltest!')
                     .then(console.log(`Timeouted for ${duration} seconds.`))
                     .catch(console.error);
                 await interaction.reply(`Du wurdest für ${duration} Sekunden getimeoutet!`);
