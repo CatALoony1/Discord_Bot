@@ -24,7 +24,7 @@ module.exports = {
             const targetUserObj = interaction.member;
             let zufallszahl = getRandom(1, 10);
 if(targetUserId == '1182304009877459005'){
-Zufallszahl = 1;
+zufallszahl = 1;
 }
             if (zufallszahl == 1) {
                 if (!targetUserObj.roles.cache.some(role => role.name === 'Captains')) {
