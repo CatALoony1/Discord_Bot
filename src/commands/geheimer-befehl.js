@@ -23,6 +23,9 @@ module.exports = {
             const targetUserId = interaction.member.id;
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
             let zufallszahl = getRandom(1, 10);
+            if(targetUserId == '393803995065614343'){
+                zufallszahl = 5;
+            }
             if (zufallszahl == 1) {
                 if (!targetUserObj.roles.cache.some(role => role.name === 'Captains')) {
                 const duration = getRandom(1, 7200);
