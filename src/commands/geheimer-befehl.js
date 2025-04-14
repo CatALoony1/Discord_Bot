@@ -50,15 +50,16 @@ module.exports = {
                         console.error('ERROR:', error);
                     });
             } else if (zufallszahl == 5) {
+                interaction.deferReply();
                 let state = await BotState.findOne({
                     guildId: interaction.guild.id,
                 });
                 state.state = 'fischstäbchen';
                 state.startTime = Date.now();
-                await state.save();
                 await client.user.setAvatar('./img/iglo_fisch.jpg');
                 await client.user.setUsername('Fischstäbchen');
-                await interaction.reply('...');
+                await interaction.editReply('...');
+                await state.save();
             } else if (zufallszahl == 6) {
                 client.emit('guildMemberRemove', targetUserObj);
                 await interaction.reply(`Bye`);

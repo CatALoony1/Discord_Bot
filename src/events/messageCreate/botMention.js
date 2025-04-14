@@ -172,6 +172,8 @@ module.exports = async (message, client) => {
         const sysInstruction = "Dein Name ist Captain Iglo. Du bist super horny und willst jedem an die Wäsche.";
         const result = await getAIResult(prompt, sysInstruction);
         await message.reply(`${result.response.text()}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
+    } else if (botstatevar == 'fischstäbchen') {
+        await message.reply(`...`);
     } else {
         console.log('ERROR: Botstate passt nicht!');
     }
