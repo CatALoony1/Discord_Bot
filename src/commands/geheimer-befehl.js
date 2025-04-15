@@ -54,10 +54,12 @@ module.exports = {
                 let state = await BotState.findOne({
                     guildId: interaction.guild.id,
                 });
-                state.state = 'fischstäbchen';
+                if (state.state != 'fischstäbchen') {
+                    state.state = 'fischstäbchen';
+                    await client.user.setAvatar('./img/iglo_fisch.jpg');
+                    await client.user.setUsername('Fischstäbchen');
+                }
                 state.startTime = Date.now();
-                await client.user.setAvatar('./img/iglo_fisch.jpg');
-                await client.user.setUsername('Fischstäbchen');
                 await interaction.editReply('...');
                 await state.save();
             } else if (zufallszahl == 6) {
