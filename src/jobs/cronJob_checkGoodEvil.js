@@ -10,7 +10,8 @@ function startJob(client) {
     console.log('CheckGoodEvil-Job is already running.');
     return;
   }
-  checkGoodEvilJob = cron.schedule('5 * * * *', async function () { // 7 Uhr
+  checkGoodEvilJob = cron.schedule('1 * * * *', async function () { // 7 Uhr
+console.log('start');
     const state = await BotState.findOne({
       guildId: process.env.GUILD_ID,
     });
