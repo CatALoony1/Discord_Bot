@@ -10,18 +10,14 @@ function startJob(client) {
     console.log('CheckGoodEvil-Job is already running.');
     return;
   }
-  checkGoodEvilJob = cron.schedule('1 * * * *', async function () { // 7 Uhr
-console.log('start');
+  checkGoodEvilJob = cron.schedule('*/5 * * * *', async function () { // 7 Uhr
     const state = await BotState.findOne({
       guildId: process.env.GUILD_ID,
     });
     if (state) {
       if (state.state != 'neutral') {
-console.log(state.startTime);
         let diffTime = Math.abs(Date.now() - state.startTime);
-console.log(diffTime);
         let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-console.log(diffDays);
         if (diffDays >= 1) {
           const oldState = state.state;
           state.state = 'neutral';
