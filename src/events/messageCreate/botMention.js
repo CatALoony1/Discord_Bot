@@ -114,6 +114,9 @@ module.exports = async (message, client) => {
                     await sleep(delay);
                     newMessage = await newMessage.reply(`Evil Captain starting up...`);
                     await sleep(delay);
+                    if (state.state == 'fischstäbchen') {
+                        await client.user.setUsername('Captain Iglo');
+                    }
                     await client.user.setAvatar('./img/iglo_evil.jpg');
                     newMessage = await newMessage.reply(`Evil Captain is now taking control!`);
                     await sleep(delay);
@@ -125,13 +128,9 @@ module.exports = async (message, client) => {
                             }
                             newMessage = await newMessage.reply(gifUrl);
                             console.log('Botstate changed to evil');
-if (state.state == 'fischstäbchen') {
-await client.user.setUsername('Captain Iglo');
-}
                             state.state = 'evil';
                             state.startTime = Date.now();
                             state.save();
-await client.user.setAvatar('./img/iglo_evil.jpg');
                         })
                         .catch((error) => {
                             console.error('ERROR:', error);

@@ -25,11 +25,11 @@ module.exports = {
             let zufallszahl = getRandom(1, 10);
             if (zufallszahl == 1) {
                 if (!targetUserObj.roles.cache.some(role => role.name === 'Captains')) {
-                const duration = getRandom(1, 7200);
-                targetUserObj.timeout(duration * 1000, 'Berühre keine Sachen, die du nicht berühren solltest!')
-                    .then(console.log(`Timeouted for ${duration} seconds.`))
-                    .catch(console.error);
-                await interaction.reply(`Du wurdest für ${duration} Sekunden getimeoutet!`);
+                    const duration = getRandom(1, 7200);
+                    targetUserObj.timeout(duration * 1000, 'Berühre keine Sachen, die du nicht berühren solltest!')
+                        .then(console.log(`Timeouted for ${duration} seconds.`))
+                        .catch(console.error);
+                    await interaction.reply(`Du wurdest für ${duration} Sekunden getimeoutet!`);
                 } else {
                     await interaction.reply(`Ich kann doch niemand höhergestelltem einen Timeout geben! Bitte verzeihen Sie mir!`);
                 }
@@ -75,27 +75,27 @@ module.exports = {
                     const role = interaction.guild.roles.cache.find(role => role.name === 'Geheimniswahrer');
                     await targetUserObj.roles.add(role);
                     console.log(`Role Geheimniswahrer was given to user ${targetUserObj.user.tag}`);
-                await interaction.reply({content:`Das Geheimnis ist "Grünkohl".`, flags: MessageFlags.Ephemeral });
+                    await interaction.reply({ content: `Das Geheimnis ist "Grünkohl".`, flags: MessageFlags.Ephemeral });
                 } else {
                     console.log(`User is already Geheimniswahrer`);
                     await interaction.reply('Du bist bereits im Wissen des Geheimnisses.');
                 }
             } else if (zufallszahl == 9) {
-await interaction.deferReply();
+                await interaction.deferReply();
                 let state = await BotState.findOne({
                     guildId: interaction.guild.id,
                 });
                 var hornycount = state.hornyCount + 1;
                 await interaction.editReply('Ein geheimnisvoller Zähler wurde soeben hochgezählt!');
                 if (hornycount == 20) {
-if (state.state == 'fischstäbchen') {
-await client.user.setUsername('Captain Iglo');
-}
+                    if (state.state == 'fischstäbchen') {
+                        await client.user.setUsername('Captain Iglo');
+                    }
                     hornycount = 0;
                     state.state = 'horny';
                     state.startTime = Date.now();
                     await client.user.setAvatar('./img/iglo_horny.jpg');
-await interaction.editReply('Ich bin jetzt horny!💦');
+                    await interaction.editReply('Ich bin jetzt horny!💦');
                 }
                 state.hornyCount = hornycount;
                 await state.save();
