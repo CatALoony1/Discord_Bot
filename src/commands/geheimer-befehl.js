@@ -59,7 +59,9 @@ module.exports = {
                     await client.user.setAvatar('./img/iglo_fisch.jpg');
                     await client.user.setUsername('Fischstäbchen');
                 }
-                state.startTime = Date.now();
+let time = Date.now();
+time.setHours(time.getHours()-23);
+                state.startTime = time;
                 await interaction.editReply('...');
                 await state.save();
             } else if (zufallszahl == 6) {
