@@ -104,10 +104,15 @@ module.exports = {
                 state.hornyCount = hornycount;
                 await state.save();
             } else if (zufallszahl == 10) {
-                await targetUserObj.setNickname('Neugieriges Stück', 'Wollte das Geheimnis wissen.')
-                    .then(member => console.log(`Set nickname of ${member.user.username}`))
-                    .catch(console.error);
-                await interaction.reply('Dein neuer Name passt besser zu dir!');
+                if (!targetUserObj.roles.cache.some(role => role.name === 'Captains')) {
+                    await interaction.deferReply();
+                    await targetUserObj.setNickname('Neugieriges Stück', 'Wollte das Geheimnis wissen.')
+                        .then(member => console.log(`Set nickname of ${member.user.username}`))
+                        .catch(console.error);
+                    await interaction.editReply('Dein neuer Name passt besser zu dir!');
+                } else {
+                    await interaction.reply(`Deinen wunderschönen Namen kann ich doch nicht ändern!`);
+                }
             }
         } catch (error) {
             console.log(error);
