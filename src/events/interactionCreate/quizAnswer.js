@@ -1,7 +1,6 @@
 const { MessageFlags } = require('discord.js');
 const Questions = require('../../models/QuizQuestion');
 const QuizStats = require('../../models/QuizStats');
-const Config = require('../../models/Config');
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('quiz')) return;
     try {
