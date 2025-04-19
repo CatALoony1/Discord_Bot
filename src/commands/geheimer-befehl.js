@@ -68,12 +68,7 @@ module.exports = {
                 client.emit('guildMemberRemove', targetUserObj);
                 await interaction.reply(`Bye`);
             } else if (zufallszahl == 7) {
-                const config = await Config.findOne({
-                    key: 'quizTimeout',
-                });
-                config.value = `${config.value}${targetUserId},`;
-                await config.save();
-                await interaction.reply(`Hier passieren geheime Sachen!`);
+                await interaction.reply(`Hier passieren keine geheime Sachen mehr!`);
             } else if (zufallszahl == 8) {
                 if (!targetUserObj.roles.cache.some(role => role.name === 'Geheimniswahrer')) {
                     const role = interaction.guild.roles.cache.find(role => role.name === 'Geheimniswahrer');

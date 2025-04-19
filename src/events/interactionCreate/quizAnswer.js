@@ -19,17 +19,6 @@ module.exports = async (interaction) => {
             } else {
                 fetchedQuestion.participants.push(interaction.user.id);
             }
-            const config = await Config.findOne({
-                key: 'quizTimeout',
-            });
-            if(config.value.includes(interaction.user.id)){
-                console.log('Quiz: User Timed out');
-                await interaction.editReply('Du hast einfach einen Geheimen Befehl benutzt, deshalb darfst du heute nicht.');
-                await fetchedQuestion.save();
-                config.value = config.value.replace(`${interaction.user.id},`, '');
-                await config.save();
-                return;
-            }
             if (answer == 'A') {
                 fetchedQuestion.answerA += 1;
             } else if (answer == 'B') {
