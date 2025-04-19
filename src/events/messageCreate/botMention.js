@@ -1,4 +1,4 @@
-const { Message, MessageManager } = require('discord.js');
+const { Message } = require('discord.js');
 const BotState = require('../../models/BotState');
 const getAIResult = require('../../utils/getAIResult');
 const getTenorGifById = require('../../utils/getTenorGifById');
