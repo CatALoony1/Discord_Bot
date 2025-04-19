@@ -74,6 +74,10 @@ const levelSchema = new Schema({
   },
   geburtstag: {
     type: Date,
+  },
+  bumps: {
+    type: Number,
+    defaule: 0,
   }
 });
 

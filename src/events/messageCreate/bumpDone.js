@@ -20,6 +20,7 @@ module.exports = async (message) => {
       var newMessage = undefined;
       if (level) {
         level.lastBump = new Date();
+        level.bumps += 1;
         level.save();
         const member = await message.guild.members.fetch(userid);
         if (!member.roles.cache.some(role => role.name === 'Bumper')) {

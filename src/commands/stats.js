@@ -81,6 +81,7 @@ module.exports = {
     messageEdited.addFields({ name: 'Level:', value: `${fetchedLevel.level}` });
     messageEdited.addFields({ name: 'XP zum nächsten Level:', value: `${fetchedLevel.xp}/${calculateLevelXp(fetchedLevel.level)}` });
     messageEdited.addFields({ name: 'Gesamte XP:', value: `${fetchedLevel.allxp}` });
+    messageEdited.addFields({ name: 'XP abgezogen:', value: `${fetchedLevel.removedxp}` });
     messageEdited.addFields({ name: 'XP diesen Monat:', value: `${fetchedLevel.thismonth}` });
     messageEdited.addFields({ name: 'XP letzten Monat:', value: `${fetchedLevel.lastmonth}` });
     messageEdited.addFields({ name: 'Nachrichten XP:', value: `${fetchedLevel.messagexp}` });
@@ -88,12 +89,12 @@ module.exports = {
     messageEdited.addFields({ name: 'Bonus XP:', value: `${fetchedLevel.bonusclaimed}` });
     messageEdited.addFields({ name: 'Nachrichten:', value: `${fetchedLevel.messages}` });
     messageEdited.addFields({ name: 'Ungefähre Voice Call Zeit:', value: `${time}` });
-    messageEdited.addFields({ name: 'Letzte XP:', value: `${fetchedLevel.lastMessage}` });
     messageEdited.addFields({ name: 'Quizfragen hinzugefügt:', value: `${fetchedLevel.quizadded}` });
-    messageEdited.addFields({ name: 'Levelbarfarbe:', value: `${fetchedLevel.color}` });
     messageEdited.addFields({ name: 'Anzahl Lottospiele:', value: `${lottospiele}` });
-    messageEdited.addFields({ name: 'XP abgezogen:', value: `${fetchedLevel.removedxp}` });
+    messageEdited.addFields({ name: 'Anzahl Bumps:', value: `${fetchedLevel.bumps}` });
+    messageEdited.addFields({ name: 'Letzte XP:', value: `${fetchedLevel.lastMessage}` });
     messageEdited.addFields({ name: 'Geburtstag:', value: `${fetchedLevel.geburtstag}` });
+    messageEdited.addFields({ name: 'Levelbarfarbe:', value: `${fetchedLevel.color}` });
 
     interaction.editReply({ embeds: [messageEdited] });
   },
