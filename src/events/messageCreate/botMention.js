@@ -1,4 +1,4 @@
-const { Message } = require('discord.js');
+const { Message, MessageManager } = require('discord.js');
 const BotState = require('../../models/BotState');
 const getAIResult = require('../../utils/getAIResult');
 const getTenorGifById = require('../../utils/getTenorGifById');
@@ -89,7 +89,7 @@ module.exports = async (message, client) => {
         var number = getRandom(1, answers.size);
         const contentOhneCaptain = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo');
         const zahlMatch = contentOhneCaptain.match(/\d+/);
-        if (message.content.includes('Grünkohl') && zahlMatch) {
+        if (message.content.includes('Grünkohl') && zahlMatch && message.member.roles.cache.some(role => role.name === 'Geheimniswahrer')) {
             const gefundeneZahl = parseInt(zahlMatch[0], 10);
             if (gefundeneZahl >= 1 && gefundeneZahl <= answers.size) {
                 number = gefundeneZahl;
