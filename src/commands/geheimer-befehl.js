@@ -2,7 +2,6 @@ const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('d
 const giveXP = require('../utils/giveXP');
 const removeXP = require('../utils/removeXP');
 const getTenorGif = require('../utils/getTenorGif');
-const Config = require('../models/Config');
 const BotState = require('../models/BotState');
 
 function getRandom(min, max) {
@@ -20,7 +19,6 @@ module.exports = {
     run: async ({ interaction, client }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
-            const targetUserId = interaction.member.id;
             const targetUserObj = interaction.member;
             let zufallszahl = getRandom(1, 10);
             if (zufallszahl == 1) {
