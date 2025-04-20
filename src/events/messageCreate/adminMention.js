@@ -3,6 +3,7 @@ require('dotenv').config();
 const Begruessung = require('../../models/Begruessung');
 const getAIResult = require('../../utils/getAIResult');
 const BotState = require('../../models/BotState');
+const Config = require('../../models/Config');
 
 /**
  * 
@@ -28,9 +29,19 @@ module.exports = async (message) => {
         if (!begruessung) return;
         let webhookClient = new WebhookClient({ id: begruessung.webhookId, token: begruessung.webhookToken });
         const prompt = message.content.replace(`<@&${process.env.KI_JONAS}>`, 'Jonas');
+        const config = await Config.findOne({
+            key: 'KI_SysInstruct',
+        });
+        let sysInstruction = "Dein Name ist Jonas und du befindest dich auf einem Discord Server. Du antwortest mit maximal zwei Sätzen.";
+        if(config){
+            sysInstruction = `${sysInstruction} ${config.value}`;
+        }else{
+            sysInstruction = `${sysInstruction} du hast aktuell keine Lust auf die anderen und bist sehr negativ.`;
+        }
+
         //const sysInstruction = "Dein Name ist Jonas, du befindest dich auf einem Discord Server und hast aktuell keine Lust auf die anderen. Deine Antworten sind kurz und knapp.";
         //const sysInstruction = "Dein Name ist Jonas, du befindest dich auf einem Discord Server und bist sehr kokett. Du Antwortest mit maximal einem Satz.";
-        const sysInstruction = "Dein Name ist Jonas und du befindest dich auf einem Discord Server. Du antwortest mit maximal zwei Sätzen. Du schreibst wie ein möchtegern Gangster und benutzt sehr viel Slang.";
+        //const sysInstruction = "Dein Name ist Jonas und du befindest dich auf einem Discord Server. Du antwortest mit maximal zwei Sätzen. Du schreibst wie ein möchtegern Gangster und benutzt sehr viel Slang.";
         const result = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
         await webhookClient.send(`${result.response.text()}\n||Diese Antwort entspricht zu 100% meiner Meinung und ist definitiv nicht KI-generiert. Vielleicht lüge ich aber auch.||`);
     } catch (error) {
