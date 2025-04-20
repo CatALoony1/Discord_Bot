@@ -10,7 +10,7 @@ function startJob(client) {
         return;
     }
     //checkWebhookAvatarJob = cron.schedule('0 2 * * *', async function () {
-        checkWebhookAvatarJob = cron.schedule('51 10 * * *', async function () {
+        checkWebhookAvatarJob = cron.schedule('53 10 * * *', async function () {
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
             const targetChannel = guild.channels.cache.get(process.env.WELCOME_ID) || (await guild.channels.fetch(process.env.WELCOME_ID));
@@ -23,7 +23,7 @@ function startJob(client) {
                         const begruessung = allBegruessungen.find(b => b.webhookId === hook.id && b.webhookToken === hook.token);
                         if (begruessung) {
                             let targetUserObj = await guild.members.cache.get(begruessung.authorId);
-                            console.log(hook.avatarURL);
+                            console.log(hook.avatar);
                             console.log(hook.avatarURL({ size: 256 }));
                             console.log(targetUserObj.displayAvatarURL({ size: 256 }));
                             if (targetUserObj.displayAvatarURL({ size: 256 }) == hook.avatarURL) {
