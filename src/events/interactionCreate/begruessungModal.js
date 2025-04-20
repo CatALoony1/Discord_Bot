@@ -42,42 +42,24 @@ module.exports = async (interaction) => {
                 guildId: interaction.guild.id,
                 authorId: interaction.user.id,
             });
-            if (begruessung && !text.includes('TESTJG')) {
+            if (begruessung) {
                 begruessung.content = text;
                 begruessung.zugestimmt = "X";
                 await begruessung.save();
             } else {
-                if(text.includes('TESTJG')){
-                    const targetUserObj = await interaction.guild.members.fetch('345554876153200642');
-                    var welcomeChannel = interaction.guild.channels.cache.get(process.env.WELCOME_ID) || (await interaction.guild.channels.fetch(process.env.WELCOME_ID));
-                    await welcomeChannel.createWebhook({
-                        name: targetUserObj.user.displayName,
-                        avatar: targetUserObj.user.displayAvatarURL({ size: 256 }),
-                    })
-                        .then(webhook => new Begruessung({
-                            guildId: interaction.guild.id,
-                            authorId: targetUserObj.user.id,
-                            content: text,
-                            webhookId: webhook.id,
-                            webhookToken: webhook.token,
-                        }).save())
-                        .catch(console.error);
-                }else{
-                    var welcomeChannel = interaction.guild.channels.cache.get(process.env.WELCOME_ID) || (await interaction.guild.channels.fetch(process.env.WELCOME_ID));
-                    await welcomeChannel.createWebhook({
-                        name: interaction.user.displayName,
-                        avatar: interaction.user.displayAvatarURL({ size: 256 }),
-                    })
-                        .then(webhook => new Begruessung({
-                            guildId: interaction.guild.id,
-                            authorId: interaction.user.id,
-                            content: text,
-                            webhookId: webhook.id,
-                            webhookToken: webhook.token,
-                        }).save())
-                        .catch(console.error);
-                }
-                
+                var welcomeChannel = interaction.guild.channels.cache.get(process.env.WELCOME_ID) || (await interaction.guild.channels.fetch(process.env.WELCOME_ID));
+                await welcomeChannel.createWebhook({
+                    name: interaction.user.displayName,
+                    avatar: interaction.user.displayAvatarURL({ size: 256 }),
+                })
+                    .then(webhook => new Begruessung({
+                        guildId: interaction.guild.id,
+                        authorId: interaction.user.id,
+                        content: text,
+                        webhookId: webhook.id,
+                        webhookToken: webhook.token,
+                    }).save())
+                    .catch(console.error);
             }
             interaction.editReply('Begrüßung zur Überprüfung abgegeben.');
         } catch (error) {
