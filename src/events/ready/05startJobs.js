@@ -11,6 +11,7 @@ const quizQuestionJob = require('../../jobs/cronJob_quizQuestion');
 const quizStatsJob = require('../../jobs/cronJob_quizStats');
 const renameLogFileJob = require('../../jobs/cronJob_renameLogFile');
 const missingXpJob = require('../../jobs/cronJob_checkMissingXP');
+const checkWebhookAvatarJob = require('../../jobs/cronJob_checkWebhookAvatar');
 
 module.exports = async (client) => {
     console.log(`Starting Jobs...`);
@@ -27,5 +28,6 @@ module.exports = async (client) => {
     quizStatsJob.startJob(client);
     renameLogFileJob.startJob(client);
     missingXpJob.startJob(client);
+    checkWebhookAvatarJob.startJob(client);
     console.log(`Jobs started...`);
 };
