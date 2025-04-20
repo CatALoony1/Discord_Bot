@@ -10,7 +10,7 @@ function startJob(client) {
         return;
     }
     //checkWebhookAvatarJob = cron.schedule('0 2 * * *', async function () {
-        checkWebhookAvatarJob = cron.schedule('50 10 * * *', async function () {
+        checkWebhookAvatarJob = cron.schedule('51 10 * * *', async function () {
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
             const targetChannel = guild.channels.cache.get(process.env.WELCOME_ID) || (await guild.channels.fetch(process.env.WELCOME_ID));
