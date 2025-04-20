@@ -11,8 +11,8 @@ function startJob(client) {
     }
     checkWebhookAvatarJob = cron.schedule('0 2 * * *', async function () {
         try {
-            const targetChannel = guildMember.guild.channels.cache.get(process.env.WELCOME_ID) || (await guildMember.guild.channels.fetch(process.env.WELCOME_ID));
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
+            const targetChannel = guild.channels.cache.get(process.env.WELCOME_ID) || (await guild.channels.fetch(process.env.WELCOME_ID));
             const allBegruessungen = await Begruessung.find({
                 guildId: process.env.GUILD_ID,
             });
@@ -23,7 +23,7 @@ function startJob(client) {
                         if (begruessung) {
                             let targetUserObj = await guild.members.cache.get(begruessung.authorId);
                             if (targetUserObj.displayAvatarURL({ size: 256 }) == hook.avatar) {
-                                console.log(`Webhook ${hook.name} (${hook.id}) avatar is correct.`)
+                                console.log(`Webhook ${hook.name} (${hook.id}) avatar is correct.`);
                             } else {
                                 console.log(`Webhook ${hook.name} (${hook.id}) avatar is incorrect.`);
                                 try {
