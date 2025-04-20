@@ -12,7 +12,7 @@ const quizStatsJob = require('../jobs/cronJob_quizStats');
 const renameLogFileJob = require('../jobs/cronJob_renameLogFile');
 const voiceXPJob = require('../jobs/cronJob_voiceXp');
 const missingXpJob = require('../jobs/cronJob_checkMissingXP');
-const checkWebhookAvatarJob = require('../jobs/cronJob_checkWebhookAvatar');
+const updateWebhookAvatarJob = require('../jobs/cronJob_updateWebhookAvatar');
 
 
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
@@ -43,7 +43,7 @@ module.exports = {
                             { name: 'renameLogFile', value: 'renameLogFile' },
                             { name: 'voiceXP', value: 'voiceXP' },
                             {name: 'missingXp', value: 'missingXp'},
-                            { name: 'checkWebhookAvatar', value: 'checkWebhookAvatar' },
+                            { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
                         )
                 )
         )
@@ -70,7 +70,7 @@ module.exports = {
                             { name: 'renameLogFile', value: 'renameLogFile' },
                             { name: 'voiceXP', value: 'voiceXP' },
                             {name: 'missingXp', value: 'missingXp'},
-                            { name: 'checkWebhookAvatar', value: 'checkWebhookAvatar' },
+                            { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
                         )
                 )
         )
@@ -126,8 +126,8 @@ module.exports = {
                 case 'missingXp':
                     jobClass = missingXpJob;
                     break;
-                case 'checkWebhookAvatar':
-                    jobClass = checkWebhookAvatarJob;
+                case 'updateWebhookAvatar':
+                    jobClass = updateWebhookAvatarJob;
                     break;
                 default:
                     throw new Error(`Unbekannter Job: ${job}`);
