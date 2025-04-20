@@ -9,8 +9,7 @@ function startJob(client) {
         console.log('CheckWebhookAvatar-Job is already running.');
         return;
     }
-    //checkWebhookAvatarJob = cron.schedule('0 2 * * *', async function () {
-        checkWebhookAvatarJob = cron.schedule('47 10 * * *', async function () {
+    checkWebhookAvatarJob = cron.schedule('0 2 * * *', async function () {
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
             const targetChannel = guild.channels.cache.get(process.env.WELCOME_ID) || (await guild.channels.fetch(process.env.WELCOME_ID));
