@@ -22,25 +22,26 @@ module.exports = async (message) => {
                 return;
             }
         }
+        const prompt = message.content.replaceAll(`<@&${process.env.KI_JONAS}>`, 'Jonas').replaceAll(`<@&${process.env.KI_BAERCHEN}>`, 'Bärchen');
         if (message.content.includes(process.env.KI_JONAS)) {
-            await callAI(message, process.env.ADMIN_ID, 'Jonas', process.env.KI_JONAS);
+            await callAI(message, process.env.ADMIN_ID, 'Jonas', prompt);
         }
         if (message.content.includes(process.env.KI_BAERCHEN)) {
-            await callAI(message, '345554876153200642', 'Bärchen', process.env.KI_BAERCHEN);
+            await callAI(message, '345554876153200642', 'Bärchen', prompt);
         }
     } catch (error) {
         console.log(error);
     }
 };
 
-async function callAI(message, id, person, role) {
+async function callAI(message, id, person, prompt) {
     const begruessung = await Begruessung.findOne({
         guildId: process.env.GUILD_ID,
         authorId: id,
     });
     if (!begruessung) return;
     let webhookClient = new WebhookClient({ id: begruessung.webhookId, token: begruessung.webhookToken });
-    const prompt = message.content.replace(`<@&${role}>`, person);
+    
     let sysInstruction = `Dein Name ist ${person} und du befindest dich auf einem Discord Server. Du antwortest mit maximal zwei Sätzen.`;
     if (person == 'Jonas') {
         const config = await Config.findOne({
