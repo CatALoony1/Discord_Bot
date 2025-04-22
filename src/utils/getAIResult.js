@@ -8,32 +8,6 @@ async function getAIResult(prompt, sysInstruction) {
         const model = genAI.getGenerativeModel({
             model: "gemini-2.0-flash",
             systemInstruction: sysInstruction,
-            safetySettings: [
-                {
-                    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-                    threshold: HarmBlockThreshold.BLOCK_NONE,
-                },
-                {
-                    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-                    threshold: HarmBlockThreshold.BLOCK_NONE,
-                },
-                {
-                    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-                    threshold: HarmBlockThreshold.BLOCK_NONE,
-                },
-                {
-                    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-                    threshold: HarmBlockThreshold.BLOCK_NONE,
-                },
-                {
-                    category: HarmCategory.HARM_CATEGORY_CIVIC_INTEGRITY,
-                    threshold: HarmBlockThreshold.BLOCK_NONE,
-                },
-                {
-                    category: HarmCategory.HARM_CATEGORY_UNSPECIFIED,
-                    threshold: HarmBlockThreshold.BLOCK_NONE,
-                }
-            ],
         });
         console.log(`AI-Input:${String(prompt)}`);
         result = await model.generateContent(String(prompt));
