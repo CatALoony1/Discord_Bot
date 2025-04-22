@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require("@google/generative-ai");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 async function getAIResult(prompt, sysInstruction) {
     console.log('contacting AI');
     let result = null;
