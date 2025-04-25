@@ -74,6 +74,7 @@ function startJob(client) {
                 for (const key of playerTags.keys()) {
                     if (away.includes(key) && !playerTagsGood.includes(key)) {
                         playerTagsGood[playerTagsGood.length] = key;
+                        console.log(`Away: ${key}`);
                     }
                 }
             }
