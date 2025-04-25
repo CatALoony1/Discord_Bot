@@ -104,8 +104,8 @@ module.exports = async (message, client) => {
         state.loveCount = loveCount;
         state.save();
         if (loveCount == 0) {
+await client.user.setAvatar('./img/iglo_good.jpg');
             await message.reply("Ihr versprüht so viel Liebe, das macht mich ganz glücklich!");
-            await client.user.setAvatar('./img/iglo_good.jpg');
         }
     } else {
         var evilYN = badList.some(bad => content.includes(bad));
@@ -122,8 +122,8 @@ module.exports = async (message, client) => {
             state.evilCount = evilCount;
             state.save();
             if (evilCount == 0) {
+await client.user.setAvatar('./img/iglo_evil.jpg');
                 message.reply("Sag mal geht's noch? Der ganze Hass und die Beleidigungen müssen ein Ende haben. Jeder der Beleidigt zu Fischstäbchen verarbeitet!");
-                await client.user.setAvatar('./img/iglo_evil.jpg');
             }
         }
     }
