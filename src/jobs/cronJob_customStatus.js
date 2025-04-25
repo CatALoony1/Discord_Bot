@@ -325,7 +325,7 @@ function startJob(client) {
   }
   customStatusJob = cron.schedule('*/30 * * * * *', async function () { //30sec
     try {
-      const guild = await client.guilds.cache.get(process.env.GUILD_ID);
+      /*const guild = await client.guilds.cache.get(process.env.GUILD_ID);
       const targetUser = await guild.members.fetch(process.env.ADMIN_ID);
       var hasActivity = 0;
       if (targetUser.presence && targetUser.presence.activities && targetUser.presence.activities.length != 0) {
@@ -336,9 +336,9 @@ function startJob(client) {
       }
       if (hasActivity == 1) {
         await client.user.setPresence({ activities: [{ name: 'Wird gerade operiert.', type: ActivityType.Custom }], status: 'dnd' });
-      } else {
+      } else {*/
         await client.user.setPresence(status[getRandom(0, status.length - 1)]);
-      }
+      //}
     } catch (error) {
       console.log(error);
     }
