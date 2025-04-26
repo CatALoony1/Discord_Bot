@@ -73,9 +73,15 @@ module.exports = async (client) => {
         var targetChannel = await client.channels.fetch(process.env.LOG_ID);
         let d = new Date();
         string = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()},${d.getMilliseconds()}|${string}`;
-        await fs.appendFile('./logs/bot.log', string, function (err) {
-            if (err) throw err;
-        });
+        if (string.includes('TESTJG')) {
+            await fs.appendFile('./logs/chat.log', string.replace('TESTJG', ''), function (err) {
+                if (err) throw err;
+            });
+        } else {
+            await fs.appendFile('./logs/bot.log', string, function (err) {
+                if (err) throw err;
+            });
+        }
         if (string.includes('connect ECONNREFUSED')) {
             targetChannel.send(`DB connection ERROR <@${process.env.ADMIN_ID}> please check DB`);
         } else if (string.toLowerCase().includes('error')) {

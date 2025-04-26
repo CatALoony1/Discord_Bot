@@ -75,7 +75,7 @@ module.exports = {
       .setCurrentXP(fetchedLevel.xp)
       .setRequiredXP(calculateLevelXp(fetchedLevel.level))
       .setStatus(status)
-      .setDisplayName(targetUserObj.user.username)
+      .setDisplayName(targetUserObj.user.displayName)
       .setOverlay(60)
       .setBackground('./img/fisch.png')
       .setFonts(canvacord.Font.loadDefault())
