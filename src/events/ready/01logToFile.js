@@ -81,11 +81,11 @@ module.exports = async (client) => {
             await fs.appendFile('./logs/bot.log', string, function (err) {
                 if (err) throw err;
             });
-        }
-        if (string.includes('connect ECONNREFUSED')) {
-            targetChannel.send(`DB connection ERROR <@${process.env.ADMIN_ID}> please check DB`);
-        } else if (string.toLowerCase().includes('error')) {
-            targetChannel.send(`ERROR <@${process.env.ADMIN_ID}> please check log`);
+            if (string.includes('connect ECONNREFUSED')) {
+                targetChannel.send(`DB connection ERROR <@${process.env.ADMIN_ID}> please check DB`);
+            } else if (string.toLowerCase().includes('error')) {
+                targetChannel.send(`ERROR <@${process.env.ADMIN_ID}> please check log`);
+            }
         }
     }, true);
 };
