@@ -20,7 +20,7 @@ function startJob(client) {
                 .then(hooks => {
                     hooks.forEach(async hook => {
                         const begruessung = allBegruessungen.find(b => b.webhookId === hook.id && b.webhookToken === hook.token);
-                        if (begruessung) {
+                        if (begruessung && guild.members.cache.find(m => m.id === begruessung.authorId)?.id) {
                             let targetUserObj = await guild.members.cache.get(begruessung.authorId);
                             try {
                                 await hook.edit({
