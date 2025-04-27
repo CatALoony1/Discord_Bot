@@ -20,7 +20,11 @@ const quizStatsSchema = new Schema({
     lastParticipation: {
         type: Date,
         required: true,
-    }
+    },
+    series: {
+        type: Number,
+        default: 0,
+    },
 });
 
 module.exports = model('QuizStats', quizStatsSchema);

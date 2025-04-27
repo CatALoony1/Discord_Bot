@@ -1,6 +1,18 @@
 const { MessageFlags } = require('discord.js');
 const Questions = require('../../models/QuizQuestion');
 const QuizStats = require('../../models/QuizStats');
+const giveXP = require('../../utils/giveXP');
+
+function isYesterday(date) {
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    today.setHours(0, 0, 0, 0);
+    yesterday.setHours(0, 0, 0, 0);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime() === yesterday.getTime();
+}
+
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('quiz')) return;
     try {
@@ -34,21 +46,34 @@ module.exports = async (interaction) => {
             if (rw === 'right') {
                 if (fetchedStats) {
                     fetchedStats.right += 1;
-                    fetchedStats.lastParticipation = Date.now();
+                    if (isYesterday(fetchedStats.lastParticipation)) {
+                        fetchedStats.series += 1;
+                        fetchedStats.lastParticipation = Date.now();
+                        let xpToGive = 50;
+                        xpToGive = Math.ceil(xpToGive * (1 + ((fetchedStats.series * 10) / 100)));
+                        await giveXP(interaction.user, xpToGive, xpToGive, interaction.channel, false, false, false);
+                    } else {
+                        fetchedStats.series = 0;
+                    }
                     await fetchedStats.save();
                 } else {
                     const newStats = new QuizStats({
                         guildId: interaction.guild.id,
                         userId: interaction.user.id,
                         right: 1,
+                        series: 1,
                         lastParticipation: Date.now()
                     });
+                    let xpToGive = 50;
+                    xpToGive = Math.ceil(xpToGive * 1.1);
+                    await giveXP(interaction.user, xpToGive, xpToGive, interaction.channel, false, false, false);
                     await newStats.save();
                 }
                 await interaction.editReply(`Glückwunsch, Antwort ${answer} ist richtig!🥳`);
             } else if (rw === 'wrong') {
                 if (fetchedStats) {
                     fetchedStats.wrong += 1;
+                    fetchedStats.series = 0;
                     fetchedStats.lastParticipation = Date.now();
                     await fetchedStats.save();
                 } else {
@@ -56,6 +81,7 @@ module.exports = async (interaction) => {
                         guildId: interaction.guild.id,
                         userId: interaction.user.id,
                         wrong: 1,
+                        series: 0,
                         lastParticipation: Date.now()
                     });
                     await newStats.save();

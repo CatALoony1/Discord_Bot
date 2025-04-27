@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
 const Questions = require('../models/QuizQuestion');
+const QuizStats = require('../models/QuizStats');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -64,6 +65,12 @@ function startJob(client) {
                         count += 1;
                     }
                 }
+                let questionUser = fetchedQuestions[questionIndex].participants[0];
+                const stats = await QuizStats.findOne({
+                    userId: questionUser,
+                });
+                stats.lastParticipation = Date.now();
+                await stats.save();
                 var rightChar = 'A';
                 const questionEmbed = new Discord.EmbedBuilder();
                 questionEmbed.setColor(0x0033cc);

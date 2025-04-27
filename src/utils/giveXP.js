@@ -46,19 +46,28 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
                 xpToGive = Math.ceil(xpToGive * 1.1);
             }
             console.log(`user ${member.user.tag} received ${xpToGive} XP`);
-            level.xp += xpToGive;
-            level.allxp += xpToGive;
+            let xpAmount = xpToGive;
             if (message) {
-                level.messagexp += (xpToGive - bonusXP);
+                level.messagexp += (xpAmount - bonusXP);
                 level.messages += 1;
             } else if (voice) {
-                level.voicexp += xpToGive;
+                level.voicexp += xpAmount;
                 level.voicetime += 5;
-            }
-            if (quizadded) {
+            } else if (quizadded) {
                 level.quizadded += 1;
+                if(level.quizadded > 0 && level.quizadded <= 10){
+                    xpAmount = (xpAmount + (level.quizadded * 10));
+                } else if(level.quizadded > 10 && level.quizadded <= 30){
+                    xpAmount = (xpAmount + (level.quizadded * 5));
+                } else if(level.quizadded > 30 && level.quizadded <= 100){
+                    xpAmount = (xpAmount + (level.quizadded * 2));
+                } else if(level.quizadded > 100){
+                    xpAmount = (xpAmount + level.quizadded);
+                }
             }
-            level.thismonth += xpToGive;
+            level.xp += xpAmount;
+            level.allxp += xpAmount;
+            level.thismonth += xpAmount;
             level.bonusclaimed += bonusXP;
             level.lastMessage = Date.now();
             if (level.xp >= calculateLevelXp(level.level)) {
