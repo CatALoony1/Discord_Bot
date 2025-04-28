@@ -42,11 +42,21 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
     try {
         const level = await Level.findOne(query);
         if (level) {
-            if (member.roles.cache.some(role => role.name === 'Bumper')) {
-                xpToGive = Math.ceil(xpToGive * 1.1);
-            }
-            console.log(`user ${member.user.tag} received ${xpToGive} XP`);
             let xpAmount = xpToGive;
+            if (quizadded) {
+                if (level.quizadded > 0 && level.quizadded <= 10) {
+                    xpAmount = (xpAmount + (level.quizadded * 10));
+                } else if (level.quizadded > 10 && level.quizadded <= 30) {
+                    xpAmount = (xpAmount + (level.quizadded * 5));
+                } else if (level.quizadded > 30 && level.quizadded <= 100) {
+                    xpAmount = (xpAmount + (level.quizadded * 2));
+                } else if (level.quizadded > 100) {
+                    xpAmount = (xpAmount + level.quizadded);
+                }
+            }
+            if (member.roles.cache.some(role => role.name === 'Bumper')) {
+                xpAmount = Math.ceil(xpAmount * 1.1);
+            }
             if (message) {
                 level.messagexp += (xpAmount - bonusXP);
                 level.messages += 1;
@@ -55,16 +65,8 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
                 level.voicetime += 5;
             } else if (quizadded) {
                 level.quizadded += 1;
-                if(level.quizadded > 0 && level.quizadded <= 10){
-                    xpAmount = (xpAmount + (level.quizadded * 10));
-                } else if(level.quizadded > 10 && level.quizadded <= 30){
-                    xpAmount = (xpAmount + (level.quizadded * 5));
-                } else if(level.quizadded > 30 && level.quizadded <= 100){
-                    xpAmount = (xpAmount + (level.quizadded * 2));
-                } else if(level.quizadded > 100){
-                    xpAmount = (xpAmount + level.quizadded);
-                }
             }
+            console.log(`user ${member.user.tag} received ${xpToGive} XP`);
             level.xp += xpAmount;
             level.allxp += xpAmount;
             level.thismonth += xpAmount;
