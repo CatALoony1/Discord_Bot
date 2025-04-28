@@ -42,7 +42,7 @@ module.exports = {
                             { name: 'quizStats', value: 'quizStats' },
                             { name: 'renameLogFile', value: 'renameLogFile' },
                             { name: 'voiceXP', value: 'voiceXP' },
-                            {name: 'missingXp', value: 'missingXp'},
+                            { name: 'missingXp', value: 'missingXp' },
                             { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
                         )
                 )
@@ -69,7 +69,22 @@ module.exports = {
                             { name: 'quizStats', value: 'quizStats' },
                             { name: 'renameLogFile', value: 'renameLogFile' },
                             { name: 'voiceXP', value: 'voiceXP' },
-                            {name: 'missingXp', value: 'missingXp'},
+                            { name: 'missingXp', value: 'missingXp' },
+                            { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
+                        )
+                )
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('execute')
+                .setDescription('Führe den Job aus.')
+                .addStringOption(option =>
+                    option.setName('job')
+                        .setDescription('Job der ausgeführt werden soll.')
+                        .setRequired(true)
+                        .addChoices(
+                            { name: 'quizQuestion', value: 'quizQuestion' },
+                            { name: 'quizStats', value: 'quizStats' },
                             { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
                         )
                 )
@@ -139,13 +154,16 @@ module.exports = {
                 } else {
                     await interaction.editReply({ content: `Job ${job} läuft bereits.` });
                 }
-            } else {
+            } else if (subcommand === 'stop') {
                 if (jobClass.isRunning()) {
                     jobClass.stopJob();
                     await interaction.editReply({ content: `Job ${job} wurde erfolgreich gestoppt.` });
                 } else {
                     await interaction.editReply({ content: `Job ${job} läuft nicht.` });
                 }
+            } else if (subcommand === 'execute') {
+                await jobClass.jobFunction(client);
+                await interaction.editReply({ content: `Job ${job} wurde erfolgreich ausgeführt.` });
             }
         } catch (error) {
             console.log(error);
