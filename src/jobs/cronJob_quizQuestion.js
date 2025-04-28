@@ -69,8 +69,10 @@ function startJob(client) {
                 const stats = await QuizStats.findOne({
                     userId: questionUser,
                 });
-                stats.lastParticipation = Date.now();
+if(stats){
+stats.lastParticipation = Date.now();
                 await stats.save();
+}
                 var rightChar = 'A';
                 const questionEmbed = new Discord.EmbedBuilder();
                 questionEmbed.setColor(0x0033cc);
