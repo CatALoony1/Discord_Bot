@@ -11,7 +11,7 @@ function startJob(client) {
     console.log('BumpReminder-Job is already running.');
     return;
   }
-  bumpReminderJob = cron.schedule('*/5 * * * * *', async function () {
+  bumpReminderJob = cron.schedule('* * * * *', async function () {
     const query = {
       guildId: process.env.GUILD_ID,
     };
