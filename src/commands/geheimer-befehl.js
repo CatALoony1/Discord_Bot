@@ -71,8 +71,8 @@ zufallszahl = 8;
             } else if (zufallszahl == 7) {
                 await interaction.reply(`Hier passieren keine geheime Sachen mehr!`);
             } else if (zufallszahl == 8) {
-                if (!targetUserObj.roles.cache.some(role => role.name === 'Bot')) {
-                    const role = interaction.guild.roles.cache.find(role => role.name === 'Bot');
+                if (!targetUserObj.roles.cache.some(role => role.name === 'Captain Iglo')) {
+                    const role = interaction.guild.roles.cache.find(role => role.name === 'Captain Iglo');
                     await targetUserObj.roles.add(role);
                     console.log(`Role Geheimniswahrer was given to user ${targetUserObj.user.tag}`);
                     await interaction.reply({ content: `Das Geheimnis ist "Grünkohl".`, flags: MessageFlags.Ephemeral });
