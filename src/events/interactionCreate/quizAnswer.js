@@ -46,15 +46,15 @@ module.exports = async (interaction) => {
             if (rw === 'right') {
                 if (fetchedStats) {
                     fetchedStats.right += 1;
+                    let xpToGive = 50;
+                    xpToGive = Math.ceil(xpToGive * (1 + ((fetchedStats.series * 10) / 100)));
+                    await giveXP(interaction.user, xpToGive, xpToGive, interaction.channel, false, false, false);
                     if (isYesterday(fetchedStats.lastParticipation)) {
                         fetchedStats.series += 1;
-                        fetchedStats.lastParticipation = Date.now();
-                        let xpToGive = 50;
-                        xpToGive = Math.ceil(xpToGive * (1 + ((fetchedStats.series * 10) / 100)));
-                        await giveXP(interaction.user, xpToGive, xpToGive, interaction.channel, false, false, false);
                     } else {
-                        fetchedStats.series = 0;
+                        fetchedStats.series = 1;
                     }
+                    fetchedStats.lastParticipation = Date.now();
                     await fetchedStats.save();
                 } else {
                     const newStats = new QuizStats({
