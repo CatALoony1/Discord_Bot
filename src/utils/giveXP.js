@@ -66,7 +66,7 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
             } else if (quizadded) {
                 level.quizadded += 1;
             }
-            console.log(`user ${member.user.tag} received ${xpToGive} XP`);
+            console.log(`user ${member.user.tag} received ${xpAmount} XP`);
             level.xp += xpAmount;
             level.allxp += xpAmount;
             level.thismonth += xpAmount;
