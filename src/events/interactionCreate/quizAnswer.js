@@ -48,7 +48,7 @@ module.exports = async (interaction) => {
                     fetchedStats.right += 1;
                     let xpToGive = 50;
                     xpToGive = Math.ceil(xpToGive * (1 + ((fetchedStats.series * 10) / 100)));
-                    await giveXP(interaction.user, xpToGive, xpToGive, interaction.channel, false, false, false);
+                    await giveXP(interaction.member, xpToGive, xpToGive, interaction.channel, false, false, false);
                     if (isYesterday(fetchedStats.lastParticipation)) {
                         fetchedStats.series += 1;
                     } else {
@@ -66,7 +66,7 @@ module.exports = async (interaction) => {
                     });
                     let xpToGive = 50;
                     xpToGive = Math.ceil(xpToGive * 1.1);
-                    await giveXP(interaction.user, xpToGive, xpToGive, interaction.channel, false, false, false);
+                    await giveXP(interaction.member, xpToGive, xpToGive, interaction.channel, false, false, false);
                     await newStats.save();
                 }
                 await interaction.editReply(`Glückwunsch, Antwort ${answer} ist richtig!🥳`);

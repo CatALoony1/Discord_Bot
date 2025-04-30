@@ -59,7 +59,7 @@ module.exports = {
             const einsatz = interaction.options.get('einsatz')?.value;
             const targetUserId = interaction.member.id;
             const zufallsZahl = getRandom(1, gewinne.size);
-            const targetUserObj = await interaction.guild.members.fetch(targetUserId);
+            const targetUserObj = interaction.member;
             let result = Math.ceil(einsatz * gewinne.get(zufallsZahl));
             await removeXP(targetUserObj, einsatz, interaction.channel);
             await interaction.editReply(`Dein Einsatz in Höhe von ${einsatz}XP wurde abgezogen!`);
