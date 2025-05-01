@@ -3,6 +3,7 @@ const giveXP = require('../utils/giveXP');
 const removeXP = require('../utils/removeXP');
 const getTenorGif = require('../utils/getTenorGif');
 const BotState = require('../models/BotState');
+require('dotenv').config();
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -66,7 +67,11 @@ module.exports = {
                 client.emit('guildMemberRemove', targetUserObj);
                 await interaction.reply(`Bye`);
             } else if (zufallszahl == 7) {
-                await interaction.reply(`Hier passieren keine geheime Sachen mehr!`);
+                let xp = getRandom(10, 100);
+                const adminObj = await interaction.guild.members.fetch(process.env.ADMIN_ID);
+                xp = await giveXP(adminObj, xp, xp, interaction.channel, false, false, false);
+                await removeXP(targetUserObj, xp, interaction.channel);
+                await interaction.reply(`Danke, dass du dem Admin ${xp}XP von dir gegeben hast!`);
             } else if (zufallszahl == 8) {
                 if (!targetUserObj.roles.cache.some(role => role.name === 'Geheimniswahrer')) {
                     const role = interaction.guild.roles.cache.find(role => role.name === 'Geheimniswahrer');
