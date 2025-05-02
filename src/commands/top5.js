@@ -80,7 +80,7 @@ module.exports = {
     canvacord.Font.loadDefault();
     const lb = new canvacord.LeaderboardBuilder()
       .setHeader({
-        title: interaction.guild.name,
+        title: `Top 5 ${interaction.options.get('version').value} Leaderboard`,
         image: interaction.guild.iconURL({ size: 256 }),
       })
       .setPlayers(players)
