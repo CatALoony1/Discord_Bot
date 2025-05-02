@@ -78,6 +78,13 @@ const countryRoles = ['Deutschland',
 
 const countryEmojis = ['🇩🇪', '🇦🇹', '🇨🇭'];
 
+const hogwartsRoles = ['Gryffindor',
+    'Hufflepuff',
+    'Ravenclaw',
+    'Slytherin'];
+
+const hogwartsEmojis = ['🦁', '🦡', '🦅', '🐍'];
+
 module.exports = {
     ageRoles,
     colorRoles,
@@ -90,5 +97,7 @@ module.exports = {
     pronounRoles,
     regionRoles,
     countryRoles,
-    countryEmojis
+    countryEmojis,
+    hogwartsRoles,
+    hogwartsEmojis
 };

@@ -10,7 +10,8 @@ const {
     platformRoles,
     pronounRoles,
     regionRoles,
-    countryRoles
+    countryRoles,
+    hogwartsRoles
 } = require('../../utils/selectMenuRoles');
 
 
@@ -56,6 +57,10 @@ module.exports = async (interaction) => {
             case 'countryselect':
                 variant = 2;
                 roleArray = countryRoles;
+                break;
+            case 'hogwartselect':
+                variant = 2;
+                roleArray = hogwartsRoles;
                 break;
             default:
                 console.log('Unknown customId');

@@ -12,7 +12,9 @@ const {
     pronounRoles,
     regionRoles,
     countryRoles,
-    countryEmojis
+    countryEmojis,
+    hogwartsRoles,
+    hogwartsEmojis
 } = require('../utils/selectMenuRoles');
 
 module.exports = {
@@ -32,7 +34,8 @@ module.exports = {
                     { name: 'platform', value: 'platform' },
                     { name: 'pronoun', value: 'pronoun' },
                     { name: 'region', value: 'region' },
-                    { name: 'country', value: 'country' }
+                    { name: 'country', value: 'country' },
+                    { name: 'hogwarts', value: 'hogwarts' },
                 )
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
@@ -137,6 +140,15 @@ module.exports = {
                     bCustomId = 'removeCountry';
                     bLabel = 'Land entfernen';
                     emoji = countryEmojis;
+                    break;
+                case 'hogwarts':
+                    rolenames = hogwartsRoles;
+                    smCustomId = 'hogwartselect';
+                    placeholder = 'Hogwarts-Haus auswählen';
+                    content = 'Bitte wähle dein Hogwarts-Haus aus:';
+                    bCustomId = 'removeHogwarts';
+                    bLabel = 'Hogwarts-Haus entfernen';
+                    emoji = hogwartsEmojis;
                     break;
                 default:
                     throw new Error('Ungültiges SelectMenu gewählt.');
