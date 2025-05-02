@@ -7,6 +7,16 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('top5')
     .setDescription('Zeigt die top 5 an.')
+    .addStringOption(option =>
+      option.setName('version')
+        .setDescription('Die Version der Top 5')
+        .setRequired(true)
+        .addChoices(
+          { name: 'XP', value: 'XP' },
+          { name: 'Voice', value: 'Voice' },
+          { name: 'Messages', value: 'Messages' }
+        )
+    )
     .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
   run: async ({ interaction }) => {
@@ -32,13 +42,27 @@ module.exports = {
     for (let j = 0; j < oldUsers.length; j++) {
       fetchedLevel.splice(oldUsers[j] - j, 1);
     }
-    fetchedLevel.sort((a, b) => {
-      if (a.level === b.level) {
-        return b.xp - a.xp;
-      } else {
-        return b.level - a.level;
-      }
-    });
+    switch (interaction.options.get('version').value) {
+      case 'XP':
+        fetchedLevel.sort((a, b) => {
+          if (a.level === b.level) {
+            return b.xp - a.xp;
+          } else {
+            return b.level - a.level;
+          }
+        });
+        break;
+      case 'Voice':
+        fetchedLevel.sort((a, b) => {
+          return b.voicetime - a.voicetime;
+        });
+        break;
+      case 'Messages':
+        fetchedLevel.sort((a, b) => {
+          return b.messages - a.messages;
+        });
+        break;
+    }
     var players = [];
     for (let i = 0; i < fetchedLevel.length; i++) {
       if (i === 5) break;
