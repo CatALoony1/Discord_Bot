@@ -66,7 +66,6 @@ const answers = new Map([[1, 'Ja!'],
  * @returns 
  */
 module.exports = async (message, client) => {
-    console.log(message);
     if (!message.inGuild() || message.author.bot || !message.content.includes(client.user.id) || !message.content.includes("?") || message.webhookId) return;
     console.log(`Bot Mentioned`);
     var state = await BotState.findOne({
