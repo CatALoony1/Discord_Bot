@@ -1484,11 +1484,14 @@ module.exports = {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
             await interaction.deferReply();
-            let wort = interaction.options.get('wort').value;
+            let wortobj = interaction.options.get('wort');
+            let wort = null;
             let user = interaction.user;
-            if (!wort) {
+            if (!wortobj) {
                 wort = wordList[getRandom(0, wordList.length - 1)];
                 user = client.user;
+            } else {
+                wort = wortobj.value;
             }
             wort = wort.replace('ß', 'ss').toUpperCase();
             let leerzeichen = wort.split('').map(() => "_").join("  ");
