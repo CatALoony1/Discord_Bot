@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, InteractionContextType, EmbedBuilder, AttachmentBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, EmbedBuilder, AttachmentBuilder, MessageFlags } = require('discord.js');
 const Hangman = require('../models/Hangman');
 const path = require('node:path');
 
@@ -1332,8 +1332,8 @@ module.exports = {
         .setDescription('Starte ein Spiel von Galgenmännchen.')
         .addStringOption(option =>
             option.setName('wort')
-                .setDescription('Wort')
-                .setMinLength(4)
+                .setDescription('Wort mindestens 5 Buchstaben')
+                .setMinLength(5)
                 .setRequired(false)
         )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
@@ -1350,6 +1350,12 @@ module.exports = {
                 user = client.user;
             } else {
                 wort = wortobj.value;
+                const regex = /^[\u0041-\u005A\u00C4\u00D6\u00DC\u00DF\s]+$/i; //A-Z, ÄÖÜ, ß
+                if (!regex.test(wort)) {
+                    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+                    await interaction.editReply('Das übergebene Wort enthält Zeichen die nicht zugelassen sind.');
+                    return;
+                }
             }
             wort = wort.replace('ß', 'ss').toUpperCase();
             let leerzeichen = wort.split('').map(() => "\\_").join("  ");
