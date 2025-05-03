@@ -23,6 +23,9 @@ module.exports = async (message) => {
             return;
         }
         const guessedLetter = message.content.toUpperCase().trim();
+        console.log(guessedLetter);
+        console.log(hangman.word);
+        console.log(guessedLetter != hangman.word);
         if ((guessedLetter.length !== 1 && guessedLetter != hangman.word) || !/^[a-zA-Z]$/.test(guessedLetter)) {
             await message.reply('Bitte gib nur einen Buchstaben ein!');
             return;
