@@ -1363,7 +1363,7 @@ module.exports = {
                 .setColor(0x0033cc)
                 .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 256 }) })
                 .setTitle(`Galgenmännchen`)
-                .setDescription(leerzeichen)
+                .setDescription(`${leerzeichen}\n\n${wort.length} Buchstaben`)
                 .setThumbnail(`attachment://hangman0.png`);
             const message = await interaction.editReply({ embeds: [hangman], files: [file] });
             const hangmanData = new Hangman({

@@ -52,7 +52,7 @@ module.exports = async (message) => {
                 const embed = new EmbedBuilder()
                     .setColor(0x0033cc)
                     .setTitle('Galgenmännchen')
-                    .setDescription(leerzeichen)
+                    .setDescription(`${leerzeichen}\n\n${hangman.word.length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
                     .setImage(`attachment://hangman${hangman.fehler}.png`);
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 await hangman.save();
@@ -76,7 +76,7 @@ module.exports = async (message) => {
             const embed = new EmbedBuilder()
                 .setColor(0x0033cc)
                 .setTitle('Galgenmännchen')
-                .setDescription(leerzeichen)
+                .setDescription(`${leerzeichen}\n\n${hangman.word.length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
                 .setImage(`attachment://hangman${hangman.fehler}.png`);
             await referencedMessage.edit({ embeds: [embed], files: [file] });
             await hangman.save();
