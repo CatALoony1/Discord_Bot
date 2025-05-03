@@ -40,7 +40,7 @@ module.exports = async (message) => {
                 const embed = new EmbedBuilder()
                     .setColor('#FF0000')
                     .setTitle('Galgenmännchen - Spiel beendet')
-                    .setDescription(`Verloren! Das Wort war: **${hangman.word}**`)
+                    .setDescription(`Verloren! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
                     .setImage('attachment://hangman8.png');
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 await message.reply('Du hast verloren!');
@@ -64,7 +64,7 @@ module.exports = async (message) => {
             const embed = new EmbedBuilder()
                 .setColor('#00FF00')
                 .setTitle('Galgenmännchen - Spiel beendet')
-                .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**`)
+                .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
                 .setImage(`attachment://hangman${hangman.fehler}.png`);
             await referencedMessage.edit({ embeds: [embed], files: [file] });
             giveXP(message.member, 100, 100, message.channel, false, false, false);
@@ -79,7 +79,7 @@ module.exports = async (message) => {
                 const embed = new EmbedBuilder()
                     .setColor('#00FF00')
                     .setTitle('Galgenmännchen - Spiel beendet')
-                    .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**`)
+                    .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
                     .setImage(`attachment://hangman${hangman.fehler}.png`);
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 giveXP(message.member, 100, 100, message.channel, false, false, false);
