@@ -33,6 +33,9 @@ module.exports = async (message, client) => {
     let description = 'Nachricht war vor restart, leer oder ein Embed';
     if (message.content != null && message.content.length >= 1) {
       description = `${message.content}`;
+      if (description.length > 1024) {
+        description = description.substring(0, 1021) + '...';
+      }
     }
     const messageDeleted = new EmbedBuilder();
     messageDeleted.setColor(0xff0000);

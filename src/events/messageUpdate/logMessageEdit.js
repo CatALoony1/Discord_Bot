@@ -16,6 +16,14 @@ module.exports = async (oldMessage, newMessage) => {
             console.log('Fehler, Logchannel gibts nicht');
             return;
         }
+        let oldMessageConent = oldMessage.content;
+        let newMessageConent = newMessage.content;
+        if (oldMessageConent.length > 1024) {
+            oldMessageConent = oldMessageConent.substring(0, 1021) + '...';
+        }
+        if (newMessageConent.length > 1024) {
+            newMessageConent = newMessageConent.substring(0, 1021) + '...';
+        }
         const messageEdited = new EmbedBuilder();
         messageEdited.setColor(0x0033cc);
         messageEdited.setAuthor({ name: newMessage.author.username, iconURL: newMessage.author.displayAvatarURL({ size: 256 }) });
