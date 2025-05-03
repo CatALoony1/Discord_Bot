@@ -10,6 +10,7 @@ const client = new Discord.Client({
 
 new CommandKit({
   client,
+  devGuildIds: [process.env.GUILD_ID],
   devUserIds: [process.env.ADMIN_ID],
   commandsPath: path.join(__dirname, 'commands'),
   eventsPath: path.join(__dirname, 'events'),
