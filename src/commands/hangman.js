@@ -1352,7 +1352,6 @@ module.exports = {
                 wort = wortobj.value;
                 const regex = /^[\u0041-\u005A\u00C4\u00D6\u00DC\u00DF\s]+$/i; //A-Z, ÄÖÜ, ß
                 if (!regex.test(wort)) {
-                    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
                     await interaction.editReply('Das übergebene Wort enthält Zeichen die nicht zugelassen sind.');
                     return;
                 }
