@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags, InteractionContextType } = require('discord.js');
 const { letterEmojiMap } = require('../utils/letterEmojiMap');
 
 module.exports = {
@@ -16,7 +16,8 @@ module.exports = {
                 .setDescription('Nur A-Z ! ?')
                 .setMaxLength(10)
                 .setRequired(true)
-        ),
+        )
+        .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag} with value ${interaction.options.get('wort').value}`);
