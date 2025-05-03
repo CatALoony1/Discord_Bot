@@ -1496,7 +1496,7 @@ module.exports = {
             }
             wort = wort.replace('ß', 'ss').toUpperCase();
             let leerzeichen = wort.split('').map(() => "_").join("  ");
-            const file = new AttachmentBuilder(path.join(__dirname, '../img/hangman0.png'));
+            const file = new AttachmentBuilder(path.join(__dirname, '../../img/hangman0.png'));
             const hangman = new EmbedBuilder()
                 .setColor(0x0033cc)
                 .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 256 }) })
