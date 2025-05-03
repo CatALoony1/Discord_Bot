@@ -1495,14 +1495,13 @@ module.exports = {
                 wort = wortobj.value;
             }
             wort = wort.replace('ß', 'ss').toUpperCase();
-            let leerzeichen = wort.split('').map(() => "_").join("  ");
-            console.log(leerzeichen);
+            let leerzeichen = wort.split('').map(() => "\\_").join("  ");
             const file = new AttachmentBuilder(path.join(__dirname, '../../img/hangman0.png'));
             const hangman = new EmbedBuilder()
                 .setColor(0x0033cc)
                 .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 256 }) })
                 .setTitle(`Galgenmännchen`)
-                .setDescription(`Wort: ${leerzeichen}\n\nVersuche das Wort zu erraten!`)
+                .setDescription(leerzeichen)
                 .setThumbnail(`attachment://hangman0.png`);
             const message = await interaction.editReply({ embeds: [hangman], files: [file] });
             const hangmanData = new Hangman({
