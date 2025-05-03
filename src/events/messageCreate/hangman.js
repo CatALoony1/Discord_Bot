@@ -36,7 +36,7 @@ module.exports = async (message) => {
             hangman.fehler++;
             if (hangman.fehler >= 8) {
                 hangman.status = 'beendet';
-                const file = new AttachmentBuilder(path.join(__dirname, '../../img/hangman8.png'));
+                const file = new AttachmentBuilder(path.join(__dirname, '../../../img/hangman8.png'));
                 const embed = new EmbedBuilder()
                     .setColor('#FF0000')
                     .setTitle('Galgenmännchen - Spiel beendet')
@@ -47,7 +47,7 @@ module.exports = async (message) => {
                 await hangman.save();
                 await message.react('💀');
             } else {
-                const file = new AttachmentBuilder(path.join(__dirname, `../../img/hangman${hangman.fehler}.png`));
+                const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
                 const leerzeichen = hangman.word.split('').map(letter => (hangman.buchstaben.includes(letter) ? letter : '_')).join(' ');
                 const embed = new EmbedBuilder()
                     .setColor(0x0033cc)
@@ -60,7 +60,7 @@ module.exports = async (message) => {
             }
         } else if (hangman.word === guessedLetter) {
             hangman.status = 'beendet';
-            const file = new AttachmentBuilder(path.join(__dirname, `../../img/hangman${hangman.fehler}.png`));
+            const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
             const embed = new EmbedBuilder()
                 .setColor('#00FF00')
                 .setTitle('Galgenmännchen - Spiel beendet')
@@ -72,7 +72,7 @@ module.exports = async (message) => {
             await message.react('🏆');
         } else {
             const leerzeichen = hangman.word.split('').map(letter => (hangman.buchstaben.includes(letter) ? letter : '_')).join(' ');
-            const file = new AttachmentBuilder(path.join(__dirname, `../../img/hangman${hangman.fehler}.png`));
+            const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
             const embed = new EmbedBuilder()
                 .setColor(0x0033cc)
                 .setTitle('Galgenmännchen')
