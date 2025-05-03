@@ -1350,8 +1350,6 @@ module.exports = {
                 user = client.user;
             } else {
                 wort = wortobj.value;
-console.log(wortobj);
-console.log(wort);
                 const regex = /^[\u0041-\u005A\u0061-\u007A\u00C4\u00D6\u00DC\u00E4\u00F6\u00FC\u00DF\s]+$/; // A-Z, a-z, ÄÖÜäöü, ß
                 if (!regex.test(wort)) {
                     await interaction.editReply('Das übergebene Wort enthält Zeichen die nicht zugelassen sind.');
