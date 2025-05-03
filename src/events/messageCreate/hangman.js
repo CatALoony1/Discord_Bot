@@ -48,7 +48,7 @@ module.exports = async (message) => {
                 await message.react('💀');
             } else {
                 const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
-                const leerzeichen = hangman.word.split('').map(letter => (hangman.buchstaben.includes(letter) ? letter : '_')).join(' ');
+                const leerzeichen = hangman.word.split('').map(letter => (hangman.buchstaben.includes(letter) ? letter : '\\_')).join(' ');
                 const embed = new EmbedBuilder()
                     .setColor(0x0033cc)
                     .setTitle('Galgenmännchen')
@@ -71,7 +71,7 @@ module.exports = async (message) => {
             await hangman.save();
             await message.react('🏆');
         } else {
-            const leerzeichen = hangman.word.split('').map(letter => (hangman.buchstaben.includes(letter) ? letter : '_')).join(' ');
+            const leerzeichen = hangman.word.split('').map(letter => (hangman.buchstaben.includes(letter) ? letter : '\\_')).join(' ');
             const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
             const embed = new EmbedBuilder()
                 .setColor(0x0033cc)
