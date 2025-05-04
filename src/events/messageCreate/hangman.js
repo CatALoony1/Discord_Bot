@@ -94,7 +94,6 @@ module.exports = async (message) => {
                 .setDescription(`${leerzeichen}\n\n${hangman.word.length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
                 .setImage(`attachment://hangman${hangman.fehler}.png`);
             await referencedMessage.edit({ embeds: [embed], files: [file] });
-giveXP(message.member, 5, 5, message.channel, false, false, false);
             await hangman.save();
             await message.react('✅');
         }
