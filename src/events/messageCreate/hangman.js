@@ -43,7 +43,6 @@ module.exports = async (message) => {
                     .setDescription(`Verloren! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
                     .setImage('attachment://hangman8.png');
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
-                await message.reply('Du hast verloren!');
                 await hangman.save();
                 await message.react('💀');
             } else {
@@ -67,7 +66,7 @@ module.exports = async (message) => {
                 .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
                 .setImage(`attachment://hangman${hangman.fehler}.png`);
             await referencedMessage.edit({ embeds: [embed], files: [file] });
-            giveXP(message.member, 100, 100, message.channel, false, false, false);
+            giveXP(message.member, 25, 25, message.channel, false, false, false);
             await hangman.save();
             await message.react('🏆');
         } else {
@@ -82,7 +81,7 @@ module.exports = async (message) => {
                     .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
                     .setImage(`attachment://hangman${hangman.fehler}.png`);
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
-                giveXP(message.member, 100, 100, message.channel, false, false, false);
+                giveXP(message.member, 25, 25, message.channel, false, false, false);
                 await hangman.save();
                 await message.react('🏆');
                 return;
@@ -95,6 +94,7 @@ module.exports = async (message) => {
                 .setDescription(`${leerzeichen}\n\n${hangman.word.length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
                 .setImage(`attachment://hangman${hangman.fehler}.png`);
             await referencedMessage.edit({ embeds: [embed], files: [file] });
+giveXP(message.member, 5, 5, message.channel, false, false, false);
             await hangman.save();
             await message.react('✅');
         }
