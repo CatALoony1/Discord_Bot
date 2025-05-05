@@ -11,7 +11,7 @@ const Config = require('../../models/Config');
  * @returns 
  */
 module.exports = async (message) => {
-    if (!message.inGuild() || message.author.bot || (!message.content.includes(process.env.KI_JONAS) && !message.content.includes(process.env.KI_BAERCHEN)) || message.webhookId || message.channel.id != process.env.WELCOME_ID) return;
+    if (!message.inGuild() || message.author.bot || (!message.content.includes(process.env.KI_JONAS) && !message.content.includes(process.env.KI_BAERCHEN) && !message.content.includes(process.env.KI_SILVERLIVER)) || message.webhookId || message.channel.id != process.env.WELCOME_ID) return;
     console.log(`KI Mentioned`);
     try {
         const state = await BotState.findOne({
@@ -22,12 +22,15 @@ module.exports = async (message) => {
                 return;
             }
         }
-        const prompt = message.content.replaceAll(`<@&${process.env.KI_JONAS}>`, 'Jonas').replaceAll(`<@&${process.env.KI_BAERCHEN}>`, 'Bärchen');
+        const prompt = message.content.replaceAll(`<@&${process.env.KI_JONAS}>`, 'Jonas').replaceAll(`<@&${process.env.KI_BAERCHEN}>`, 'Bärchen').replaceAll(`<@&${process.env.KI_SILVERLIVER}>`, 'Silverliver');
         if (message.content.includes(process.env.KI_JONAS)) {
             await callAI(message, process.env.ADMIN_ID, 'Jonas', prompt);
         }
         if (message.content.includes(process.env.KI_BAERCHEN)) {
             await callAI(message, '345554876153200642', 'Bärchen', prompt);
+        }
+        if (message.content.includes(process.env.KI_SILVERLIVER)) {
+            await callAI(message, '470661320434515989', 'Silverliver', prompt);
         }
     } catch (error) {
         console.log(error);
@@ -41,7 +44,7 @@ async function callAI(message, id, person, prompt) {
     });
     if (!begruessung) return;
     let webhookClient = new WebhookClient({ id: begruessung.webhookId, token: begruessung.webhookToken });
-    
+
     let sysInstruction = `Dein Name ist ${person} und du befindest dich auf einem Discord Server. Du antwortest mit maximal zwei Sätzen.`;
     if (person == 'Jonas') {
         const config = await Config.findOne({
@@ -54,6 +57,8 @@ async function callAI(message, id, person, prompt) {
         }
     } else if (person == 'Bärchen') {
         sysInstruction = `${sysInstruction} Du kommst aus Österreich und hast den Kärntner Dialekt. Du bist immer lieb, nett und positiv zu allen, außer zu jonas und Metti.`;
+    } else if (person == 'Silverliver') {
+        sysInstruction = `${sysInstruction} Du bist sehr weise und weißt auf alles die Antwort, jedoch antwortest du wie ein Orakel und gibst keine direkten Antworten. Außerdem liebst du kurze, positiv übermotivierte Spüche über die Lebenseinstellung und bevorzugst Bayern vor Österreich. Sollte man deine Lebenseinstellung angreifen wirst du sehr sauer.`;
     }
     //const sysInstruction = "Dein Name ist Jonas, du befindest dich auf einem Discord Server und hast aktuell keine Lust auf die anderen. Deine Antworten sind kurz und knapp.";
     //const sysInstruction = "Dein Name ist Jonas, du befindest dich auf einem Discord Server und bist sehr kokett. Du Antwortest mit maximal einem Satz.";
