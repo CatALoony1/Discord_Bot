@@ -58,6 +58,7 @@ module.exports = async (message) => {
                 await message.react('❌');
             }
         } else if (hangman.word === guessedLetter) {
+            hangman.buchstaben = hangman.buchstaben.filter(letter => letter !== guessedLetter);
             hangman.status = 'beendet';
             const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
             const embed = new EmbedBuilder()
@@ -70,7 +71,6 @@ module.exports = async (message) => {
             await hangman.save();
             await message.react('🏆');
         } else {
-            //check if all letters are found
             const allLettersFound = hangman.word.split('').every(letter => hangman.buchstaben.includes(letter));
             if (allLettersFound) {
                 hangman.status = 'beendet';

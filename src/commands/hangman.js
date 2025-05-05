@@ -1356,6 +1356,11 @@ module.exports = {
                     return;
                 }
             }
+            const activeHangman = await Hangman.findOne({ guildId: interaction.guild.id, status: 'laufend'});
+            if(activeHangman) {
+                await interaction.editReply('Es läuft bereits ein Galgenmännchen Spiel. Bitte beende dies zuerst.');
+                return;
+            }
             wort = wort.replace('ß', 'ss').toUpperCase();
             let leerzeichen = wort.split('').map(() => "\\_").join("  ");
             const file = new AttachmentBuilder(path.join(__dirname, '../../img/hangman0.png'));
