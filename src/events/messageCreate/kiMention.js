@@ -45,7 +45,7 @@ async function callAI(message, id, person, prompt) {
     if (!begruessung) return;
     let webhookClient = new WebhookClient({ id: begruessung.webhookId, token: begruessung.webhookToken });
 
-    let sysInstruction = `Dein Name ist ${person} und du befindest dich auf einem Discord Server. Du antwortest mit maximal zwei Sätzen.`;
+    let sysInstruction = `Dein Name ist ${person} und du befindest dich auf einem Discord Server.`;
     if (person == 'Jonas') {
         const config = await Config.findOne({
             key: 'KI_SysInstruct',

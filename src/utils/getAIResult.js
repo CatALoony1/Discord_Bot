@@ -8,6 +8,10 @@ async function getAIResult(prompt, sysInstruction) {
         const model = genAI.getGenerativeModel({
             model: "gemini-2.0-flash",
             systemInstruction: sysInstruction,
+            config: {
+                tools: [{googleSearch: {}}],
+                maxOutputTokens: 250,
+              },
         });
         console.log(`AI-Input:${String(prompt)}`);
         result = await model.generateContent(String(prompt));
