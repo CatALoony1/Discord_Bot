@@ -30,8 +30,8 @@ module.exports = async (oldMessage, newMessage) => {
         messageEdited.setTimestamp(Date.now());
         messageEdited.setTitle(`Nachricht bearbeitet in ${newMessage.channel}`);
         messageEdited.setURL(newMessage.url);
-        messageEdited.addFields({ name: 'vorher', value: `${oldMessage.content}` });
-        messageEdited.addFields({ name: 'nachher:', value: `${newMessage.content}` });
+        messageEdited.addFields({ name: 'vorher', value: `${oldMessageConent}` });
+        messageEdited.addFields({ name: 'nachher:', value: `${newMessageConent}` });
 
         targetChannel.send({ embeds: [messageEdited] });
     } catch (error) {
