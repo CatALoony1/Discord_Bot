@@ -28,7 +28,8 @@ module.exports = {
       return;
     }
     let bonusWords = await Config.findOne({
-      key: "bonusWords"
+      key: "bonusWords",
+      guildId: interaction.guild.id,
     });
     const oldWord = interaction.options.get('oldword').value;
     const newWord = interaction.options.get('newword').value;

@@ -30,13 +30,13 @@ module.exports = {
                     .setPlaceholder('Placeholders:\n<me> - du\n<new> - der/die neue\n <#CHANNELID> - CHANNELID ersetzen')
                     .setStyle(TextInputStyle.Paragraph)
                     .setRequired(true)
-                    .setMaxLength(500);
+                    .setMaxLength(200);
                 const firstActionRow = new ActionRowBuilder().addComponents(textInput);
                 modal.addComponents(firstActionRow);
                 await interaction.showModal(modal);
             } else {
                 await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-                const targetBegruessung = await Begruessung.findOne({ authorId: interaction.user.id });
+                const targetBegruessung = await Begruessung.findOne({ authorId: interaction.user.id, guildId: interaction.guild.id });
                 if (targetBegruessung) {
                     targetBegruessung.zugestimmt = 'N';
                     targetBegruessung.save();

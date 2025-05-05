@@ -42,6 +42,7 @@ module.exports = async (interaction) => {
             await fetchedQuestion.save();
             const fetchedStats = await QuizStats.findOne({
                 userId: interaction.user.id,
+                guildId: interaction.guild.id,
             });
             if (rw === 'right') {
                 if (fetchedStats) {

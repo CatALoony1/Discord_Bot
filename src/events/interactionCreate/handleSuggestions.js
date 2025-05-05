@@ -9,7 +9,7 @@ module.exports = async (interaction) => {
         if (!type || !suggestionId || !action) return;
         if (type !== 'suggestion') return;
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        const targetSuggestion = await Suggestion.findOne({ suggestionId });
+        const targetSuggestion = await Suggestion.findOne({ suggestionId: suggestionId, guildId: interaction.guild.id });
         const targetMessage = await interaction.channel.messages.fetch(targetSuggestion.messageId);
         const targetMessageEmbed = targetMessage.embeds[0];
         if (action === 'approve') {

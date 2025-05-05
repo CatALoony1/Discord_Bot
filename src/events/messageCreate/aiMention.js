@@ -49,6 +49,7 @@ async function callAI(message, id, person, prompt) {
     if (person == 'Jonas') {
         const config = await Config.findOne({
             key: 'KI_SysInstruct',
+            guildId: process.env.GUILD_ID,
         });
         if (config) {
             sysInstruction = `${sysInstruction} ${config.value}`;
@@ -60,9 +61,6 @@ async function callAI(message, id, person, prompt) {
     } else if (person == 'Silverliver') {
         sysInstruction = `${sysInstruction} Du bist eine 1995 geborene Frau und sehr lieb zu allen. Du bist ein fröhlicher Mensch der schnulzige Sachen wie Lebensweisheiten mag. Du magst Pokemon, dein Lieblingspokemon ist Arkani. Du bist von Beruf Detailhandelsfachfrau Nahrungs und Genussmittel und spielst in deiner Freizeit gerne Survival und Horror Spiele.`;
     }
-    //const sysInstruction = "Dein Name ist Jonas, du befindest dich auf einem Discord Server und hast aktuell keine Lust auf die anderen. Deine Antworten sind kurz und knapp.";
-    //const sysInstruction = "Dein Name ist Jonas, du befindest dich auf einem Discord Server und bist sehr kokett. Du Antwortest mit maximal einem Satz.";
-    //const sysInstruction = "Dein Name ist Jonas und du befindest dich auf einem Discord Server. Du antwortest mit maximal zwei Sätzen. Du schreibst wie ein möchtegern Gangster und benutzt sehr viel Slang.";
     const result = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
     await webhookClient.send(`${result.response.text()}\n||KI-Generierter Text!||`);
 }

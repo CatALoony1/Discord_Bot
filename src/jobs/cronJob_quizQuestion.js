@@ -45,6 +45,7 @@ async function jobFunction(client) {
     try {
         var targetChannel = await client.channels.fetch(process.env.QUIZ_ID);
         const oldQuestions = await Questions.find({
+            guildId: process.env.GUILD_ID,
             asked: 'J',
         });
         if (oldQuestions.length != 0) {
@@ -71,6 +72,7 @@ async function jobFunction(client) {
         });
 
         const fetchedQuestions = await Questions.find({
+            guildId: process.env.GUILD_ID,
             asked: 'N',
         });
         if (fetchedQuestions.length != 0) {
@@ -89,6 +91,7 @@ async function jobFunction(client) {
             }
             let questionUser = fetchedQuestions[questionIndex].participants[0];
             const stats = await QuizStats.findOne({
+                guildId: process.env.GUILD_ID,
                 userId: questionUser,
             });
             if (stats) {
@@ -154,6 +157,7 @@ async function jobFunction(client) {
             });
 
             const fetchedQuestion = await Questions.findOne({
+                guildId: process.env.GUILD_ID,
                 questionId: fetchedQuestions[questionIndex].questionId,
             });
             fetchedQuestion.asked = 'J';

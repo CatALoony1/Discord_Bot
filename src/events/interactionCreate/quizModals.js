@@ -18,7 +18,7 @@ module.exports = async (interaction) => {
             vorschlag.setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ size: 256 }) });
             vorschlag.setTitle(`Fragen Vorschlag`);
             vorschlag.setDescription(frage);
-            vorschlag.addFields({ name: `Richig:`, value: `${richtig}` });
+            vorschlag.addFields({ name: `Richtig:`, value: `${richtig}` });
             vorschlag.addFields({ name: `Falsch1:`, value: `${falsch1}` });
             vorschlag.addFields({ name: `Falsch2:`, value: `${falsch2}` });
             vorschlag.addFields({ name: `Falsch3:`, value: `${falsch3}` });
@@ -43,7 +43,8 @@ module.exports = async (interaction) => {
             question: frage,
             right: richtig,
             wrong: wrong,
-            participants: participants
+            participants: participants,
+            guildId: process.env.GUILD_ID,
         });
         await newQuestion.save();
         var targetChannel = interaction.guild.channels.cache.get(process.env.QUIZ_ID) || (await interaction.guild.channels.fetch(process.env.QUIZ_ID));

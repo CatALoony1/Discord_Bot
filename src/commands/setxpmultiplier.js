@@ -20,7 +20,8 @@ module.exports = {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     try {
       let confQuery = {
-        key: "xpMultiplier"
+        key: "xpMultiplier",
+        guildId: interaction.guild.id,
       };
       let conf = await Config.findOne(confQuery);
       conf.value = amount;

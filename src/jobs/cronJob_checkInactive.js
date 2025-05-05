@@ -25,7 +25,7 @@ function startJob(client) {
                 return;
             }
             var away = [];
-            for await (const doc of Config.find()) {
+            for await (const doc of Config.find({guildId: process.env.GUILD_ID})) {
                 if (doc.key == "away") {
                     away = doc.value.split(',');
                 }

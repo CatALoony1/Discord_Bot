@@ -56,6 +56,7 @@ async function jobFunction(client) {
         });
 
         const fetchedQuestions = await QuizQuestions.find({
+            guildId: process.env.GUILD_ID,
             asked: 'N',
         });
         const numberQuestions = new EmbedBuilder();

@@ -29,6 +29,7 @@ module.exports = {
         const targetUserObj = await interaction.guild.members.fetch(targetUserId);
         const config = await Config.findOne({
             key: 'away',
+            guildId: interaction.guild.id,
         });
         if (config.value.includes(targetUserObj.user.tag)) {
             await interaction.editReply(`Der User ${targetUserObj.user.tag} ist bereits einetragen.`);

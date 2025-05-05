@@ -8,7 +8,7 @@ module.exports = async (interaction) => {
         if (!type || !userid || !action) return;
         if (type !== 'begruessung') return;
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        const targetBegruessung = await Begruessung.findOne({ authorId: userid });
+        const targetBegruessung = await Begruessung.findOne({ authorId: userid, guildId: interaction.guild.id });
         if (!targetBegruessung) {
             console.log('ERROR begrüßung nicht vorhanden');
             interaction.editReply('ERROR Irgendwas passt nicht.');

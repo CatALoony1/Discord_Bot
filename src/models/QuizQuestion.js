@@ -47,6 +47,10 @@ const quizQuestionSchema = new Schema({
     answerD: {
         type: Number,
         default: 0,
+    },
+    guildId: {
+        type: String,
+        required: true,
     }
 
 });

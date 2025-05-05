@@ -20,6 +20,7 @@ function startJob(client) {
         console.log(`VoiceXP-Job started...`);
         var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
         let confQuery = {
+            guildId: process.env.GUILD_ID,
             key: "xpMultiplier"
         };
         let conf = await Config.findOne(confQuery);
