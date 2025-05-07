@@ -35,6 +35,7 @@ module.exports = async (message) => {
             await message.reply('Deiner eigener Buchstabe zählt nicht!');
             return;
         }
+        const targetUserObj = await message.guild.members.fetch(hangman.authorId);
         const guessedLetter = message.content.toUpperCase().trim();
         if ((guessedLetter.length !== 1 && guessedLetter != hangman.word) || !/^[\u0041-\u005A\u00C4\u00D6\u00DC\u00DF\s]+$/i.test(guessedLetter)) {
             await message.reply('Bitte gib nur einen Buchstaben ein!');
@@ -52,6 +53,7 @@ module.exports = async (message) => {
                 const file = new AttachmentBuilder(path.join(__dirname, '../../../img/hangman8.png'));
                 const embed = new EmbedBuilder()
                     .setColor('#FF0000')
+                .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                     .setTitle('Galgenmännchen - Spiel beendet')
                     .setDescription(`Verloren! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
                     .setImage('attachment://hangman8.png');
@@ -63,6 +65,7 @@ module.exports = async (message) => {
                 const leerzeichen = maskiereWort(hangman.word, hangman.buchstaben);
                 const embed = new EmbedBuilder()
                     .setColor(0x0033cc)
+                .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                     .setTitle('Galgenmännchen')
                     .setDescription(`${leerzeichen}\n\n${hangman.word.length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
                     .setImage(`attachment://hangman${hangman.fehler}.png`);
@@ -76,6 +79,7 @@ module.exports = async (message) => {
             const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
             const embed = new EmbedBuilder()
                 .setColor('#00FF00')
+                .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                 .setTitle('Galgenmännchen - Spiel beendet')
                 .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
                 .setImage(`attachment://hangman${hangman.fehler}.png`);
@@ -90,6 +94,7 @@ module.exports = async (message) => {
                 const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
                 const embed = new EmbedBuilder()
                     .setColor('#00FF00')
+                .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                     .setTitle('Galgenmännchen - Spiel beendet')
                     .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
                     .setImage(`attachment://hangman${hangman.fehler}.png`);
@@ -103,6 +108,7 @@ module.exports = async (message) => {
             const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
             const embed = new EmbedBuilder()
                 .setColor(0x0033cc)
+                .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                 .setTitle('Galgenmännchen')
                 .setDescription(`${leerzeichen}\n\n${hangman.word.length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
                 .setImage(`attachment://hangman${hangman.fehler}.png`);
