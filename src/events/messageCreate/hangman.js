@@ -3,6 +3,19 @@ require('dotenv').config();
 const { Message, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const path = require('node:path');
 const giveXP = require("../../utils/giveXP");
+
+function maskiereWort(wort, gerateneBuchstaben) {
+  return wort.split('').map(buchstabe => {
+    if (buchstabe === ' ') {
+      return ' '; // Leerzeichen bleiben erhalten
+    } else if (gerateneBuchstaben.includes(buchstabe.toLowerCase())) {
+      return buchstabe; // Geratene Buchstaben anzeigen
+    } else {
+      return '\\_'; // Nicht geratene Buchstaben als Unterstrich
+    }
+  }).join(' ');
+}
+
 /**
  * 
  * @param {Message} message 
@@ -47,7 +60,7 @@ module.exports = async (message) => {
                 await message.react('💀');
             } else {
                 const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
-                const leerzeichen = hangman.word.split('').map(letter => (hangman.buchstaben.includes(letter) ? letter : '\\_')).join(' ');
+                const leerzeichen = maskiereWort(hangman.word, hangman.buchstaben);
                 const embed = new EmbedBuilder()
                     .setColor(0x0033cc)
                     .setTitle('Galgenmännchen')
@@ -86,7 +99,7 @@ module.exports = async (message) => {
                 await message.react('🏆');
                 return;
             }
-            const leerzeichen = hangman.word.split('').map(letter => (hangman.buchstaben.includes(letter) ? letter : '\\_')).join(' ');
+            const leerzeichen = maskiereWort(hangman.word, hangman.buchstaben);
             const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
             const embed = new EmbedBuilder()
                 .setColor(0x0033cc)
