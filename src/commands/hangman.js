@@ -1325,6 +1325,14 @@ function getRandom(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+function unterstreicheSatz(satz) {
+  const woerter = satz.split(" ");
+  const unterstricheneWoerter = woerter.map(wort => {
+    return wort.split('').map(() => "\\_").join("");
+  });
+  return unterstricheneWoerter.join("  ");
+}
+
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -1362,7 +1370,7 @@ module.exports = {
                 return;
             }
             wort = wort.replace('ß', 'ss').toUpperCase();
-            let leerzeichen = wort.split('').map(() => "\\_").join("  ");
+            let leerzeichen = unterstreicheSatz(wort);
             const file = new AttachmentBuilder(path.join(__dirname, '../../img/hangman0.png'));
             const hangman = new EmbedBuilder()
                 .setColor(0x0033cc)
