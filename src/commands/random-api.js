@@ -28,7 +28,7 @@ module.exports = {
             randomNumber = 1;
             switch (randomNumber) {
                 case 1:
-                    JokeAPI.getJokes()
+                    await JokeAPI.getJokes()
                         .then((res) => res.json())
                         .then((mydata) => {
                             data = mydata;
