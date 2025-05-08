@@ -184,19 +184,17 @@ module.exports = {
                     await interaction.editReply(data.value);
                     break;
                 case 14:
+                    let apiUrl2 = null;
                     if (zahl !== -1) {
-                        await fetch(`http://numbersapi.com/${zahl}/trivia`)
-                            .then((response) => response.json())
-                            .then((mydata) => {
-                                data = mydata;
-                            });
+                        apiUrl2 = `http://numbersapi.com/${zahl}/trivia`;
                     } else {
-                        await fetch('http://numbersapi.com/random/trivia')
+                        apiUrl2 = 'http://numbersapi.com/random/trivia';
+                    }
+                    await fetch(apiUrl2)
                             .then((response) => response.json())
                             .then((mydata) => {
                                 data = mydata;
                             });
-                    }
                     //await interaction.editReply(data.value);
                     break;
                 default:
