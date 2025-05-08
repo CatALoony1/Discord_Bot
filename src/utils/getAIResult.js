@@ -15,6 +15,7 @@ async function getAIResult(prompt, sysInstruction) {
         });
         console.log(`AI-Input:${String(prompt)}`);
         result = await model.generateContent(String(prompt));
+        console.log(result);
         console.log(`AI-Result:${result.response.text()}`);
         console.log(result.response.usageMetadata.totalTokenCount);
     } catch (error) {
