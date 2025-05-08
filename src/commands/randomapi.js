@@ -319,7 +319,7 @@ module.exports = {
                         });
                     await interaction.editReply(data.cards[0].image);
                 case 23:
-                    await fetch('https://api.spoonacular.com/recipes/random')
+                    await fetch(`https://api.spoonacular.com/recipes/random?apiKey=${process.env.SPOONACULAR_API}`)
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
