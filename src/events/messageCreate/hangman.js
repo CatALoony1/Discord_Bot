@@ -7,11 +7,11 @@ const giveXP = require("../../utils/giveXP");
 function maskiereWort(wort, gerateneBuchstaben) {
   return wort.split('').map(buchstabe => {
     if (buchstabe === ' ') {
-      return ' '; // Leerzeichen bleiben erhalten
-    } else if (gerateneBuchstaben.includes(buchstabe.toUpperCase())) {
-      return buchstabe; // Geratene Buchstaben anzeigen
+      return ' ';
+    } else if (gerateneBuchstaben.includes(buchstabe)) {
+      return buchstabe;
     } else {
-      return '\\_'; // Nicht geratene Buchstaben als Unterstrich
+      return '\\_';
     }
   }).join(' ');
 }
