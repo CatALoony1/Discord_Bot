@@ -31,7 +31,7 @@ module.exports = {
             await interaction.deferReply({ ephemeral: true });
             let randomNumber = getRandom(1, 100);
             let data = null;
-            randomNumber = 4;
+            randomNumber = 12;
             switch (randomNumber) {
                 case 1:
                     await JokeAPI.getJokes()
