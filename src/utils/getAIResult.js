@@ -1,10 +1,10 @@
 require('dotenv').config();
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenAI, Modality } = require("@google/genai");
 async function getAIResult(prompt, sysInstruction) {
     console.log('contacting AI');
     let result = null;
     try {
-        const genAI = new GoogleGenerativeAI(process.env.AI_API);
+        const genAI = new GoogleGenAI(process.env.AI_API);
         let model = null;
         if ((prompt.toLowerCase().includes('erzeuge') || prompt.toLowerCase().includes('erstelle') || prompt.toLowerCase().includes('generiere')) && prompt.toLowerCase().includes('bild')) {
             model = genAI.getGenerativeModel({
@@ -12,6 +12,7 @@ async function getAIResult(prompt, sysInstruction) {
                 systemInstruction: sysInstruction,
                 config: {
                     maxOutputTokens: 250,
+                    responseModalities: [Modality.TEXT, Modality.IMAGE],
                 },
             });
         } else {
