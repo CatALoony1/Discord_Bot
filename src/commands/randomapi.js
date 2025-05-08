@@ -312,12 +312,13 @@ module.exports = {
                         });
                     await interaction.editReply(data[0].url);
                     break;
-                    case 22:
-                        const deck = Cards.deck();
-                        const count = { count: 1 };
-                        const card = Cards.draw(deck.deck_id, count);
-                        console.log(card);
-
+                case 22:
+                    await fetch('https://deckofcardsapi.com/api/deck/new/draw/?count=1')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.cards[0].image);
                 default:
                     await interaction.editReply('Zufällige API-Antwort: Default');
             }
