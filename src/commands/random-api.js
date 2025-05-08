@@ -1,11 +1,18 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 require('dotenv').config();
 const JokeAPI = require('sv443-joke-api');
+const crypto = require('crypto');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function generiereMarvelHash() {
+    const ts = Date.now().toString();
+    const hashString = ts + process.env.MARVEL_PRIVATE + process.env.MARVEL_PUBLIC;
+    const hash = crypto.createHash('md5').update(hashString).digest('hex');
+    return { ts, hash };
 }
 
 module.exports = {
@@ -48,7 +55,7 @@ module.exports = {
                         .then((mydata) => {
                             data = mydata;
                         });
-                        await interaction.editReply(data.slip.advice);
+                    await interaction.editReply(data.slip.advice);
                     break;
                 case 3:
                     await fetch('http://api.quotable.kurokeita.dev/api/quotes/random')
@@ -56,15 +63,81 @@ module.exports = {
                         .then((mydata) => {
                             data = mydata;
                         });
-                        await interaction.editReply(data.quote.content + '\n~' + data.quote.author.name);
+                    await interaction.editReply(data.quote.content + '\n~' + data.quote.author.name);
                     break;
-                    case 4:
+                case 4:
                     await fetch('https://api.waifu.pics/sfw/waifu')
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
                         });
-                        //await interaction.editReply(data.url);
+                    await interaction.editReply(data.url);
+                    break;
+                case 5:
+                    await fetch('https://api.waifu.pics/sfw/neko')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.url);
+                    break;
+                case 6:
+                    await fetch('https://api.waifu.pics/sfw/dance')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.url);
+                    break;
+                case 7:
+                    await fetch('https://api.waifu.pics/sfw/cry')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.url);
+                    break;
+                case 8:
+                    await fetch('https://api.waifu.pics/sfw/pat')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.url);
+                    break;
+                case 9:
+                    await fetch('https://api.waifu.pics/sfw/kiss')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.url);
+                    break;
+                case 10:
+                    await fetch('https://api.waifu.pics/sfw/kill')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.url);
+                    break;
+                case 11:
+                    await fetch('https://api.waifu.pics/nsfw/waifu')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(`||${data.url}||`);
+                    break;
+                case 12:
+                    const marvelParameter = generiereMarvelHash();
+                    const apiUrl = `http://gateway.marvel.com/v1/public/characters?ts=${marvelParameter.ts}&apikey=${publicKey}&hash=${marvelParameter.hash}`;
+                    await fetch(apiUrl)
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                        break;
                 default:
                     await interaction.editReply('Zufällige API-Antwort: Default');
             }
