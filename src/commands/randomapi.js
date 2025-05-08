@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
 require('dotenv').config();
 const JokeAPI = require('sv443-joke-api');
-const Cards = require('deckofcards-api')
 
 function getRandom(min, max) {
     min = Math.ceil(min);
