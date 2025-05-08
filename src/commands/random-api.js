@@ -52,7 +52,7 @@ module.exports = {
                         await interaction.editReply(data.slip.advice);
                     break;
                 case 3:
-                    await fetch('https://api.quotable.io/random')
+                    await fetch('https://api.quotable.io/quotes/random')
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
