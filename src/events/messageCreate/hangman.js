@@ -88,7 +88,7 @@ module.exports = async (message) => {
             await hangman.save();
             await message.react('🏆');
         } else {
-            const allLettersFound = hangman.word.replaceAll(' ', '').split('').every(letter => hangman.buchstaben.includes(letter.toLowerCase()));
+            const allLettersFound = hangman.word.replaceAll(' ', '').split('').every(letter => hangman.buchstaben.includes(letter));
             if (allLettersFound) {
                 hangman.status = 'beendet';
                 const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
