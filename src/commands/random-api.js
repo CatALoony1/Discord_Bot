@@ -10,7 +10,7 @@ function getRandom(min, max) {
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('randomapi')
+        .setName('random-api')
         .setDescription('Rufe eine zufällige API auf.')
         .addIntegerOption(option =>
             option.setName('zahl')
@@ -27,10 +27,9 @@ module.exports = {
         try {
             const zahl = interaction.options.get('zahl')?.value || -1;
             const fetch = await import('node-fetch').then(module => module.default);
-            await interaction.deferReply({ ephemeral: true });
-            let randomNumber = getRandom(1, 100);
+            await interaction.deferReply();
+            let randomNumber = getRandom(1, 24);
             let data = null;
-            randomNumber = zahl;
             let apiUrl = null;
             switch (randomNumber) {
                 case 1:
@@ -349,45 +348,42 @@ module.exports = {
                         await interaction.editReply('Es wurde kein Rezept gefunden.');
                     }
                     break;
-                    case 24:
-                        let pokemonId = getRandom(1, 898);
-                        if (zahl > 0 && zahl <= 898) {
-                            pokemonId = zahl;
-                        }
-                        apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
-                        console.log(apiUrl);
-                        await fetch(apiUrl)
-                            .then((response) => response.json())
-                            .then((mydata) => {
-                                data = mydata;
-                            });
-                        const pokemon = new EmbedBuilder()
-                            .setColor(0x0099FF)
-                            .setTitle(data.name.charAt(0).toUpperCase() + data.name.slice(1))
-                            .setThumbnail(data.sprites.front_default)
-                            .addFields(
-                                { name: 'ID', value: data.id.toString(), inline: true },
-                                { name: 'Typ', value: data.types.map(type => type.type.name).join(', '), inline: true },
-                                { name: 'Gewicht', value: (data.weight / 10).toString() + ' kg', inline: true },
-                                { name: 'Größe', value: (data.height / 10).toString() + ' m', inline: true },
-                                { name: '\u200B', value: '\u200B' },
-                                { name: 'Basiswerte', value: `HP: ${data.stats[0].base_stat}\nAttacke: ${data.stats[1].base_stat}\nVerteidigung: ${data.stats[2].base_stat}\nAngriffsspezialisiert: ${data.stats[3].base_stat}\nVerteidigungsspezialisiert: ${data.stats[4].base_stat}\nInitiative: ${data.stats[5].base_stat}` }
-                            )
-                            .setFooter({ text: 'Daten von PokeAPI' });
-                        await interaction.editReply({ embeds: [pokemon] });
-                        break;
+                case 24:
+                    let pokemonId = getRandom(1, 898);
+                    if (zahl > 0 && zahl <= 898) {
+                        pokemonId = zahl;
+                    }
+                    apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
+                    console.log(apiUrl);
+                    await fetch(apiUrl)
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    const pokemon = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(data.name.charAt(0).toUpperCase() + data.name.slice(1))
+                        .setThumbnail(data.sprites.front_default)
+                        .addFields(
+                            { name: 'ID', value: data.id.toString(), inline: true },
+                            { name: 'Typ', value: data.types.map(type => type.type.name).join(', '), inline: true },
+                            { name: 'Gewicht', value: (data.weight / 10).toString() + ' kg', inline: true },
+                            { name: 'Größe', value: (data.height / 10).toString() + ' m', inline: true },
+                            { name: '\u200B', value: '\u200B' },
+                            { name: 'Basiswerte', value: `HP: ${data.stats[0].base_stat}\nAttacke: ${data.stats[1].base_stat}\nVerteidigung: ${data.stats[2].base_stat}\nAngriffsspezialisiert: ${data.stats[3].base_stat}\nVerteidigungsspezialisiert: ${data.stats[4].base_stat}\nInitiative: ${data.stats[5].base_stat}` }
+                        )
+                        .setFooter({ text: 'Daten von PokeAPI' });
+                    await interaction.editReply({ embeds: [pokemon] });
+                    break;
                 default:
                     await interaction.editReply('Zufällige API-Antwort: Default');
             }
-            //await interaction.editReply(`Zufällige API-Antwort:\n${JSON.stringify(data)}`);
-            console.log(data);
-            await interaction.editReply('Done!');
         } catch (err) {
             console.log(err);
         }
     },
     options: {
-        devOnly: true,
+        devOnly: false,
         deleted: false
     },
 };
