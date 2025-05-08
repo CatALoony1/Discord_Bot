@@ -25,7 +25,7 @@ module.exports = {
             let randomNumber = getRandom(1, 100);
             let response = null;
             let data = null;
-            randomNumber = 2;
+            randomNumber = 3;
             switch (randomNumber) {
                 case 1:
                     await JokeAPI.getJokes()
@@ -38,9 +38,9 @@ module.exports = {
                         var delay = 2000;
                         let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
                         await sleep(delay);
-                        await message.reply(`${data.delivery}`);
+                        await message.reply(data.delivery);
                     } else {
-                        await interaction.editReply(`${data.joke}`);
+                        await interaction.editReply(data.joke);
                     }
                     break;
                 case 2:
@@ -49,9 +49,15 @@ module.exports = {
                         .then((mydata) => {
                             data = mydata;
                         });
+                        await interaction.editReply(data.slip.advice);
                     break;
                 case 3:
-                    await interaction.editReply('Zufällige API-Antwort: 3');
+                    await fetch('https://api.quotable.io/random')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                        //await interaction.editReply(data.content + '\n~' + data.author);
                     break;
                 default:
                     await interaction.editReply('Zufällige API-Antwort: Default');
