@@ -31,6 +31,7 @@ module.exports = {
             let randomNumber = getRandom(1, 100);
             let data = null;
             randomNumber = zahl;
+            let apiUrl = null;
             switch (randomNumber) {
                 case 1:
                     await JokeAPI.getJokes()
@@ -133,7 +134,7 @@ module.exports = {
                     if (zahl > 0 && zahl <= 731) {
                         heroId = zahl;
                     }
-                    const apiUrl = `https://superheroapi.com/api/${process.env.HERO_API}/${heroId}`;
+                    apiUrl = `https://superheroapi.com/api/${process.env.HERO_API}/${heroId}`;
                     console.log(apiUrl);
                     await fetch(apiUrl)
                         .then((response) => response.json())
@@ -184,13 +185,12 @@ module.exports = {
                     await interaction.editReply(data.value);
                     break;
                 case 14:
-                    let apiUrl2 = null;
                     if (zahl !== -1) {
-                        apiUrl2 = `http://numbersapi.com/${zahl}/trivia`;
+                        apiUrl = `http://numbersapi.com/${zahl}/trivia`;
                     } else {
-                        apiUrl2 = 'http://numbersapi.com/random/trivia';
+                        apiUrl = 'http://numbersapi.com/random/trivia';
                     }
-                    await fetch(apiUrl2)
+                    await fetch(apiUrl)
                         .then((response) => {
                             if (!response.ok) {
                                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -203,7 +203,76 @@ module.exports = {
                         .catch((error) => {
                             console.error('Fehler beim Abrufen der Trivia:', error);
                         });
-                    //await interaction.editReply(data);
+                    await interaction.editReply(data);
+                    break;
+                case 15:
+                    if (zahl !== -1) {
+                        apiUrl = `http://numbersapi.com/${zahl}/math`;
+                    } else {
+                        apiUrl = 'http://numbersapi.com/random/math';
+                    }
+                    await fetch(apiUrl)
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.text();
+                        })
+                        .then((mydata) => {
+                            data = mydata;
+                        })
+                        .catch((error) => {
+                            console.error('Fehler beim Abrufen der Trivia:', error);
+                        });
+                    await interaction.editReply(data);
+                    break;
+                case 16:
+                    await fetch('http://numbersapi.com/random/year')
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.text();
+                        })
+                        .then((mydata) => {
+                            data = mydata;
+                        })
+                        .catch((error) => {
+                            console.error('Fehler beim Abrufen der Trivia:', error);
+                        });
+                    await interaction.editReply(data);
+                    break;
+                case 17:
+                    await fetch('http://numbersapi.com/random/date')
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.text();
+                        })
+                        .then((mydata) => {
+                            data = mydata;
+                        })
+                        .catch((error) => {
+                            console.error('Fehler beim Abrufen der Trivia:', error);
+                        });
+                    await interaction.editReply(data);
+                    break;
+                case 18:
+                    await fetch(`https://api.agify.io?name=${interaction.user.username}`)
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(`Du bist: ${data.age} Jahre alt.`);
+                    break;
+                case 19:
+                    await fetch(`http://thecocktaildb.com/api/json/v1/1/random.php`)
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    //await interaction.editReply(`Du bist: ${data.age} Jahre alt.`);
                     break;
                 default:
                     await interaction.editReply('Zufällige API-Antwort: Default');
