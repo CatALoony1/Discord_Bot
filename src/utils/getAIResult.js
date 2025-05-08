@@ -10,8 +10,8 @@ async function getAIResult(prompt, sysInstruction) {
             response = await genAI.models.generateContent({
                 model: "gemini-2.0-flash-preview-image-generation",
                 contents: String(prompt),
-                systemInstruction: sysInstruction,
                 config: {
+                    systemInstruction: sysInstruction,
                     maxOutputTokens: 250,
                     responseModalities: [Modality.TEXT, Modality.IMAGE],
                 },
@@ -20,8 +20,8 @@ async function getAIResult(prompt, sysInstruction) {
             response = await genAI.models.generateContent({
                 model: "gemini-2.0-flash",
                 contents: String(prompt),
-                systemInstruction: sysInstruction,
                 config: {
+                    systemInstruction: sysInstruction,
                     tools: [{ googleSearch: {} }],
                     maxOutputTokens: 250,
                 },
