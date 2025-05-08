@@ -10,13 +10,13 @@ function getRandom(min, max) {
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('random-api')
+        .setName('randomapi')
         .setDescription('Rufe eine zufällige API auf.')
         .addIntegerOption(option =>
             option.setName('zahl')
-                .setDescription('Setze dies, wenn du magst')
-                .setRequired(false)
-        )
+              .setDescription('Trag ein wenn du magst.')
+              .setRequired(false)
+          )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
     /**
