@@ -1,12 +1,12 @@
 require('dotenv').config();
-const { GoogleGenAI, Modality } = require("@google/genai");
-async function getAIResult(prompt, sysInstruction) {
+const { GoogleGenAI/*, Modality*/ } = require("@google/genai");
+async function getAIResult(prompt, sysInstruction, image) {
     console.log('contacting AI');
     let response = null;
     try {
         const genAI = new GoogleGenAI({ apiKey: process.env.AI_API });
         console.log(`AI-Input:${String(prompt)}`);
-        if ((prompt.toLowerCase().includes('erzeuge') || prompt.toLowerCase().includes('erstelle') || prompt.toLowerCase().includes('generiere')) && prompt.toLowerCase().includes('bild')) {
+        /*if (image) {
             response = await genAI.models.generateContent({
                 model: "gemini-2.0-flash-preview-image-generation",
                 contents: String(prompt),
@@ -16,7 +16,7 @@ async function getAIResult(prompt, sysInstruction) {
                     responseModalities: [Modality.TEXT, Modality.IMAGE],
                 },
             });
-        } else {
+        } else {*/
             response = await genAI.models.generateContent({
                 model: "gemini-2.0-flash",
                 contents: String(prompt),
@@ -26,7 +26,7 @@ async function getAIResult(prompt, sysInstruction) {
                     maxOutputTokens: 250,
                 },
             });
-        }
+        //}
         console.log(`AI-Result:${response.text()}`);
         console.log(response.usageMetadata.totalTokenCount);
     } catch (error) {
