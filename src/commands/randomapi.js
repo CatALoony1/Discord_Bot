@@ -14,9 +14,9 @@ module.exports = {
         .setDescription('Rufe eine zufällige API auf.')
         .addIntegerOption(option =>
             option.setName('zahl')
-              .setDescription('Trag ein wenn du magst.')
-              .setRequired(false)
-          )
+                .setDescription('Trag ein wenn du magst.')
+                .setRequired(false)
+        )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
     /**
@@ -191,11 +191,19 @@ module.exports = {
                         apiUrl2 = 'http://numbersapi.com/random/trivia';
                     }
                     await fetch(apiUrl2)
-                            .then((response) => response.json())
-                            .then((mydata) => {
-                                data = mydata;
-                            });
-                    //await interaction.editReply(data.value);
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.text();
+                        })
+                        .then((mydata) => {
+                            data = mydata;
+                        })
+                        .catch((error) => {
+                            console.error('Fehler beim Abrufen der Trivia:', error);
+                        });
+                    //await interaction.editReply(data);
                     break;
                 default:
                     await interaction.editReply('Zufällige API-Antwort: Default');
