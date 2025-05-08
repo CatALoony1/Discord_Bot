@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 require('dotenv').config();
+const fetch = require('node-fetch');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
