@@ -12,6 +12,11 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('random-api')
         .setDescription('Rufe eine zufällige API auf.')
+        .addIntegerOption(option =>
+            option.setName('zahl')
+                .setDescription('Setze dies, wenn du magst')
+                .setRequired(false)
+        )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
     /**
@@ -20,11 +25,12 @@ module.exports = {
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
+            const zahl = interaction.options.get('zahl')?.value || -1;
             const fetch = await import('node-fetch').then(module => module.default);
             await interaction.deferReply({ ephemeral: true });
             let randomNumber = getRandom(1, 100);
             let data = null;
-            randomNumber = 13;
+            randomNumber = zahl;
             switch (randomNumber) {
                 case 1:
                     await JokeAPI.getJokes()
@@ -123,7 +129,11 @@ module.exports = {
                     await interaction.editReply(`||${data.url}||`);
                     break;
                 case 12:
-                    const apiUrl = `https://superheroapi.com/api/${process.env.HERO_API}/${getRandom(1, 731)}`;
+                    let heroId = getRandom(1, 731);
+                    if (zahl > 0 && zahl <= 731) {
+                        var heroId = zahl;
+                    }
+                    const apiUrl = `https://superheroapi.com/api/${process.env.HERO_API}/${heroId}`;
                     console.log(apiUrl);
                     await fetch(apiUrl)
                         .then((response) => response.json())
@@ -165,12 +175,28 @@ module.exports = {
                         .setFooter({ text: 'Daten von SuperHeroDB', iconURL: 'https://www.superherodb.com/images/logo.svg' });
                     await interaction.editReply({ embeds: [hero] });
                     break;
-                    case 13:
-                        await fetch('https://api.chucknorris.io/jokes/random')
+                case 13:
+                    await fetch('https://api.chucknorris.io/jokes/random')
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
                         });
+                    await interaction.editReply(data.value);
+                    break;
+                case 14:
+                    if (zahl !== -1) {
+                        await fetch(`http://numbersapi.com/${zahl}/trivia`)
+                            .then((response) => response.json())
+                            .then((mydata) => {
+                                data = mydata;
+                            });
+                    } else {
+                        await fetch('http://numbersapi.com/random/trivia')
+                            .then((response) => response.json())
+                            .then((mydata) => {
+                                data = mydata;
+                            });
+                    }
                     //await interaction.editReply(data.value);
                     break;
                 default:
