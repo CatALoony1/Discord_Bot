@@ -1,4 +1,5 @@
 require('dotenv').config();
+const fs = require("fs");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 async function getAIResult(prompt, sysInstruction) {
     console.log('contacting AI');
@@ -15,7 +16,7 @@ async function getAIResult(prompt, sysInstruction) {
         });
         console.log(`AI-Input:${String(prompt)}`);
         result = await model.generateContent(String(prompt));
-        for (const part of response.candidates[0].content.parts) {
+        for (const part of result.response.candidates[0].content.parts) {
             console.log(part);
             if (part.text) {
               console.log(part.text);
