@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
 require('dotenv').config();
 const JokeAPI = require('sv443-joke-api');
+const Cards = require('deckofcards-api')
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -297,7 +298,26 @@ module.exports = {
                         .then((mydata) => {
                             data = mydata;
                         });
-                //await interaction.editReply(data[0].url);
+                    await interaction.editReply(data[0].url);
+                    break;
+                case 21:
+                    await fetch(`https://api.thedogapi.com/v1/images/search?size=full&limit=1`, {
+                        headers: {
+                            'x-api-key': process.env.DOG_API
+                        }
+                    })
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data[0].url);
+                    break;
+                    case 22:
+                        const deck = Cards.deck();
+                        const count = { count: 1 };
+                        const card = Cards.draw(deck.deck_id, count);
+                        console.log(card);
+
                 default:
                     await interaction.editReply('Zufällige API-Antwort: Default');
             }
