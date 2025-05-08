@@ -31,7 +31,7 @@ module.exports = {
                     await JokeAPI.getJokes({
                         jokeType: "single"
                     })
-                        .then((res) => res.json())
+                        .then((r) => r.json())
                         .then((mydata) => {
                             data = mydata;
                         });
