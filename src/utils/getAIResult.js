@@ -19,14 +19,6 @@ async function getAIResult(prompt, sysInstruction) {
                 },
             });
         } else {
-            model = genAI.getGenerativeModel({
-                model: "gemini-2.0-flash",
-                systemInstruction: sysInstruction,
-                config: {
-                    tools: [{ googleSearch: {} }],
-                    maxOutputTokens: 250,
-                },
-            });
             response = await ai.models.generateContent({
                 model: "gemini-2.0-flash",
                 contents: String(prompt),
