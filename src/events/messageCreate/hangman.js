@@ -5,15 +5,15 @@ const path = require('node:path');
 const giveXP = require("../../utils/giveXP");
 
 function maskiereWort(wort, gerateneBuchstaben) {
-  return wort.split('').map(buchstabe => {
-    if (buchstabe === ' ') {
-      return ' ';
-    } else if (gerateneBuchstaben.includes(buchstabe)) {
-      return buchstabe;
-    } else {
-      return '\\_';
-    }
-  }).join(' ');
+    return wort.split('').map(buchstabe => {
+        if (buchstabe === ' ') {
+            return ' ';
+        } else if (gerateneBuchstaben.includes(buchstabe)) {
+            return buchstabe;
+        } else {
+            return '\\_';
+        }
+    }).join(' ');
 }
 
 /**
@@ -53,7 +53,7 @@ module.exports = async (message) => {
                 const file = new AttachmentBuilder(path.join(__dirname, '../../../img/hangman8.png'));
                 const embed = new EmbedBuilder()
                     .setColor('#FF0000')
-                .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
+                    .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                     .setTitle('Galgenmännchen - Spiel beendet')
                     .setDescription(`Verloren! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
                     .setImage('attachment://hangman8.png');
@@ -65,7 +65,7 @@ module.exports = async (message) => {
                 const leerzeichen = maskiereWort(hangman.word, hangman.buchstaben);
                 const embed = new EmbedBuilder()
                     .setColor(0x0033cc)
-                .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
+                    .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                     .setTitle('Galgenmännchen')
                     .setDescription(`${leerzeichen}\n\n${hangman.word.length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
                     .setImage(`attachment://hangman${hangman.fehler}.png`);
@@ -94,7 +94,7 @@ module.exports = async (message) => {
                 const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
                 const embed = new EmbedBuilder()
                     .setColor('#00FF00')
-                .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
+                    .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                     .setTitle('Galgenmännchen - Spiel beendet')
                     .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
                     .setImage(`attachment://hangman${hangman.fehler}.png`);

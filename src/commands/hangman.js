@@ -1326,13 +1326,12 @@ function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 function unterstreicheSatz(satz) {
-  const woerter = satz.split(" ");
-  const unterstricheneWoerter = woerter.map(wort => {
-    return wort.split('').map(() => "\\_").join("");
-  });
-  return unterstricheneWoerter.join("  ");
+    const woerter = satz.split(" ");
+    const unterstricheneWoerter = woerter.map(wort => {
+        return wort.split('').map(() => "\\_").join("");
+    });
+    return unterstricheneWoerter.join("  ");
 }
-
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -1364,8 +1363,8 @@ module.exports = {
                     return;
                 }
             }
-            const activeHangman = await Hangman.findOne({ guildId: interaction.guild.id, status: 'laufend'});
-            if(activeHangman) {
+            const activeHangman = await Hangman.findOne({ guildId: interaction.guild.id, status: 'laufend' });
+            if (activeHangman) {
                 await interaction.editReply('Es läuft bereits ein Galgenmännchen Spiel. Bitte beende dies zuerst.');
                 return;
             }
