@@ -259,7 +259,7 @@ module.exports = {
                     await interaction.editReply(data);
                     break;
                 case 18:
-                    await fetch(`https://api.agify.io?name=${interaction.user.username}`)
+                    await fetch(`https://api.agify.io?name=${interaction.user.displayName}`)
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
@@ -272,8 +272,32 @@ module.exports = {
                         .then((mydata) => {
                             data = mydata;
                         });
-                    //await interaction.editReply(`Du bist: ${data.age} Jahre alt.`);
+                    const drink = data.drinks[0];
+                    let output = `**${drink.strDrink}**\n\n`;
+                    output += `Kategorie: ${drink.strCategory}\n`;
+                    output += `Alkoholisch: ${drink.strAlcoholic}\n`;
+                    output += `Glas: ${drink.strGlass}\n\n`;
+                    output += `**Zutaten:**\n`;
+                    for (let i = 1; i <= 15; i++) {
+                        if (drink[`strIngredient${i}`]) {
+                            output += `- ${drink[`strMeasure${i}`] || ''} ${drink[`strIngredient${i}`]}\n`;
+                        }
+                    }
+                    output += `\n**Zubereitung:** ${drink.strInstructionsDE || drink.strInstructions}\n`;
+                    output += `\n${drink.strDrinkThumb}`;
+                    await interaction.editReply(output);
                     break;
+                case 20:
+                    await fetch(`https://api.thecatapi.com/v1/images/search?size=full&limit=1`, {
+                        headers: {
+                            'x-api-key': process.env.CAT_API
+                        }
+                    })
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                //await interaction.editReply(data[0].url);
                 default:
                     await interaction.editReply('Zufällige API-Antwort: Default');
             }
