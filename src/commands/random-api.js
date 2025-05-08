@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
 require('dotenv').config();
 const JokeAPI = require('sv443-joke-api');
 
@@ -24,7 +24,7 @@ module.exports = {
             await interaction.deferReply({ ephemeral: true });
             let randomNumber = getRandom(1, 100);
             let data = null;
-            randomNumber = 12;
+            randomNumber = 13;
             switch (randomNumber) {
                 case 1:
                     await JokeAPI.getJokes()
@@ -130,7 +130,49 @@ module.exports = {
                         .then((mydata) => {
                             data = mydata;
                         });
-                        break;
+                    const hero = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(data.name)
+                        .setThumbnail(data.image.url)
+                        .addFields(
+                            { name: 'ID', value: data.id },
+                            { name: 'Verlag', value: data.biography.publisher, inline: true },
+                            { name: 'Gesinnung', value: data.biography.alignment, inline: true },
+                            { name: '\u200B', value: '\u200B' },
+                            { name: 'Intelligenz', value: data.powerstats.intelligence !== 'null' ? data.powerstats.intelligence : '-', inline: true },
+                            { name: 'Stärke', value: data.powerstats.strength !== 'null' ? data.powerstats.strength : '-', inline: true },
+                            { name: 'Geschwindigkeit', value: data.powerstats.speed !== 'null' ? data.powerstats.speed : '-', inline: true },
+                            { name: 'Haltbarkeit', value: data.powerstats.durability !== 'null' ? data.powerstats.durability : '-', inline: true },
+                            { name: 'Kraft', value: data.powerstats.power !== 'null' ? data.powerstats.power : '-', inline: true },
+                            { name: 'Kampf', value: data.powerstats.combat !== 'null' ? data.powerstats.combat : '-', inline: true },
+                            { name: '\u200B', value: '\u200B' },
+                            { name: 'Vollständiger Name', value: data.biography['full-name'] || '-', inline: true },
+                            { name: 'Alter Egos', value: data.biography['alter-egos'] || '-', inline: true },
+                            { name: 'Alias(se)', value: data.biography.aliases.join(', ') || '-', inline: true },
+                            { name: 'Geburtsort', value: data.biography['place-of-birth'] || '-', inline: true },
+                            { name: 'Erster Auftritt', value: data.biography['first-appearance'] || '-', inline: true },
+                            { name: 'Geschlecht', value: data.appearance.gender || '-', inline: true },
+                            { name: 'Rasse', value: data.appearance.race || '-', inline: true },
+                            { name: 'Größe', value: data.appearance.height.join(' / ') || '-', inline: true },
+                            { name: 'Gewicht', value: data.appearance.weight.join(' / ') || '-', inline: true },
+                            { name: 'Augenfarbe', value: data.appearance['eye-color'] || '-', inline: true },
+                            { name: 'Haarfarbe', value: data.appearance['hair-color'] || '-', inline: true },
+                            { name: 'Beruf', value: data.work.occupation || '-', inline: true },
+                            { name: 'Basis', value: data.work.base || '-', inline: true },
+                            { name: 'Gruppenzugehörigkeit', value: data.connections['group-affiliation'] || '-', inline: true },
+                            { name: 'Verwandte', value: data.connections.relatives || '-', inline: true }
+                        )
+                        .setFooter({ text: 'Daten von SuperHeroDB', iconURL: 'https://www.superherodb.com/images/logo.svg' });
+                    await interaction.editReply({ embeds: [hero] });
+                    break;
+                    case 13:
+                        await fetch('https://api.chucknorris.io/jokes/random')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    //await interaction.editReply(data.value);
+                    break;
                 default:
                     await interaction.editReply('Zufällige API-Antwort: Default');
             }
