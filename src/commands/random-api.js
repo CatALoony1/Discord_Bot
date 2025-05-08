@@ -131,7 +131,7 @@ module.exports = {
                     break;
                 }
                 case 11: {
-                    await fetch('https://api.waifu.pics/nsfw/waifu')
+                    await fetch('https://api.waifu.pics/sfw/lick')
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
