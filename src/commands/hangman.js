@@ -1369,6 +1369,7 @@ module.exports = {
                 await interaction.editReply('Es läuft bereits ein Galgenmännchen Spiel. Bitte beende dies zuerst.');
                 return;
             }
+            await Hangman.deleteMany({ guildId: interaction.guild.id, status: 'beendet' });
             wort = wort.replace('ß', 'ss').toUpperCase();
             let leerzeichen = unterstreicheSatz(wort);
             const file = new AttachmentBuilder(path.join(__dirname, '../../img/hangman0.png'));
