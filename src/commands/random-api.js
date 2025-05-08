@@ -29,7 +29,7 @@ module.exports = {
             switch (randomNumber) {
                 case 1:
                     await JokeAPI.getJokes({
-                        jokeType: "single"
+                        jokeType: 'single',
                     })
                         .then((r) => r.json())
                         .then((mydata) => {
