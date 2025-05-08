@@ -324,7 +324,58 @@ module.exports = {
                         .then((mydata) => {
                             data = mydata;
                         });
-                    //await interaction.editReply(data.cards[0].image);
+                    const recipe = data.recipes[0];
+                    if (recipe) {
+                        const recipeEmbed = new EmbedBuilder()
+                            .setColor(0x0099ff)
+                            .setTitle(recipe.title)
+                            .setURL(recipe.sourceUrl)
+                            .setImage(recipe.image)
+                            .addFields(
+                                { name: 'Zubereitungszeit', value: `${recipe.readyInMinutes} Minuten`, inline: true },
+                                { name: 'Portionen', value: `${recipe.servings}`, inline: true },
+                                { name: 'Vegetarisch', value: recipe.vegetarian ? 'Ja' : 'Nein', inline: true },
+                                { name: 'Vegan', value: recipe.vegan ? 'Ja' : 'Nein', inline: true },
+                                { name: 'Glutenfrei', value: recipe.glutenFree ? 'Ja' : 'Nein', inline: true },
+                                { name: 'Dairyfrei', value: recipe.dairyFree ? 'Ja' : 'Nein', inline: true },
+                                { name: 'Preis pro Portion', value: `$${recipe.pricePerServing.toFixed(2)}`, inline: true },
+                                { name: 'Spoonacular Score', value: `${recipe.spoonacularScore.toFixed(2)}`, inline: true },
+                                { name: 'Zusammenfassung', value: recipe.summary },
+                                { name: 'Anleitung', value: recipe.instructions.substring(0, 1024) + (recipe.instructions.length > 1024 ? '...' : '') },
+                            )
+                            .setFooter({ text: `Quelle: ${recipe.sourceName}` });
+                        await interaction.editReply({ embeds: [recipeEmbed] });
+                    } else {
+                        await interaction.editReply('Es wurde kein Rezept gefunden.');
+                    }
+                    break;
+                    case 24:
+                        let pokemonId = getRandom(1, 898);
+                        if (zahl > 0 && zahl <= 898) {
+                            pokemonId = zahl;
+                        }
+                        apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
+                        console.log(apiUrl);
+                        await fetch(apiUrl)
+                            .then((response) => response.json())
+                            .then((mydata) => {
+                                data = mydata;
+                            });
+                        const pokemon = new EmbedBuilder()
+                            .setColor(0x0099FF)
+                            .setTitle(data.name.charAt(0).toUpperCase() + data.name.slice(1))
+                            .setThumbnail(data.sprites.front_default)
+                            .addFields(
+                                { name: 'ID', value: data.id.toString(), inline: true },
+                                { name: 'Typ', value: data.types.map(type => type.type.name).join(', '), inline: true },
+                                { name: 'Gewicht', value: (data.weight / 10).toString() + ' kg', inline: true },
+                                { name: 'Größe', value: (data.height / 10).toString() + ' m', inline: true },
+                                { name: '\u200B', value: '\u200B' },
+                                { name: 'Basiswerte', value: `HP: ${data.stats[0].base_stat}\nAttacke: ${data.stats[1].base_stat}\nVerteidigung: ${data.stats[2].base_stat}\nAngriffsspezialisiert: ${data.stats[3].base_stat}\nVerteidigungsspezialisiert: ${data.stats[4].base_stat}\nInitiative: ${data.stats[5].base_stat}` }
+                            )
+                            .setFooter({ text: 'Daten von PokeAPI' });
+                        await interaction.editReply({ embeds: [pokemon] });
+                        break;
                 default:
                     await interaction.editReply('Zufällige API-Antwort: Default');
             }
