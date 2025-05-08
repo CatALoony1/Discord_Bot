@@ -1,31 +1,12 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 require('dotenv').config();
+const JokeAPI = require('sv443-joke-api');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-async function getTrumpQuote() {
-    try {
-        const fetch = await import('node-fetch').then(module => module.default);
-      const response = await fetch('https://api.tronalddump.io/random/quote', {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/hal+json'
-        }
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error('Es gab einen Fehler beim Abrufen des Zitats:', error);
-    }
-  }
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -39,7 +20,6 @@ module.exports = {
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
-            getTrumpQuote();
             const fetch = await import('node-fetch').then(module => module.default);
             await interaction.deferReply({ ephemeral: true });
             let randomNumber = getRandom(1, 100);
@@ -48,13 +28,11 @@ module.exports = {
             randomNumber = 1;
             switch (randomNumber) {
                 case 1:
-                    response = await fetch(`https://api.tronalddump.io/random/quote`, {
-                        method: 'GET',
-                        headers: {
-                            'Accept': 'application/hal+json',
-                        },
-                    });
-                    data = await response.json();
+                    JokeAPI.getJokes()
+                        .then((res) => res.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
                     break;
                 case 2:
                     await interaction.editReply('Zufällige API-Antwort: 2');
@@ -65,7 +43,9 @@ module.exports = {
                 default:
                     await interaction.editReply('Zufällige API-Antwort: Default');
             }
-            await interaction.editReply(`Zufällige API-Antwort:\n${JSON.stringify(data)}`);
+            //await interaction.editReply(`Zufällige API-Antwort:\n${JSON.stringify(data)}`);
+            console.log(data);
+            await interaction.editReply('Done!');
         } catch (err) {
             console.log(err);
         }
