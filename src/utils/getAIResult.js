@@ -6,7 +6,7 @@ async function getAIResult(prompt, sysInstruction) {
     try {
         const genAI = new GoogleGenerativeAI(process.env.AI_API);
         let model = null;
-        if ((prompt.toLowerCase.includes('erzeuge') || prompt.toLowerCase.includes('erstelle') || prompt.toLowerCase.includes('generiere')) && prompt.toLowerCase.includes('bild')) {
+        if ((prompt.toLowerCase().includes('erzeuge') || prompt.toLowerCase().includes('erstelle') || prompt.toLowerCase().includes('generiere')) && prompt.toLowerCase().includes('bild')) {
             model = genAI.getGenerativeModel({
                 model: "gemini-2.0-flash-preview-image-generation",
                 systemInstruction: sysInstruction,
