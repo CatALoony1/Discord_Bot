@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 require('dotenv').config();
-const fetch = require('node-fetch');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -20,6 +19,7 @@ module.exports = {
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
+            const fetch = await import('node-fetch').then(module => module.default);
             await interaction.deferReply({ ephemeral: true });
             let randomNumber = getRandom(1, 100);
             let response = null;
