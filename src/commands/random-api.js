@@ -1,18 +1,11 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 require('dotenv').config();
 const JokeAPI = require('sv443-joke-api');
-const crypto = require('crypto');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-function generiereMarvelHash() {
-    const ts = Date.now().toString();
-    const hashString = ts + process.env.MARVEL_PRIVATE + process.env.MARVEL_PUBLIC;
-    const hash = crypto.createHash('md5').update(hashString).digest('hex');
-    return { ts, hash };
 }
 
 module.exports = {
@@ -130,8 +123,7 @@ module.exports = {
                     await interaction.editReply(`||${data.url}||`);
                     break;
                 case 12:
-                    const marvelParameter = generiereMarvelHash();
-                    const apiUrl = `https://gateway.marvel.com:443/v1/public/characters?ts=${marvelParameter.ts}&apikey=${process.env.MARVEL_PUBLIC}&hash=${marvelParameter.hash}`;
+                    const apiUrl = `https://superheroapi.com/api/${process.env.HERO_API}/${getRandom(1, 731)}`;
                     console.log(apiUrl);
                     await fetch(apiUrl)
                         .then((response) => response.json())
