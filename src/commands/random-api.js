@@ -156,7 +156,6 @@ module.exports = {
                         .setTitle(data.name)
                         .setThumbnail(data.image.url)
                         .addFields(
-                            { name: 'ID', value: data.id },
                             { name: 'Verlag', value: data.biography.publisher, inline: true },
                             { name: 'Gesinnung', value: data.biography.alignment, inline: true },
                             { name: '\u200B', value: '\u200B' },
