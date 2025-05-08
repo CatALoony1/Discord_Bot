@@ -27,7 +27,7 @@ async function getAIResult(prompt, sysInstruction, image) {
                 },
             });
         //}
-        console.log(`AI-Result:${response.text()}`);
+        console.log(`AI-Result:${response.text}`);
         console.log(response.usageMetadata.totalTokenCount);
     } catch (error) {
         console.log(error);
