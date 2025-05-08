@@ -61,13 +61,13 @@ async function callAI(message, id, person, prompt) {
     } else if (person == 'Silverliver') {
         sysInstruction = `${sysInstruction} Du bist eine 1995 geborene Frau und sehr lieb zu allen. Du bist ein fröhlicher Mensch der schnulzige Sachen wie Lebensweisheiten mag. Du magst Pokemon, dein Lieblingspokemon ist Arkani. Du bist von Beruf Detailhandelsfachfrau Nahrungs und Genussmittel und spielst in deiner Freizeit gerne Survival und Horror Spiele.`;
     }
-    const result = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
-    if (result && result.response && result.response.candidates && result.response.candidates[0] && result.response.candidates[0].content && result.response.candidates[0].content.parts) {
+    const response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
+    if (response && response.candidates && response.candidates[0] && response.candidates[0].content && response.candidates[0].content.parts) {
         let textToSend = "";
         let imageBuffer = null;
         let imageName = null;
 
-        for (const part of result.response.candidates[0].content.parts) {
+        for (const part of response.candidates[0].content.parts) {
             console.log(part);
             if (part.text) {
                 textToSend += part.text + "\n";
