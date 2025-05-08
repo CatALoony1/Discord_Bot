@@ -318,6 +318,13 @@ module.exports = {
                             data = mydata;
                         });
                     await interaction.editReply(data.cards[0].image);
+                case 23:
+                    await fetch('https://api.spoonacular.com/recipes/random')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    //await interaction.editReply(data.cards[0].image);
                 default:
                     await interaction.editReply('Zufällige API-Antwort: Default');
             }
