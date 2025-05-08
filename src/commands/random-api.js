@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 require('dotenv').config();
 
 function getRandom(min, max) {
@@ -20,7 +20,7 @@ module.exports = {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
             await interaction.deferReply({ ephemeral: true });
-            const randomNumber = getRandom(1, 100);
+            let randomNumber = getRandom(1, 100);
             let response = null;
             let data = null;
             randomNumber = 1;
