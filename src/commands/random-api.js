@@ -6,6 +6,26 @@ function getRandom(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+async function getTrumpQuote() {
+    try {
+        const fetch = await import('node-fetch').then(module => module.default);
+      const response = await fetch('https://api.tronalddump.io/random/quote', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/hal+json'
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Es gab einen Fehler beim Abrufen des Zitats:', error);
+    }
+  }
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -19,6 +39,7 @@ module.exports = {
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
+            getTrumpQuote();
             const fetch = await import('node-fetch').then(module => module.default);
             await interaction.deferReply({ ephemeral: true });
             let randomNumber = getRandom(1, 100);
