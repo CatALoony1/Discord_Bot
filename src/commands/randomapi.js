@@ -131,7 +131,7 @@ module.exports = {
                 case 12:
                     let heroId = getRandom(1, 731);
                     if (zahl > 0 && zahl <= 731) {
-                        var heroId = zahl;
+                        heroId = zahl;
                     }
                     const apiUrl = `https://superheroapi.com/api/${process.env.HERO_API}/${heroId}`;
                     console.log(apiUrl);

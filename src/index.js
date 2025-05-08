@@ -15,7 +15,7 @@ new CommandKit({
   commandsPath: path.join(__dirname, 'commands'),
   eventsPath: path.join(__dirname, 'events'),
   bulkRegister: true,
-}).reloadCommands();
+});
 
 client.login(process.env.TOKEN);
 
