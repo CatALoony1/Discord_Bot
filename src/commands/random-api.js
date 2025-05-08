@@ -25,7 +25,7 @@ module.exports = {
             let randomNumber = getRandom(1, 100);
             let response = null;
             let data = null;
-            randomNumber = 1;
+            randomNumber = 2;
             switch (randomNumber) {
                 case 1:
                     await JokeAPI.getJokes()
@@ -33,9 +33,22 @@ module.exports = {
                         .then((mydata) => {
                             data = mydata;
                         });
+                    if (data.type == 'twopart') {
+                        const message = await interaction.editReply(`${data.setup}`);
+                        var delay = 2000;
+                        let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
+                        await sleep(delay);
+                        await message.reply(`${data.delivery}`);
+                    } else {
+                        await interaction.editReply(`${data.joke}`);
+                    }
                     break;
                 case 2:
-                    await interaction.editReply('Zufällige API-Antwort: 2');
+                    await fetch('https://api.adviceslip.com/advice')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
                     break;
                 case 3:
                     await interaction.editReply('Zufällige API-Antwort: 3');
