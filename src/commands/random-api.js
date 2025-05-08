@@ -23,9 +23,8 @@ module.exports = {
             const fetch = await import('node-fetch').then(module => module.default);
             await interaction.deferReply({ ephemeral: true });
             let randomNumber = getRandom(1, 100);
-            let response = null;
             let data = null;
-            randomNumber = 3;
+            randomNumber = 4;
             switch (randomNumber) {
                 case 1:
                     await JokeAPI.getJokes()
@@ -57,8 +56,15 @@ module.exports = {
                         .then((mydata) => {
                             data = mydata;
                         });
-                        //await interaction.editReply(data.content + '\n~' + data.author);
+                        await interaction.editReply(data.quote.content + '\n~' + data.quote.author.name);
                     break;
+                    case 4:
+                    await fetch('https://api.waifu.pics/sfw/waifu')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                        //await interaction.editReply(data.url);
                 default:
                     await interaction.editReply('Zufällige API-Antwort: Default');
             }
