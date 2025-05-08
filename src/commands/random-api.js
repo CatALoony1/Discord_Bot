@@ -131,7 +131,7 @@ module.exports = {
                     break;
                 case 12:
                     const marvelParameter = generiereMarvelHash();
-                    const apiUrl = `https://gateway.marvel.com/v1/public/characters?ts=${marvelParameter.ts}&apikey=${process.env.MARVEL_PUBLIC}&hash=${marvelParameter.hash}`;
+                    const apiUrl = `https://gateway.marvel.com/v1/public/characters?apikey=${process.env.MARVEL_PUBLIC}`;
                     await fetch(apiUrl)
                         .then((response) => response.json())
                         .then((mydata) => {
