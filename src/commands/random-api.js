@@ -211,5 +211,6 @@ module.exports = {
     },
     options: {
         devOnly: true,
+        deleted: true,
     },
 };
