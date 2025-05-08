@@ -15,9 +15,17 @@ async function getAIResult(prompt, sysInstruction) {
         });
         console.log(`AI-Input:${String(prompt)}`);
         result = await model.generateContent(String(prompt));
-        console.log(result);
-        console.log(result.response.candidates[0]);
-        console.log(result.response.functionCalls);
+        for (const part of response.candidates[0].content.parts) {
+            console.log(part);
+            if (part.text) {
+              console.log(part.text);
+            } else if (part.inlineData) {
+              const imageData = part.inlineData.data;
+              const buffer = Buffer.from(imageData, "base64");
+              fs.writeFileSync("gemini-native-image.png", buffer);
+              console.log("Image saved as gemini-native-image.png");
+            }
+          }
         console.log(`AI-Result:${result.response.text()}`);
         console.log(result.response.usageMetadata.totalTokenCount);
     } catch (error) {
