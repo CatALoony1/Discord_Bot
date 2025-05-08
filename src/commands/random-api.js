@@ -32,7 +32,7 @@ module.exports = {
             let data = null;
             let apiUrl = null;
             switch (randomNumber) {
-                case 1:
+                case 1: {
                     await JokeAPI.getJokes()
                         .then((r) => r.json())
                         .then((mydata) => {
@@ -48,7 +48,8 @@ module.exports = {
                         await interaction.editReply(data.joke);
                     }
                     break;
-                case 2:
+                }
+                case 2: {
                     await fetch('https://api.adviceslip.com/advice')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -56,7 +57,8 @@ module.exports = {
                         });
                     await interaction.editReply(data.slip.advice);
                     break;
-                case 3:
+                }
+                case 3: {
                     await fetch('http://api.quotable.kurokeita.dev/api/quotes/random')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -64,7 +66,8 @@ module.exports = {
                         });
                     await interaction.editReply(data.quote.content + '\n~' + data.quote.author.name);
                     break;
-                case 4:
+                }
+                case 4: {
                     await fetch('https://api.waifu.pics/sfw/waifu')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -72,7 +75,8 @@ module.exports = {
                         });
                     await interaction.editReply(data.url);
                     break;
-                case 5:
+                }
+                case 5: {
                     await fetch('https://api.waifu.pics/sfw/neko')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -80,7 +84,8 @@ module.exports = {
                         });
                     await interaction.editReply(data.url);
                     break;
-                case 6:
+                }
+                case 6: {
                     await fetch('https://api.waifu.pics/sfw/dance')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -88,7 +93,8 @@ module.exports = {
                         });
                     await interaction.editReply(data.url);
                     break;
-                case 7:
+                }
+                case 7: {
                     await fetch('https://api.waifu.pics/sfw/cry')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -96,7 +102,8 @@ module.exports = {
                         });
                     await interaction.editReply(data.url);
                     break;
-                case 8:
+                }
+                case 8: {
                     await fetch('https://api.waifu.pics/sfw/pat')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -104,7 +111,8 @@ module.exports = {
                         });
                     await interaction.editReply(data.url);
                     break;
-                case 9:
+                }
+                case 9: {
                     await fetch('https://api.waifu.pics/sfw/kiss')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -112,7 +120,8 @@ module.exports = {
                         });
                     await interaction.editReply(data.url);
                     break;
-                case 10:
+                }
+                case 10: {
                     await fetch('https://api.waifu.pics/sfw/kill')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -120,7 +129,8 @@ module.exports = {
                         });
                     await interaction.editReply(data.url);
                     break;
-                case 11:
+                }
+                case 11: {
                     await fetch('https://api.waifu.pics/nsfw/waifu')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -128,7 +138,8 @@ module.exports = {
                         });
                     await interaction.editReply(`||${data.url}||`);
                     break;
-                case 12:
+                }
+                case 12: {
                     let heroId = getRandom(1, 731);
                     if (zahl > 0 && zahl <= 731) {
                         heroId = zahl;
@@ -175,7 +186,8 @@ module.exports = {
                         .setFooter({ text: 'Daten von SuperHeroDB', iconURL: 'https://www.superherodb.com/images/logo.svg' });
                     await interaction.editReply({ embeds: [hero] });
                     break;
-                case 13:
+                }
+                case 13: {
                     await fetch('https://api.chucknorris.io/jokes/random')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -183,7 +195,8 @@ module.exports = {
                         });
                     await interaction.editReply(data.value);
                     break;
-                case 14:
+                }
+                case 14: {
                     if (zahl !== -1) {
                         apiUrl = `http://numbersapi.com/${zahl}/trivia`;
                     } else {
@@ -204,7 +217,8 @@ module.exports = {
                         });
                     await interaction.editReply(data);
                     break;
-                case 15:
+                }
+                case 15: {
                     if (zahl !== -1) {
                         apiUrl = `http://numbersapi.com/${zahl}/math`;
                     } else {
@@ -225,7 +239,8 @@ module.exports = {
                         });
                     await interaction.editReply(data);
                     break;
-                case 16:
+                }
+                case 16: {
                     await fetch('http://numbersapi.com/random/year')
                         .then((response) => {
                             if (!response.ok) {
@@ -241,7 +256,8 @@ module.exports = {
                         });
                     await interaction.editReply(data);
                     break;
-                case 17:
+                }
+                case 17: {
                     await fetch('http://numbersapi.com/random/date')
                         .then((response) => {
                             if (!response.ok) {
@@ -257,7 +273,8 @@ module.exports = {
                         });
                     await interaction.editReply(data);
                     break;
-                case 18:
+                }
+                case 18: {
                     await fetch(`https://api.agify.io?name=${interaction.user.displayName}`)
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -265,7 +282,8 @@ module.exports = {
                         });
                     await interaction.editReply(`Du bist: ${data.age} Jahre alt.`);
                     break;
-                case 19:
+                }
+                case 19: {
                     await fetch(`http://thecocktaildb.com/api/json/v1/1/random.php`)
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -286,7 +304,8 @@ module.exports = {
                     output += `\n${drink.strDrinkThumb}`;
                     await interaction.editReply(output);
                     break;
-                case 20:
+                }
+                case 20: {
                     await fetch(`https://api.thecatapi.com/v1/images/search?size=full&limit=1`, {
                         headers: {
                             'x-api-key': process.env.CAT_API
@@ -298,7 +317,8 @@ module.exports = {
                         });
                     await interaction.editReply(data[0].url);
                     break;
-                case 21:
+                }
+                case 21: {
                     await fetch(`https://api.thedogapi.com/v1/images/search?size=full&limit=1`, {
                         headers: {
                             'x-api-key': process.env.DOG_API
@@ -310,14 +330,18 @@ module.exports = {
                         });
                     await interaction.editReply(data[0].url);
                     break;
+                }
                 case 22:
-                    await fetch('https://deckofcardsapi.com/api/deck/new/draw/?count=1')
-                        .then((response) => response.json())
-                        .then((mydata) => {
-                            data = mydata;
-                        });
-                    await interaction.editReply(data.cards[0].image);
-                case 23:
+                    {
+                        await fetch('https://deckofcardsapi.com/api/deck/new/draw/?count=1')
+                            .then((response) => response.json())
+                            .then((mydata) => {
+                                data = mydata;
+                            });
+                        await interaction.editReply(data.cards[0].image);
+                        break;
+                    }
+                case 23: {
                     await fetch(`https://api.spoonacular.com/recipes/random?apiKey=${process.env.SPOONACULAR_API}`)
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -348,7 +372,8 @@ module.exports = {
                         await interaction.editReply('Es wurde kein Rezept gefunden.');
                     }
                     break;
-                case 24:
+                }
+                case 24: {
                     let pokemonId = getRandom(1, 898);
                     if (zahl > 0 && zahl <= 898) {
                         pokemonId = zahl;
@@ -375,8 +400,10 @@ module.exports = {
                         .setFooter({ text: 'Daten von PokeAPI' });
                     await interaction.editReply({ embeds: [pokemon] });
                     break;
-                default:
+                }
+                default: {
                     await interaction.editReply('Zufällige API-Antwort: Default');
+                }
             }
         } catch (err) {
             console.log(err);
