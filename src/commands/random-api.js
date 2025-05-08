@@ -406,7 +406,7 @@ value: recipe.summary.substring(0, 1024) + (recipe.summary.length > 1024 ? '...'
                     await interaction.editReply('Zufällige API-Antwort: Default');
                 }
             }
-console.log(zahl);
+console.log(randomNumber);
 console.log(data);
         } catch (err) {
             console.log(err);
