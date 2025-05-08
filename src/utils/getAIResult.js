@@ -1,13 +1,13 @@
 require('dotenv').config();
-const fs = require("fs");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 async function getAIResult(prompt, sysInstruction) {
     console.log('contacting AI');
     let result = null;
     try {
         const genAI = new GoogleGenerativeAI(process.env.AI_API);
+        let model = null;
         if ((prompt.toLowerCase.includes('erzeuge') || prompt.toLowerCase.includes('erstelle') || prompt.toLowerCase.includes('generiere')) && prompt.toLowerCase.includes('bild')) {
-            const model = genAI.getGenerativeModel({
+            model = genAI.getGenerativeModel({
                 model: "gemini-2.0-flash-preview-image-generation",
                 systemInstruction: sysInstruction,
                 config: {
@@ -15,7 +15,7 @@ async function getAIResult(prompt, sysInstruction) {
                 },
             });
         } else {
-            const model = genAI.getGenerativeModel({
+            model = genAI.getGenerativeModel({
                 model: "gemini-2.0-flash",
                 systemInstruction: sysInstruction,
                 config: {
