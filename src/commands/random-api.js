@@ -162,6 +162,7 @@ module.exports = {
                         .then((mydata) => {
                             data = mydata;
                         });
+                        console.log(data);
                     const randomIndex = getRandom(0, data.total - 1);
                     const wantedPerson = data.items[randomIndex];
                     const wantedEmbed = new EmbedBuilder()
