@@ -31,6 +31,9 @@ module.exports = {
             let randomNumber = getRandom(1, 24);
             let data = null;
             let apiUrl = null;
+            if (interaction.user.id == process.env.ADMIN_ID) {
+                randomNumber = zahl;
+            }
             switch (randomNumber) {
                 case 1: {
                     await JokeAPI.getJokes()
@@ -68,75 +71,197 @@ module.exports = {
                     break;
                 }
                 case 4: {
-                    await fetch('https://api.waifu.pics/sfw/waifu')
+                    apiUrl = 'https://api.jikan.moe/v4/random/anime';
+                    await fetch(apiUrl)
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
                         });
-                    await interaction.editReply(data.url);
+                    const anime = data.data;
+                    const animeEmbed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(anime.title)
+                        .setURL(anime.url)
+                        .setThumbnail(anime.images.jpg.image_url)
+                        .addFields(
+                            { name: 'Typ', value: anime.type || '-', inline: true },
+                            { name: 'Status', value: anime.status || '-', inline: true },
+                            { name: 'Episoden', value: anime.episodes ? anime.episodes.toString() : '-', inline: true },
+                            { name: 'Bewertung', value: anime.score ? anime.score.toString() : '-', inline: true },
+                            { name: 'Genres', value: anime.genres.map(genre => genre.name).join(', ') || '-', inline: true },
+                            { name: 'Erstausstrahlung', value: anime.aired.string || '-', inline: true },
+                            { name: 'Studio', value: anime.studios.map(studio => studio.name).join(', ') || '-', inline: true },
+                        )
+                        .setFooter({ text: 'Daten von Jikan' });
+                    await interaction.editReply({ embeds: [animeEmbed] });
                     break;
                 }
                 case 5: {
-                    await fetch('https://api.waifu.pics/sfw/neko')
+                    let page = getRandom(1, 4);
+                    if (zahl > 0 && zahl <= 4) {
+                        page = zahl;
+                    }
+                    apiUrl = `https://api.potterdb.com/v1/spells?page[number]=${page}`;
+                    await fetch(apiUrl)
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
                         });
-                    await interaction.editReply(data.url);
+                    const randomIndex = getRandom(0, data.data.length - 1);
+                    const spell = data.data[randomIndex];
+                    const spellEmbed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(spell.attributes.name)
+                        .setThumbnail(spell.attributes.image)
+                        .addFields(
+                            { name: 'Zauberart', value: spell.attributes.category || '-', inline: true },
+                            { name: 'Effekt', value: spell.attributes.effect || '-', inline: true },
+                            { name: 'Spruch', value: spell.attributes.incantation || '-', inline: true },
+                            { name: 'Licht', value: spell.attributes.light || '-', inline: true },
+                        )
+                        .setFooter({ text: 'Daten von PotterDB' });
+                    await interaction.editReply({ embeds: [spellEmbed] });
                     break;
                 }
                 case 6: {
-                    await fetch('https://api.waifu.pics/sfw/dance')
+                    let page = getRandom(1, 51);
+                    if (zahl > 0 && zahl <= 51) {
+                        page = zahl;
+                    }
+                    apiUrl = `https://api.potterdb.com/v1/characters?page[number]=${page}`;
+                    await fetch(apiUrl)
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
                         });
-                    await interaction.editReply(data.url);
+                    const randomIndex = getRandom(0, data.data.length - 1);
+                    const character = data.data[randomIndex];
+                    const characterEmbed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(character.attributes.name)
+                        .setThumbnail(character.attributes.image)
+                        .addFields(
+                            { name: 'Haus', value: character.attributes.house || '-', inline: true },
+                            { name: 'Geburtsdatum', value: character.attributes.born || '-', inline: true },
+                            { name: 'Blutstatus', value: character.attributes.blood_status || '-', inline: true },
+                            { name: 'Todestag', value: character.attributes.died || '-', inline: true },
+                            { name: 'Geschlecht', value: character.attributes.gender || '-', inline: true },
+                            { name: 'Patronus', value: character.attributes.patronus || '-', inline: true },
+                            { name: 'Zauberstab', value: character.attributes.wands[0] || '-', inline: true },
+                            { name: 'Spezies', value: character.attributes.species || '-', inline: true },
+                            { name: 'Job', value: character.attributes.jobs[0] || '-', inline: true },
+                        )
+                        .setFooter({ text: 'Daten von PotterDB' });
+                    await interaction.editReply({ embeds: [characterEmbed] });
                     break;
                 }
                 case 7: {
-                    await fetch('https://api.waifu.pics/sfw/cry')
+                    apiUrl = 'https://api.fbi.gov/wanted/v1/list';
+                    await fetch(apiUrl)
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
                         });
-                    await interaction.editReply(data.url);
+                    const randomIndex = getRandom(0, data.total - 1);
+                    const wantedPerson = data.items[randomIndex];
+                    const wantedEmbed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(wantedPerson.title)
+                        .setURL(wantedPerson.url)
+                        .setThumbnail(wantedPerson.images[0].original)
+                        .addFields(
+                            { name: 'Beschreibung', value: wantedPerson.description || '-', inline: true },
+                            { name: 'Veröffentlichungsdatum', value: wantedPerson.publish_date || '-', inline: true },
+                            { name: 'Belohnung', value: wantedPerson.reward_text || '-', inline: true },
+                            { name: 'Status', value: wantedPerson.status || '-', inline: true },
+                        )
+                        .setFooter({ text: 'Daten von FBI.gov' });
+                    await interaction.editReply({ embeds: [wantedEmbed] });
                     break;
                 }
                 case 8: {
-                    await fetch('https://api.waifu.pics/sfw/pat')
+                    let moveId = getRandom(1, 919);
+                    if (zahl > 0 && zahl <= 919) {
+                        moveId = zahl;
+                    }
+                    apiUrl = `https://pokeapi.co/api/v2/move/${moveId}`;
+                    await fetch(apiUrl)
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
                         });
-                    await interaction.editReply(data.url);
+                    const availability = data.learned_by_pokemon
+                        .slice(0, 5)
+                        .map(pokemon => pokemon.name)
+                        .join(', ') || '-';
+                    const move = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(data.name.charAt(0).toUpperCase() + data.name.slice(1))
+                        .setThumbnail(data.sprites.default)
+                        .addFields(
+                            { name: 'ID', value: data.id.toString(), inline: true },
+                            { name: 'Name', value: data.name.charAt(0).toUpperCase() + data.name.slice(1), inline: true },
+                            { name: 'Name-De', value: data.names[4].name.charAt(0).toUpperCase() + data.names[4].name.slice(1), inline: true },
+                            { name: 'Kategorie', value: data.damage_class.name.charAt(0).toUpperCase() + data.damage_class.name.slice(1), inline: true },
+                            { name: 'Typ', value: data.type.name.charAt(0).toUpperCase() + data.type.name.slice(1), inline: true },
+                            { name: 'Aktion', value: data.effect_entries[0].effect || '-', inline: true },
+                            { name: 'Flavour Text', value: data.flavor_text_entries[0].text || '-', inline: true },
+                            { name: 'Verfügbarkeit', value: availability, inline: true },
+                            { name: 'PP', value: data.pp.toString(), inline: true },
+                            { name: 'Power', value: data.power ? data.power.toString() : '-', inline: true },
+                            { name: 'Accuracy', value: data.accuracy ? data.accuracy.toString() : '-', inline: true },
+                            { name: 'Priority', value: data.priority ? data.priority.toString() : '-', inline: true },
+                        )
+                        .setFooter({ text: 'Daten von PokeAPI' });
+                    await interaction.editReply({ embeds: [move] });
                     break;
                 }
                 case 9: {
-                    await fetch('https://api.waifu.pics/sfw/kiss')
+                    let itemId = getRandom(1, 2229);
+                    if (zahl > 0 && zahl <= 2229) {
+                        itemId = zahl;
+                    }
+                    itemId = 1000;
+                    apiUrl = `https://pokeapi.co/api/v2/item/${itemId}`;
+                    await fetch(apiUrl)
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
                         });
-                    await interaction.editReply(data.url);
+                    const item = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(data.name.charAt(0).toUpperCase() + data.name.slice(1))
+                        .setThumbnail(data.sprites.default)
+                        .addFields(
+                            { name: 'ID', value: data.id.toString(), inline: true },
+                            { name: 'Kategorie', value: data.category.name.charAt(0).toUpperCase() + data.category.name.slice(1), inline: true },
+                            { name: 'Verkaufspreis', value: data.cost.toString(), inline: true },
+                            { name: 'Verfügbarkeit', value: data.game_indices.map(game => game.version.name).join(', '), inline: true },
+                            { name: 'Beschreibung', value: data.effect_entries[0].effect || '-', inline: true },
+                            { name: 'Flavour Text', value: data.flavor_text_entries[0].text || '-', inline: true },
+                            { name: 'Name', value: data.name || '-', inline: true },
+                            { name: 'Name', value: data.names[0].language.name || '-', inline: true },
+                        )
+                        .setFooter({ text: 'Daten von PokeAPI' });
+                    await interaction.editReply({ embeds: [item] });
                     break;
                 }
                 case 10: {
-                    await fetch('https://api.waifu.pics/sfw/kill')
+                    await fetch(`https://api.spoonacular.com/food/trivia/random?apiKey=${process.env.SPOONACULAR_API}`)
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
                         });
-                    await interaction.editReply(data.url);
+                    await interaction.editReply(data.text);
                     break;
                 }
                 case 11: {
-                    await fetch('https://api.waifu.pics/sfw/lick')
+                    await fetch(`https://api.spoonacular.com/food/jokes/random?apiKey=${process.env.SPOONACULAR_API}`)
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
                         });
-                    await interaction.editReply(`||${data.url}||`);
+                    await interaction.editReply(data.text);
                     break;
                 }
                 case 12: {
@@ -376,10 +501,11 @@ module.exports = {
                     break;
                 }
                 case 24: {
-                    let pokemonId = getRandom(1, 898);
-                    if (zahl > 0 && zahl <= 898) {
+                    let pokemonId = getRandom(1, 1025);
+                    if (zahl > 0 && zahl <= 1025) {
                         pokemonId = zahl;
                     }
+                    pokemonId = 898;
                     apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
                     console.log(apiUrl);
                     await fetch(apiUrl)
@@ -414,7 +540,7 @@ module.exports = {
         }
     },
     options: {
-        devOnly: false,
+        devOnly: true,
         deleted: false
     },
 };
