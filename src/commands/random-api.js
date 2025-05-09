@@ -221,7 +221,6 @@ module.exports = {
                     if (zahl > 0 && zahl <= 2229) {
                         itemId = zahl;
                     }
-                    itemId = 1000;
                     apiUrl = `https://pokeapi.co/api/v2/item/${itemId}`;
                     await fetch(apiUrl)
                         .then((response) => response.json())
@@ -505,7 +504,6 @@ module.exports = {
                     if (zahl > 0 && zahl <= 1025) {
                         pokemonId = zahl;
                     }
-                    pokemonId = 898;
                     apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
                     console.log(apiUrl);
                     await fetch(apiUrl)
