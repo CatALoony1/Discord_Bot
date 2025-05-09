@@ -238,7 +238,7 @@ module.exports = {
                             { name: 'ID', value: data.id.toString(), inline: true },
                             { name: 'Kategorie', value: data.category.name.charAt(0).toUpperCase() + data.category.name.slice(1), inline: true },
                             { name: 'Verkaufspreis', value: data.cost.toString(), inline: true },
-                            { name: 'Verfügbarkeit', value: data.game_indices.map(game => game.version.name).join(', '), inline: true },
+                            { name: 'Verfügbarkeit', value: data.game_indices.map(game => game.generation.name).join(', '), inline: true },
                             { name: 'Beschreibung', value: data.effect_entries[0].effect || '-', inline: true },
                             { name: 'Flavour Text', value: data.flavor_text_entries[0].text || '-', inline: true },
                             { name: 'Name', value: data.name || '-', inline: true },
