@@ -1,5 +1,18 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 
+const nsfw = [
+    'waifu',
+    'neko',
+    'trap',
+    'blowjob',
+]
+
+function getRandom(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('waifu')
@@ -9,6 +22,7 @@ module.exports = {
                 .setDescription('Was für ne Waifu möchtest du?')
                 .setRequired(true)
                 .addChoices(
+                    { name: 'alex-nsfw', value: 'alex-nsfw' },
                     { name: 'waifu', value: 'waifu' },
                     { name: 'neko', value: 'neko' },
                     { name: 'shinobu', value: 'shinobu' },
@@ -54,13 +68,31 @@ module.exports = {
             const fetch = await import('node-fetch').then(module => module.default);
             await interaction.deferReply();
             let data = null;
-            let apiUrl = `https://api.waifu.pics/sfw/${type}`;
-            await fetch(apiUrl)
-                .then((response) => response.json())
-                .then((mydata) => {
-                    data = mydata;
-                });
-            await interaction.editReply(data.url);
+            let apiUrl = null;
+            if (type === 'alex-nsfw') {
+                if (interaction.user.id == '1182304009877459005') {
+                    apiUrl = `https://api.waifu.pics/nsfw/${nsfw[getRandom(0, nsfw.length - 1)]}`;
+                    await fetch(apiUrl)
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.url);
+                } else {
+                    await interaction.editReply('Du bist nicht Alex!');
+                    return;
+                }
+            } else {
+                apiUrl = `https://api.waifu.pics/sfw/${type}`;
+                await fetch(apiUrl)
+                    .then((response) => response.json())
+                    .then((mydata) => {
+                        data = mydata;
+                    });
+                await interaction.editReply(data.url);
+            }
+
+
         } catch (err) {
             console.log(err);
         }
