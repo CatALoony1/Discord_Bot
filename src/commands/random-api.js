@@ -491,9 +491,8 @@ module.exports = {
                                 { name: 'Spoonacular Score', value: `${recipe.spoonacularScore.toFixed(2)}`, inline: true },
                                 {
                                     name: 'Zusammenfassung',
-                                    value: recipe.summary.substring(0, 1024) + (recipe.summary.length > 1024 ? '...' : '')
+                                    value: recipe.summary.substring(0, 500) + (recipe.summary.length > 500 ? '...' : '')
                                 },
-                                { name: 'Anleitung', value: recipe.instructions.substring(0, 1024) + (recipe.instructions.length > 1024 ? '...' : '') },
                             )
                             .setFooter({ text: `Quelle: ${recipe.sourceName}` });
                         await interaction.editReply({ embeds: [recipeEmbed] });
