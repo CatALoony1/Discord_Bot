@@ -31,9 +31,6 @@ module.exports = {
             let randomNumber = getRandom(1, 24);
             let data = null;
             let apiUrl = null;
-            if (interaction.user.id == process.env.ADMIN_ID) {
-                randomNumber = zahl;
-            }
             switch (randomNumber) {
                 case 1: {
                     await JokeAPI.getJokes()
@@ -539,7 +536,7 @@ module.exports = {
         }
     },
     options: {
-        devOnly: true,
+        devOnly: false,
         deleted: false
     },
 };
