@@ -31,6 +31,8 @@ module.exports = {
             let randomNumber = getRandom(1, 29);
             let data = null;
             let apiUrl = null;
+            const delay = 2000;
+            let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
             switch (randomNumber) {
                 case 1: {
                     await JokeAPI.getJokes()
@@ -40,8 +42,6 @@ module.exports = {
                         });
                     if (data.type == 'twopart') {
                         const message = await interaction.editReply(`${data.setup}`);
-                        var delay = 2000;
-                        let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
                         await sleep(delay);
                         await message.reply(data.delivery);
                     } else {
@@ -533,8 +533,6 @@ module.exports = {
                             data = mydata;
                         });
                     const message = await interaction.editReply(`${data.setup}`);
-                    var delay = 2000;
-                    let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
                     await sleep(delay);
                     await message.reply(data.punchline);
                     break;
@@ -623,6 +621,7 @@ module.exports = {
                         characterEmbed.setURL(character.sourceUrl);
                     }
                     await interaction.editReply({ embeds: [characterEmbed] });
+                    break;
                 }
                 default: {
                     await interaction.editReply('Zufällige API-Antwort: Default');
