@@ -28,7 +28,7 @@ module.exports = {
             const zahl = interaction.options.get('zahl')?.value || -1;
             const fetch = await import('node-fetch').then(module => module.default);
             await interaction.deferReply();
-            let randomNumber = getRandom(1, 24);
+            let randomNumber = getRandom(1, 29);
             let data = null;
             let apiUrl = null;
             switch (randomNumber) {
@@ -525,6 +525,104 @@ module.exports = {
                         .setFooter({ text: 'Daten von PokeAPI' });
                     await interaction.editReply({ embeds: [pokemon] });
                     break;
+                }
+                case 25: {
+                    await fetch('https://official-joke-api.appspot.com/random_joke')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    const message = await interaction.editReply(`${data.setup}`);
+                    var delay = 2000;
+                    let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
+                    await sleep(delay);
+                    await message.reply(data.punchline);
+                    break;
+                }
+                case 26: {
+                    await fetch('https://uselessfacts.jsph.pl/api/v2/facts/random?language=de')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.text);
+                    break;
+                }
+                case 27: {
+                    await fetch('https://geek-jokes.sameerkumar.website/api?format=json')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.joke);
+                    break;
+                }
+                case 28: {
+                    await fetch('https://meowfacts.herokuapp.com/')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.data[0]);
+                    break;
+                }
+                case 29: {
+                    let page = getRandom(1, 149);
+                    if (zahl > 0 && zahl <= 149) {
+                        page = zahl;
+                    }
+                    apiUrl = `https://api.disneyapi.dev/character?page=${page}`;
+                    await fetch(apiUrl)
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    const randomIndex = getRandom(0, data.data.length - 1);
+                    const character = data.data[randomIndex];
+                    const characterEmbed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(character.name)
+                        .setThumbnail(character.imageUrl)
+                        .setFooter({ text: 'Daten von DisneyAPI' });
+                    if (character.films.length > 0) {
+                        characterEmbed.addFields(
+                            { name: 'Filme', value: character.films.join(', ') || '-', inline: true },
+                        );
+                    }
+                    if (character.shortFilms.length > 0) {
+                        characterEmbed.addFields(
+                            { name: 'Kurzfilme', value: character.shortFilms.join(', ') || '-', inline: true },
+                        );
+                    }
+                    if (character.tvShows.length > 0) {
+                        characterEmbed.addFields(
+                            { name: 'TV-Shows', value: character.tvShows.join(', ') || '-', inline: true },
+                        );
+                    }
+                    if (character.videoGames.length > 0) {
+                        characterEmbed.addFields(
+                            { name: 'Videospiele', value: character.videoGames.join(', ') || '-', inline: true },
+                        );
+                    }
+                    if (character.parkAttractions.length > 0) {
+                        characterEmbed.addFields(
+                            { name: 'Parkattraktionen', value: character.parkAttractions.join(', ') || '-', inline: true },
+                        );
+                    }
+                    if (character.allies.length > 0) {
+                        characterEmbed.addFields(
+                            { name: 'Freunde', value: character.allies.join(', ') || '-', inline: true },
+                        );
+                    }
+                    if (character.enemies.length > 0) {
+                        characterEmbed.addFields(
+                            { name: 'Feinde', value: character.enemies.join(', ') || '-', inline: true },
+                        );
+                    }
+                    if (character.sourceUrl) {
+                        characterEmbed.setURL(character.sourceUrl);
+                    }
+                    await interaction.editReply({ embeds: [characterEmbed] });
                 }
                 default: {
                     await interaction.editReply('Zufällige API-Antwort: Default');
