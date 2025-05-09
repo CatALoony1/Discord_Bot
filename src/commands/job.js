@@ -86,6 +86,7 @@ module.exports = {
                             { name: 'quizQuestion', value: 'quizQuestion' },
                             { name: 'quizStats', value: 'quizStats' },
                             { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
+                            { name: 'geburtstag', value: 'geburtstag' },
                         )
                 )
         )
