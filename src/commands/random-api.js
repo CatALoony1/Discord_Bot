@@ -362,8 +362,10 @@ module.exports = {
                                 { name: 'Dairyfrei', value: recipe.dairyFree ? 'Ja' : 'Nein', inline: true },
                                 { name: 'Preis pro Portion', value: `$${recipe.pricePerServing.toFixed(2)}`, inline: true },
                                 { name: 'Spoonacular Score', value: `${recipe.spoonacularScore.toFixed(2)}`, inline: true },
-                                { name: 'Zusammenfassung',
-value: recipe.summary.substring(0, 1024) + (recipe.summary.length > 1024 ? '...' : '') },
+                                {
+                                    name: 'Zusammenfassung',
+                                    value: recipe.summary.substring(0, 1024) + (recipe.summary.length > 1024 ? '...' : '')
+                                },
                                 { name: 'Anleitung', value: recipe.instructions.substring(0, 1024) + (recipe.instructions.length > 1024 ? '...' : '') },
                             )
                             .setFooter({ text: `Quelle: ${recipe.sourceName}` });
@@ -405,8 +407,8 @@ value: recipe.summary.substring(0, 1024) + (recipe.summary.length > 1024 ? '...'
                     await interaction.editReply('Zufällige API-Antwort: Default');
                 }
             }
-console.log(randomNumber);
-console.log(data);
+            console.log(randomNumber);
+            console.log(data);
         } catch (err) {
             console.log(err);
         }

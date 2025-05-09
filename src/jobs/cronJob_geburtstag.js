@@ -37,6 +37,7 @@ async function jobFunction(client) {
     const allLevels = await Level.find({
         guildId: process.env.GUILD_ID,
     });
+    console.log(allLevels);
     var oldUsers = [];
     for (let j = 0; j < allLevels.length; j++) {
         if (!(guild.members.cache.find(m => m.id === allLevels[j].userId)?.id)) {
@@ -47,6 +48,7 @@ async function jobFunction(client) {
         allLevels.splice(oldUsers[j] - j, 1);
     }
     for (const level of allLevels) {
+        console.log(level.birthday);
         if (level.birthday) {
             console.log(level);
             const birthdayDate = new Date(level.birthday);
