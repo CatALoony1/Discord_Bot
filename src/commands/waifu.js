@@ -5,7 +5,7 @@ const nsfw = [
     'neko',
     'trap',
     'blowjob',
-]
+];
 
 function getRandom(min, max) {
     min = Math.ceil(min);
