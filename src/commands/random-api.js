@@ -131,7 +131,7 @@ module.exports = {
                     break;
                 }
                 case 11: {
-                    await fetch('https://api.waifu.pics/nsfw/waifu')
+                    await fetch('https://api.waifu.pics/sfw/lick')
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
@@ -156,7 +156,6 @@ module.exports = {
                         .setTitle(data.name)
                         .setThumbnail(data.image.url)
                         .addFields(
-                            { name: 'ID', value: data.id },
                             { name: 'Verlag', value: data.biography.publisher, inline: true },
                             { name: 'Gesinnung', value: data.biography.alignment, inline: true },
                             { name: '\u200B', value: '\u200B' },
@@ -363,7 +362,8 @@ module.exports = {
                                 { name: 'Dairyfrei', value: recipe.dairyFree ? 'Ja' : 'Nein', inline: true },
                                 { name: 'Preis pro Portion', value: `$${recipe.pricePerServing.toFixed(2)}`, inline: true },
                                 { name: 'Spoonacular Score', value: `${recipe.spoonacularScore.toFixed(2)}`, inline: true },
-                                { name: 'Zusammenfassung', value: recipe.summary },
+                                { name: 'Zusammenfassung',
+value: recipe.summary.substring(0, 1024) + (recipe.summary.length > 1024 ? '...' : '') },
                                 { name: 'Anleitung', value: recipe.instructions.substring(0, 1024) + (recipe.instructions.length > 1024 ? '...' : '') },
                             )
                             .setFooter({ text: `Quelle: ${recipe.sourceName}` });
@@ -405,6 +405,8 @@ module.exports = {
                     await interaction.editReply('Zufällige API-Antwort: Default');
                 }
             }
+console.log(randomNumber);
+console.log(data);
         } catch (err) {
             console.log(err);
         }
