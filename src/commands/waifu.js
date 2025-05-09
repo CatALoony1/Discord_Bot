@@ -91,8 +91,6 @@ module.exports = {
                     });
                 await interaction.editReply(data.url);
             }
-
-
         } catch (err) {
             console.log(err);
         }
