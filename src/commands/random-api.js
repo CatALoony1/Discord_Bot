@@ -202,7 +202,7 @@ module.exports = {
                         .setColor(0x0099FF)
                         .setTitle(data.name.charAt(0).toUpperCase() + data.name.slice(1))
                         .addFields(
-                            { name: 'ID', value: data.id, inline: true },
+                            { name: 'ID', value: data.id.toString(), inline: true },
                             { name: 'Name', value: data.name.charAt(0).toUpperCase() + data.name.slice(1), inline: true },
                             { name: 'Name-De', value: data.names[4].name.charAt(0).toUpperCase() + data.names[4].name.slice(1), inline: true },
                             { name: 'Kategorie', value: data.damage_class.name.charAt(0).toUpperCase() + data.damage_class.name.slice(1), inline: true },
