@@ -20,7 +20,7 @@ module.exports = {
         .addStringOption(option =>
             option.setName('type')
                 .setDescription('Was für ne Waifu möchtest du?')
-                .setRequired(true)
+                .setRequired(false)
                 .addChoices(
                     { name: 'alex-nsfw', value: 'alex-nsfw' },
                     { name: 'waifu', value: 'waifu' },
@@ -38,6 +38,13 @@ module.exports = {
                     { name: 'smug', value: 'smug' },
                     { name: 'bonk', value: 'bonk' },
                     { name: 'yeet', value: 'yeet' },
+                )
+        )
+        .addStringOption(option =>
+            option.setName('type2')
+                .setDescription('Was für ne Waifu möchtest du?')
+                .setRequired(false)
+                .addChoices(
                     { name: 'blush', value: 'blush' },
                     { name: 'smile', value: 'smile' },
                     { name: 'wave', value: 'wave' },
@@ -65,11 +72,17 @@ module.exports = {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
             const type = interaction.options.getString('type');
+            const type2 = interaction.options.getString('type2');
+            if (type === null && type2 === null) {
+                await interaction.reply('Bitte gib einen Typ an!');
+                return;
+            }
+            const selectedType = type || type2;
             const fetch = await import('node-fetch').then(module => module.default);
             await interaction.deferReply();
             let data = null;
             let apiUrl = null;
-            if (type === 'alex-nsfw') {
+            if (selectedType === 'alex-nsfw') {
                 if (interaction.user.id == '1182304009877459005') {
                     apiUrl = `https://api.waifu.pics/nsfw/${nsfw[getRandom(0, nsfw.length - 1)]}`;
                     await fetch(apiUrl)
@@ -83,7 +96,7 @@ module.exports = {
                     return;
                 }
             } else {
-                apiUrl = `https://api.waifu.pics/sfw/${type}`;
+                apiUrl = `https://api.waifu.pics/sfw/${selectedType}`;
                 await fetch(apiUrl)
                     .then((response) => response.json())
                     .then((mydata) => {
