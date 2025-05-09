@@ -198,11 +198,9 @@ module.exports = {
                         .slice(0, 5)
                         .map(pokemon => pokemon.name)
                         .join(', ') || '-';
-                        console.log(data);
                     const move = new EmbedBuilder()
                         .setColor(0x0099FF)
                         .setTitle(data.name.charAt(0).toUpperCase() + data.name.slice(1))
-                        .setThumbnail(data.sprites.default)
                         .addFields(
                             { name: 'ID', value: data.id, inline: true },
                             { name: 'Name', value: data.name.charAt(0).toUpperCase() + data.name.slice(1), inline: true },
