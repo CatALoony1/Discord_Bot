@@ -37,7 +37,6 @@ async function jobFunction(client) {
     const allLevels = await Level.find({
         guildId: process.env.GUILD_ID,
     });
-    console.log(allLevels);
     var oldUsers = [];
     for (let j = 0; j < allLevels.length; j++) {
         if (!(guild.members.cache.find(m => m.id === allLevels[j].userId)?.id)) {
@@ -48,21 +47,12 @@ async function jobFunction(client) {
         allLevels.splice(oldUsers[j] - j, 1);
     }
     for (const level of allLevels) {
-        console.log(level.geburtstag);
         if (level.geburtstag) {
-            console.log(level);
             const birthdayDate = new Date(level.geburtstag);
             const today = new Date();
-            console.log(birthdayDate);
-            console.log(today);
-            console.log(birthdayDate.getDate() === today.getDate());
-            console.log(birthdayDate.getDate() == today.getDate());
-            console.log(birthdayDate.getMonth() === today.getMonth());
-            console.log(birthdayDate.getMonth() === today.getMonth());
             if (birthdayDate.getDate() === today.getDate() && birthdayDate.getMonth() === today.getMonth()) {
                 const age = today.getFullYear() - birthdayDate.getFullYear();
-                console.log(age);
-                //targetChannel.send(`Herzlichen Glückwunsch an <@${level.userId}>! Heute ist dein Geburtstag und du bist jetzt ${age} Jahre alt! 🎉`);
+                targetChannel.send(`Herzlichen Glückwunsch an <@${level.userId}>! Heute ist dein Geburtstag und du bist jetzt ${age} Jahre alt! 🎉`);
             }
         }
     }
