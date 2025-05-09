@@ -156,14 +156,18 @@ module.exports = {
                     break;
                 }
                 case 7: {
-                    apiUrl = 'https://api.fbi.gov/wanted/v1/list';
+                    let page = getRandom(1, 25);
+                    if (zahl > 0 && zahl <= 25) {
+                        page = zahl;
+                    }
+                    apiUrl = `https://api.fbi.gov/wanted/v1/list?page=${page}`;
                     await fetch(apiUrl)
                         .then((response) => response.json())
                         .then((mydata) => {
                             data = mydata;
                         });
                         console.log(data);
-                    const randomIndex = getRandom(0, data.total - 1);
+                    const randomIndex = getRandom(0, data.items.length - 1);
                     console.log(randomIndex);
                     const wantedPerson = data.items[randomIndex];
                     const wantedEmbed = new EmbedBuilder()
