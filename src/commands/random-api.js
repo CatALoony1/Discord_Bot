@@ -164,6 +164,7 @@ module.exports = {
                         });
                         console.log(data);
                     const randomIndex = getRandom(0, data.total - 1);
+                    console.log(randomIndex);
                     const wantedPerson = data.items[randomIndex];
                     const wantedEmbed = new EmbedBuilder()
                         .setColor(0x0099FF)
