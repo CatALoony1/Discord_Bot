@@ -166,9 +166,7 @@ module.exports = {
                         .then((mydata) => {
                             data = mydata;
                         });
-                        console.log(data);
                     const randomIndex = getRandom(0, data.items.length - 1);
-                    console.log(randomIndex);
                     const wantedPerson = data.items[randomIndex];
                     const wantedEmbed = new EmbedBuilder()
                         .setColor(0x0099FF)
@@ -200,12 +198,13 @@ module.exports = {
                         .slice(0, 5)
                         .map(pokemon => pokemon.name)
                         .join(', ') || '-';
+                        console.log(data);
                     const move = new EmbedBuilder()
                         .setColor(0x0099FF)
                         .setTitle(data.name.charAt(0).toUpperCase() + data.name.slice(1))
                         .setThumbnail(data.sprites.default)
                         .addFields(
-                            { name: 'ID', value: data.id.toString(), inline: true },
+                            { name: 'ID', value: data.id, inline: true },
                             { name: 'Name', value: data.name.charAt(0).toUpperCase() + data.name.slice(1), inline: true },
                             { name: 'Name-De', value: data.names[4].name.charAt(0).toUpperCase() + data.names[4].name.slice(1), inline: true },
                             { name: 'Kategorie', value: data.damage_class.name.charAt(0).toUpperCase() + data.damage_class.name.slice(1), inline: true },
@@ -538,7 +537,6 @@ module.exports = {
                 }
             }
             console.log(randomNumber);
-            console.log(data);
         } catch (err) {
             console.log(err);
         }
