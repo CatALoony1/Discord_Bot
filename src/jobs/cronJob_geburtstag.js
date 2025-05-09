@@ -48,10 +48,10 @@ async function jobFunction(client) {
         allLevels.splice(oldUsers[j] - j, 1);
     }
     for (const level of allLevels) {
-        console.log(level.birthday);
-        if (level.birthday) {
+        console.log(level.geburtstag);
+        if (level.geburtstag) {
             console.log(level);
-            const birthdayDate = new Date(level.birthday);
+            const birthdayDate = new Date(level.geburtstag);
             const today = new Date();
             console.log(birthdayDate);
             console.log(today);
