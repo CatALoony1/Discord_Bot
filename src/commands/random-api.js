@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
-const { get } = require('mongoose');
 require('dotenv').config();
 const JokeAPI = require('sv443-joke-api');
 
