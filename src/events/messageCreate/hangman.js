@@ -56,7 +56,7 @@ module.exports = async (message) => {
                     .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                     .setTitle('Galgenmännchen - Spiel beendet')
                     .setDescription(`Verloren! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
-                    .setImage('attachment://hangman8.png');
+                    .setThumbnail('attachment://hangman8.png');
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 await hangman.save();
                 await message.react('💀');
@@ -68,7 +68,7 @@ module.exports = async (message) => {
                     .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                     .setTitle('Galgenmännchen')
                     .setDescription(`${leerzeichen}\n\n${hangman.word.length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
-                    .setImage(`attachment://hangman${hangman.fehler}.png`);
+                    .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 await hangman.save();
                 await message.react('❌');
@@ -82,7 +82,7 @@ module.exports = async (message) => {
                 .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                 .setTitle('Galgenmännchen - Spiel beendet')
                 .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
-                .setImage(`attachment://hangman${hangman.fehler}.png`);
+                .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
             await referencedMessage.edit({ embeds: [embed], files: [file] });
             giveXP(message.member, 25, 25, message.channel, false, false, false);
             await hangman.save();
@@ -97,7 +97,7 @@ module.exports = async (message) => {
                     .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                     .setTitle('Galgenmännchen - Spiel beendet')
                     .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
-                    .setImage(`attachment://hangman${hangman.fehler}.png`);
+                    .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 giveXP(message.member, 25, 25, message.channel, false, false, false);
                 await hangman.save();
@@ -111,7 +111,7 @@ module.exports = async (message) => {
                 .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                 .setTitle('Galgenmännchen')
                 .setDescription(`${leerzeichen}\n\n${hangman.word.length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
-                .setImage(`attachment://hangman${hangman.fehler}.png`);
+                .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
             await referencedMessage.edit({ embeds: [embed], files: [file] });
             await hangman.save();
             await message.react('✅');
