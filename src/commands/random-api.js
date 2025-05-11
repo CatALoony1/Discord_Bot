@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
+const { get } = require('mongoose');
 require('dotenv').config();
 const JokeAPI = require('sv443-joke-api');
 
@@ -28,7 +29,7 @@ module.exports = {
             const zahl = interaction.options.get('zahl')?.value || -1;
             const fetch = await import('node-fetch').then(module => module.default);
             await interaction.deferReply();
-            let randomNumber = getRandom(1, 29);
+            let randomNumber = getRandom(1, 34);
             let data = null;
             let apiUrl = null;
             const delay = 2000;
@@ -621,6 +622,53 @@ module.exports = {
                         characterEmbed.setURL(character.sourceUrl);
                     }
                     await interaction.editReply({ embeds: [characterEmbed] });
+                    break;
+                }
+                case 30: {
+                    await fetch('https://riddles-api.vercel.app/random')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    const message = await interaction.editReply(data.riddle);
+                    await sleep((delay + delay));
+                    await message.reply(data.answer);
+                    break;
+                }
+                case 31: {
+                    await fetch('https://meme-api.com/gimme')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.url);
+                    break;
+                }
+                case 32: {
+                    await fetch('https://programming-quotesapi.vercel.app/api/random')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.quote);
+                    break;
+                }
+                case 33: {
+                    await fetch('https://shrekofficial.com/quotes/random')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data);
+                    break;
+                }
+                case 34: {
+                    await fetch('https://randomfox.ca/floof/')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.image);
                     break;
                 }
                 default: {
