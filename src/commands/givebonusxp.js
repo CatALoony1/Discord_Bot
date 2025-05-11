@@ -45,4 +45,8 @@ module.exports = {
     xpToGive = await giveXP(targetUserObj, xpToGive, xpToGive, interaction.channel, false, false, false);
     await interaction.editReply(`Nutzer ${targetUserObj} hat ${xpToGive} Bonus XP erhalten!\nGrund: ${reason}`);
   },
+  options: {
+        devOnly: false,
+        deleted: true
+    }, 
 };

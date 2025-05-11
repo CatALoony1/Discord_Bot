@@ -41,4 +41,8 @@ module.exports = {
             await interaction.editReply(`Der User ${targetUserObj.user.tag} ist gar nicht einetragen.`);
         }
     },
+    options: {
+        devOnly: false,
+        deleted: true
+    }, 
 };
