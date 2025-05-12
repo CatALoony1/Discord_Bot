@@ -34,7 +34,7 @@ module.exports = {
             const delay = 2000;
             let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
             if (interaction.user.id == process.env.ADMIN_ID && String(zahl).startsWith('99')) {
-                randomNumber = String(zahl).substring(2);
+                randomNumber = Number(String(zahl).substring(2));
             }
             switch (randomNumber) {
                 case 1: {
