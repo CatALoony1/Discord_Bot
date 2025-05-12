@@ -28,7 +28,7 @@ module.exports = {
             const zahl = interaction.options.get('zahl')?.value || -1;
             const fetch = await import('node-fetch').then(module => module.default);
             await interaction.deferReply();
-            let randomNumber = getRandom(1, 36);
+            let randomNumber = getRandom(1, 35);
             let data = null;
             let apiUrl = null;
             const delay = 2000;
@@ -647,15 +647,6 @@ module.exports = {
                     break;
                 }
                 case 32: {
-                    await fetch('https://programming-quotesapi.vercel.app/api/random')
-                        .then((response) => response.json())
-                        .then((mydata) => {
-                            data = mydata;
-                        });
-                    await interaction.editReply(data.quote);
-                    break;
-                }
-                case 33: {
                     await fetch('https://shrekofficial.com/quotes/random')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -664,7 +655,7 @@ module.exports = {
                     await interaction.editReply(data);
                     break;
                 }
-                case 34: {
+                case 33: {
                     await fetch('https://randomfox.ca/floof/')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -673,7 +664,7 @@ module.exports = {
                     await interaction.editReply(data.image);
                     break;
                 }
-                case 35: {
+                case 34: {
                     await fetch('https://www.affirmations.dev/')
                         .then((response) => response.json())
                         .then((mydata) => {
@@ -682,7 +673,7 @@ module.exports = {
                     await interaction.editReply(data.affirmation);
                     break;
                 }
-                case 36: {
+                case 35: {
                     await fetch('https://makeup-api.herokuapp.com/api/v1/products.json')
                         .then((response) => response.json())
                         .then((mydata) => {
