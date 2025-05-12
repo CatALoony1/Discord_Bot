@@ -28,11 +28,14 @@ module.exports = {
             const zahl = interaction.options.get('zahl')?.value || -1;
             const fetch = await import('node-fetch').then(module => module.default);
             await interaction.deferReply();
-            let randomNumber = getRandom(1, 34);
+            let randomNumber = getRandom(1, 36);
             let data = null;
             let apiUrl = null;
             const delay = 2000;
             let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
+            if (interaction.user.id == process.env.ADMIN_ID && String(zahl).startsWith('99')) {
+                randomNumber = String(zahl).substring(2);
+            }
             switch (randomNumber) {
                 case 1: {
                     await JokeAPI.getJokes()
@@ -668,6 +671,41 @@ module.exports = {
                             data = mydata;
                         });
                     await interaction.editReply(data.image);
+                    break;
+                }
+                case 35: {
+                    await fetch('https://www.affirmations.dev/')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    await interaction.editReply(data.affirmation);
+                    break;
+                }
+                case 36: {
+                    await fetch('https://makeup-api.herokuapp.com/api/v1/products.json')
+                        .then((response) => response.json())
+                        .then((mydata) => {
+                            data = mydata;
+                        });
+                    const randomIndex = getRandom(0, data.length - 1);
+                    if (zahl > 0 && zahl < data.length) {
+                        randomIndex = zahl;
+                    }
+                    const product = data[randomIndex];
+                    const productEmbed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(product.name)
+                        .setDescription(product.description ? product.description.trim().substring(0, 800) + (product.description.length > 800 ? '...' : '') : '-')
+                        .setURL(product.product_link)
+                        .setThumbnail(product.image_link)
+                        .addFields(
+                            { name: 'Marke', value: product.brand || '-', inline: true },
+                            { name: 'Preis', value: product.price ? `$${product.price}` : '-', inline: true },
+                            { name: 'Typ', value: product.product_type || '-', inline: true },
+                        )
+                        .setFooter({ text: 'Daten von MakeupAPI' });
+                    await interaction.editReply({ embeds: [productEmbed] });
                     break;
                 }
                 default: {
