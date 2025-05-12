@@ -688,7 +688,7 @@ module.exports = {
                         .then((mydata) => {
                             data = mydata;
                         });
-                    const randomIndex = getRandom(0, data.length - 1);
+                    let randomIndex = getRandom(0, data.length - 1);
                     if (zahl > 0 && zahl < data.length) {
                         randomIndex = zahl;
                     }
