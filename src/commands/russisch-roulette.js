@@ -35,4 +35,8 @@ module.exports = {
             await interaction.editReply(`${targetUserObj} hatte Glück und hat überlebt!`);
         }
     },
+    options: {
+        devOnly: true,
+        deleted: true,
+    },
 };
