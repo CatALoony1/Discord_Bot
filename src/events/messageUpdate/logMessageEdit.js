@@ -16,13 +16,13 @@ module.exports = async (oldMessage, newMessage) => {
             console.log('Fehler, Logchannel gibts nicht');
             return;
         }
-        let oldMessageConent = oldMessage.content;
-        let newMessageConent = newMessage.content;
-        if (oldMessageConent.length > 1024) {
-            oldMessageConent = oldMessageConent.substring(0, 1021) + '...';
+        let oldMessageContent = oldMessage.content;
+        let newMessageContent = newMessage.content;
+        if (oldMessageContent && oldMessageContent.length > 1024) {
+            oldMessageContent = oldMessageContent.substring(0, 1021) + '...';
         }
-        if (newMessageConent.length > 1024) {
-            newMessageConent = newMessageConent.substring(0, 1021) + '...';
+        if (newMessageContent && newMessageContent.length > 1024) {
+            newMessageContent = newMessageContent.substring(0, 1021) + '...';
         }
         const messageEdited = new EmbedBuilder();
         messageEdited.setColor(0x0033cc);
@@ -30,8 +30,8 @@ module.exports = async (oldMessage, newMessage) => {
         messageEdited.setTimestamp(Date.now());
         messageEdited.setTitle(`Nachricht bearbeitet in ${newMessage.channel}`);
         messageEdited.setURL(newMessage.url);
-        messageEdited.addFields({ name: 'vorher', value: `${oldMessageConent}` });
-        messageEdited.addFields({ name: 'nachher:', value: `${newMessageConent}` });
+        messageEdited.addFields({ name: 'vorher', value: `${oldMessageContent}` });
+        messageEdited.addFields({ name: 'nachher:', value: `${newMessageContent}` });
 
         targetChannel.send({ embeds: [messageEdited] });
     } catch (error) {
