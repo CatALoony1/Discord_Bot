@@ -52,4 +52,8 @@ module.exports = {
       console.log(err);
     }
   },
+    options: {
+        devOnly: true,
+        deleted: true,
+    },
 };
