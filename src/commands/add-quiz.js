@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
-require('dotenv').config();
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('add-quiz')
