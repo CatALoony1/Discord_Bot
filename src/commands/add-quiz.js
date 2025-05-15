@@ -3,26 +3,17 @@ require('dotenv').config();
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('add-quiz')
-        .setDescription('Füge eine Frage hinzu')
-        .addMentionableOption(option =>
-            option.setName('nutzer')
-                .setRequired(true)
-                .setDescription('Vorschlagender Nutzer')
-        ),
+        .setDescription('Füge eine Frage hinzu'),
 
     /**
    * @param {import('commandkit').SlashCommandProps} param0
    */
     run: async ({ interaction }) => {
-        if (interaction.user.id != process.env.ADMIN_ID) {
-            interaction.reply('Du darfst das nicht!!!!');
-            return;
-        }
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
-            const mentionedUserId = interaction.options.get('nutzer')?.value;
+            const mentionedUserId = interaction.user.id;
             const modal = new ModalBuilder()
-                .setTitle('Schlage eine Frage vor.')
+                .setTitle('Trage eine Frage ein.')
                 .setCustomId(`qaddbyadmin-${interaction.user.id}-${mentionedUserId}`);
             const frageInput = new TextInputBuilder()
                 .setCustomId('qaddbyadmin-frage')
