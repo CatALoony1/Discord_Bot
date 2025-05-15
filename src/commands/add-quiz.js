@@ -56,6 +56,6 @@ module.exports = {
         }
     },
     options: {
-        devOnly: true,
+        devOnly: false,
     },
 };
