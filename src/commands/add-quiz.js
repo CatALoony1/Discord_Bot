@@ -13,33 +13,33 @@ module.exports = {
             const mentionedUserId = interaction.user.id;
             const modal = new ModalBuilder()
                 .setTitle('Trage eine Frage ein.')
-                .setCustomId(`qaddbyadmin-${interaction.user.id}-${mentionedUserId}`);
+                .setCustomId(`quizadd-${interaction.user.id}-${mentionedUserId}`);
             const frageInput = new TextInputBuilder()
-                .setCustomId('qaddbyadmin-frage')
+                .setCustomId('quizadd-frage')
                 .setLabel('Frage:')
                 .setStyle(TextInputStyle.Paragraph)
                 .setRequired(true)
                 .setMaxLength(300);
             const richtigInput = new TextInputBuilder()
-                .setCustomId('qaddbyadmin-richtig')
+                .setCustomId('quizadd-richtig')
                 .setLabel('Richtige Antwort:')
                 .setStyle(TextInputStyle.Paragraph)
                 .setRequired(true)
                 .setMaxLength(100);
             const falsch1Input = new TextInputBuilder()
-                .setCustomId('qaddbyadmin-falsch1')
+                .setCustomId('quizadd-falsch1')
                 .setLabel('Falsche Antwort 1:')
                 .setStyle(TextInputStyle.Paragraph)
                 .setRequired(true)
                 .setMaxLength(100);
             const falsch2Input = new TextInputBuilder()
-                .setCustomId('qaddbyadmin-falsch2')
+                .setCustomId('quizadd-falsch2')
                 .setLabel('Falsche Antwort 2:')
                 .setStyle(TextInputStyle.Paragraph)
                 .setRequired(true)
                 .setMaxLength(100);
             const falsch3Input = new TextInputBuilder()
-                .setCustomId('qaddbyadmin-falsch3')
+                .setCustomId('quizadd-falsch3')
                 .setLabel('Falsche Antwort 3:')
                 .setStyle(TextInputStyle.Paragraph)
                 .setRequired(true)
