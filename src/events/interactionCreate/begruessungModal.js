@@ -11,7 +11,7 @@ module.exports = async (interaction) => {
     if (!interaction.isModalSubmit()) return;
     if (interaction.customId === `begruessung-${interaction.user.id}` && !interaction.fields.getTextInputValue('begruessung-text').includes(process.env.MESSE_ID)) {
         try {
-            var targetChannel = interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) || (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));
+            let targetChannel = interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) || (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));
             await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
             if (interaction.fields.getTextInputValue('begruessung-text').includes('<@')) {
                 interaction.editReply('Pings von Nutzern oder Rollen sind nicht erlaubt!');
@@ -71,7 +71,7 @@ module.exports = async (interaction) => {
         try {
             const authorId = interaction.fields.getTextInputValue('begruessung-text');
             const [channelID, userID] = interaction.fields.getTextInputValue('begruessung-text').split(';');
-            var targetChannel = interaction.guild.channels.cache.get(channelID) || (await interaction.guild.channels.fetch(channelID));
+            let targetChannel = interaction.guild.channels.cache.get(channelID) || (await interaction.guild.channels.fetch(channelID));
             const begruessung = await Begruessung.findOne({
                 guildId: interaction.guild.id,
                 authorId: authorId,
@@ -87,7 +87,7 @@ module.exports = async (interaction) => {
                     .then(webhook => new Begruessung({
                         guildId: interaction.guild.id,
                         authorId: authorId,
-                        content: text,
+                        content: `Webhook für ${targetMember.displayName} in ${targetChannel.name}`,
                         webhookId: webhook.id,
                         webhookToken: webhook.token,
                     }).save())
