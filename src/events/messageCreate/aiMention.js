@@ -42,11 +42,12 @@ async function callAI(message, id, person, prompt) {
         guildId: process.env.GUILD_ID,
         authorId: `${message.channel.id};${id}`,
     });
-    if (!begruessung) return;
-    begruessung = await Begruessung.findOne({
-        guildId: process.env.GUILD_ID,
-        authorId: id,
-    });
+    if (!begruessung) {
+        begruessung = await Begruessung.findOne({
+            guildId: process.env.GUILD_ID,
+            authorId: id,
+        });
+    }
     if (!begruessung) return;
     let webhookClient = new WebhookClient({ id: begruessung.webhookId, token: begruessung.webhookToken });
 
