@@ -11,7 +11,7 @@ const Config = require('../../models/Config');
  * @returns 
  */
 module.exports = async (message) => {
-    if (!message.inGuild() || message.author.bot || (!message.content.includes(process.env.KI_JONAS) && !message.content.includes(process.env.KI_BAERCHEN) && !message.content.includes(process.env.KI_SILVERLIVER)) || message.webhookId || message.channel.id != process.env.WELCOME_ID) return;
+    if (!message.inGuild() || message.author.bot || (!message.content.includes(process.env.KI_JONAS) && !message.content.includes(process.env.KI_BAERCHEN) && !message.content.includes(process.env.KI_SILVERLIVER)) || message.webhookId) return;
     console.log(`KI Mentioned`);
     try {
         const state = await BotState.findOne({
@@ -38,7 +38,12 @@ module.exports = async (message) => {
 };
 
 async function callAI(message, id, person, prompt) {
-    const begruessung = await Begruessung.findOne({
+    let begruessung = await Begruessung.findOne({
+        guildId: process.env.GUILD_ID,
+        authorId: `${message.channel.id};${id}`,
+    });
+    if (!begruessung) return;
+    begruessung = await Begruessung.findOne({
         guildId: process.env.GUILD_ID,
         authorId: id,
     });

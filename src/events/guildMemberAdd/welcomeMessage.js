@@ -27,7 +27,7 @@ module.exports = async (guildMember) => {
                 const welcome = new EmbedBuilder()
                     .setColor(0x0033cc)
                     .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
-                    .setTitle(`⚓ Willkommen an Bord des Captain Iglo Servers! 🐟\nBereite dich auf spannende Abenteuer auf den sieben Weltmeeren vor! 🌊`)
+                    .setTitle(`⚓ Willkommen in Captain Iglo's Crew! 🐟\nBereite dich auf spannende Abenteuer auf den sieben Weltmeeren vor! 🌊`)
                     .setImage(gifUrl);
                 await targetChannel.send({ content: `${role} <@${guildMember.id}>`, embeds: [welcome] });
                 var allbegruessungen = await Begruessung.find({ guildId: guildMember.guild.id, zugestimmt: 'J' });
@@ -41,8 +41,6 @@ module.exports = async (guildMember) => {
             .catch((error) => {
                 console.error('ERROR:', error);
             });
-
-
     } catch (error) {
         console.log(error);
     }

@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const Begruessung = require('../../models/Begruessung');
+require('dotenv').config();
 
 /**
  * 
@@ -8,7 +9,7 @@ const Begruessung = require('../../models/Begruessung');
  */
 module.exports = async (interaction) => {
     if (!interaction.isModalSubmit()) return;
-    if (interaction.customId === `begruessung-${interaction.user.id}`) {
+    if (interaction.customId === `begruessung-${interaction.user.id}` && !interaction.fields.getTextInputValue('begruessung-text').includes(process.env.MESSE_ID)) {
         try {
             var targetChannel = interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) || (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));
             await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
@@ -55,6 +56,37 @@ module.exports = async (interaction) => {
                     .then(webhook => new Begruessung({
                         guildId: interaction.guild.id,
                         authorId: interaction.user.id,
+                        content: text,
+                        webhookId: webhook.id,
+                        webhookToken: webhook.token,
+                    }).save())
+                    .catch(console.error);
+            }
+            interaction.editReply('Begrüßung zur Überprüfung abgegeben.');
+        } catch (error) {
+            console.log(error);
+        }
+    } else if (interaction.customId === `begruessung-${interaction.user.id}`) {
+        await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
+        try {
+            const authorId = interaction.fields.getTextInputValue('begruessung-text');
+            const [channelID, userID] = interaction.fields.getTextInputValue('begruessung-text').split(';');
+            var targetChannel = interaction.guild.channels.cache.get(channelID) || (await interaction.guild.channels.fetch(channelID));
+            const begruessung = await Begruessung.findOne({
+                guildId: interaction.guild.id,
+                authorId: authorId,
+            });
+            if (begruessung) {
+                await interaction.editReply('Die Begrüßung wurde bereits eingetragen.');
+            } else {
+                const targetMember = interaction.guild.members.cache.get(userID) || (await interaction.guild.members.fetch(userID));
+                await targetChannel.createWebhook({
+                    name: targetMember.displayName,
+                    avatar: targetMember.displayAvatarURL({ size: 256 }),
+                })
+                    .then(webhook => new Begruessung({
+                        guildId: interaction.guild.id,
+                        authorId: authorId,
                         content: text,
                         webhookId: webhook.id,
                         webhookToken: webhook.token,

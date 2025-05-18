@@ -59,6 +59,32 @@ async function jobFunction(client) {
                 console.log(`Dieser Kanal hat ${hooks.size} Hooks.`);
             })
             .catch(console.error);
+        const messeChannel = guild.channels.cache.get(process.env.MESSE_ID) || (await guild.channels.fetch(process.env.MESSE_ID));
+        await messeChannel.fetchWebhooks()
+            .then(hooks => {
+                hooks.forEach(async hook => {
+                    const begruessung = allBegruessungen.find(b => b.webhookId === hook.id && b.webhookToken === hook.token);
+                    if (begruessung) {
+                        const [, authorId] = begruessung.authorId.split(';');
+                        if (guild.members.cache.find(m => m.id === authorId)?.id) {
+                            let targetUserObj = await guild.members.cache.get(authorId);
+                            try {
+                                await hook.edit({
+                                    avatar: targetUserObj.displayAvatarURL({ size: 256 }),
+                                });
+                                console.log(`Webhook ${hook.name} (${hook.id}) avatar updated.`);
+                            } catch (error) {
+                                console.error(`Error updating webhook ${hook.name} (${hook.id}) avatar:`, error);
+                            }
+                        }
+                    } else {
+                        console.log(`Webhook ${hook.name} (${hook.id}) not found in database.`);
+                    }
+                });
+                console.log(`Dieser Kanal hat ${hooks.size} Hooks.`);
+            })
+            .catch(console.error);
+
     } catch (error) {
         console.log(error);
     }
