@@ -2,7 +2,6 @@ const { Message, WebhookClient, AttachmentBuilder } = require('discord.js');
 require('dotenv').config();
 const Begruessung = require('../../models/Begruessung');
 const getAIResult = require('../../utils/getAIResult');
-const BotState = require('../../models/BotState');
 const Config = require('../../models/Config');
 
 /**
