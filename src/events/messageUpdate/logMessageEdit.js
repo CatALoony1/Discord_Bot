@@ -24,6 +24,8 @@ module.exports = async (oldMessage, newMessage) => {
         if (newMessageContent && newMessageContent.length > 1024) {
             newMessageContent = newMessageContent.substring(0, 1021) + '...';
         }
+        console.log(oldMessage);
+        console.log(newMessage);
         const messageEdited = new EmbedBuilder();
         messageEdited.setColor(0x0033cc);
         messageEdited.setAuthor({ name: newMessage.author.username, iconURL: newMessage.author.displayAvatarURL({ size: 256 }) });
