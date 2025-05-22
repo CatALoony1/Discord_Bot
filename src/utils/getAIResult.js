@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { GoogleGenAI/*, Modality*/ } = require("@google/genai");
+const { GoogleGenAI } = require("@google/genai");
 async function getAIResult(prompt, sysInstruction) {
     console.log('contacting AI');
     let response = null;
