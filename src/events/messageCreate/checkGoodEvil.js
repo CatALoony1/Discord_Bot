@@ -94,8 +94,8 @@ module.exports = async (message, client) => {
     if (goodYN) {
         var loveCount = state.loveCount + 1;
         if (loveCount == 100) {
-            if (state.state == 'fischstäbchen') {
-                await client.user.setUsername('Captain Iglo');
+            if (state.state == 'besiegt') {
+                await client.user.setUsername('Yamcha');
             }
             loveCount = 0;
             state.state = 'good';
@@ -104,7 +104,7 @@ module.exports = async (message, client) => {
         state.loveCount = loveCount;
         state.save();
         if (loveCount == 0) {
-await client.user.setAvatar('./img/iglo_good.jpg');
+            await client.user.setAvatar('./img/yamcha_good.jpg');
             await message.reply("Ihr versprüht so viel Liebe, das macht mich ganz glücklich!");
         }
     } else {
@@ -112,8 +112,8 @@ await client.user.setAvatar('./img/iglo_good.jpg');
         if (evilYN) {
             var evilCount = state.evilCount + 1;
             if (evilCount == 100) {
-                if (state.state == 'fischstäbchen') {
-                    await client.user.setUsername('Captain Iglo');
+                if (state.state == 'besiegt') {
+                    await client.user.setUsername('Yamcha');
                 }
                 evilCount = 0;
                 state.state = 'evil';
@@ -122,8 +122,8 @@ await client.user.setAvatar('./img/iglo_good.jpg');
             state.evilCount = evilCount;
             state.save();
             if (evilCount == 0) {
-await client.user.setAvatar('./img/iglo_evil.jpg');
-                message.reply("Sag mal geht's noch? Der ganze Hass und die Beleidigungen müssen ein Ende haben. Jeder der Beleidigt zu Fischstäbchen verarbeitet!");
+                await client.user.setAvatar('./img/yamcha_evil.jpg');
+                message.reply("Sag mal geht's noch? Der ganze Hass und die Beleidigungen müssen ein Ende haben. Jeder der Beleidigt wird von mir erledigt!");
             }
         }
     }

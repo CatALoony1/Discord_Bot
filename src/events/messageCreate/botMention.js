@@ -51,13 +51,7 @@ const answers = new Map([[1, 'Ja!'],
 [40, 'Wenn du mich sowas nochmal fragst, schicke ich dich von der Planke!'],
 [41, 'What would Jesus do?'],
 [42, 'Nur wenn du mir Kekse gibst.'],
-[43, 'Gegen eine kleine Spende könnte ich dem zustimmen.'],
-[44, './img/DAUMEN_HOCH.jpg'],
-[45, './img/DAUMEN_RUNTER.jpg'],
-[46, './img/DAUMEN_JA.jpg'],
-[47, './img/DAUMEN_NEIN.jpg'],
-[48, './img/JA_BOOT.jpg'],
-[49, './img/NEIN_BOOT.jpg']
+[43, 'Gegen eine kleine Spende könnte ich dem zustimmen.']
 ]);
 
 /**
@@ -87,8 +81,8 @@ module.exports = async (message, client) => {
     }
     if (botstatevar == 'neutral') {
         var number = getRandom(1, answers.size);
-        const contentOhneCaptain = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo');
-        const zahlMatch = contentOhneCaptain.match(/\d+/);
+        const contentOhneYamcha = message.content.replace(`<@${client.user.id}>`, 'Yamcha');
+        const zahlMatch = contentOhneYamcha.match(/\d+/);
         if (message.content.includes('Grünkohl') && zahlMatch && message.member.roles.cache.some(role => role.name === 'Geheimniswahrer')) {
             const gefundeneZahl = parseInt(zahlMatch[0], 10);
             if (gefundeneZahl >= 1 && gefundeneZahl <= answers.size) {
@@ -112,13 +106,13 @@ module.exports = async (message, client) => {
                 newMessage = await newMessage.reply(`BOOM💥`);
                 if (getRandom(1, 5) == 5) {
                     await sleep(delay);
-                    newMessage = await newMessage.reply(`Evil Captain starting up...`);
+                    newMessage = await newMessage.reply(`Evil Yamcha starting up...`);
                     await sleep(delay);
-                    if (state.state == 'fischstäbchen') {
-                        await client.user.setUsername('Captain Iglo');
+                    if (state.state == 'besiegt') {
+                        await client.user.setUsername('Yamcha');
                     }
-                    await client.user.setAvatar('./img/iglo_evil.jpg');
-                    newMessage = await newMessage.reply(`Evil Captain is now taking control!`);
+                    await client.user.setAvatar('./img/yamcha_evil.jpg');
+                    newMessage = await newMessage.reply(`Evil Yamcha is now taking control!`);
                     await sleep(delay);
                     await getTenorGifById("10449061")
                         .then(async (gifUrl) => {
@@ -159,23 +153,23 @@ module.exports = async (message, client) => {
         }
     } else if (botstatevar == 'evil') {
         console.log('contacting evil AI');
-        const prompt = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo');
-        const sysInstruction = "Dein Name ist Captain Iglo. Du sprichst wie ein Pirat und bist sehr fies und böse.";
+        const prompt = message.content.replace(`<@${client.user.id}>`, 'Yamcha');
+        const sysInstruction = "Dein Name ist Yamcha. Du sprichst wie ein Pirat und bist sehr fies und böse.";
         const response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
         await message.reply(`${response.text}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else if (botstatevar == 'good') {
         console.log('contacting good AI');
-        const prompt = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo');
-        const sysInstruction = "Dein Name ist Captain Iglo. Du sprichst wie ein wirklich sehr freundlicher seemann, der mit jeder Anwort viel Liebe ausdrückt.";
+        const prompt = message.content.replace(`<@${client.user.id}>`, 'Yamcha');
+        const sysInstruction = "Dein Name ist Yamcha. Du sprichst wie ein wirklich sehr freundlicher seemann, der mit jeder Anwort viel Liebe ausdrückt.";
         const response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
         await message.reply(`${response.text}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else if (botstatevar == 'horny') {
         console.log('contacting horny AI');
-        const prompt = message.content.replace(`<@${client.user.id}>`, 'Captain Iglo');
-        const sysInstruction = "Dein Name ist Captain Iglo. Du bist super horny und willst jedem an die Wäsche.";
+        const prompt = message.content.replace(`<@${client.user.id}>`, 'Yamcha');
+        const sysInstruction = "Dein Name ist Yamcha. Du bist super horny und willst jedem an die Wäsche.";
         const response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
         await message.reply(`${response.text}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
-    } else if (botstatevar == 'fischstäbchen') {
+    } else if (botstatevar == 'besiegt') {
         await message.reply(`...`);
     } else {
         console.log('ERROR: Botstate passt nicht!');

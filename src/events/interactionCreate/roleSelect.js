@@ -27,7 +27,7 @@ module.exports = async (interaction) => {
                 roleArray = ageRoles;
                 break;
             case 'colorselect':
-                variant = 2;
+                variant = 4;
                 roleArray = colorRoles;
                 break;
             case 'dmselect':
@@ -112,7 +112,7 @@ module.exports = async (interaction) => {
             await interaction.guild.members.cache.get(interaction.member.id).roles.add(role);
             console.log(`Role ${interaction.values[0]} was given to user ${interaction.member.user.tag}`);
             await interaction.editReply(`Die Rolle ${interaction.values[0]} wurde dir zugewiesen.`);
-        } else {
+        } else if (variant == 3) {
             let removedRoles = [];
             let addedRoles = [];
             if (interaction.values.length == 0) {
@@ -150,6 +150,22 @@ module.exports = async (interaction) => {
             } else {
                 await interaction.editReply(`Du besitzt alle Rollen die du ausgewählt hast.`);
             }
+        } else if (variant == 4) {
+            if (interaction.member.roles.cache.some(role => role.name === interaction.values[0])) {
+                await interaction.editReply(`Du besitzt die Rolle ${interaction.values[0]} bereits.`);
+                return;
+            }
+            for (let i = 0; i < roleArray.length; i++) {
+                if (interaction.member.roles.cache.has(roleArray[i])) {
+                    let tempRole = interaction.guild.roles.cache.get(roleArray[i]);
+                    await interaction.guild.members.cache.get(interaction.member.id).roles.remove(tempRole);
+                    console.log(`Role ${tempRole.name} was removed from user ${interaction.member.user.tag}`);
+                }
+            }
+            const role = interaction.guild.roles.cache.find(role => role.name === interaction.values[0]);
+            await interaction.guild.members.cache.get(interaction.member.id).roles.add(role);
+            console.log(`Role ${interaction.values[0]} was given to user ${interaction.member.user.tag}`);
+            await interaction.editReply(`Die Rolle ${interaction.values[0]} wurde dir zugewiesen.`);
         }
     }
 };

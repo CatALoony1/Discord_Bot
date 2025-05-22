@@ -3,7 +3,7 @@ const { SlashCommandBuilder, InteractionContextType, ModalBuilder, TextInputBuil
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('kummerkasten')
-    .setDescription('Schreibe Nachricht an @Captains.')
+    .setDescription('Schreibe Nachricht an die Admins.')
     .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
   run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);

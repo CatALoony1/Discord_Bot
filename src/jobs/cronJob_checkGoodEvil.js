@@ -24,13 +24,13 @@ function startJob(client) {
           state.startTime = undefined;
           await state.save();
           var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
-          await client.user.setAvatar('./img/iglo_neutral.jpg');
+          await client.user.setAvatar('./img/yamcha_neutral.jpg');
           if (oldState == 'evil') {
             await targetChannel.send(`Ach, ich habe mich wieder etwas beruhigt, diese Wut war echt anstrengend.`);
           } else if (oldState == 'good') {
             await targetChannel.send(`Auch die schönste Zeit vergeht mal, schade! :(`);
-          } else if (oldState == 'fischstäbchen') {
-            await client.user.setUsername('Captain Iglo');
+          } else if (oldState == 'besiegt') {
+            await client.user.setUsername('Yamcha');
             await targetChannel.send(`Endlich wieder ein Mensch!`);
           } else {
             await targetChannel.send(`Mein Höschen ist nun wieder trocken.`);

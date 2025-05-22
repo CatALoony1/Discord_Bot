@@ -2,7 +2,7 @@ const { ActivityType, Client } = require('discord.js');
 const cron = require('node-cron');
 require('dotenv').config();
 let status = [
-  {
+  /*{
     activities: [{
       name: 'Eigenwerbung',
       type: ActivityType.Streaming,
@@ -307,6 +307,24 @@ let status = [
       name: 'Schatzsuche',
       type: ActivityType.Competing
     }], status: 'dnd'
+  },*/
+  {
+    activities: [{
+      name: 'kreativ sein',
+      type: ActivityType.Playing
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Status ausdenken',
+      type: ActivityType.Competing
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Kommt noch',
+      type: ActivityType.Custom
+    }], status: 'online'
   },
 ];
 

@@ -17,7 +17,7 @@ module.exports = async (guildMember) => {
             console.log('Fehler, Verlassenschannel gibts nicht');
             return;
         }
-        await getTenorGifById("21377384")
+        await getTenorGifById("19652884") //old 21377384
             .then(async (gifUrl) => {
                 if (!gifUrl.includes("http")) {
                     console.log("ERROR Leave gif");
@@ -26,15 +26,12 @@ module.exports = async (guildMember) => {
                 const leave = new EmbedBuilder()
                     .setColor(0x0033cc)
                     .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
-                    .setDescription(`<@${guildMember.id}> wird den Haien zum Fraß vorgeworfen.`)
+                    .setDescription(`<@${guildMember.id}> hat nicht genug versagt!`)
                     .setImage(gifUrl);
                 var messageL = await targetChannel.send({ embeds: [leave] });
-                await messageL.react(letterEmojiMap.get('S'));
-                await messageL.react(letterEmojiMap.get('P'));
-                await messageL.react(letterEmojiMap.get('R'));
-                await messageL.react(letterEmojiMap.get('I'));
-                await messageL.react(letterEmojiMap.get('N'));
-                await messageL.react(letterEmojiMap.get('G'));
+                await messageL.react(letterEmojiMap.get('Y'));
+                await messageL.react(letterEmojiMap.get('A'));
+                await messageL.react(letterEmojiMap.get('Y'));
             })
             .catch((error) => {
                 console.error('ERROR:', error);

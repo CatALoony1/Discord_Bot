@@ -59,5 +59,5 @@ async function callAI(message, id, person, prompt) {
         sysInstruction = `${sysInstruction} Du bist eine 1995 geborene Frau und sehr lieb zu allen. Du bist ein fröhlicher Mensch der schnulzige Sachen wie Lebensweisheiten mag. Du magst Pokemon, dein Lieblingspokemon ist Arkani. Du bist von Beruf Detailhandelsfachfrau Nahrungs und Genussmittel und spielst in deiner Freizeit gerne Survival und Horror Spiele.`;
     }
     let response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
-await webhookClient.send(`${response.text}\n||KI-Generierter Text!||`);
+    await webhookClient.send(`${response.text}\n||KI-Generierter Text!||`);
 }

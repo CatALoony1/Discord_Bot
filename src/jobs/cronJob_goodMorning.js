@@ -16,14 +16,14 @@ function startJob(client) {
   }
   var verschlafen = cron.schedule('0 10 * * *', async function () { // 10 Uhr
     var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
-    targetChannel.send(`Alle Mann an Deck! … Moment mal, warum ist es schon so hell?`);
+    targetChannel.send(`AUFSTEHEN! Warum habt ihr Versager mich denn nicht früher geweckt?`);
     verschlafen.stop();
   });
   verschlafen.stop();
   goodMorningJob = cron.schedule('0 7 * * *', async function () { // 7 Uhr
     if (getRandom(1, 25) != 1) {
       var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
-      targetChannel.send(`Es ist 7 Uhr, raus aus den Kajüten und alle Mann an Deck!`);
+      targetChannel.send(`Es ist 7 Uhr, alle aus den Betten und lasset das Versagen beginnen!`);
     } else {
       verschlafen.start();
     }

@@ -10,7 +10,7 @@ function startJob(client) {
   }
   newYearJob = cron.schedule('0 0 1 1 *', async function () {
     var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
-    targetChannel.send(`Der Captain wünscht euch ein schönes und erfolgreiches neues Jahr!`);
+    targetChannel.send(`Ich wünsche euch ein schönes und erfolgreiches neues Jahr!`);
   });
   console.log('NewYear-Job started.');
 }

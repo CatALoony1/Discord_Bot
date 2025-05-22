@@ -1,37 +1,38 @@
 const Level = require('../models/Level.js');
 const { EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('../utils/calculateLevelXp.js');
+require('dotenv').config();
 
-const roles = new Map([[0, 'Landratte'],
-[1, 'Deckschrubber'],
-[5, 'Leichtmatrose'],
-[10, 'Krabbenfänger'],
-[15, 'Steuermann'],
-[20, 'Fischfänger'],
-[25, 'Haijäger'],
-[30, 'Navigationsmeister'],
-[35, 'Schatzsucher'],
-[40, 'Tiefseetaucher'],
-[45, "Meereshüter"],
-[50, "Poseidons Botschafter"],
-[55, "Seetag-Schnupperer"],
-[60, "Backfisch Buddy"],
-[65, "Panaden Profi"],
-[70, "Tiefkühl Experte"],
-[75, "Schollen Schmoller"],
-[80, "Krabben Kommandant"],
-[85, "Deck Offizier"],
-[90, "Legende der Lachse"],
-[95, "Ozean Operator"],
-[100, "Goldene Gabel"],
-[105, "Algen Architekt"],
-[110, "Plankton Pionier"],
-[115, "Reisender der Riffe"],
-[120, "Sturmbezwinger"],
-[125, "Tiefsee Titan"],
-[130, "Kraken König"],
-[135, "Poseidons Erbe"],
-[140, "Seelenfischer"]
+const roles = new Map([[0, '1312394062258507869'],
+[1, '1310211770694111294'],
+[5, '1310213081950982175'],
+[10, '1310213489134141440'],
+[15, '1310214010527944754'],
+[20, '1310214475890294834'],
+[25, '1310214766890975242'],
+[30, '1310215332488810607'],
+[35, '1310215659921346641'],
+[40, '1310216071168528476'],
+[45, '1310216856228991026'],
+[50, '1310217257057517710'],
+[55, '1354905284061171934'],
+[60, '1354906395421573270'],
+[65, '1354906488023421149'],
+[70, '1354906720677396572'],
+[75, '1354906879188406333'],
+[80, '1354906953192575027'],
+[85, '1354907134365794324'],
+[90, '1354907338846502922'],
+[95, '1354907582220730380'],
+[100, '1354907776480051460'],
+[105, '1354907929140006943'],
+[110, '1354908045095866429'],
+[115, '1354908138364735739'],
+[120, '1354908258954907909'],
+[125, '1354908324793028768'],
+[130, '1354908358422958181'],
+[135, '1354908587344003252'],
+[140, '1354908712170426507']
 ]);
 
 async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizadded) {
@@ -77,24 +78,23 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
                     level.xp = level.xp - calculateLevelXp(level.level);
                     level.level += 1;
                     console.log(`user ${member.user.tag} reached level ${level.level}`);
-                    let description = `🎉 Glückwunsch ${member}! Du hast **Level ${level.level}** erreicht!⚓`;
+                    let description = `🎉 Glückwunsch ${member}! Du hast **Level ${level.level}** erreicht!`;
 
                     if (roles.has(level.level)) {
                         let newRole = roles.get(level.level);
-                        description = `🎉 Glückwunsch ${member}! Du hast **Level ${level.level}** erreicht und bist somit zum ${newRole} aufgestiegen!⚓`;
-
                         for (const value of roles.values()) {
-                            if (member.roles.cache.some(role => role.name === value)) {
-                                let tempRole = member.guild.roles.cache.find(role => role.name === value);
+                            if (member.roles.cache.has(value)) {
+                                let tempRole = member.guild.roles.cache.get(value);
                                 await member.guild.members.cache.get(member.user.id).roles.remove(tempRole);
                                 console.log(`Role ${value} was removed from user ${member.user.tag}`);
                             }
                         }
-                        let role = member.guild.roles.cache.find(role => role.name === newRole);
+                        let role = member.guild.roles.cache.get(newRole);
                         await member.guild.members.cache.get(member.user.id).roles.add(role);
-                        console.log(`Role ${newRole} was given to user ${member.user.tag}`);
+                        description = `🎉 Glückwunsch ${member}! Du hast **Level ${level.level}** erreicht und bist somit zum ${role.name} aufgestiegen!`;
+                        console.log(`Role ${role.name} was given to user ${member.user.tag}`);
                         if (level.level === 1) {
-                            let memberRole = member.guild.roles.cache.find(role => role.name === 'Mitglied');
+                            let memberRole = member.guild.roles.cache.get(process.env.MITGLIED_ROLE_ID);
                             await member.guild.members.cache.get(member.user.id).roles.add(memberRole);
                             console.log(`Role Mitglied was given to user ${member.user.tag}`);
                         }

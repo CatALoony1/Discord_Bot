@@ -13,10 +13,10 @@ Siehe bsp.env
 ## Erforderliche Rollen auf deinem Server
 
 * **Geheimniswahrer**
-* **Captains**
+* **Admins**
 * **Bumper**
 * **Lottogewinner**
-* **Landratte**
+* **Gewinner**
 * **Begrüßungskomitee**
 * **Mitglied**
 * **Bump-Ping**

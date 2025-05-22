@@ -23,7 +23,7 @@ module.exports = {
             const targetUserObj = interaction.member;
             let zufallszahl = getRandom(1, 10);
             if (zufallszahl == 1) {
-                if (!targetUserObj.roles.cache.some(role => role.name === 'Captains')) {
+                if (!targetUserObj.roles.cache.has(process.env.ADMIN_ROLE_ID)) {
                     const duration = getRandom(1, 7200);
                     targetUserObj.timeout(duration * 1000, 'Berühre keine Sachen, die du nicht berühren solltest!')
                         .then(console.log(`Timeouted for ${duration} seconds.`))
@@ -53,10 +53,10 @@ module.exports = {
                 let state = await BotState.findOne({
                     guildId: interaction.guild.id,
                 });
-                if (state.state != 'fischstäbchen') {
-                    state.state = 'fischstäbchen';
-                    await client.user.setAvatar('./img/iglo_fisch.jpg');
-                    await client.user.setUsername('Fischstäbchen');
+                if (state.state != 'besiegt') {
+                    state.state = 'besiegt';
+                    await client.user.setAvatar('./img/yamcha_besiegt.jpg');
+                    await client.user.setUsername('Besiegt');
                 }
                 let time = new Date();
                 time.setHours(time.getHours() - 23);
@@ -90,19 +90,19 @@ module.exports = {
                 var hornycount = state.hornyCount + 1;
                 await interaction.editReply('Ein geheimnisvoller Zähler wurde soeben hochgezählt!');
                 if (hornycount == 20) {
-                    if (state.state == 'fischstäbchen') {
-                        await client.user.setUsername('Captain Iglo');
+                    if (state.state == 'besiegt') {
+                        await client.user.setUsername('Yamcha');
                     }
                     hornycount = 0;
                     state.state = 'horny';
                     state.startTime = Date.now();
-                    await client.user.setAvatar('./img/iglo_horny.jpg');
+                    await client.user.setAvatar('./img/yamcha_horny.jpg');
                     await interaction.editReply('Ich bin jetzt horny!💦');
                 }
                 state.hornyCount = hornycount;
                 await state.save();
             } else if (zufallszahl == 10) {
-                if (!targetUserObj.roles.cache.some(role => role.name === 'Captains')) {
+                if (!targetUserObj.roles.cache.has(process.env.ADMIN_ROLE_ID)) {
                     await interaction.deferReply();
                     await targetUserObj.setNickname('Neugieriges Stück', 'Wollte das Geheimnis wissen.')
                         .then(member => console.log(`Set nickname of ${member.user.username}`))
@@ -115,5 +115,9 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
+    },
+    options: {
+        devOnly: true,
+        deleted: false,
     },
 };

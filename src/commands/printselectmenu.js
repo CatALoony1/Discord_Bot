@@ -17,6 +17,25 @@ const {
     hogwartsEmojis
 } = require('../utils/selectMenuRoles');
 
+async function getRoleNames(guild, roleIds) {
+    const roleNames = [];
+    for (const roleId of roleIds) {
+        try {
+            const role = await guild.roles.cache.get(roleId);
+            if (role) {
+                roleNames.push(role.name);
+            } else {
+                console.warn(`Rolle mit ID ${roleId} nicht gefunden.`);
+                roleNames.push('Unbekannte Rolle');
+            }
+        } catch (error) {
+            console.error(`Fehler beim Abrufen der Rolle mit ID ${roleId}:`, error);
+            roleNames.push('Fehler beim Abrufen');
+        }
+    }
+    return roleNames;
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('printselectmenu')
@@ -69,7 +88,7 @@ module.exports = {
                     bLabel = 'Altersrolle entfernen';
                     break;
                 case 'color':
-                    rolenames = colorRoles;
+                    rolenames = await getRoleNames(interaction.guild, colorRoles);
                     smCustomId = 'colorselect';
                     placeholder = 'Wähle deine Lieblingsfarbe';
                     content = 'Bitte wähle deine Lieblingsfarbe aus:';

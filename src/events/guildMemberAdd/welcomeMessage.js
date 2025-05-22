@@ -18,7 +18,7 @@ module.exports = async (guildMember) => {
             console.log('Fehler, Willkommenschannel gibts nicht');
             return;
         }
-        await getTenorGifById("5452863")
+        await getTenorGifById("15418711646267857780") //old 5452863
             .then(async (gifUrl) => {
                 if (!gifUrl.includes("http")) {
                     console.log("ERROR Welcome gif");
@@ -27,7 +27,7 @@ module.exports = async (guildMember) => {
                 const welcome = new EmbedBuilder()
                     .setColor(0x0033cc)
                     .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
-                    .setTitle(`⚓ Willkommen in Captain Iglo's Crew! 🐟\nBereite dich auf spannende Abenteuer auf den sieben Weltmeeren vor! 🌊`)
+                    .setTitle(`Willkommen im Versager Verein! \nHier versagen wir gemeinsam!`)
                     .setImage(gifUrl);
                 await targetChannel.send({ content: `${role} <@${guildMember.id}>`, embeds: [welcome] });
                 var allbegruessungen = await Begruessung.find({ guildId: guildMember.guild.id, zugestimmt: 'J' });
