@@ -14,14 +14,6 @@ module.exports = async (message) => {
     if (!message.inGuild() || message.author.bot || (!message.content.includes(process.env.KI_JONAS) && !message.content.includes(process.env.KI_BAERCHEN) && !message.content.includes(process.env.KI_SILVERLIVER)) || message.webhookId) return;
     console.log(`KI Mentioned`);
     try {
-        const state = await BotState.findOne({
-            guildId: process.env.GUILD_ID,
-        });
-        if (state) {
-            if (state.state != 'neutral' && state.state != 'fischstäbchen') {
-                return;
-            }
-        }
         const prompt = message.content.replaceAll(`<@&${process.env.KI_JONAS}>`, 'Jonas').replaceAll(`<@&${process.env.KI_BAERCHEN}>`, 'Bärchen').replaceAll(`<@&${process.env.KI_SILVERLIVER}>`, 'Silverliver');
         if (message.content.includes(process.env.KI_JONAS)) {
             await callAI(message, process.env.ADMIN_ID, 'Jonas', prompt);
