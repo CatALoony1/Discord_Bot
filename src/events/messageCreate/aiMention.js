@@ -59,40 +59,6 @@ async function callAI(message, id, person, prompt) {
     } else if (person == 'Silverliver') {
         sysInstruction = `${sysInstruction} Du bist eine 1995 geborene Frau und sehr lieb zu allen. Du bist ein fröhlicher Mensch der schnulzige Sachen wie Lebensweisheiten mag. Du magst Pokemon, dein Lieblingspokemon ist Arkani. Du bist von Beruf Detailhandelsfachfrau Nahrungs und Genussmittel und spielst in deiner Freizeit gerne Survival und Horror Spiele.`;
     }
-    let response = null;
-    if ((prompt.toLowerCase().includes('erzeuge') || prompt.toLowerCase().includes('erstelle') || prompt.toLowerCase().includes('generiere')) && prompt.toLowerCase().includes('bild')) {
-        response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction, true);
-    } else {
-        response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction, false);
-    }
-    if (response && response.candidates && response.candidates[0] && response.candidates[0].content && response.candidates[0].content.parts) {
-        let textToSend = "";
-        let imageBuffer = null;
-        let imageName = null;
-
-        for (const part of response.candidates[0].content.parts) {
-            console.log(part);
-            if (part.text) {
-                textToSend += part.text + "\n";
-                console.log(part.text);
-            } else if (part.inlineData) {
-                const imageData = part.inlineData.data;
-                imageBuffer = Buffer.from(imageData, "base64");
-                imageName = "gemini-image." + part.inlineData.mimeType.split('/')[1];
-                console.log(`Image data found (${part.inlineData.mimeType}). Preparing for Discord.`);
-            }
-        }
-        if (textToSend && imageBuffer && imageName) {
-            const attachment = new AttachmentBuilder(imageBuffer, { name: imageName });
-            await webhookClient.send({ content: `${textToSend}\n||KI-Generierter Text!||`, files: [attachment] });
-            console.log("Text and image sent to Discord.");
-        } else if (textToSend) {
-            await webhookClient.send(`${textToSend}\n||KI-Generierter Text!||`);
-            console.log("Text sent to Discord.");
-        } else if (imageBuffer && imageName) {
-            const attachment = new AttachmentBuilder(imageBuffer, { name: imageName });
-            await webhookClient.send({ files: [attachment] });
-            console.log("Image sent to Discord.");
-        }
-    }
+    let response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
+await webhookClient.send(`${response.text}\n||KI-Generierter Text!||`);
 }
