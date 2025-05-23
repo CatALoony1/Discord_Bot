@@ -12,6 +12,23 @@ const quizStatsJob = require('../../jobs/cronJob_quizStats');
 const renameLogFileJob = require('../../jobs/cronJob_renameLogFile');
 const missingXpJob = require('../../jobs/cronJob_checkMissingXP');
 const updateWebhookAvatarJob = require('../../jobs/cronJob_updateWebhookAvatar');
+const voiceJob = require('../../jobs/cronJob_voiceXp');
+
+async function checkVoice(client) {
+  var isTwoMembers = false;
+  await client.channels.cache.forEach(async (channel) => {
+    if (channel.type == 2 && channel.id != '1307820687599337602') {
+      if (channel.members.size >= 2) {
+        isTwoMembers = true;
+      }
+    }
+  });
+  if (isTwoMembers) {
+    if (!voiceJob.isRunning()) {
+      voiceJob.startJob(client);
+    }
+  }
+}
 
 module.exports = async (client) => {
     console.log(`Starting Jobs...`);
@@ -29,5 +46,6 @@ module.exports = async (client) => {
     renameLogFileJob.startJob(client);
     missingXpJob.startJob(client);
     updateWebhookAvatarJob.startJob(client);
+    checkVoice(client);
     console.log(`Jobs started...`);
 };
