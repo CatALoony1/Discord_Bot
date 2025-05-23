@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
 require('dotenv').config();
-const JokeAPI = require('sv443-joke-api');
 const getTenorGif = require('../utils/getTenorGif');
 const wordList = require('../utils/wordList');
 
@@ -61,18 +60,12 @@ module.exports = {
                 }
                 switch (randomNumber) {
                     case 1: {
-                        await JokeAPI.getJokes()
-                            .then((r) => r.json())
+                        await fetch('https://cataas.com/cat?json=true')
+                            .then((response) => response.json())
                             .then((mydata) => {
                                 data = mydata;
                             });
-                        if (data.type == 'twopart') {
-                            const message = await interaction.editReply(`${data.setup}`);
-                            await sleep(delay);
-                            await message.reply(data.delivery);
-                        } else {
-                            await interaction.editReply(data.joke);
-                        }
+                        await interaction.editReply(data.url);
                         break;
                     }
                     case 2: {
