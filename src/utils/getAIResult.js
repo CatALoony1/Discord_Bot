@@ -18,7 +18,6 @@ async function getAIResult(prompt, sysInstruction) {
         });
         console.log(`AI-Result:${response.text}`);
         console.log(response.usageMetadata.totalTokenCount);
-        console.log(response.candidates[0].content);
     } catch (error) {
         console.log(error);
     }
