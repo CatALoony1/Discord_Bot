@@ -8,7 +8,7 @@ async function getAIResult(prompt, sysInstruction) {
         console.log(`AI-Input:${String(prompt)}`);
         response = await genAI.models.generateContent({
             //model: "gemini-2.0-flash",
-model: "gemini-2.5-flash-preview-05-20",
+            model: "gemini-2.5-flash-preview-05-20",
             contents: String(prompt),
             config: {
                 systemInstruction: sysInstruction,
@@ -18,6 +18,7 @@ model: "gemini-2.5-flash-preview-05-20",
         });
         console.log(`AI-Result:${response.text}`);
         console.log(response.usageMetadata.totalTokenCount);
+        console.log(response);
     } catch (error) {
         console.log(error);
     }
