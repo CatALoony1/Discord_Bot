@@ -2,7 +2,6 @@ const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const removeXP = require('../utils/removeXP');
 const giveXP = require('../utils/giveXP');
 const Gluecksrad = require('../models/Gluecksrad');
-const { gl } = require('translatte/languages');
 require('dotenv').config();
 
 function getRandom(min, max) {

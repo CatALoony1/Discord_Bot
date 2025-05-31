@@ -27,7 +27,7 @@ module.exports = async (guildMember) => {
                     .setColor(0x0033cc)
                     .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
                     //.setDescription(`<@${guildMember.id}> hat nicht genug versagt!`)
-                    .setDescription(`<@${guildMember.id}> hat den Versager Verein verlassen.\mWieder einer, der dem Versagen nicht gewachsen war.\nMach\'s gut \- wir scheitern weiter... ohne dich.`)
+                    .setDescription(`<@${guildMember.id}> hat den Versager Verein verlassen.\nWieder einer, der dem Versagen nicht gewachsen war.\nMach's gut - wir scheitern weiter... ohne dich.`)
                     .setImage(gifUrl);
                 var messageL = await targetChannel.send({ embeds: [leave] });
                 await messageL.react(letterEmojiMap.get('Y'));
