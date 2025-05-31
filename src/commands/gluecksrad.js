@@ -50,7 +50,7 @@ module.exports = {
             const gewinnVerlust = getRandom(1, 10)/10;
             let result = Math.floor(gewinnVerlust * gluecksrad.pool * (einsatz / 100));
             interaction.channel.send(`Zufallszahl: ${zufallsZahl} | Gewinnchance: ${gewinnchance}% | Ergebnis: ${result}XP`);
-            if (zufallsZahl >= gewinnchance) {
+            if (zufallsZahl <= gewinnchance) {
                 if(result == einsatz){
                     await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
                     await interaction.editReply(`Du hast deinen Einsatz von ${einsatz}XP zurückgewonnen!`);
