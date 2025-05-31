@@ -33,26 +33,24 @@ module.exports = {
                 return;
             }
             await interaction.deferReply();
-            if (subcommand == 'multiplier') {
-                const targetUserId = interaction.options.get('nutzer').value;
-                if (!(interaction.guild.members.cache.find(m => m.id === targetUserId)?.id)) {
-                    interaction.editReply(`Bei ${targetUserId} handelt es sich nicht um einen Nutzer.`);
-                    return;
-                }
-                if (interaction.user.id === targetUserId) {
-                    interaction.editReply('Du kannst dir selbst keine XP schenken!');
-                    return;
-                }
-                const targetUserObj = await interaction.guild.members.fetch(targetUserId);
-                let xpAmount = interaction.options.get('xpmenge').value;
-                const reason = interaction.options.get('nachricht')?.value || "";
-                await removeXP(interaction.member, xpAmount, interaction.channel);
-                await giveXP(targetUserObj, xpAmount, xpAmount, interaction.channel, false, false, false);
-                if (reason !== "") {
-                    await interaction.editReply(`${targetUserObj} du hast ${xpAmount}XP von ${interaction.member} erhalten!\nAngehängte Nachricht:\n${reason}`);
-                } else {
-                    await interaction.editReply(`${targetUserObj} du hast ${xpAmount}XP von ${interaction.member} erhalten!`);
-                }
+            const targetUserId = interaction.options.get('nutzer').value;
+            if (!(interaction.guild.members.cache.find(m => m.id === targetUserId)?.id)) {
+                interaction.editReply(`Bei ${targetUserId} handelt es sich nicht um einen Nutzer.`);
+                return;
+            }
+            if (interaction.user.id === targetUserId) {
+                interaction.editReply('Du kannst dir selbst keine XP schenken!');
+                return;
+            }
+            const targetUserObj = await interaction.guild.members.fetch(targetUserId);
+            let xpAmount = interaction.options.get('xpmenge').value;
+            const reason = interaction.options.get('nachricht')?.value || "";
+            await removeXP(interaction.member, xpAmount, interaction.channel);
+            await giveXP(targetUserObj, xpAmount, xpAmount, interaction.channel, false, false, false);
+            if (reason !== "") {
+                await interaction.editReply(`${targetUserObj} du hast ${xpAmount}XP von ${interaction.member} erhalten!\nAngehängte Nachricht:\n${reason}`);
+            } else {
+                await interaction.editReply(`${targetUserObj} du hast ${xpAmount}XP von ${interaction.member} erhalten!`);
             }
         } catch (error) {
             console.log(error);

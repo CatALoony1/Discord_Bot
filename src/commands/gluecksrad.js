@@ -71,7 +71,6 @@ module.exports = {
                 result = Math.floor(result / 2);
                 await interaction.editReply(`Du hast ${result}XP verloren!`);
                 await removeXP(targetUserObj, result, interaction.channel);
-                result = result;
             }
             gluecksrad.pool = gluecksrad.pool + einsatz + result;
             if (gluecksrad.pool < 1000) {
