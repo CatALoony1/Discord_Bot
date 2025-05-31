@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const removeXP = require('../utils/removeXP');
 const giveXP = require('../utils/giveXP');
+const Level = require('../models/Level');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -42,8 +43,14 @@ module.exports = {
                 interaction.editReply('Du kannst dir selbst keine XP schenken!');
                 return;
             }
-            const targetUserObj = await interaction.guild.members.fetch(targetUserId);
             let xpAmount = interaction.options.get('xpmenge').value;
+            //check if user has at least xpAmount XP
+            const level = await Level.findOne({ userId: interaction.user.id, guildId: interaction.guild.id });
+            if (!level || level.xp < xpAmount) {
+                interaction.editReply(`Du hast nicht genug XP, um ${xpAmount}XP zu verschenken!`);
+                return;
+            }
+            const targetUserObj = await interaction.guild.members.fetch(targetUserId);
             const reason = interaction.options.get('nachricht')?.value || "";
             await removeXP(interaction.member, xpAmount, interaction.channel);
             await giveXP(targetUserObj, xpAmount, xpAmount, interaction.channel, false, false, false);
