@@ -63,7 +63,7 @@ module.exports = {
                 }
                 result = result * -1;
             } else {
-                result = result / 2;
+                result = Math.floor(result / 2);
                 await interaction.editReply(`Du hast ${result}XP verloren!`);
                 await removeXP(targetUserObj, result, interaction.channel);
                 result = result;
