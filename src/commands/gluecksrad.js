@@ -10,6 +10,12 @@ function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function getRandomNotFloor(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.random() * (max - min + 1) + min;
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('gluecksrad')
@@ -32,7 +38,7 @@ module.exports = {
             }
             await interaction.deferReply();
             const einsatz = interaction.options.get('einsatz')?.value;
-            const zufallsZahl = getRandom(1, 100);
+            const zufallsZahl = getRandomNotFloor(1, 100);
             let gluecksrad = await Gluecksrad.findOne({ guildId: interaction.guild.id });
             if (!gluecksrad) {
                 gluecksrad = new Gluecksrad({
