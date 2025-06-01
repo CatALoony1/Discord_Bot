@@ -85,6 +85,7 @@ module.exports = {
       })
       .setPlayers(players)
       //.setBackground('./img/captain.png')
+      .setBackground('./img/top5.png')
       .setVariant('default');
     const image = await lb.build({ format: "png" });
     const attachment = new AttachmentBuilder(image);
