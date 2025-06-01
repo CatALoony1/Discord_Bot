@@ -17,10 +17,10 @@ const giveXP = require("../../utils/giveXP");
 }*/
 
 function maskiereWort(wort, gerateneBuchstaben) {
-    const woerter = wort.split('');
+    const woerter = wort.split(' ');
     const maskierteWoerter = woerter.map(einzelWort => {
         return einzelWort.split('').map(buchstabe => {
-            if (gerateneBuchstaben.includes(buchstabe.toLowerCase())) {
+            if (gerateneBuchstaben.includes(buchstabe)) {
                 return buchstabe;
             } else {
                 return '\\_';
