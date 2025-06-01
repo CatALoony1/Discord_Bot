@@ -76,6 +76,14 @@ module.exports = {
             if (gluecksrad.pool < 1000) {
                 gluecksrad.pool = 1000;
             }
+            const sonderverlosung = getRandom(1, 500);
+            if(sonderverlosung == 250){
+                if(gluecksrad.sonderpool != 0){
+                    await giveXP(targetUserObj, gluecksrad.sonderpool, gluecksrad.sonderpool, interaction.channel, false, false, false);
+                    await interaction.editReply(`Du hast bei der Sonderverlosung gewonnen und ${gluecksrad.sonderpool}XP erhalten! Glückwunsch!`);
+                    gluecksrad.sonderpool = 0;
+                }
+            }
             await gluecksrad.save();
         } catch (error) {
             console.log(error);

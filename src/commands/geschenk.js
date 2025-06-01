@@ -44,7 +44,6 @@ module.exports = {
                 return;
             }
             let xpAmount = interaction.options.get('xpmenge').value;
-            //check if user has at least xpAmount XP
             const level = await Level.findOne({ userId: interaction.user.id, guildId: interaction.guild.id });
             if (!level || level.xp < xpAmount) {
                 interaction.editReply(`Du hast nicht genug XP, um ${xpAmount}XP zu verschenken!`);
