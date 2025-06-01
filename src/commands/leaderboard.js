@@ -6,6 +6,16 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('leaderboard')
     .setDescription('Zeigt das Leaderboard.')
+    .addStringOption(option =>
+      option.setName('version')
+        .setDescription('Die Version der Top 5')
+        .setRequired(true)
+        .addChoices(
+          { name: 'XP', value: 'XP' },
+          { name: 'Voice', value: 'Voice' },
+          { name: 'Messages', value: 'Messages' }
+        )
+    )
     .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
   run: async ({ interaction }) => {
@@ -14,10 +24,11 @@ module.exports = {
       interaction.reply('Hier ist doch kein Server!');
       return;
     }
+    const version = interaction.options.get('version').value;
 
     await interaction.deferReply();
 
-    const embed = await createLeaderboardEmbeds(0, interaction);
+    const embed = await createLeaderboardEmbeds(0, interaction, version);
     const pageDownButton = new ButtonBuilder()
       .setEmoji('⬅️')
       .setLabel('Zurück')
