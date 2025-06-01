@@ -1330,7 +1330,7 @@ function unterstreicheSatz(satz) {
     const unterstricheneWoerter = woerter.map(wort => {
         return wort.split('').map(() => "\\_").join("");
     });
-    return unterstricheneWoerter.join("   ");
+    return unterstricheneWoerter.join("\n");
 }
 
 module.exports = {

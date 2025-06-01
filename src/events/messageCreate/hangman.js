@@ -15,7 +15,7 @@ function maskiereWort(wort, gerateneBuchstaben) {
             }
         }).join('');
     });
-    return maskierteWoerter.join('   ');
+    return maskierteWoerter.join('\n');
 }
 
 /**
