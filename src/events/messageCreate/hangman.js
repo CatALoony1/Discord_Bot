@@ -13,7 +13,7 @@ function maskiereWort(wort, gerateneBuchstaben) {
         } else {
             return '\\_';
         }
-    }).join(' ');
+    }).join('  ');
 }
 
 /**
