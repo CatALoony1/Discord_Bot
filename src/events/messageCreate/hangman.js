@@ -55,7 +55,7 @@ module.exports = async (message) => {
                     .setColor('#FF0000')
                     .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                     .setTitle('Galgenmännchen - Spiel beendet')
-                    .setDescription(`Verloren! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
+                    .setDescription(`Verloren! Das Wort war: **${hangman.word}**\n\nBuchstaben: ${hangman.buchstaben.join(', ')}`)
                     .setThumbnail('attachment://hangman8.png');
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 await hangman.save();
@@ -67,7 +67,7 @@ module.exports = async (message) => {
                     .setColor(0x0033cc)
                     .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                     .setTitle('Galgenmännchen')
-                    .setDescription(`${leerzeichen}\n\n${hangman.word.length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
+                    .setDescription(`${leerzeichen}\n\n${hangman.word.replaceAll(' ', '').length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
                     .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 await hangman.save();
@@ -81,7 +81,7 @@ module.exports = async (message) => {
                 .setColor('#00FF00')
                 .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                 .setTitle('Galgenmännchen - Spiel beendet')
-                .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
+                .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nBuchstaben: ${hangman.buchstaben.join(', ')}`)
                 .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
             await referencedMessage.edit({ embeds: [embed], files: [file] });
             giveXP(message.member, 25, 25, message.channel, false, false, false);
@@ -96,7 +96,7 @@ module.exports = async (message) => {
                     .setColor('#00FF00')
                     .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                     .setTitle('Galgenmännchen - Spiel beendet')
-                    .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nVerwendete Buchstaben: ${hangman.buchstaben.join(', ')}`)
+                    .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nBuchstaben: ${hangman.buchstaben.join(', ')}`)
                     .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 giveXP(message.member, 25, 25, message.channel, false, false, false);
@@ -110,7 +110,7 @@ module.exports = async (message) => {
                 .setColor(0x0033cc)
                 .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
                 .setTitle('Galgenmännchen')
-                .setDescription(`${leerzeichen}\n\n${hangman.word.length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
+                .setDescription(`${leerzeichen}\n\n${hangman.word.replaceAll(' ', '').length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
                 .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
             await referencedMessage.edit({ embeds: [embed], files: [file] });
             await hangman.save();

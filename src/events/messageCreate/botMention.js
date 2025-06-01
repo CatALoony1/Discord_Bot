@@ -81,7 +81,7 @@ module.exports = async (message, client) => {
     }
     if (botstatevar == 'neutral') {
         var number = getRandom(1, answers.size);
-        const contentOhneYamcha = message.content.replace(`<@${client.user.id}>`, 'Yamcha');
+        const contentOhneYamcha = message.content.replaceAll(`<@${client.user.id}>`, 'Yamcha');
         const zahlMatch = contentOhneYamcha.match(/\d+/);
         if (message.content.includes('Grünkohl') && zahlMatch && message.member.roles.cache.some(role => role.name === 'Geheimniswahrer')) {
             const gefundeneZahl = parseInt(zahlMatch[0], 10);
@@ -153,19 +153,19 @@ module.exports = async (message, client) => {
         }
     } else if (botstatevar == 'evil') {
         console.log('contacting evil AI');
-        const prompt = message.content.replace(`<@${client.user.id}>`, 'Yamcha');
+        const prompt = message.content.replaceAll(`<@${client.user.id}>`, 'Yamcha');
         const sysInstruction = "Dein Name ist Yamcha und du befindest dich auf dem Discord Server 'Versager Verein'. Du bist richtig fies und böse und möchtest die Welt unterjochen.";
         const response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
         await message.reply(`${response.text}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else if (botstatevar == 'good') {
         console.log('contacting good AI');
-        const prompt = message.content.replace(`<@${client.user.id}>`, 'Yamcha');
+        const prompt = message.content.replaceAll(`<@${client.user.id}>`, 'Yamcha');
         const sysInstruction = "Dein Name ist Yamcha und du befindest dich auf dem Discord Server 'Versager Verein'. Du bist super fröhlich und begenest allen mit viel Lieben und Freundlichkeit.";
         const response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
         await message.reply(`${response.text}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else if (botstatevar == 'horny') {
         console.log('contacting horny AI');
-        const prompt = message.content.replace(`<@${client.user.id}>`, 'Yamcha');
+        const prompt = message.content.replaceAll(`<@${client.user.id}>`, 'Yamcha');
         const sysInstruction = "Dein Name ist Yamcha und du befindest dich auf dem Discord Server 'Versager Verein'. Du bist super horny und willst jedem an die Wäsche.";
         const response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
         await message.reply(`${response.text}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);

@@ -1369,14 +1369,14 @@ module.exports = {
                 return;
             }
             await Hangman.deleteMany({ guildId: interaction.guild.id, status: 'beendet' });
-            wort = wort.replace('ß', 'ss').toUpperCase();
+            wort = wort.replaceAll('ß', 'ss').toUpperCase();
             let leerzeichen = unterstreicheSatz(wort);
             const file = new AttachmentBuilder(path.join(__dirname, '../../img/hangman0.png'));
             const hangman = new EmbedBuilder()
                 .setColor(0x0033cc)
                 .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 256 }) })
                 .setTitle(`Galgenmännchen`)
-                .setDescription(`${leerzeichen}\n\n${wort.length} Buchstaben`)
+                .setDescription(`${leerzeichen}\n\n${wort.replaceAll(' ', '').length} Buchstaben`)
                 .setThumbnail(`attachment://hangman0.png`);
             const message = await interaction.editReply({ embeds: [hangman], files: [file] });
             const hangmanData = new Hangman({
