@@ -9,6 +9,10 @@ const gluecksradSchema = new Schema({
     type: Number,
     required: true,
   },
+  sonderpool: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = model('gluecksrad', gluecksradSchema);

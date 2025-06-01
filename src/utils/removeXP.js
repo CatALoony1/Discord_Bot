@@ -1,4 +1,5 @@
 const Level = require('../models/Level.js');
+const Gluecksrad = require('../models/Gluecksrad.js');
 const { EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('./calculateLevelXp.js');
 
@@ -80,6 +81,18 @@ async function removeXP(member, xpToRemove, channel) {
                 console.log(`Error saving updated level ${e}`);
                 return;
             });
+        }
+        const gluecksrad = await Gluecksrad.findOne({ guildId: member.guild.id });
+        if (gluecksrad) {
+            gluecksrad.sonderpool += xpToRemove;
+            await gluecksrad.save();
+        } else {
+            const newGluecksrad = new Gluecksrad({
+                guildId: member.guild.id,
+                pool: 1000,
+                sonderpool: xpToRemove
+            });
+            await newGluecksrad.save();
         }
         return xpToRemove;
     } catch (error) {
