@@ -1328,7 +1328,7 @@ function getRandom(min, max) {
 function unterstreicheSatz(satz) {
     const woerter = satz.split(" ");
     const unterstricheneWoerter = woerter.map(wort => {
-        return wort.split('').map(() => "\_").join("");
+        return wort.split('').map(() => "\\_").join("");
     });
     return unterstricheneWoerter.join("  ");
 }
