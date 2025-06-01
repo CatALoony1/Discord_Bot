@@ -46,7 +46,7 @@ module.exports = {
                     pool: 1000,
                 });
             }
-            const gewinnchance = 33 + ((gluecksrad.pool - 1000) / 500);
+            const gewinnchance = 30 + ((gluecksrad.pool - 1000) / 500);
             const targetUserObj = interaction.member;
             await removeXP(targetUserObj, einsatz, interaction.channel);
             await interaction.editReply(`Dein Einsatz in Höhe von ${einsatz}XP wurde abgezogen!`);
