@@ -84,13 +84,13 @@ async function removeXP(member, xpToRemove, channel) {
         }
         const gluecksrad = await Gluecksrad.findOne({ guildId: member.guild.id });
         if (gluecksrad) {
-            gluecksrad.sonderpool += xpToRemove;
+            gluecksrad.sonderpool += Math.floor(xpToRemove / 2);
             await gluecksrad.save();
         } else {
             const newGluecksrad = new Gluecksrad({
                 guildId: member.guild.id,
                 pool: 1000,
-                sonderpool: xpToRemove
+                sonderpool: Math.floor(xpToRemove / 2)
             });
             await newGluecksrad.save();
         }
