@@ -17,7 +17,7 @@ module.exports = async (guildMember) => {
             console.log('Fehler, Verlassenschannel gibts nicht');
             return;
         }
-        await getTenorGifById("19652884") //old 21377384
+        await getTenorGifById("19652884")
             .then(async (gifUrl) => {
                 if (!gifUrl.includes("http")) {
                     console.log("ERROR Leave gif");
@@ -32,7 +32,6 @@ module.exports = async (guildMember) => {
                 var messageL = await targetChannel.send({ embeds: [leave] });
                 await messageL.react(letterEmojiMap.get('Y'));
                 await messageL.react(letterEmojiMap.get('A'));
-                await messageL.react(letterEmojiMap.get('Y'));
             })
             .catch((error) => {
                 console.error('ERROR:', error);
