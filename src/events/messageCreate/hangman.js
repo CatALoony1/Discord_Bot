@@ -11,7 +11,7 @@ function maskiereWort(wort, gerateneBuchstaben) {
         } else if (gerateneBuchstaben.includes(buchstabe)) {
             return buchstabe;
         } else {
-            return '_';
+            return '\_';
         }
     }).join(' ');
 }
