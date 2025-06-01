@@ -85,9 +85,8 @@ module.exports = {
       })
       .setPlayers(players)
       //.setBackground('./img/captain.png')
-      .setBackground('#7DC9D1')
       .setVariant('default');
-    const image = await lb.build(/*{ format: "png" }*/);
+    const image = await lb.build({ format: "png" });
     const attachment = new AttachmentBuilder(image);
     interaction.editReply({ files: [attachment] });
   },
