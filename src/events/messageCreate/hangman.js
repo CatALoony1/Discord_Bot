@@ -4,18 +4,6 @@ const { Message, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const path = require('node:path');
 const giveXP = require("../../utils/giveXP");
 
-/*function maskiereWort(wort, gerateneBuchstaben) {
-    return wort.split('').map(buchstabe => {
-        if (buchstabe === ' ') {
-            return '\u00A0\u00A0\u00A0';
-        } else if (gerateneBuchstaben.includes(buchstabe)) {
-            return buchstabe;
-        } else {
-            return '\\_';
-        }
-    }).join(' ');
-}*/
-
 function maskiereWort(wort, gerateneBuchstaben) {
     const woerter = wort.split(' ');
     const maskierteWoerter = woerter.map(einzelWort => {
