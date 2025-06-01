@@ -28,7 +28,7 @@ function startJob(client) {
                         console.log(`User ${level.userName} is missing ${missingXP} allXP`);
                         level.allxp += missingXP;
                     }
-missingXPUsers[missingXPUsers.length] = level.userName;
+                    missingXPUsers[missingXPUsers.length] = level.userName;
                     await level.save();
                 }
             });

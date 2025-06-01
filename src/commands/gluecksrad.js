@@ -80,7 +80,7 @@ module.exports = {
             if(sonderverlosung == 250){
                 if(gluecksrad.sonderpool != 0){
                     await giveXP(targetUserObj, gluecksrad.sonderpool, gluecksrad.sonderpool, interaction.channel, false, false, false);
-                    await interaction.editReply(`Du hast bei der Sonderverlosung gewonnen und ${gluecksrad.sonderpool}XP erhalten! Glückwunsch!`);
+                    await interaction.channel.send(`Glückwunsch ${interaction.member}! Du hast bei der Sonderverlosung gewonnen und den Sonderpool von ${gluecksrad.sonderpool}XP erhalten!`);
                     gluecksrad.sonderpool = 0;
                 }
             }
