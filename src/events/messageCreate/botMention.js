@@ -154,19 +154,19 @@ module.exports = async (message, client) => {
     } else if (botstatevar == 'evil') {
         console.log('contacting evil AI');
         const prompt = message.content.replace(`<@${client.user.id}>`, 'Yamcha');
-        const sysInstruction = "Dein Name ist Yamcha. Du sprichst wie ein Pirat und bist sehr fies und böse.";
+        const sysInstruction = "Dein Name ist Yamcha und du befindest dich auf dem Discord Server 'Versager Verein'. Du bist richtig fies und böse und möchtest die Welt unterjochen.";
         const response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
         await message.reply(`${response.text}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else if (botstatevar == 'good') {
         console.log('contacting good AI');
         const prompt = message.content.replace(`<@${client.user.id}>`, 'Yamcha');
-        const sysInstruction = "Dein Name ist Yamcha. Du sprichst wie ein wirklich sehr freundlicher seemann, der mit jeder Anwort viel Liebe ausdrückt.";
+        const sysInstruction = "Dein Name ist Yamcha und du befindest dich auf dem Discord Server 'Versager Verein'. Du bist super fröhlich und begenest allen mit viel Lieben und Freundlichkeit.";
         const response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
         await message.reply(`${response.text}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else if (botstatevar == 'horny') {
         console.log('contacting horny AI');
         const prompt = message.content.replace(`<@${client.user.id}>`, 'Yamcha');
-        const sysInstruction = "Dein Name ist Yamcha. Du bist super horny und willst jedem an die Wäsche.";
+        const sysInstruction = "Dein Name ist Yamcha und du befindest dich auf dem Discord Server 'Versager Verein'. Du bist super horny und willst jedem an die Wäsche.";
         const response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
         await message.reply(`${response.text}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
     } else if (botstatevar == 'besiegt') {
