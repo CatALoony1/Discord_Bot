@@ -1,5 +1,4 @@
 const Level = require('../models/Level.js');
-const Gluecksrad = require('../models/Gluecksrad.js');
 const { EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('../utils/calculateLevelXp.js');
 require('dotenv').config();
@@ -141,18 +140,6 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
                 newLevel.quizadded += 1;
             }
             await newLevel.save();
-        }
-        const gluecksrad = await Gluecksrad.findOne({ guildId: member.guild.id });
-        if (gluecksrad) {
-            gluecksrad.sonderpool += xpToGive;
-            await gluecksrad.save();
-        } else {
-            const newGluecksrad = new Gluecksrad({
-                guildId: member.guild.id,
-                pool: 1000,
-                sonderpool: xpToGive
-            });
-            await newGluecksrad.save();
         }
         return xpToGive;
     } catch (error) {
