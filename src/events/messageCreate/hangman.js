@@ -7,7 +7,7 @@ const giveXP = require("../../utils/giveXP");
 function maskiereWort(wort, gerateneBuchstaben) {
     return wort.split('').map(buchstabe => {
         if (buchstabe === ' ') {
-            return '  ';
+            return ' ';
         } else if (gerateneBuchstaben.includes(buchstabe)) {
             return buchstabe;
         } else {
