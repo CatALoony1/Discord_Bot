@@ -37,10 +37,6 @@ module.exports = {
                 return;
             }
             await interaction.deferReply();
-            if(interaction.user.id == process.env.ADMIN_ID){
-                await interaction.editReply("Du hast auf magische weise und ohne schummeln den Jackpot von 1.000.000XP und den Sonderpool von 100.000XP gewonnen, wow du bist ein glückspilz!");
-                return;
-            }
             const einsatz = interaction.options.get('einsatz')?.value;
             const zufallsZahl = getRandomNotFloor(1, 100);
             let gluecksrad = await Gluecksrad.findOne({ guildId: interaction.guild.id });
