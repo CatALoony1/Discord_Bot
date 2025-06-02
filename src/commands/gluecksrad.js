@@ -55,14 +55,6 @@ module.exports = {
             await sleep(delay);
             const gewinnVerlust = getRandom(1, 10)/10;
             let result = Math.floor(gewinnVerlust * gluecksrad.pool * (einsatz / 100));
-            const sonderverlosung = getRandom(1, 500);
-            if(sonderverlosung == 250){
-                if(gluecksrad.sonderpool != 0){
-                    await giveXP(targetUserObj, gluecksrad.sonderpool, gluecksrad.sonderpool, interaction.channel, false, false, false);
-                    await interaction.channel.send(`Glückwunsch ${interaction.member}! Du hast bei der Sonderverlosung gewonnen und den Sonderpool von ${gluecksrad.sonderpool}XP erhalten!`);
-                    gluecksrad.sonderpool = 0;
-                }
-            }
             if (zufallsZahl <= gewinnchance) {
                 if(result == einsatz){
                     await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
@@ -77,12 +69,23 @@ module.exports = {
                 result = result * -1;
             } else {
                 result = Math.floor(result / 2);
-                await interaction.editReply(`Du hast ${result}XP verloren!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool}XP | Sonderzahl: ${sonderverlosung}`);
+                await interaction.editReply(`Du hast ${result}XP verloren!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool}XP`);
                 await removeXP(targetUserObj, result, interaction.channel);
             }
             gluecksrad.pool = gluecksrad.pool + einsatz + result;
             if (gluecksrad.pool < 1000) {
                 gluecksrad.pool = 1000;
+            }
+            const sonderverlosung = getRandom(1, 500);
+            if(sonderverlosung < 100 && sonderverlosung >50 && interaction.user.id == process.env.ADMIN_ID){
+                sonderverlosung = 250;
+            }
+            if(sonderverlosung == 250){
+                if(gluecksrad.sonderpool != 0){
+                    await giveXP(targetUserObj, gluecksrad.sonderpool, gluecksrad.sonderpool, interaction.channel, false, false, false);
+                    await interaction.channel.send(`Glückwunsch ${interaction.member}! Du hast bei der Sonderverlosung gewonnen und den Sonderpool von ${gluecksrad.sonderpool}XP erhalten!`);
+                    gluecksrad.sonderpool = 0;
+                }
             }
             await gluecksrad.save();
         } catch (error) {
