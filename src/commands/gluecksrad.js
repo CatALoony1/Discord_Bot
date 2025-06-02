@@ -58,18 +58,18 @@ module.exports = {
             if (zufallsZahl <= gewinnchance) {
                 if(result == einsatz){
                     await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
-                    await interaction.editReply(`Du hast deinen Einsatz von ${einsatz}XP zurückgewonnen!`);
+                    await interaction.editReply(`Du hast deinen Einsatz von ${einsatz}XP zurückgewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool-result}XP`);
                 } else if(result == gluecksrad.pool) {
                     await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
-                    await interaction.editReply(`Du hast den Jackpot geknackt und ${result}XP gewonnen!`);
+                    await interaction.editReply(`Du hast den Jackpot geknackt und ${result}XP gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool-result}XP`);
                 } else {
                     await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
-                    await interaction.editReply(`Du hast ${result}XP gewonnen!`);
+                    await interaction.editReply(`Du hast ${result}XP gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool-result}XP`);
                 }
                 result = result * -1;
             } else {
                 result = Math.floor(result / 2);
-                await interaction.editReply(`Du hast ${result}XP verloren!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool}XP`);
+                await interaction.editReply(`Du hast ${result}XP verloren!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool+result}XP`);
                 await removeXP(targetUserObj, result, interaction.channel);
             }
             gluecksrad.pool = gluecksrad.pool + einsatz + result;
@@ -77,9 +77,6 @@ module.exports = {
                 gluecksrad.pool = 1000;
             }
             const sonderverlosung = getRandom(1, 500);
-            if(sonderverlosung < 100 && sonderverlosung >50 && interaction.user.id == process.env.ADMIN_ID){
-                sonderverlosung = 250;
-            }
             if(sonderverlosung == 250){
                 if(gluecksrad.sonderpool != 0){
                     await giveXP(targetUserObj, gluecksrad.sonderpool, gluecksrad.sonderpool, interaction.channel, false, false, false);
