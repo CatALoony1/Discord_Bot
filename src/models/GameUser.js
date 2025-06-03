@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
 const mongoose = require('mongoose');
-const daily = require('../commands/daily');
 
 const gameUserSchema = new Schema({
     userId: {
