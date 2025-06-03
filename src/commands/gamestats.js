@@ -1,9 +1,9 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
 const Lottozahlen = require('../models/Lottozahlen');
 const GameUser = require('../models/GameUser');
-require('./models/Tiere');
-require('./models/Bankkonto');
-require('./models/Inventar');
+require('../models/Tiere');
+require('../models/Bankkonten');
+require('../models/Inventar');
 
 
 module.exports = {
