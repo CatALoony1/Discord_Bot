@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const mongoose = require('mongoose');
+const daily = require('../commands/daily');
 
 const gameUserSchema = new Schema({
     userId: {
@@ -14,6 +15,10 @@ const gameUserSchema = new Schema({
     quizadded: {
         type: Number,
         default: 0,
+    },
+    daily: {
+        type: Date,
+        default: null,
     },
 }, {
     toJSON: { virtuals: true },
