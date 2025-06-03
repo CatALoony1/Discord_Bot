@@ -56,9 +56,9 @@ module.exports = {
     messageEdited.setAuthor({ name: interaction.member.user.username, iconURL: interaction.member.user.displayAvatarURL({ size: 256 }) });
     messageEdited.setTitle(`Deine Stats:`);
     messageEdited.addFields({ name: 'Rang:', value: `${currentRank}` });
-    messageEdited.addFields({ name: 'Aktuelles GELD:', value: `${user.bankkonto.currentMoney}` });
-    messageEdited.addFields({ name: 'Verlorenes/Ausgegebenes GELD:', value: `${user.bankkonto.moneyGain}` });
-    messageEdited.addFields({ name: 'Erhaltenes GELD:', value: `${user.bankkonto.moneyLost}` });
+    messageEdited.addFields({ name: 'Aktuelle Loserlinge:', value: `${user.bankkonto.currentMoney}` });
+    messageEdited.addFields({ name: 'Verlorene/Ausgegebene Loserlinge:', value: `${user.bankkonto.moneyGain}` });
+    messageEdited.addFields({ name: 'Erhaltene Loserlinge:', value: `${user.bankkonto.moneyLost}` });
     messageEdited.addFields({ name: 'Anzahl Lottospiele:', value: `${lottospiele}` });
     messageEdited.addFields({ name: 'Quizspiele hinzugefügt:', value: `${user.quizadded}` });
     messageEdited.addFields({ name: 'Inventar', value: `${user.inventar.items}` });

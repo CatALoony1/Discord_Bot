@@ -39,7 +39,7 @@ module.exports = {
             } else if (zufallszahl == 3) {
                 let amount = getRandom(1, 300);
                 amount = await removeMoney(targetUserObj, amount);
-                await interaction.reply(`Hör auf diesen Befehl zu benutzen, ich ziehe dir als Strafe ${amount}GELD ab!`);
+                await interaction.reply(`Hör auf diesen Befehl zu benutzen, ich ziehe dir als Strafe ${amount} Loserlinge ab!`);
             } else if (zufallszahl == 4) {
                 await getTenorGif('Stop it')
                     .then((gifUrl) => {

@@ -16,7 +16,7 @@ module.exports = {
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
-            const content = `Wir stellen nun auf GELD um. Jeder bekommt 100 GELD Startguthaben!\n Jedem stehen initial 2 Möglichkeiten zur Verfügung.\n 1. Ihr könnt eure XP in GELD umwandeln.\n 2. Ihr könnt eure XP behalten(GELD könnt ihr trotzdem verdienen).\n\nBitte wählt eine der Optionen unten aus, um Zugriff auf den Channel für's GELD zu erhalten.\n(Dieser Schritt kann nichr rückgängig gemacht werden! Tauschverhältnis 1XP = 2GELD)`;
+            const content = `Wir stellen nun auf Loserlinge um. Jeder bekommt 100 Loserlinge Startguthaben!\n Jedem stehen initial 2 Möglichkeiten zur Verfügung.\n 1. Ihr könnt eure XP in Loserlinge umwandeln.\n 2. Ihr könnt eure XP behalten(Loserlinge könnt ihr trotzdem verdienen).\n\nBitte wählt eine der Optionen unten aus, um Zugriff auf den Channel für's Loserlinge zu erhalten.\n(Dieser Schritt kann nichr rückgängig gemacht werden! Tauschverhältnis 1XP = 2 Loserlinge)`;
             const button = new ButtonBuilder()
                 .setCustomId('migratexp')
                 .setLabel('XP umwandeln')
