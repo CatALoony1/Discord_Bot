@@ -34,7 +34,7 @@ gameUserSchema.virtual('inventar', {
     justOne: true
 });
 
-gameUserSchema.virtual('tier', {
+gameUserSchema.virtual('tiere', {
     ref: 'Tiere',
     localField: '_id',
     foreignField: 'besitzer',
