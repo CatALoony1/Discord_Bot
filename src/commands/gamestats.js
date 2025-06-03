@@ -66,7 +66,7 @@ module.exports = {
     interaction.editReply({ embeds: [messageEdited] });
   },
   options: {
-    devOnly: true,
+    devOnly: false,
     deleted: false
   },
 };
