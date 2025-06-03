@@ -61,10 +61,6 @@ const levelSchema = new Schema({
     type: Number,
     default: 0,
   },
-  quizadded: {
-    type: Number,
-    default: 0,
-  },
   lastBump: {
     type: Date,
   },
