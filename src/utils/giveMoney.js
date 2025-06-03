@@ -22,7 +22,7 @@ async function giveMoney(member, money, quizadded) {
                 }
             }
             if (member.roles.cache.some(role => role.name === 'Bumper')) {
-                money = Math.ceil(money * 1.15);
+                money = Math.ceil(money * 1.1);
             }
             if (member.roles.cache.some(role => role.name === 'Server Booster')) {
                 money = Math.ceil(money * 1.15);

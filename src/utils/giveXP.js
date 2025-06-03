@@ -48,6 +48,9 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice) {
             if (member.roles.cache.some(role => role.name === 'Bumper')) {
                 xpAmount = Math.ceil(xpAmount * 1.1);
             }
+            if (member.roles.cache.some(role => role.name === 'Server Booster')) {
+                xpAmount = Math.ceil(xpAmount * 1.15);
+            }
             if (message) {
                 level.messagexp += (xpAmount - bonusXP);
                 level.messages += 1;
