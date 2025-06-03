@@ -23,7 +23,6 @@ module.exports = async (interaction) => {
             guildId: process.env.GUILD_ID,
         });
         await newQuestion.save();
-        var targetChannel = interaction.guild.channels.cache.get(process.env.QUIZ_ID) || (await interaction.guild.channels.fetch(process.env.QUIZ_ID));
         const targetUserObj = await interaction.guild.members.fetch(mentionedUserId);
         var xpToGive = 100;
         await giveMoney(targetUserObj, xpToGive, true);

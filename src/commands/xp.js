@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, PermissionFlagsBits } = require('discord.js');
-const removeXP = require('../utils/removeXP');
-const giveXP = require('../utils/giveXP');
+//const removeXP = require('../utils/removeXP');
+//const giveXP = require('../utils/giveXP');
 const Config = require("../models/Config");
 
 module.exports = {
@@ -101,10 +101,10 @@ module.exports = {
                 let xpAmount = interaction.options.get('gxpmenge')?.value || interaction.options.get('rxpmenge')?.value;
                 const reason = interaction.options.get('ggrund')?.value || interaction.options.get('rgrund')?.value;
                 if (subcommand == 'give') {
-                    xpAmount = await giveXP(targetUserObj, xpAmount, xpAmount, interaction.channel, false, false, false);
+                    //xpAmount = await giveXP(targetUserObj, xpAmount, xpAmount, interaction.channel, false, false, false);
                     await interaction.editReply(`Nutzer ${targetUserObj} hat ${xpAmount} Bonus XP erhalten!\nGrund: ${reason}`);
                 } else if (subcommand == 'remove') {
-                    xpAmount = await removeXP(targetUserObj, xpAmount, interaction.channel);
+                    //xpAmount = await removeXP(targetUserObj, xpAmount, interaction.channel);
                     await interaction.editReply(`Nutzer ${targetUserObj} wurden ${xpAmount} XP abgezogen!\nGrund: ${reason}`);
                 }
             }

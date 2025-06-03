@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const { gu } = require('translatte/languages');
+const mongoose = require('mongoose');
 
 const gameUserSchema = new Schema({
     userId: {
