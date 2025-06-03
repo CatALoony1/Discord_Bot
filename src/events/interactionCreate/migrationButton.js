@@ -40,7 +40,7 @@ module.exports = async (interaction) => {
     try {
         const customId = interaction.customId;
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        targetUserObj = interaction.member;
+        const targetUserObj = interaction.member;
         if (customId === 'migratexp') {
             const level = await Levels.findOne({
                 userId: interaction.member.user.id,
@@ -60,23 +60,23 @@ module.exports = async (interaction) => {
             level.allxp = allxp;
             let xpCheck = true;
             level.level = 0;
-            level.xp = allxp
+            level.xp = allxp;
             do {
-                let neededXP = calculateLevel(levelNumber);
+                let neededXP = calculateLevel(leve.level);
                 if (level.xp >= neededXP) {
                     level.level += 1;
                     level.xp -= neededXP;
                     if (roles.has(level.level)) {
                         let newRole = roles.get(level.level);
                         for (const value of roles.values()) {
-                            if (member.roles.cache.has(value)) {
-                                let tempRole = member.guild.roles.cache.get(value);
-                                await member.guild.members.cache.get(member.user.id).roles.remove(tempRole);
+                            if (targetUserObj.roles.cache.has(value)) {
+                                let tempRole = targetUserObj.guild.roles.cache.get(value);
+                                await targetUserObj.guild.members.cache.get(member.user.id).roles.remove(tempRole);
                                 console.log(`Role ${value} was removed from user ${member.user.tag}`);
                             }
                         }
-                        let role = member.guild.roles.cache.get(newRole);
-                        await member.guild.members.cache.get(member.user.id).roles.add(role);
+                        let role = targetUserObj.guild.roles.cache.get(newRole);
+                        await targetUserObj.guild.members.cache.get(member.user.id).roles.add(role);
                         console.log(`Role ${role.name} was given to user ${member.user.tag}`);
                     }
                 } else {
@@ -84,19 +84,19 @@ module.exports = async (interaction) => {
                 }
             } while (xpCheck);
             level.save();
-            giveMoney(interaction.member, money, false);
+            giveMoney(targetUserObj, money, false);
             interaction.editReply(`Du hast deine XP erfolgreich in Geld umgewandelt. Du hast ${money} Geld erhalten.`);
             const role = interaction.guild.roles.cache.find(r => r.name === 'Spielkind');
             if (role) {
-                await interaction.member.roles.add(role);
+                await targetUserObj.roles.add(role);
             }
             return;
         }
         if (customId === 'notmigratexp') {
             const role = interaction.guild.roles.cache.find(r => r.name === 'Spielkind');
             if (role) {
-                await interaction.member.roles.add(role);
-                await giveMoney(interaction.member, 100, false);
+                await targetUserObj.roles.add(role);
+                await giveMoney(targetUserObj, 100, false);
                 interaction.editReply('Du hast dich entschieden, deine XP zu behalten. Du hast 100 Geld Startguthaben erhalten.');
             } else {
                 interaction.editReply('Die Rolle "Spielkind" wurde nicht gefunden.');
