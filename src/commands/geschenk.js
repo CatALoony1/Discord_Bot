@@ -13,7 +13,7 @@ module.exports = {
                 .setRequired(true)
         )
         .addIntegerOption(option =>
-            option.setName('geldMenge')
+            option.setName('geldmenge')
                 .setDescription('Die Menge an GELD die der Nutzer von dir erhalten soll.')
                 .setRequired(true)
                 .setMinValue(1)
@@ -43,7 +43,7 @@ module.exports = {
                 interaction.editReply('Du kannst dir selbst kein GELD schenken!');
                 return;
             }
-            let geldMenge = interaction.options.get('geldMenge').value;
+            let geldMenge = interaction.options.get('geldmenge').value;
             const user = await GameUser.findOne({ userId: interaction.user.id, guildId: interaction.guild.id }).populate('bankkonto');
             if (!user || !user.bankkonto || user.bankkonto.currentMoney < geldMenge) {
                 interaction.editReply(`Du hast nicht genug GELD, um ${geldMenge}GELD zu verschenken!`);
