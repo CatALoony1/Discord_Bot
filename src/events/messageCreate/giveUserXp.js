@@ -19,7 +19,7 @@ module.exports = async (message) => {
   if (!message.inGuild() || message.author.bot || cooldowns.has(message.author.id) || message.webhookId) return;
   let multiplier = 1;
   let bonusWordList = [];
-  for await (const doc of Config.find({guildId: message.guild.id})) {
+  for await (const doc of Config.find({ guildId: message.guild.id })) {
     if (doc.key == "xpMultiplier") {
       multiplier = Number(doc.value);
     } else if (doc.key == "bonusWords") {
@@ -49,7 +49,7 @@ module.exports = async (message) => {
     console.log(`user ${message.author.tag} received ${bonusXP} Bonus XP`);
   }
   var xpToGive = (getRandomXp(5, 15) * multiplier) + bonusXP;
-  await giveXP(message.member, xpToGive, bonusXP, message.channel, true, false, false);
+  await giveXP(message.member, xpToGive, bonusXP, message.channel, true, false);
   cooldowns.add(message.author.id);
   setTimeout(() => {
     cooldowns.delete(message.author.id);

@@ -2,7 +2,7 @@ const Hangman = require("../../models/Hangman");
 require('dotenv').config();
 const { Message, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const path = require('node:path');
-const giveXP = require("../../utils/giveXP");
+const giveMoney = require("../../utils/giveMoney");
 
 function maskiereWort(wort, gerateneBuchstaben) {
     const woerter = wort.split(' ');
@@ -86,7 +86,7 @@ module.exports = async (message) => {
                 .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nBuchstaben: ${hangman.buchstaben.join(', ')}`)
                 .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
             await referencedMessage.edit({ embeds: [embed], files: [file] });
-            giveXP(message.member, 25, 25, message.channel, false, false, false);
+            giveMoney(message.member, 25, false);
             await hangman.save();
             await message.react('🏆');
         } else {
@@ -101,7 +101,7 @@ module.exports = async (message) => {
                     .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nBuchstaben: ${hangman.buchstaben.join(', ')}`)
                     .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
-                giveXP(message.member, 25, 25, message.channel, false, false, false);
+                giveMoney(message.member, 25, false);
                 await hangman.save();
                 await message.react('🏆');
                 return;

@@ -1,7 +1,7 @@
 const { MessageFlags } = require('discord.js');
 const Questions = require('../../models/QuizQuestion');
 const QuizStats = require('../../models/QuizStats');
-const giveXP = require('../../utils/giveXP');
+const giveMoney = require('../../utils/giveMoney');
 
 function isYesterday(date) {
     const today = new Date();
@@ -49,7 +49,7 @@ module.exports = async (interaction) => {
                     fetchedStats.right += 1;
                     let xpToGive = 50;
                     xpToGive = Math.ceil(xpToGive * (1 + ((fetchedStats.series * 10) / 100)));
-                    await giveXP(interaction.member, xpToGive, xpToGive, interaction.channel, false, false, false);
+                    await giveMoney(interaction.member, xpToGive, false);
                     if (isYesterday(fetchedStats.lastParticipation)) {
                         fetchedStats.series += 1;
                     } else {
@@ -67,7 +67,7 @@ module.exports = async (interaction) => {
                     });
                     let xpToGive = 50;
                     xpToGive = Math.ceil(xpToGive * 1.1);
-                    await giveXP(interaction.member, xpToGive, xpToGive, interaction.channel, false, false, false);
+                    await giveMoney(interaction.member, xpToGive, false);
                     await newStats.save();
                 }
                 await interaction.editReply(`Glückwunsch, Antwort ${answer} ist richtig!🥳`);

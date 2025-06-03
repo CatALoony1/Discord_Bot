@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const Question = require('../../models/QuizQuestion');
-const giveXP = require('../../utils/giveXP');
+const giveMoney = require('../../utils/giveMoney');
 
 module.exports = async (interaction) => {
     if (!interaction.isModalSubmit()) return;
@@ -26,7 +26,7 @@ module.exports = async (interaction) => {
         var targetChannel = interaction.guild.channels.cache.get(process.env.QUIZ_ID) || (await interaction.guild.channels.fetch(process.env.QUIZ_ID));
         const targetUserObj = await interaction.guild.members.fetch(mentionedUserId);
         var xpToGive = 100;
-        await giveXP(targetUserObj, xpToGive, xpToGive, targetChannel, false, false, true);
+        await giveMoney(targetUserObj, xpToGive, true);
         interaction.editReply('Frage eingetragen!');
     }
 };

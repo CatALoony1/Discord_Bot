@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
-const removeXP = require('../utils/removeXP');
-const giveXP = require('../utils/giveXP');
+const removeMoney = require('../utils/removeMoney');
+const giveMoney = require('../utils/giveMoney');
 const Gluecksrad = require('../models/Gluecksrad');
 require('dotenv').config();
 
@@ -22,7 +22,7 @@ module.exports = {
         .setDescription('Spiele um zu gewinnen oder zu verlieren.')
         .addIntegerOption(option =>
             option.setName('einsatz')
-                .setDescription('Anzahl an XP die du setzen möchtest.')
+                .setDescription('Anzahl an GELD die du setzen möchtest.')
                 .setRequired(true)
                 .setMaxValue(100)
                 .setMinValue(1)
@@ -48,8 +48,8 @@ module.exports = {
             }
             const gewinnchance = 30 + ((gluecksrad.pool - 1000) / 500);
             const targetUserObj = interaction.member;
-            await removeXP(targetUserObj, einsatz, interaction.channel);
-            await interaction.editReply(`Dein Einsatz in Höhe von ${einsatz}XP wurde abgezogen!`);
+            await removeMoney(targetUserObj, einsatz);
+            await interaction.editReply(`Dein Einsatz in Höhe von ${einsatz}GELD wurde abgezogen!`);
             var delay = 1000;
             let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
             await sleep(delay);
@@ -57,20 +57,20 @@ module.exports = {
             let result = Math.floor(gewinnVerlust * gluecksrad.pool * (einsatz / 100));
             if (zufallsZahl <= gewinnchance) {
                 if(result == einsatz){
-                    await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
-                    await interaction.editReply(`Du hast deinen Einsatz von ${einsatz}XP zurückgewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool-result}XP`);
+                    await giveMoney(targetUserObj, result, false);
+                    await interaction.editReply(`Du hast deinen Einsatz von ${einsatz}GELD zurückgewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool-result}GELD`);
                 } else if(result == gluecksrad.pool) {
-                    await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
-                    await interaction.editReply(`Du hast den Jackpot geknackt und ${result}XP gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool-result}XP`);
+                    await giveMoney(targetUserObj, result, false);
+                    await interaction.editReply(`Du hast den Jackpot geknackt und ${result}GELD gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool-result}GELD`);
                 } else {
-                    await giveXP(targetUserObj, result, result, interaction.channel, false, false, false);
-                    await interaction.editReply(`Du hast ${result}XP gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool-result}XP`);
+                    await giveMoney(targetUserObj, result, false);
+                    await interaction.editReply(`Du hast ${result}GELD gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool-result}GELD`);
                 }
                 result = result * -1;
             } else {
                 result = Math.floor(result / 2);
-                await interaction.editReply(`Du hast ${result}XP verloren!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool+result}XP`);
-                await removeXP(targetUserObj, result, interaction.channel);
+                await interaction.editReply(`Du hast ${result}GELD verloren!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool+result}GELD`);
+                await removeMoney(targetUserObj, result);
             }
             gluecksrad.pool = gluecksrad.pool + result;
             if (gluecksrad.pool < 1000) {
@@ -79,8 +79,8 @@ module.exports = {
             const sonderverlosung = getRandom(1, 500);
             if(sonderverlosung == 250){
                 if(gluecksrad.sonderpool != 0){
-                    await giveXP(targetUserObj, gluecksrad.sonderpool, gluecksrad.sonderpool, interaction.channel, false, false, false);
-                    await interaction.channel.send(`Glückwunsch ${interaction.member}! Du hast bei der Sonderverlosung gewonnen und den Sonderpool von ${gluecksrad.sonderpool}XP erhalten!`);
+                    await giveMoney(targetUserObj, gluecksrad.sonderpool, false);
+                    await interaction.channel.send(`Glückwunsch ${interaction.member}! Du hast bei der Sonderverlosung gewonnen und den Sonderpool von ${gluecksrad.sonderpool}GELD erhalten!`);
                     gluecksrad.sonderpool = 0;
                 }
             }
@@ -90,7 +90,7 @@ module.exports = {
         }
     },
     options: {
-        devOnly: false,
-        deleted: true,
+        devOnly: true,
+        deleted: false,
     },
 };

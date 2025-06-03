@@ -4,6 +4,7 @@ const cron = require('node-cron');
 const Level = require('../models/Level');
 const Config = require('../models/Config');
 const QuizStats = require('../models/QuizStats');
+const GameUser = require('../models/GameUser.js');
 
 let checkInactiveJob = null;
 
@@ -107,6 +108,7 @@ function startJob(client) {
             for (const key of playerTags.keys()) {
                 console.log(`User ${key} hasn't send a message in at least 30 Days.`);
                 await Level.deleteOne({ guildId: process.env.GUILD_ID, userName: key, });
+                await GameUser.deleteOne({ guildId: process.env.GUILD_ID, userId: playerTags.get(key), });
                 if (quizUserIds.includes(playerTags.get(key).userId)) {
                     await QuizStats.deleteOne({ guildId: process.env.GUILD_ID, userId: playerTags.get(key), });
                 }
@@ -115,6 +117,7 @@ function startJob(client) {
             for (const key of playerTagsLurk.keys()) {
                 playerLurkArray[playerLurkArray.length] = key;
                 console.log(`User ${key} hasn't send a message in at least 15 Days.`);
+                await GameUser.deleteOne({ guildId: process.env.GUILD_ID, userId: playerTags.get(key), });
                 if (quizUserIds.includes(playerTagsLurk.get(key))) {
                     await QuizStats.deleteOne({ guildId: process.env.GUILD_ID, userId: playerTagsLurk.get(key), });
                 }

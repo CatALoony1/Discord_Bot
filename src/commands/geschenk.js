@@ -1,20 +1,20 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
-const removeXP = require('../utils/removeXP');
-const giveXP = require('../utils/giveXP');
-const Level = require('../models/Level');
+const removeMoney = require('../utils/removeMoney');
+const giveMoney = require('../utils/giveMoney');
+const GameUser = require('../models/GameUser');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('geschenk')
-        .setDescription('Verschenke XP an einen Nutzer (sie werden von dir abgezogen).')
+        .setDescription('Verschenke GELD an einen Nutzer (es wird von dir abgezogen).')
         .addMentionableOption(option =>
             option.setName('nutzer')
-                .setDescription('Nutzer dem du XP schenken willst.')
+                .setDescription('Nutzer dem du GELD schenken willst.')
                 .setRequired(true)
         )
         .addIntegerOption(option =>
-            option.setName('xpmenge')
-                .setDescription('Die Menge an XP die der Nutzer von dir erhalten soll.')
+            option.setName('geldMenge')
+                .setDescription('Die Menge an GELD die der Nutzer von dir erhalten soll.')
                 .setRequired(true)
                 .setMinValue(1)
         )
@@ -40,30 +40,30 @@ module.exports = {
                 return;
             }
             if (interaction.user.id === targetUserId) {
-                interaction.editReply('Du kannst dir selbst keine XP schenken!');
+                interaction.editReply('Du kannst dir selbst kein GELD schenken!');
                 return;
             }
-            let xpAmount = interaction.options.get('xpmenge').value;
-            const level = await Level.findOne({ userId: interaction.user.id, guildId: interaction.guild.id });
-            if (!level || level.allxp < xpAmount) {
-                interaction.editReply(`Du hast nicht genug XP, um ${xpAmount}XP zu verschenken!`);
+            let geldMenge = interaction.options.get('geldMenge').value;
+            const user = await GameUser.findOne({ userId: interaction.user.id, guildId: interaction.guild.id }).populate('bankkonto');
+            if (!user || !user.bankkonto || user.bankkonto.currentMoney < geldMenge) {
+                interaction.editReply(`Du hast nicht genug GELD, um ${geldMenge}GELD zu verschenken!`);
                 return;
             }
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
             const reason = interaction.options.get('nachricht')?.value || "";
-            await removeXP(interaction.member, xpAmount, interaction.channel);
-            await giveXP(targetUserObj, xpAmount, xpAmount, interaction.channel, false, false, false);
+            await removeMoney(interaction.member, geldMenge);
+            await giveMoney(targetUserObj, geldMenge, false);
             if (reason !== "") {
-                await interaction.editReply(`${targetUserObj} du hast ${xpAmount}XP von ${interaction.member} erhalten!\nAngehängte Nachricht:\n${reason}`);
+                await interaction.editReply(`${targetUserObj} du hast ${geldMenge}GELD von ${interaction.member} erhalten!\nAngehängte Nachricht:\n${reason}`);
             } else {
-                await interaction.editReply(`${targetUserObj} du hast ${xpAmount}XP von ${interaction.member} erhalten!`);
+                await interaction.editReply(`${targetUserObj} du hast ${geldMenge}GELD von ${interaction.member} erhalten!`);
             }
         } catch (error) {
             console.log(error);
         }
     },
     options: {
-        devOnly: false,
-        deleted: true
+        devOnly: true,
+        deleted: false
     },
 };

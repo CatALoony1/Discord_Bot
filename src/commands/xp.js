@@ -112,4 +112,8 @@ module.exports = {
             console.log(error);
         }
     },
+    options: {
+        devOnly: false,
+        deleted: true
+    },
 };

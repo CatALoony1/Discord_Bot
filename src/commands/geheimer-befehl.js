@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
-const giveXP = require('../utils/giveXP');
-const removeXP = require('../utils/removeXP');
+const giveMoney = require('../utils/giveMoney');
+const removeMoney = require('../utils/removeMoney');
 const getTenorGif = require('../utils/getTenorGif');
 const BotState = require('../models/BotState');
 require('dotenv').config();
@@ -33,13 +33,13 @@ module.exports = {
                     await interaction.reply(`Ich kann doch niemand höhergestelltem einen Timeout geben! Bitte verzeihen Sie mir!`);
                 }
             } else if (zufallszahl == 2) {
-                let amount = getRandom(1, 100);
-                amount = await giveXP(targetUserObj, amount, amount, interaction.channel, false, false, false);
-                await interaction.reply(`Dieser Befehl ist geheim, deshalb erhälst du ${amount}XP Schweigegeld!`);
-            } else if (zufallszahl == 3) {
                 let amount = getRandom(1, 200);
-                amount = await removeXP(targetUserObj, amount, interaction.channel);
-                await interaction.reply(`Hör auf diesen Befehl zu benutzen, ich ziehe dir als Strafe ${amount}XP ab!`);
+                amount = await giveMoney(targetUserObj, amount, false);
+                await interaction.reply(`Dieser Befehl ist geheim, deshalb erhälst du ${amount} Schweigegeld!`);
+            } else if (zufallszahl == 3) {
+                let amount = getRandom(1, 300);
+                amount = await removeMoney(targetUserObj, amount);
+                await interaction.reply(`Hör auf diesen Befehl zu benutzen, ich ziehe dir als Strafe ${amount}GELD ab!`);
             } else if (zufallszahl == 4) {
                 await getTenorGif('Stop it')
                     .then((gifUrl) => {
@@ -67,11 +67,7 @@ module.exports = {
                 client.emit('guildMemberRemove', targetUserObj);
                 await interaction.reply(`Bye`);
             } else if (zufallszahl == 7) {
-                let xp = getRandom(10, 100);
-                const adminObj = await interaction.guild.members.fetch(process.env.ADMIN_ID);
-                xp = await giveXP(adminObj, xp, xp, interaction.channel, false, false, false);
-                await removeXP(targetUserObj, xp, interaction.channel);
-                await interaction.reply(`Danke, dass du dem Admin ${xp}XP von dir gegeben hast!`);
+                await interaction.reply(`Hier wird irgendwann irgendwas passieren`);
             } else if (zufallszahl == 8) {
                 if (!targetUserObj.roles.cache.some(role => role.name === 'Geheimniswahrer')) {
                     const role = interaction.guild.roles.cache.find(role => role.name === 'Geheimniswahrer');
@@ -117,7 +113,7 @@ module.exports = {
         }
     },
     options: {
-        devOnly: false,
-        deleted: true
+        devOnly: true,
+        deleted: false
     },
 };

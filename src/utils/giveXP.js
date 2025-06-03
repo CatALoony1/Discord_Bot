@@ -1,6 +1,7 @@
-const Level = require('../models/Level.js');
-const { EmbedBuilder } = require('discord.js');
-const calculateLevelXp = require('../utils/calculateLevelXp.js');
+const Level = require('../models/Level');
+const { EmbedBuilder } = require('discord');
+const calculateLevelXp = require('../utils/calculateLevelXp');
+const giveMoney = require('../utils/giveMoney');
 require('dotenv').config();
 
 const roles = new Map([[0, '1312394062258507869'],
@@ -35,7 +36,7 @@ const roles = new Map([[0, '1312394062258507869'],
 [140, '1354908712170426507']
 ]);
 
-async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizadded) {
+async function giveXP(member, xpToGive, bonusXP, channel, message, voice) {
     const query = {
         userId: member.user.id,
         guildId: member.guild.id,
@@ -44,17 +45,6 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
         const level = await Level.findOne(query);
         if (level) {
             let xpAmount = xpToGive;
-            if (quizadded) {
-                if (level.quizadded > 0 && level.quizadded <= 10) {
-                    xpAmount = (xpAmount + (level.quizadded * 10));
-                } else if (level.quizadded > 10 && level.quizadded <= 30) {
-                    xpAmount = (xpAmount + (level.quizadded * 5));
-                } else if (level.quizadded > 30 && level.quizadded <= 100) {
-                    xpAmount = (xpAmount + (level.quizadded * 2));
-                } else if (level.quizadded > 100) {
-                    xpAmount = (xpAmount + level.quizadded);
-                }
-            }
             if (member.roles.cache.some(role => role.name === 'Bumper')) {
                 xpAmount = Math.ceil(xpAmount * 1.1);
             }
@@ -64,8 +54,6 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
             } else if (voice) {
                 level.voicexp += xpAmount;
                 level.voicetime += 5;
-            } else if (quizadded) {
-                level.quizadded += 1;
             }
             console.log(`user ${member.user.tag} received ${xpAmount} XP`);
             level.xp += xpAmount;
@@ -98,6 +86,9 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
                             await member.guild.members.cache.get(member.user.id).roles.add(memberRole);
                             console.log(`Role Mitglied was given to user ${member.user.tag}`);
                         }
+                        giveMoney(member, 500, false);
+                    } else {
+                        giveMoney(member, 100, false);
                     }
                     const embed = new EmbedBuilder()
                         .setTitle('Glückwunsch!')
@@ -126,8 +117,7 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
                 voicexp: 0,
                 voicetime: 0,
                 thismonth: xpToGive,
-                bonusclaimed: bonusXP,
-                quizadded: 0
+                bonusclaimed: bonusXP
             });
             if (message) {
                 newLevel.messagexp += (xpToGive - bonusXP);
@@ -135,9 +125,6 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice, quizad
             } else if (voice) {
                 newLevel.voicexp += xpToGive;
                 newLevel.voicetime += 5;
-            }
-            if (quizadded) {
-                newLevel.quizadded += 1;
             }
             await newLevel.save();
         }

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const cron = require('node-cron');
 const Level = require('../models/Level');
+const giveMoney = require('../utils/giveMoney');
 
 let geburtstagJob = null;
 
@@ -53,6 +54,9 @@ async function jobFunction(client) {
             if (birthdayDate.getDate() === today.getDate() && birthdayDate.getMonth() === today.getMonth()) {
                 const age = today.getFullYear() - birthdayDate.getFullYear();
                 targetChannel.send(`Herzlichen Glückwunsch an <@${level.userId}>! Heute ist dein Geburtstag und du bist jetzt ${age} Jahre alt! 🎉`);
+                giveMoney(guild.members.cache.get(level.userId), 500, false).catch((error) => {
+                    console.log(`Error giving money to user ${level.userId}:`, error);
+                });
             }
         }
     }

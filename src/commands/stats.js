@@ -89,7 +89,6 @@ module.exports = {
     messageEdited.addFields({ name: 'Bonus XP:', value: `${fetchedLevel.bonusclaimed}` });
     messageEdited.addFields({ name: 'Nachrichten:', value: `${fetchedLevel.messages}` });
     messageEdited.addFields({ name: 'Ungefähre Voice Call Zeit:', value: `${time}` });
-    messageEdited.addFields({ name: 'Quizfragen hinzugefügt:', value: `${fetchedLevel.quizadded}` });
     messageEdited.addFields({ name: 'Anzahl Lottospiele:', value: `${lottospiele}` });
     messageEdited.addFields({ name: 'Anzahl Bumps:', value: `${fetchedLevel.bumps}` });
     messageEdited.addFields({ name: 'Letzte XP:', value: `${fetchedLevel.lastMessage}` });
