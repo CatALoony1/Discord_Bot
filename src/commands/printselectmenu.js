@@ -122,6 +122,8 @@ module.exports = {
                     bCustomId = 'removePingRoles';
                     bLabel = 'Pingrolle entfernen';
                     emoji = pingEmojis;
+                    min = 0;
+                    max = rolenames.length;
                     break;
                 case 'platform':
                     rolenames = platformRoles;
