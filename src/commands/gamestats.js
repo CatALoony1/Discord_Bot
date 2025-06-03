@@ -1,9 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
 const Lottozahlen = require('../models/Lottozahlen');
 const GameUser = require('../models/GameUser');
-const Level = require('../models/Level');
-const Bankkonten = require('../models/Bankkonten');
-const Inventar = require('../models/Inventar');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -66,36 +63,7 @@ module.exports = {
     messageEdited.addFields({ name: 'Quizspiele hinzugefügt:', value: `${user.quizadded}` });
     messageEdited.addFields({ name: 'Inventar', value: `${user.inventar.items}` });
     messageEdited.addFields({ name: 'Tiere', value: `${user.tiere}` });
-
     interaction.editReply({ embeds: [messageEdited] });
-
-    // check all level entries with this guil for entrys with quizadded != 0
-    const levelEntries = await Level.find({ guildId: interaction.guild.id, quizadded: { $ne: 0 } });
-    // create GameUser entries for each level entry with empty Bankkonto and Inventar
-    for (const entry of levelEntries) {
-      const existingUser = await GameUser.findOne({ userId: entry.userId, guildId: interaction.guild.id });
-      if (!existingUser) {
-        const newUser = new GameUser({
-          userId: entry.userId,
-          guildId: interaction.guild.id,
-          quizadded: entry.quizadded,
-        });
-        const newBankkonto = new Bankkonten({
-          besitzer: newUser._id,
-          currentMoney: 0,
-          moneyGain: 0,
-          moneyLost: 0,
-        });
-        const newInventar = new Inventar({
-          besitzer: newUser._id,
-        });
-        await newUser.save();
-        await newBankkonto.save();
-        await newInventar.save();
-      }
-    }
-    
-
   },
   options: {
     devOnly: true,

@@ -1,7 +1,6 @@
 const GameUser = require('../models/GameUser.js');
 const Bankkonten = require('../models/Bankkonten.js');
 const Inventar = require('../models/Inventar.js');
-const Tiere = require('../models/Tiere.js');
 
 async function giveMoney(member, money, quizadded) {
     const query = {
