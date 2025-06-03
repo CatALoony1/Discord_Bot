@@ -1,7 +1,7 @@
 const { MessageFlags } = require('discord.js');
 const giveMoney = require('../../utils/giveMoney');
 const Level = require('../../models/Level');
-const calculateLevel = require('../../utils/calculateLevel');
+const calculateLevelXp = require('../../utils/calculateLevelXp');
 
 const roles = new Map([[0, '1312394062258507869'],
 [1, '1310211770694111294'],
@@ -42,7 +42,7 @@ module.exports = async (interaction) => {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         const targetUserObj = interaction.member;
         if (customId === 'migratexp') {
-            const level = await Levels.findOne({
+            const level = await Level.findOne({
                 userId: interaction.member.user.id,
                 guildId: interaction.guild.id,
             });
@@ -62,7 +62,7 @@ module.exports = async (interaction) => {
             level.level = 0;
             level.xp = allxp;
             do {
-                let neededXP = calculateLevel(level.level);
+                let neededXP = calculateLevelXp(level.level);
                 if (level.xp >= neededXP) {
                     level.level += 1;
                     level.xp -= neededXP;
