@@ -1,6 +1,10 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
 const Lottozahlen = require('../models/Lottozahlen');
 const GameUser = require('../models/GameUser');
+require('./models/Tiere');
+require('./models/Bankkonto');
+require('./models/Inventar');
+
 
 module.exports = {
   data: new SlashCommandBuilder()
