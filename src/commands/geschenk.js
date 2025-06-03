@@ -2,6 +2,7 @@ const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const removeMoney = require('../utils/removeMoney');
 const giveMoney = require('../utils/giveMoney');
 const GameUser = require('../models/GameUser');
+require('../models/Bankkonten');
 
 module.exports = {
     data: new SlashCommandBuilder()

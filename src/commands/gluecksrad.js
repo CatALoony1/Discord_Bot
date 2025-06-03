@@ -3,6 +3,7 @@ const removeMoney = require('../utils/removeMoney');
 const giveMoney = require('../utils/giveMoney');
 const Gluecksrad = require('../models/Gluecksrad');
 const GameUser = require('../models/GameUser');
+require('../models/Bankkonten');
 require('dotenv').config();
 
 function getRandom(min, max) {
