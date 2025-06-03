@@ -1,6 +1,6 @@
 const { MessageFlags } = require('discord.js');
 const giveMoney = require('../../utils/giveMoney');
-const Levels = require('../../models/Levels.js');
+const Level = require('../../models/Level');
 const calculateLevel = require('../../utils/calculateLevel');
 
 const roles = new Map([[0, '1312394062258507869'],
