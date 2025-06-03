@@ -91,4 +91,8 @@ module.exports = {
         }
         await giveMoney(targetUserObj, moneyToGive, false);
     },
+    options: {
+        devOnly: true,
+        deleted: true
+    },
 };
