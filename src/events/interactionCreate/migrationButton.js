@@ -53,7 +53,7 @@ module.exports = async (interaction) => {
             const allxp = level.voicexp + level.messagexp;
             let money = 0;
             if (level.allxp > allxp) {
-                money = (level.allxp - allxp) * 2;
+                money = ((level.allxp - allxp) * 2) + 100;
             } else {
                 money = 100;
             }
