@@ -1,5 +1,5 @@
 const Level = require('../models/Level');
-const { EmbedBuilder } = require('discord');
+const { EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('../utils/calculateLevelXp');
 const giveMoney = require('../utils/giveMoney');
 require('dotenv').config();
