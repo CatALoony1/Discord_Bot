@@ -1,6 +1,7 @@
 const GameUser = require('../models/GameUser.js');
 const Bankkonten = require('../models/Bankkonten.js');
 const Inventar = require('../models/Inventar.js');
+const Tiere = require('../models/Tiere.js');
 
 async function giveMoney(member, money, quizadded) {
     const query = {
@@ -56,6 +57,12 @@ async function giveMoney(member, money, quizadded) {
             const newInventar = new Inventar({
                 besitzer: newUser._id,
             });
+            const newTiere = new Tiere({
+                pfad: 'https://example.com/default-pet.png',
+                tierart: 'Default Pet',
+                besitzer: newUser._id,
+            });
+            await newTiere.save();
             await newBankkonto.save();
             await newInventar.save();
             await newUser.save();
