@@ -61,8 +61,8 @@ module.exports = {
     messageEdited.setTitle(`Deine Stats:`);
     messageEdited.addFields({ name: 'Rang:', value: `${currentRank}` });
     messageEdited.addFields({ name: 'Aktuelle Loserlinge:', value: `${user.bankkonto.currentMoney}` });
-    messageEdited.addFields({ name: 'Verlorene/Ausgegebene Loserlinge:', value: `${user.bankkonto.moneyGain}` });
-    messageEdited.addFields({ name: 'Erhaltene Loserlinge:', value: `${user.bankkonto.moneyLost}` });
+    messageEdited.addFields({ name: 'Erhaltene Loserlinge:', value: `${user.bankkonto.moneyGain}` });
+    messageEdited.addFields({ name: 'Verlorene/Ausgegebene Loserlinge:', value: `${user.bankkonto.moneyLost}` });
     messageEdited.addFields({ name: 'Anzahl Lottospiele:', value: `${lottospiele}` });
     messageEdited.addFields({ name: 'Quizspiele hinzugefügt:', value: `${user.quizadded}` });
     messageEdited.addFields({ name: 'Inventar', value: `${user.inventar.items}` });
