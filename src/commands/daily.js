@@ -111,6 +111,8 @@ module.exports = {
                 await user.save();
                 await giveMoney(targetUserObj, bonusAmount, false);
                 interaction.editReply(`Du hast deinen täglichen Bonus von ${bonusAmount} GELD erhalten!`);
+            }else {
+                interaction.editReply("Du hast deinen täglichen Bonus bereits heute erhalten. Bitte versuche es morgen erneut.");
             }
         }
     },
