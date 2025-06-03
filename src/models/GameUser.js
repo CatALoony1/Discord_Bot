@@ -17,7 +17,6 @@ const gameUserSchema = new Schema({
     },
     daily: {
         type: Date,
-        default: null,
     },
 }, {
     toJSON: { virtuals: true },
