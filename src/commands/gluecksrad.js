@@ -2,6 +2,7 @@ const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const removeMoney = require('../utils/removeMoney');
 const giveMoney = require('../utils/giveMoney');
 const Gluecksrad = require('../models/Gluecksrad');
+const GameUser = require('../models/GameUser');
 require('dotenv').config();
 
 function getRandom(min, max) {
@@ -37,7 +38,12 @@ module.exports = {
                 return;
             }
             await interaction.deferReply();
-            const einsatz = interaction.options.get('einsatz')?.value;
+            let einsatz = interaction.options.get('einsatz').value;
+            const user = await GameUser.findOne({ userId: interaction.user.id, guildId: interaction.guild.id }).populate('bankkonto');
+            if (!user || !user.bankkonto || user.bankkonto.currentMoney < einsatz) {
+                interaction.editReply(`Du hast nicht genug GELD, um ${einsatz}GELD zu verschenken!`);
+                return;
+            }
             const zufallsZahl = getRandomNotFloor(1, 100);
             let gluecksrad = await Gluecksrad.findOne({ guildId: interaction.guild.id });
             if (!gluecksrad) {
@@ -53,23 +59,23 @@ module.exports = {
             var delay = 1000;
             let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
             await sleep(delay);
-            const gewinnVerlust = getRandom(1, 10)/10;
+            const gewinnVerlust = getRandom(1, 10) / 10;
             let result = Math.floor(gewinnVerlust * gluecksrad.pool * (einsatz / 100));
             if (zufallsZahl <= gewinnchance) {
-                if(result == einsatz){
+                if (result == einsatz) {
                     await giveMoney(targetUserObj, result, false);
-                    await interaction.editReply(`Du hast deinen Einsatz von ${einsatz}GELD zurückgewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool-result}GELD`);
-                } else if(result == gluecksrad.pool) {
+                    await interaction.editReply(`Du hast deinen Einsatz von ${einsatz}GELD zurückgewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool - result}GELD`);
+                } else if (result == gluecksrad.pool) {
                     await giveMoney(targetUserObj, result, false);
-                    await interaction.editReply(`Du hast den Jackpot geknackt und ${result}GELD gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool-result}GELD`);
+                    await interaction.editReply(`Du hast den Jackpot geknackt und ${result}GELD gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool - result}GELD`);
                 } else {
                     await giveMoney(targetUserObj, result, false);
-                    await interaction.editReply(`Du hast ${result}GELD gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool-result}GELD`);
+                    await interaction.editReply(`Du hast ${result}GELD gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool - result}GELD`);
                 }
                 result = result * -1;
             } else {
                 result = Math.floor(result / 2);
-                await interaction.editReply(`Du hast ${result}GELD verloren!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool+result}GELD`);
+                await interaction.editReply(`Du hast ${result}GELD verloren!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool + result}GELD`);
                 await removeMoney(targetUserObj, result);
             }
             gluecksrad.pool = gluecksrad.pool + result;
@@ -77,8 +83,8 @@ module.exports = {
                 gluecksrad.pool = 1000;
             }
             const sonderverlosung = getRandom(1, 500);
-            if(sonderverlosung == 250){
-                if(gluecksrad.sonderpool != 0){
+            if (sonderverlosung == 250) {
+                if (gluecksrad.sonderpool != 0) {
                     await giveMoney(targetUserObj, gluecksrad.sonderpool, false);
                     await interaction.channel.send(`Glückwunsch ${interaction.member}! Du hast bei der Sonderverlosung gewonnen und den Sonderpool von ${gluecksrad.sonderpool}GELD erhalten!`);
                     gluecksrad.sonderpool = 0;
