@@ -72,7 +72,7 @@ module.exports = {
                 await interaction.editReply(`Du hast ${result}XP verloren!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool+result}XP`);
                 await removeXP(targetUserObj, result, interaction.channel);
             }
-            gluecksrad.pool = gluecksrad.pool + einsatz + result;
+            gluecksrad.pool = gluecksrad.pool + result;
             if (gluecksrad.pool < 1000) {
                 gluecksrad.pool = 1000;
             }
