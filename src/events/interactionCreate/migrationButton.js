@@ -62,7 +62,7 @@ module.exports = async (interaction) => {
             level.level = 0;
             level.xp = allxp;
             do {
-                let neededXP = calculateLevel(leve.level);
+                let neededXP = calculateLevel(level.level);
                 if (level.xp >= neededXP) {
                     level.level += 1;
                     level.xp -= neededXP;
@@ -71,13 +71,13 @@ module.exports = async (interaction) => {
                         for (const value of roles.values()) {
                             if (targetUserObj.roles.cache.has(value)) {
                                 let tempRole = targetUserObj.guild.roles.cache.get(value);
-                                await targetUserObj.guild.members.cache.get(member.user.id).roles.remove(tempRole);
-                                console.log(`Role ${value} was removed from user ${member.user.tag}`);
+                                await targetUserObj.guild.members.cache.get(targetUserObj.user.id).roles.remove(tempRole);
+                                console.log(`Role ${value} was removed from user ${targetUserObj.user.tag}`);
                             }
                         }
                         let role = targetUserObj.guild.roles.cache.get(newRole);
-                        await targetUserObj.guild.members.cache.get(member.user.id).roles.add(role);
-                        console.log(`Role ${role.name} was given to user ${member.user.tag}`);
+                        await targetUserObj.guild.members.cache.get(targetUserObj.user.id).roles.add(role);
+                        console.log(`Role ${role.name} was given to user ${targetUserObj.user.tag}`);
                     }
                 } else {
                     xpCheck = false;
