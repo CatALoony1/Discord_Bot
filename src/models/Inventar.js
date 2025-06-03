@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const tiereSchema = new Schema({
+const inventarSchema = new Schema({
     items: [{
         item: {
             type: Schema.Types.ObjectId,
@@ -19,4 +19,4 @@ const tiereSchema = new Schema({
     }
 });
 
-module.exports = model('Tiere', tiereSchema);
+module.exports = model('Inventar', inventarSchema);
