@@ -1,7 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, ActionRowBuilder, MessageFlags, ButtonBuilder, ButtonStyle } = require('discord.js');
 const createShopEmbeds = require('../utils/createShopEmbeds.js');
-const { co } = require('translatte/languages.js');
-
 
 module.exports = {
     data: new SlashCommandBuilder()
