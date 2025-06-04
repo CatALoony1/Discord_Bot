@@ -12,7 +12,7 @@ module.exports = async (interaction) => {
             if (page != 1) {
                 let newPage = +page;
                 await interaction.update({
-                    embeds: [await createShopEmbeds(newPage - 2, interaction, version)],
+                    embeds: [await createShopEmbeds(newPage - 2, interaction)],
                     components: [targetMessage.components[0]]
                 });
                 return;
@@ -28,7 +28,7 @@ module.exports = async (interaction) => {
             if (page != maxpage) {
                 let newPage = +page;
                 await interaction.update({
-                    embeds: [await createShopEmbeds(newPage, interaction, version)],
+                    embeds: [await createShopEmbeds(newPage, interaction)],
                     components: [targetMessage.components[0]]
                 });
                 return;
