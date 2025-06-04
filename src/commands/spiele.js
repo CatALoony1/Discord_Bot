@@ -26,13 +26,13 @@ module.exports = {
             .setEmoji('⬅️')
             .setLabel('Zurück')
             .setStyle(ButtonStyle.Primary)
-            .setCustomId(`ShopDown`);
+            .setCustomId(`shopDown`);
 
         const pageUpButton = new ButtonBuilder()
             .setEmoji('➡️')
             .setLabel('Vorwärts')
             .setStyle(ButtonStyle.Primary)
-            .setCustomId(`ShopUp`);
+            .setCustomId(`shopUp`);
 
         const firstRow = new ActionRowBuilder().addComponents(pageDownButton, pageUpButton);
 
