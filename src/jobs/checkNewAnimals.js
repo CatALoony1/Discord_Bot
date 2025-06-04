@@ -2,6 +2,7 @@ require('dotenv').config();
 const Tiere = require('../models/Tiere');
 const fs = require('fs').promises;
 const path = require('path');
+const Items = require('../models/Items');
 
 const animalFoler = './animals';
 
@@ -13,6 +14,13 @@ function getTierart(filename) {
 
 async function jobFunction(client) {
     let localAnimals = [];
+    const item = new Items({
+        name: 'Tier',
+        beschreibung: 'Kaufe ein Tier.',
+        preis: 10000,
+        boostOnly: false,
+    });
+    item.save();
     try {
         const allLocalFiles = await fs.readdir(animalFoler);
         localAnimals = allLocalFiles.filter(file => path.extname(file).toLowerCase() === '.webp');
