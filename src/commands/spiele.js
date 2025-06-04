@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, ActionRowBuilder, MessageFlags, ButtonBuilder, ButtonStyle } = require('discord.js');
 const createShopEmbeds = require('../utils/createShopEmbeds.js');
+const { co } = require('translatte/languages.js');
 
 
 module.exports = {
@@ -34,11 +35,18 @@ module.exports = {
             .setStyle(ButtonStyle.Primary)
             .setCustomId(`shopUp`);
 
+        const buyButton = new ButtonBuilder()
+            .setEmoji('🛒')
+            .setLabel('Kaufen')
+            .setStyle(ButtonStyle.Success)
+            .setCustomId(`shopBuy`);
+
         const firstRow = new ActionRowBuilder().addComponents(pageDownButton, pageUpButton);
+        const secondRow = new ActionRowBuilder().addComponents(buyButton);
 
         interaction.editReply({
             embeds: [embed],
-            components: [firstRow]
+            components: [firstRow, secondRow]
         });
     },
     options: {
