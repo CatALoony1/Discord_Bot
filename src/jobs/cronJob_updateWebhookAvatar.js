@@ -44,7 +44,7 @@ async function jobFunction(client) {
                     const begruessung = allBegruessungen.find(b => b.webhookId === hook.id && b.webhookToken === hook.token);
 if(begruessung){
                     const [, authorId] = begruessung.authorId.split(';');
-if (begruessung && guild.members.cache.find(m => m.id === begruessung.authorId)?.id || (authorId && guild.members.cache.find(m => m.id === authorId)?.id)) {
+if (guild.members.cache.find(m => m.id === begruessung.authorId)?.id || (authorId && guild.members.cache.find(m => m.id === authorId)?.id)) {
                         const trueAuthor = (authorId === undefined) ? begruessung.authorId : authorId;
 let targetUserObj = await guild.members.cache.get(trueAuthor);
                         try {
