@@ -105,7 +105,7 @@ module.exports = {
             await giveMoney(targetUserObj, moneyToGive, false);
         } else if (subcommand == 'bonus') {
             const user = await GameUser.findOne({ userId: targetUserId, guildId: interaction.guild.id });
-            if ((user && user.daily && user.daily.toDateString() !== new Date().toDateString()) || !user || !user.daily) {
+            if (user && ((user.daily && user.daily.toDateString() !== new Date().toDateString()) || !user.daily)) {
                 const bonusAmount = 100;
                 user.daily = new Date();
                 await user.save();
