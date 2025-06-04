@@ -23,7 +23,7 @@ module.exports = async (message) => {
         if (message.content.includes(process.env.KI_SILVERLIVER)) {
             await callAI(message, '470661320434515989', 'Silverliver', prompt);
         }
-if (message.content.includes(process.env.KI_CHRIS)) {
+        if (message.content.includes(process.env.KI_CHRIS)) {
             await callAI(message, '1357384760053465180', 'Chris', prompt);
         }
     } catch (error) {
