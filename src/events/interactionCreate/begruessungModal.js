@@ -69,8 +69,8 @@ module.exports = async (interaction) => {
     } else if (interaction.customId === `begruessung-${interaction.user.id}`) {
         await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
         try {
-            const authorId = interaction.fields.getTextInputValue('begruessung-text');
             const [ ,channelID, userID] = interaction.fields.getTextInputValue('begruessung-text').split(';');
+const authorId = `${channelID};${userID}`;
             let targetChannel = interaction.guild.channels.cache.get(channelID) || (await interaction.guild.channels.fetch(channelID));
             const begruessung = await Begruessung.findOne({
                 guildId: interaction.guild.id,
