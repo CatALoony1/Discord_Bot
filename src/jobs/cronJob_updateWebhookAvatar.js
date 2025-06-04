@@ -58,6 +58,7 @@ let targetUserObj = await guild.members.cache.get(trueAuthor);
                     } else {
                         console.log(`Webhook ${hook.name} (${hook.id}) not found in database.`);
                     }
+}
                 });
                 console.log(`Dieser Kanal hat ${hooks.size} Hooks.`);
             })
@@ -83,7 +84,6 @@ let targetUserObj = await guild.members.cache.get(trueAuthor);
                     } else {
                         console.log(`Webhook ${hook.name} (${hook.id}) not found in database.`);
                     }
-}
                 });
                 console.log(`Dieser Kanal hat ${hooks.size} Hooks.`);
             })
