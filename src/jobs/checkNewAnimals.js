@@ -21,10 +21,11 @@ async function jobFunction(client) {
         const existingPfade = new Set(existingTierDokumente.map(doc => doc.pfad));
         const newTiereToAdd = [];
         for (const filename of localAnimals) {
-            if (!existingPfade.has(filename)) {
+            const filenameWithoutExtension = path.basename(filename, '.webp');
+            if (!existingPfade.has(filenameWithoutExtension)) {
                 const tierart = getTierart(filename);
                 const newTier = {
-                    pfad: filename,
+                    pfad: filenameWithoutExtension,
                     tierart: tierart,
                 };
                 newTiereToAdd.push(newTier);
