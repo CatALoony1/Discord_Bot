@@ -1,5 +1,6 @@
 const { MessageFlags } = require('discord.js');
 const createShopEmbeds = require("../../utils/createShopEmbeds");
+const { ta } = require('translatte/languages');
 
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('shop')) return;
@@ -13,7 +14,7 @@ module.exports = async (interaction) => {
                 let newPage = +page;
                 await interaction.update({
                     embeds: [await createShopEmbeds(newPage - 2, interaction)],
-                    components: [targetMessage.components[0]]
+                    components: [targetMessage.components[0], targetMessage.components[1]]
                 });
                 return;
             } else {
@@ -29,7 +30,7 @@ module.exports = async (interaction) => {
                 let newPage = +page;
                 await interaction.update({
                     embeds: [await createShopEmbeds(newPage, interaction)],
-                    components: [targetMessage.components[0]]
+                    components: [targetMessage.components[0], targetMessage.components[1]]
                 });
                 return;
             } else {
