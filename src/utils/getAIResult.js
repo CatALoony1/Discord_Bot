@@ -13,7 +13,7 @@ async function getAIResult(prompt, sysInstruction) {
             config: {
                 systemInstruction: sysInstruction,
                 tools: [{ googleSearch: {} }],
-                maxOutputTokens: 500,
+                maxOutputTokens: 400,
             },
         });
         console.log(`AI-Result:${response.text}`);
