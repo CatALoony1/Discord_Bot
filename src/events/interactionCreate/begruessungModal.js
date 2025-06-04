@@ -9,7 +9,7 @@ require('dotenv').config();
  */
 module.exports = async (interaction) => {
     if (!interaction.isModalSubmit()) return;
-    if (interaction.customId === `begruessung-${interaction.user.id}` && !interaction.fields.getTextInputValue('begruessung-text').includes(process.env.MESSE_ID)) {
+    if (interaction.customId === `begruessung-${interaction.user.id}` && !interaction.fields.getTextInputValue('begruessung-text').includes('TESTJG)) {
         try {
             let targetChannel = interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) || (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));
             await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
@@ -70,7 +70,7 @@ module.exports = async (interaction) => {
         await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
         try {
             const authorId = interaction.fields.getTextInputValue('begruessung-text');
-            const [channelID, userID] = interaction.fields.getTextInputValue('begruessung-text').split(';');
+            const [ ,channelID, userID] = interaction.fields.getTextInputValue('begruessung-text').split(';');
             let targetChannel = interaction.guild.channels.cache.get(channelID) || (await interaction.guild.channels.fetch(channelID));
             const begruessung = await Begruessung.findOne({
                 guildId: interaction.guild.id,
