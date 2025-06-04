@@ -43,8 +43,10 @@ module.exports = async (interaction) => {
         }
     } else if (interaction.customId === 'shopBuy') {
         try {
-            const itemName = targetMessageEmbed.description.split('\n')[0].split(': ')[1];
-            const price = parseInt(targetMessageEmbed.description.split('\n')[1].split(': ')[2]);
+            const description = targetMessageEmbed.description;
+            const itemName = description.substring(description.indexOf('Name:') + 6, description.indexOf('\n'));
+                //.setDescription(`Name:${allItems[page].name}\nPreis: ${allItems[page].preis} Loserlinge\nBeschreibung: ${allItems[page].beschreibung}`)
+            const price = parseInt(description.substring(description.indexOf('Preis:') + 7, description.indexOf('Loserlinge') -1));
             console.log(`Item: ${itemName}, Price: ${price}`);
             const user = await GameUser.findOne({ userId: interaction.user.id }).populate('bankkonto');
             if (!user) {
