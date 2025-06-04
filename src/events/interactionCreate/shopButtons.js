@@ -1,12 +1,13 @@
 const { MessageFlags } = require('discord.js');
 const createShopEmbeds = require("../../utils/createShopEmbeds");
-const { ta } = require('translatte/languages');
+const GameUser = require('../../models/GameUser');
+require('../../models/Bankkonten');
 
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('shop')) return;
     let targetMessage = await interaction.channel.messages.fetch(interaction.message.id);
     let targetMessageEmbed = targetMessage.embeds[0];
-    let [ , pageSlash] = targetMessageEmbed.title.split(" - ");
+    let [, pageSlash] = targetMessageEmbed.title.split(" - ");
     let [page, maxpage] = pageSlash.split("/");
     if (interaction.customId === 'shopDown') {
         try {
@@ -18,7 +19,7 @@ module.exports = async (interaction) => {
                 });
                 return;
             } else {
-                await interaction.reply({content:`Du bist bereits auf Seite 1.`, flags: MessageFlags.Ephemeral });
+                await interaction.reply({ content: `Du bist bereits auf Seite 1.`, flags: MessageFlags.Ephemeral });
                 return;
             }
         } catch (error) {
@@ -34,9 +35,27 @@ module.exports = async (interaction) => {
                 });
                 return;
             } else {
-                await interaction.reply({content:`Du bist bereits auf der letzten Seite.`, flags: MessageFlags.Ephemeral });
+                await interaction.reply({ content: `Du bist bereits auf der letzten Seite.`, flags: MessageFlags.Ephemeral });
                 return;
             }
+        } catch (error) {
+            console.log(error);
+        }
+    } else if (interaction.customId === 'shopBuy') {
+        try {
+            const itemName = targetMessageEmbed.description.split('\n')[0].split(': ')[1];
+            const price = parseInt(targetMessageEmbed.description.split('\n')[1].split(': ')[2]);
+            console.log(`Item: ${itemName}, Price: ${price}`);
+            const user = await GameUser.findOne({ userId: interaction.user.id }).populate('bankkonto');
+            if (!user) {
+                await interaction.reply({ content: 'Du hast kein Bankkonto!', flags: MessageFlags.Ephemeral });
+                return;
+            }
+            if (user.bankkonto.currentMoney < price) {
+                await interaction.reply({ content: 'Du hast nicht genug Geld auf deinem Bankkonto!', flags: MessageFlags.Ephemeral });
+                return;
+            }
+            return;
         } catch (error) {
             console.log(error);
         }

@@ -10,7 +10,6 @@ async function createLeaderboardEmbeds(page, interaction) {
     } else {
         allItems = await Items.find({ boostOnly: booster });
     }
-
     const embed = new EmbedBuilder()
         .setTitle(`Shop - ${page + 1}/${allItems.length}`)
         .setDescription(`Name:${allItems[page].name}\nPreis: ${allItems[page].preis} Loserlinge\nBeschreibung: ${allItems[page].beschreibung}`)
