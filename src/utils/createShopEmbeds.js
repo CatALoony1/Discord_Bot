@@ -9,7 +9,7 @@ async function createLeaderboardEmbeds(page, interaction) {
   var i = page + 1;
   const embed = new EmbedBuilder()
     .setTitle(`Shop - ${page + 1}/${allItems.length}`)
-    .setDescription(`Name:${allItems[i].name}\nPreis: ${allItems[i].price} Loserlinge\nBeschreibung: ${allItems[i].description}`)
+    .setDescription(`Name:${allItems[i].name}\nPreis: ${allItems[i].preis} Loserlinge\nBeschreibung: ${allItems[i].beschreibung}`)
     .setColor(0x0033cc);
   return embed;
 }
