@@ -99,7 +99,7 @@ module.exports = async (interaction) => {
                 const selectMenu = new StringSelectMenuBuilder()
                     .setCustomId('useItem_tier_self_select')
                     .setPlaceholder('Wähle ein Tier aus')
-                    .addOptions(tierarten.tierarten.map(tierart => ({
+                    .addOptions(tierarten.map(tierart => ({
                         label: tierart,
                         value: tierart
                     })));
