@@ -16,7 +16,7 @@ const {
 
 
 module.exports = async (interaction) => {
-    if (interaction.isStringSelectMenu() && interaction.customId && interaction.customId.includes('select')) {
+    if (interaction.isStringSelectMenu() && interaction.customId && interaction.customId.includes('select') && !interaction.customId.includes('_')) {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         let customId = interaction.customId;
         let variant = 0;
