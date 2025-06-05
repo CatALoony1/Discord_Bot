@@ -28,9 +28,9 @@ module.exports = {
             interaction.reply('Hier ist doch kein Server!');
             return;
         }
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         const subcommand = interaction.options.getSubcommand();
         if (subcommand == 'shop') {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
             return await handleSpieleCommands.handleShop(interaction);
         } else if (subcommand == 'use_item') {
             return await handleSpieleCommands.handleUseItem(interaction);

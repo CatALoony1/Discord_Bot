@@ -196,7 +196,7 @@ async function handleUseItem(interaction) {
     if (content === 'Fehler') {
         await interaction.showModal(modal);
     } else {
-        await interaction.editReply({
+        await interaction.reply({
             content: content,
             components: [firstRow]
         });
