@@ -88,6 +88,7 @@ module.exports = async (interaction) => {
                 });
             } else if (interaction.customId.includes('self')) {
                 const tierarten = await getTierarten();
+                console.log(tierarten);
                 if (tierarten.tierarten.length === 0) {
                     await targetMessage.edit({
                         content: 'Es gibt leider keine verfügbaren Tiere!', components: [],
