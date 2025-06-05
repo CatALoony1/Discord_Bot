@@ -5,6 +5,7 @@ require('../../models/Bankkonten');
 require('../../models/Inventar');
 const Items = require('../../models/Items');
 const removeMoney = require('../../utils/removeMoney');
+require('dotenv').config();
 
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('shop')) return;
@@ -55,12 +56,8 @@ module.exports = async (interaction) => {
                 await interaction.reply({ content: 'Du hast kein Bankkonto!', flags: MessageFlags.Ephemeral });
                 return;
             }
-            if (user.bankkonto.currentMoney < price) {
+            if (user.bankkonto.currentMoney < price && interaction.user.id != process.env.ADMIN_ID) {
                 await interaction.reply({ content: 'Du hast nicht genug Geld auf deinem Bankkonto!', flags: MessageFlags.Ephemeral });
-                return;
-            }
-            if (user.inventar.items.includes(itemName)) {
-                await interaction.reply({ content: `Du hast bereits ein ${itemName} in deinem Inventar!`, flags: MessageFlags.Ephemeral });
                 return;
             }
             const item = await Items.findOne({ name: itemName });
@@ -78,7 +75,9 @@ module.exports = async (interaction) => {
                 await user.inventar.save();
                 await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
             }
-            await removeMoney(interaction.member, price);
+            if (interaction.user.id != process.env.ADMIN_ID) {
+                await removeMoney(interaction.member, price);
+            }
             return;
         } catch (error) {
             console.log(error);
