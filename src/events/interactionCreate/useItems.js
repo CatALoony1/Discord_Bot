@@ -108,7 +108,7 @@ module.exports = async (interaction) => {
                     content: 'Wähle ein Tier aus, das du besitzen möchtest:',
                     components: [row],
                     flags: MessageFlags.Ephemeral
-                });
+                });*/
             } else if (interaction.customId.includes('other')) {
                 const selectMenu = new UserSelectMenuBuilder()
                     .setCustomId('useItem_tier_other_select')
