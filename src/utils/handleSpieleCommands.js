@@ -198,7 +198,8 @@ async function handleUseItem(interaction) {
     } else {
         await interaction.reply({
             content: content,
-            components: [firstRow]
+            components: [firstRow],
+            flags: MessageFlags.Ephemeral
         });
     }
 }
