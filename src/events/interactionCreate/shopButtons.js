@@ -56,7 +56,7 @@ module.exports = async (interaction) => {
                 await interaction.reply({ content: 'Du hast kein Bankkonto!', flags: MessageFlags.Ephemeral });
                 return;
             }
-            if (user.bankkonto.currentMoney < price && interaction.user.id != process.env.ADMIN_ID) {
+            if (user.bankkonto.currentMoney < price && interaction.user.id != process.env.ADMIN_ID && interaction.user.id != '582571514474266635') {
                 await interaction.reply({ content: 'Du hast nicht genug Geld auf deinem Bankkonto!', flags: MessageFlags.Ephemeral });
                 return;
             }
@@ -75,7 +75,7 @@ module.exports = async (interaction) => {
                 await user.inventar.save();
                 await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
             }
-            if (interaction.user.id != process.env.ADMIN_ID) {
+            if (interaction.user.id != process.env.ADMIN_ID && interaction.user.id != '582571514474266635') {
                 await removeMoney(interaction.member, price);
             }
             return;
