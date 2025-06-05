@@ -4,6 +4,7 @@ const GameUser = require('../models/GameUser');
 require('../models/Tiere');
 require('../models/Bankkonten');
 require('../models/Inventar');
+require('../models/Items');
 
 
 module.exports = {
