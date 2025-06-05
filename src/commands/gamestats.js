@@ -32,7 +32,7 @@ module.exports = {
       return;
     }
 
-    let allUsers = await GameUser.find({ guildId: interaction.guild.id }).populate('bankkonto');
+    let allUsers = await GameUser.find({ guildId: interaction.guild.id }).populate('bankkonto').populate('inventar').populate('tiere');
 
     var oldUsers = [];
     for (let j = 0; j < allUsers.length; j++) {
