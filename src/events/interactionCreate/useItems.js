@@ -96,7 +96,7 @@ module.exports = async (interaction) => {
                     });
                     return;
                 }
-                const selectMenu = new StringSelectMenuBuilder()
+                /*const selectMenu = new StringSelectMenuBuilder()
                     .setCustomId('useItem_tier_self_select')
                     .setPlaceholder('Wähle ein Tier aus')
                     .addOptions(tierarten.map(tierart => ({
@@ -108,7 +108,8 @@ module.exports = async (interaction) => {
                     content: 'Wähle ein Tier aus, das du besitzen möchtest:',
                     components: [row],
                     flags: MessageFlags.Ephemeral
-                });
+                });*/
+                return;
             } else if (interaction.customId.includes('other')) {
                 const selectMenu = new UserSelectMenuBuilder()
                     .setCustomId('useItem_tier_other_select')
