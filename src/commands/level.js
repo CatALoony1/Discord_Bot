@@ -8,7 +8,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('level')
     .setDescription('Zeigt das Level.')
-    .addMentionableOption(option =>
+    .addUserOption(option =>
       option.setName('nutzer')
         .setDescription('Nutzer dessen Level dich interessiert')
     )

@@ -8,7 +8,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('geschenk')
         .setDescription('Verschenke Loserlinge an einen Nutzer (es wird von dir abgezogen).')
-        .addMentionableOption(option =>
+        .addUserOption(option =>
             option.setName('nutzer')
                 .setDescription('Nutzer dem du Loserlinge schenken willst.')
                 .setRequired(true)

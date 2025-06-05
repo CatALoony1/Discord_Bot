@@ -11,7 +11,7 @@ module.exports = {
             subcommand
                 .setName('give')
                 .setDescription('Gibt Nutzer XP.')
-                .addMentionableOption(option =>
+                .addUserOption(option =>
                     option.setName('gnutzer')
                         .setDescription('Nutzer der XP erhalten soll')
                         .setRequired(true)
@@ -34,7 +34,7 @@ module.exports = {
             subcommand
                 .setName('remove')
                 .setDescription('Entfernt XP von Nutzer.')
-                .addMentionableOption(option =>
+                .addUserOption(option =>
                     option.setName('rnutzer')
                         .setDescription('Nutzer der XP verlieren soll')
                         .setRequired(true)

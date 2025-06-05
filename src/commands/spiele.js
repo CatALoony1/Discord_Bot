@@ -1,5 +1,5 @@
-const { SlashCommandBuilder, InteractionContextType, ActionRowBuilder, MessageFlags, ButtonBuilder, ButtonStyle } = require('discord.js');
-const createShopEmbeds = require('../utils/createShopEmbeds.js');
+const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
+const handleSpieleCommand = require('../utils/handleSpieleCommands.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,6 +10,16 @@ module.exports = {
                 .setName('shop')
                 .setDescription('Gibt Nutzer XP.')
         )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('use_item')
+                .setDescription('Benutze ein Item.')
+                .addIntegerOption(option =>
+                    option.setName('item_id')
+                        .setDescription('Die ID des Items, das du benutzen möchtest.')
+                        .setRequired(true)
+                )
+        )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
     run: async ({ interaction }) => {
@@ -18,34 +28,14 @@ module.exports = {
             interaction.reply('Hier ist doch kein Server!');
             return;
         }
-
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        const embed = await createShopEmbeds(0, interaction);
-        const pageDownButton = new ButtonBuilder()
-            .setEmoji('⬅️')
-            .setLabel('Zurück')
-            .setStyle(ButtonStyle.Primary)
-            .setCustomId(`shopDown`);
+        const subcommand = interaction.options.getSubcommand();
+        if (subcommand == 'shop') {
+            return await handleSpieleCommand.handleShop(interaction);
+        } else if (subcommand == 'use_item') {
+            return await handleSpieleCommand.handleUseItem(interaction);
+        }
 
-        const pageUpButton = new ButtonBuilder()
-            .setEmoji('➡️')
-            .setLabel('Vorwärts')
-            .setStyle(ButtonStyle.Primary)
-            .setCustomId(`shopUp`);
-
-        const buyButton = new ButtonBuilder()
-            .setEmoji('🛒')
-            .setLabel('Kaufen')
-            .setStyle(ButtonStyle.Success)
-            .setCustomId(`shopBuy`);
-
-        const firstRow = new ActionRowBuilder().addComponents(pageDownButton, pageUpButton);
-        const secondRow = new ActionRowBuilder().addComponents(buyButton);
-
-        interaction.editReply({
-            embeds: [embed],
-            components: [firstRow, secondRow]
-        });
     },
     options: {
         devOnly: false,

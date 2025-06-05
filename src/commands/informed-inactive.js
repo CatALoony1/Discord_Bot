@@ -9,7 +9,7 @@ module.exports = {
             subcommand
                 .setName('add')
                 .setDescription('Setzt Nutzer inaktiv.')
-                .addMentionableOption(option =>
+                .addUserOption(option =>
                     option.setName('nutzer')
                         .setDescription('Nutzer')
                         .setRequired(true)
@@ -19,7 +19,7 @@ module.exports = {
             subcommand
                 .setName('remove')
                 .setDescription('Entfernt Nutzer inaktiv.')
-                .addMentionableOption(option =>
+                .addUserOption(option =>
                     option.setName('user')
                         .setDescription('Nutzer')
                         .setRequired(true)

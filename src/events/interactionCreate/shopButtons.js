@@ -59,7 +59,6 @@ module.exports = async (interaction) => {
                 await interaction.reply({ content: 'Du hast nicht genug Geld auf deinem Bankkonto!', flags: MessageFlags.Ephemeral });
                 return;
             }
-            //Check if User already has Item in user.inventar.items
             if (user.inventar.items.includes(itemName)) {
                 await interaction.reply({ content: `Du hast bereits ein ${itemName} in deinem Inventar!`, flags: MessageFlags.Ephemeral });
                 return;
