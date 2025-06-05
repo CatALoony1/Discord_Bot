@@ -15,7 +15,7 @@ module.exports = async (interaction) => {
                 const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
                 const randomTierOhneBesitzer = await getRandomTier(tierart);
                 if (randomTierOhneBesitzer.length === 0) {
-                    await interaction.followUp({
+                    await interaction.update({
                         content: 'Es gibt leider keine verfügbaren Tiere dieser Art!', components: [],
                         flags: MessageFlags.Ephemeral
                     });
@@ -30,7 +30,7 @@ module.exports = async (interaction) => {
                     user.inventar.items.splice(itemId, 1);
                 }
                 await user.inventar.save();
-                await interaction.followUp({
+                await interaction.update({
                     content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].pfad}** erhalten!`,
                     files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`],
                     components: [],
@@ -40,7 +40,7 @@ module.exports = async (interaction) => {
                 const targetUser = interaction.values[0];
                 const tierarten = await getTierarten();
                 if (tierarten.length === 0 || tierarten[0].tierarten.length === 0) {
-                    await interaction.followUp({
+                    await interaction.update({
                         content: 'Es gibt leider keine verfügbaren Tiere!', components: [],
                         flags: MessageFlags.Ephemeral
                     });
@@ -54,7 +54,7 @@ module.exports = async (interaction) => {
                         value: tierart
                     })));
                 const row = new ActionRowBuilder().addComponents(selectMenu);
-                await interaction.followUp({
+                await interaction.update({
                     content: 'Wähle ein Tier aus, das du besitzen möchtest:',
                     components: [row],
                     flags: MessageFlags.Ephemeral
@@ -65,7 +65,7 @@ module.exports = async (interaction) => {
                 const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
                 const randomTierOhneBesitzer = await getRandomTier(tierart);
                 if (randomTierOhneBesitzer.length === 0) {
-                    await interaction.followUp({
+                    await interaction.update({
                         content: 'Es gibt leider keine verfügbaren Tiere dieser Art!', components: [],
                         flags: MessageFlags.Ephemeral
                     });
@@ -80,7 +80,7 @@ module.exports = async (interaction) => {
                     user.inventar.items.splice(itemId, 1);
                 }
                 await user.inventar.save();
-                await interaction.followUp({
+                await interaction.update({
                     content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].pfad}** an <@${targetUserId}> verschenkt!`,
                     files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`],
                     components: [],
@@ -89,7 +89,7 @@ module.exports = async (interaction) => {
             } else if (interaction.customId.includes('self')) {
                 const tierarten = await getTierarten();
                 if (tierarten.length === 0 || tierarten[0].tierarten.length === 0) {
-                    await interaction.followUp({
+                    await interaction.update({
                         content: 'Es gibt leider keine verfügbaren Tiere!', components: [],
                         flags: MessageFlags.Ephemeral
                     });
@@ -103,7 +103,7 @@ module.exports = async (interaction) => {
                         value: tierart
                     })));
                 const row = new ActionRowBuilder().addComponents(selectMenu);
-                await interaction.followUp({
+                await interaction.update({
                     content: 'Wähle ein Tier aus, das du besitzen möchtest:',
                     components: [row],
                     flags: MessageFlags.Ephemeral
@@ -115,7 +115,7 @@ module.exports = async (interaction) => {
                     .setMinValues(1)
                     .setMaxValues(1);
                 const row = new ActionRowBuilder().addComponents(selectMenu);
-                await interaction.followUp({
+                await interaction.update({
                     content: 'Wähle einen Nutzer aus, dem du ein Tier schenken möchtest:',
                     components: [row],
                     flags: MessageFlags.Ephemeral
