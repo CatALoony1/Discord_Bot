@@ -84,7 +84,7 @@ module.exports = async (interaction) => {
                     components: [],
                     flags: MessageFlags.Ephemeral
                 });
-                await interaction.channel.send(`<@${targetUserId}> du hast ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].pfad}** von <@${interaction.user.id}> erhalten!`);
+                await interaction.channel.send({ content: `<@${targetUserId}> du hast ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].pfad}** von <@${interaction.user.id}> erhalten!` files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`] });
                 await Tiere.findByIdAndUpdate(
                     randomTierOhneBesitzer[0]._id,
                     { besitzer: user._id }
