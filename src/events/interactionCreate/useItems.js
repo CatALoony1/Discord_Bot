@@ -20,7 +20,6 @@ module.exports = async (interaction) => {
                     });
                     return;
                 }
-                randomTierOhneBesitzer[0].besitzer = user._id;
                 const itemId = user.inventar.items.findIndex(item => item.item.name === 'Tier');
                 if (user.inventar.items[itemId].quantity > 1) {
                     user.inventar.items[itemId].quantity -= 1;
@@ -33,7 +32,10 @@ module.exports = async (interaction) => {
                     components: [],
                     flags: MessageFlags.Ephemeral
                 });
-                await randomTierOhneBesitzer[0].save();
+                await Tiere.findByIdAndUpdate(
+                    randomTierOhneBesitzer[0]._id,
+                    { besitzer: user._id }
+                );
                 await user.inventar.save();
             } else if (interaction.customId.includes('other_select')) {
                 const targetUser = interaction.values[0];
@@ -70,21 +72,23 @@ module.exports = async (interaction) => {
                     });
                     return;
                 }
-                randomTierOhneBesitzer[0].besitzer = user._id;
-                await randomTierOhneBesitzer[0].save();
                 const itemId = user.inventar.items.findIndex(item => item.item.name === 'Tier');
                 if (user.inventar.items[itemId].quantity > 1) {
                     user.inventar.items[itemId].quantity -= 1;
                 } else {
                     user.inventar.items.splice(itemId, 1);
                 }
-                await user.inventar.save();
                 await interaction.update({
                     content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].pfad}** an <@${targetUserId}> verschenkt!`,
                     files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`],
                     components: [],
                     flags: MessageFlags.Ephemeral
                 });
+                await Tiere.findByIdAndUpdate(
+                    randomTierOhneBesitzer[0]._id,
+                    { besitzer: user._id }
+                );
+                await user.inventar.save();
             } else if (interaction.customId.includes('self')) {
                 const tierarten = await getTierarten();
                 if (tierarten.length === 0 || tierarten[0].tierarten.length === 0) {
