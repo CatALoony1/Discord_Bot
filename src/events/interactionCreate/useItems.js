@@ -8,7 +8,7 @@ const Tiere = require('../../models/Tiere');
 module.exports = async (interaction) => {
     if (!interaction.customId || !interaction.customId.includes('useItem')) return;
     if (interaction.isButton()) {
-        interaction.deferUpdate();
+        await interaction.deferUpdate();
         if (interaction.customId.includes('tier')) {
             if (interaction.customId.includes('self_select')) {
                 const tierart = interaction.values[0];
