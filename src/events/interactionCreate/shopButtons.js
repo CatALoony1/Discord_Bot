@@ -4,6 +4,7 @@ const GameUser = require('../../models/GameUser');
 require('../../models/Bankkonten');
 require('../../models/Inventar');
 const Items = require('../../models/Items');
+const removeMoney = require('../../utils/removeMoney');
 
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('shop')) return;
@@ -47,7 +48,7 @@ module.exports = async (interaction) => {
         try {
             const description = targetMessageEmbed.description;
             const itemName = description.substring(description.indexOf('Name:') + 6, description.indexOf('\n'));
-            const price = parseInt(description.substring(description.indexOf('Preis:') + 7, description.indexOf('Loserlinge') - 1));
+            const price = parseInt(description.substring(description.indexOf('Preis:') + 7, description.indexOf('Loserlinge') - 1).replaceAll('.', ''));
             console.log(`Item: ${itemName}, Price: ${price}`);
             const user = await GameUser.findOne({ userId: interaction.user.id }).populate('bankkonto').populate('inventar');
             if (!user || !user.bankkonto || !user.inventar) {
@@ -78,6 +79,7 @@ module.exports = async (interaction) => {
                 await user.inventar.save();
                 await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
             }
+            await removeMoney(interaction.member, price);
             return;
         } catch (error) {
             console.log(error);
