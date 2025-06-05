@@ -13,7 +13,7 @@ const {
 } = require('../../utils/selectMenuRoles');
 
 module.exports = async (interaction) => {
-    if (interaction.isButton() && interaction.customId && interaction.customId.includes('remove')) {
+    if (interaction.isButton() && interaction.customId && interaction.customId.includes('remove') && !interaction.customId.includes('_')) {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         let customId = interaction.customId;
         let variant = 0;
