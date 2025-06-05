@@ -56,8 +56,8 @@ module.exports = {
     if (lotto && lotto.length > 0) {
       lottospiele = lotto.length;
     }
-    const itemNamesAndQuantity = user.inventar.items.map(item => {
-      return `${item.item.name} (x${item.quantity})`;
+    const itemNamesAndQuantity = user.inventar.items.map((item, index) => {
+      return `${index} -> ${item.item.name} (x${item.quantity})`;
     }).join('\n');
     const messageEdited = new EmbedBuilder();
     messageEdited.setColor(0x0033cc);
