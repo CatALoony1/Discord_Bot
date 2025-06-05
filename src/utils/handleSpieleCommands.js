@@ -1,7 +1,6 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, UserSelectMenuBuilder, ModalBuilder, TextInputBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, UserSelectMenuBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags } = require('discord.js');
 const createShopEmbeds = require('../utils/createShopEmbeds.js');
 const GameUser = require('../models/GameUser.js');
-const { sw } = require('translatte/languages.js');
 require('../models/Inventar.js');
 require('../models/Item.js');
 
@@ -207,4 +206,5 @@ async function handleUseItem(interaction) {
 
 module.exports = {
     handleShop,
+    handleUseItem,
 };

@@ -1,4 +1,4 @@
-const { MessageFlags } = require('discord.js');
+/*const { MessageFlags } = require('discord.js');
 const createShopEmbeds = require("../../utils/createShopEmbeds");
 const GameUser = require('../../models/GameUser');
 require('../../models/Bankkonten');
@@ -32,4 +32,4 @@ module.exports = async (interaction) => {
             console.log(error);
         }
     }
-};
+};*/
