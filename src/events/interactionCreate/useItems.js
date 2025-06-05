@@ -9,7 +9,7 @@ module.exports = async (interaction) => {
     if (!interaction.customId || !interaction.customId.includes('useItem')) return;
     if (interaction.isButton()) {
         if (interaction.customId.includes('tier')) {
-            const targetMessage = await interaction.channel.messages.fetch(interaction.message.id);
+            const targetMessage = interaction.message;
             if (interaction.customId.includes('self_select')) {
                 const tierart = interaction.values[0];
                 const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
@@ -39,7 +39,7 @@ module.exports = async (interaction) => {
             } else if (interaction.customId.includes('other_select')) {
                 const targetUser = interaction.values[0];
                 const tierarten = await getTierarten();
-                if (tierarten.tierarten.length === 0) {
+                if (tierarten.length === 0 || tierarten[0].tierarten.length === 0) {
                     await targetMessage.edit({
                         content: 'Es gibt leider keine verfügbaren Tiere!', components: [],
                         flags: MessageFlags.Ephemeral
@@ -49,7 +49,7 @@ module.exports = async (interaction) => {
                 const selectMenu = new StringSelectMenuBuilder()
                     .setCustomId(`useItem_tier_other_uselect_${targetUser}`)
                     .setPlaceholder('Wähle ein Tier aus')
-                    .addOptions(tierarten.tierarten.map(tierart => ({
+                    .addOptions(tierarten[0].tierarten.map(tierart => ({
                         label: tierart,
                         value: tierart
                     })));
@@ -88,7 +88,6 @@ module.exports = async (interaction) => {
                 });
             } else if (interaction.customId.includes('self')) {
                 const tierarten = await getTierarten();
-                console.log(tierarten[0].tierarten);
                 if (tierarten.length === 0 || tierarten[0].tierarten.length === 0) {
                     await targetMessage.edit({
                         content: 'Es gibt leider keine verfügbaren Tiere!', components: [],
