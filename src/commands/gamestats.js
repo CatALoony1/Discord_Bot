@@ -25,14 +25,14 @@ module.exports = {
     const user = await GameUser.findOne({
       userId: targetUserId,
       guildId: interaction.guild.id,
-    }).populate('bankkonto').populate('inventar').populate('tiere');
+    }).populate('bankkonto').populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } }).populate('tiere');
 
     if (!user) {
       interaction.editReply("Du hast noch kein Level");
       return;
     }
 
-    let allUsers = await GameUser.find({ guildId: interaction.guild.id }).populate('bankkonto').populate('inventar').populate('tiere');
+    let allUsers = await GameUser.find({ guildId: interaction.guild.id }).populate('bankkonto');
 
     var oldUsers = [];
     for (let j = 0; j < allUsers.length; j++) {

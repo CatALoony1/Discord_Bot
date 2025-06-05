@@ -36,7 +36,7 @@ async function handleShop(interaction) {
 async function handleUseItem(interaction) {
     const itemId = interaction.options.getInteger('item_id');
     const targetUserObj = interaction.member;
-    const user = await GameUser.findOne({ userId: targetUserObj.id }).populate('inventar');
+    const user = await GameUser.findOne({ userId: targetUserObj.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
     if (!user || !user.inventar) {
         await interaction.reply({ content: 'Du hast kein Inventar!', flags: MessageFlags.Ephemeral });
         return;
