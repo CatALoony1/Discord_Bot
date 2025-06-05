@@ -88,18 +88,18 @@ module.exports = async (interaction) => {
                 });
             } else if (interaction.customId.includes('self')) {
                 const tierarten = await getTierarten();
-                console.log(tierarten.tierarten);
-                if (tierarten.length === 0) {
+                console.log(tierarten[0].tierarten);
+                if (tierarten.length === 0 || tierarten[0].tierarten.length === 0) {
                     await targetMessage.edit({
                         content: 'Es gibt leider keine verfügbaren Tiere!', components: [],
                         flags: MessageFlags.Ephemeral
                     });
                     return;
                 }
-                /*const selectMenu = new StringSelectMenuBuilder()
+                const selectMenu = new StringSelectMenuBuilder()
                     .setCustomId('useItem_tier_self_select')
                     .setPlaceholder('Wähle ein Tier aus')
-                    .addOptions(tierarten.map(tierart => ({
+                    .addOptions(tierarten[0].tierarten.map(tierart => ({
                         label: tierart,
                         value: tierart
                     })));
@@ -108,7 +108,7 @@ module.exports = async (interaction) => {
                     content: 'Wähle ein Tier aus, das du besitzen möchtest:',
                     components: [row],
                     flags: MessageFlags.Ephemeral
-                });*/
+                });
             } else if (interaction.customId.includes('other')) {
                 const selectMenu = new UserSelectMenuBuilder()
                     .setCustomId('useItem_tier_other_select')
