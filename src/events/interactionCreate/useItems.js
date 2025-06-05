@@ -7,41 +7,34 @@ const Tiere = require('../../models/Tiere');
 
 module.exports = async (interaction) => {
     if (!interaction.customId || !interaction.customId.includes('useItem')) return;
-    if (interaction.isButton()) {
+    try {
         if (interaction.customId.includes('tier')) {
             if (interaction.customId.includes('self_select')) {
-                console.log(`Tier Select: ${interaction.customId}`);
-                try {
-                    const tierart = interaction.values[0];
-                    console.log(`Tierart: ${tierart}`);
-                    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-                    console.log(`User: ${user.userId}`);
-                    const randomTierOhneBesitzer = await getRandomTier(tierart);
-                    if (randomTierOhneBesitzer.length === 0) {
-                        await interaction.update({
-                            content: 'Es gibt leider keine verfügbaren Tiere dieser Art!', components: [],
-                            flags: MessageFlags.Ephemeral
-                        });
-                        return;
-                    }
-                    randomTierOhneBesitzer[0].besitzer = user._id;
-                    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Tier');
-                    if (user.inventar.items[itemId].quantity > 1) {
-                        user.inventar.items[itemId].quantity -= 1;
-                    } else {
-                        user.inventar.items.splice(itemId, 1);
-                    }
+                const tierart = interaction.values[0];
+                const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
+                const randomTierOhneBesitzer = await getRandomTier(tierart);
+                if (randomTierOhneBesitzer.length === 0) {
                     await interaction.update({
-                        content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].pfad}** erhalten!`,
-                        files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`],
-                        components: [],
+                        content: 'Es gibt leider keine verfügbaren Tiere dieser Art!', components: [],
                         flags: MessageFlags.Ephemeral
                     });
-                    await randomTierOhneBesitzer[0].save();
-                    await user.inventar.save();
-                } catch (error) {
-                    console.log(error);
+                    return;
                 }
+                randomTierOhneBesitzer[0].besitzer = user._id;
+                const itemId = user.inventar.items.findIndex(item => item.item.name === 'Tier');
+                if (user.inventar.items[itemId].quantity > 1) {
+                    user.inventar.items[itemId].quantity -= 1;
+                } else {
+                    user.inventar.items.splice(itemId, 1);
+                }
+                await interaction.update({
+                    content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].pfad}** erhalten!`,
+                    files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`],
+                    components: [],
+                    flags: MessageFlags.Ephemeral
+                });
+                await randomTierOhneBesitzer[0].save();
+                await user.inventar.save();
             } else if (interaction.customId.includes('other_select')) {
                 const targetUser = interaction.values[0];
                 const tierarten = await getTierarten();
@@ -129,10 +122,8 @@ module.exports = async (interaction) => {
             }
 
         }
-    } else if (interaction.isModalSubmit()) {
-        return;
-    } else if (interaction.isUserSelectMenu()) {
-        return;
+    } catch (error) {
+        console.log(error);
     }
 };
 
