@@ -26,7 +26,7 @@ module.exports = {
             option.setName('einsatz')
                 .setDescription('Anzahl an Loserlinge die du setzen möchtest.')
                 .setRequired(true)
-                .setMaxValue(1000)
+                .setMaxValue(10000)
                 .setMinValue(1)
         )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
@@ -50,10 +50,13 @@ module.exports = {
             if (!gluecksrad) {
                 gluecksrad = new Gluecksrad({
                     guildId: interaction.guild.id,
-                    pool: 1000,
+                    pool: 10000,
                 });
             }
-            const gewinnchance = 30 + ((gluecksrad.pool - 1000) / 500);
+            let gewinnchance = 30 + ((gluecksrad.pool - 10000) / 5000);
+            if(gewinnchance > 75) {
+                gewinnchance = 75;
+            }
             const targetUserObj = interaction.member;
             await removeMoney(targetUserObj, einsatz);
             await interaction.editReply(`Dein Einsatz in Höhe von ${einsatz} Loserlinge wurde abgezogen!`);
@@ -86,8 +89,8 @@ module.exports = {
                 await removeMoney(targetUserObj, result);
             }
             gluecksrad.pool = gluecksrad.pool + result;
-            if (gluecksrad.pool < 1000) {
-                gluecksrad.pool = 1000;
+            if (gluecksrad.pool < 10000) {
+                gluecksrad.pool = 10000;
             }
             const sonderverlosung = getRandom(1, 500);
             if (sonderverlosung == 250) {
