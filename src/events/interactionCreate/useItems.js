@@ -88,7 +88,7 @@ module.exports = async (interaction) => {
                 });
             } else if (interaction.customId.includes('self')) {
                 const tierarten = await getTierarten();
-                console.log(tierarten);
+                console.log(tierarten.tierarten);
                 if (tierarten.length === 0) {
                     await targetMessage.edit({
                         content: 'Es gibt leider keine verfügbaren Tiere!', components: [],
@@ -108,8 +108,7 @@ module.exports = async (interaction) => {
                     content: 'Wähle ein Tier aus, das du besitzen möchtest:',
                     components: [row],
                     flags: MessageFlags.Ephemeral
-                });*/
-                return;
+                });
             } else if (interaction.customId.includes('other')) {
                 const selectMenu = new UserSelectMenuBuilder()
                     .setCustomId('useItem_tier_other_select')
