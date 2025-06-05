@@ -12,13 +12,13 @@ async function giveMoney(member, money, quizadded) {
         if (user) {
             if (quizadded) {
                 if (user.quizadded > 0 && user.quizadded <= 10) {
-                    money = (money + (user.quizadded * 10));
+                    money = (money + (user.quizadded * 100));
                 } else if (user.quizadded > 10 && user.quizadded <= 30) {
-                    money = (money + (user.quizadded * 5));
+                    money = (money + (user.quizadded * 50));
                 } else if (user.quizadded > 30 && user.quizadded <= 100) {
-                    money = (money + (user.quizadded * 2));
+                    money = (money + (user.quizadded * 20));
                 } else if (user.quizadded > 100) {
-                    money = (money + user.quizadded);
+                    money = (money + (user.quizadded * 10));
                 }
             }
             if (member.roles.cache.some(role => role.name === 'Bumper')) {

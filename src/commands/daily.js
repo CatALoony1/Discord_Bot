@@ -65,25 +65,25 @@ module.exports = {
                 await newLottozahl.save();
                 var anzahlNullen = 0;
                 if ((lottozahl % 10000000) === 0) {
-                    moneyToGive = 100000;
+                    moneyToGive = 1000000;
                     anzahlNullen = 7;
                 } else if ((lottozahl % 1000000) === 0) {
-                    moneyToGive = 50000;
+                    moneyToGive = 500000;
                     anzahlNullen = 6;
                 } else if ((lottozahl % 100000) === 0) {
-                    moneyToGive = 25000;
+                    moneyToGive = 250000;
                     anzahlNullen = 5;
                 } else if ((lottozahl % 10000) === 0) {
-                    moneyToGive = 10000;
+                    moneyToGive = 100000;
                     anzahlNullen = 4;
                 } else if ((lottozahl % 1000) === 0) {
-                    moneyToGive = 5000;
+                    moneyToGive = 50000;
                     anzahlNullen = 3;
                 } else if ((lottozahl % 100) === 0) {
-                    moneyToGive = 1000;
+                    moneyToGive = 10000;
                     anzahlNullen = 2;
                 } else if ((lottozahl % 10) === 0) {
-                    moneyToGive = 100;
+                    moneyToGive = 1000;
                     anzahlNullen = 1;
                 } else {
                     interaction.editReply(`Du hast diesmal leider nicht den Jackpot geknackt, deine Lottozahl war die ${lottozahl}`);
@@ -97,7 +97,7 @@ module.exports = {
             } else {
                 await Lottozahlen.deleteMany({ guildId: interaction.guild.id });
                 interaction.editReply(`Glückwunsch <@${targetUserId}> du hast den Jackpot mit der Zahl ${lottozahl} geknackt und erhälst somit 1.000.000 XP`);
-                moneyToGive = 1000000;
+                moneyToGive = 10000000;
                 let lottoRole = interaction.guild.roles.cache.find(role => role.name === 'Lottogewinner');
                 await targetUserObj.roles.add(lottoRole);
                 console.log(`Role Lottogewinner was given to user ${targetUserObj.user.tag}`);
@@ -106,7 +106,7 @@ module.exports = {
         } else if (subcommand == 'bonus') {
             const user = await GameUser.findOne({ userId: targetUserId, guildId: interaction.guild.id });
             if (user && ((user.daily && user.daily.toDateString() !== new Date().toDateString()) || !user.daily)) {
-                const bonusAmount = 100;
+                const bonusAmount = 1000;
                 user.daily = new Date();
                 await user.save();
                 await giveMoney(targetUserObj, bonusAmount, false);

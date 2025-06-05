@@ -26,7 +26,7 @@ module.exports = {
             option.setName('einsatz')
                 .setDescription('Anzahl an Loserlinge die du setzen möchtest.')
                 .setRequired(true)
-                .setMaxValue(100)
+                .setMaxValue(1000)
                 .setMinValue(1)
         )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
@@ -61,7 +61,13 @@ module.exports = {
             let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
             await sleep(delay);
             const gewinnVerlust = getRandom(1, 10) / 10;
-            let result = Math.floor(gewinnVerlust * gluecksrad.pool * (einsatz / 100));
+            let maxGewinn = 0.5;
+            if (einsatz >= 1000) {
+                maxGewinn = 1;
+            } else {
+                maxGewinn = (einsatz / 1000);
+            }
+            let result = Math.floor(gewinnVerlust * gluecksrad.pool * maxGewinn);
             if (zufallsZahl <= gewinnchance) {
                 if (result == einsatz) {
                     await giveMoney(targetUserObj, result, false);

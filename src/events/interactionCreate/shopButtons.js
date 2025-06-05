@@ -45,7 +45,6 @@ module.exports = async (interaction) => {
         try {
             const description = targetMessageEmbed.description;
             const itemName = description.substring(description.indexOf('Name:') + 6, description.indexOf('\n'));
-                //.setDescription(`Name:${allItems[page].name}\nPreis: ${allItems[page].preis} Loserlinge\nBeschreibung: ${allItems[page].beschreibung}`)
             const price = parseInt(description.substring(description.indexOf('Preis:') + 7, description.indexOf('Loserlinge') -1));
             console.log(`Item: ${itemName}, Price: ${price}`);
             const user = await GameUser.findOne({ userId: interaction.user.id }).populate('bankkonto');

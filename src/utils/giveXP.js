@@ -89,9 +89,9 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice) {
                             await member.guild.members.cache.get(member.user.id).roles.add(memberRole);
                             console.log(`Role Mitglied was given to user ${member.user.tag}`);
                         }
-                        giveMoney(member, 500, false);
+                        giveMoney(member, 5000, false);
                     } else {
-                        giveMoney(member, 100, false);
+                        giveMoney(member, 1000, false);
                     }
                     const embed = new EmbedBuilder()
                         .setTitle('Glückwunsch!')

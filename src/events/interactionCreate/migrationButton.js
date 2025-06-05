@@ -53,9 +53,9 @@ module.exports = async (interaction) => {
             const allxp = level.voicexp + level.messagexp;
             let money = 0;
             if (level.allxp > allxp) {
-                money = ((level.allxp - allxp) * 2) + 100;
+                money = ((level.allxp - allxp) * 2) + 1000;
             } else {
-                money = 100;
+                money = 1000;
             }
             level.allxp = allxp;
             let xpCheck = true;
@@ -96,7 +96,7 @@ module.exports = async (interaction) => {
             const role = interaction.guild.roles.cache.find(r => r.name === 'Spielkind');
             if (role) {
                 await targetUserObj.roles.add(role);
-                await giveMoney(targetUserObj, 100, false);
+                await giveMoney(targetUserObj, 1000, false);
                 interaction.editReply('Du hast dich entschieden, deine XP zu behalten. Du hast 100 Loserlinge Startguthaben erhalten.');
             } else {
                 interaction.editReply('Die Rolle "Spielkind" wurde nicht gefunden.');

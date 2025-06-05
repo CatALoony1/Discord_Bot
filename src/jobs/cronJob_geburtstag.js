@@ -54,7 +54,7 @@ async function jobFunction(client) {
             if (birthdayDate.getDate() === today.getDate() && birthdayDate.getMonth() === today.getMonth()) {
                 const age = today.getFullYear() - birthdayDate.getFullYear();
                 targetChannel.send(`Herzlichen Glückwunsch an <@${level.userId}>! Heute ist dein Geburtstag und du bist jetzt ${age} Jahre alt! 🎉`);
-                giveMoney(guild.members.cache.get(level.userId), 500, false).catch((error) => {
+                giveMoney(guild.members.cache.get(level.userId), 5000, false).catch((error) => {
                     console.log(`Error giving money to user ${level.userId}:`, error);
                 });
             }

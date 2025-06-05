@@ -47,7 +47,7 @@ module.exports = async (interaction) => {
             if (rw === 'right') {
                 if (fetchedStats) {
                     fetchedStats.right += 1;
-                    let xpToGive = 50;
+                    let xpToGive = 500;
                     xpToGive = Math.ceil(xpToGive * (1 + ((fetchedStats.series * 10) / 100)));
                     await giveMoney(interaction.member, xpToGive, false);
                     if (isYesterday(fetchedStats.lastParticipation)) {
@@ -65,7 +65,7 @@ module.exports = async (interaction) => {
                         series: 1,
                         lastParticipation: Date.now()
                     });
-                    let xpToGive = 50;
+                    let xpToGive = 500;
                     xpToGive = Math.ceil(xpToGive * 1.1);
                     await giveMoney(interaction.member, xpToGive, false);
                     await newStats.save();
