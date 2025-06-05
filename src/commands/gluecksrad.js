@@ -61,7 +61,7 @@ module.exports = {
             let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
             await sleep(delay);
             const gewinnVerlust = getRandom(1, 10) / 10;
-            let maxGewinn = 0.5;
+            let maxGewinn;
             if (einsatz >= 1000) {
                 maxGewinn = 1;
             } else {
