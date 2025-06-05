@@ -8,9 +8,9 @@ const Tiere = require('../../models/Tiere');
 module.exports = async (interaction) => {
     if (!interaction.customId || !interaction.customId.includes('useItem')) return;
     if (interaction.isButton()) {
+        interaction.deferUpdate();
         if (interaction.customId.includes('tier')) {
             if (interaction.customId.includes('self_select')) {
-                console.log(interaction);
                 const tierart = interaction.values[0];
                 const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
                 const randomTierOhneBesitzer = await getRandomTier(tierart);
