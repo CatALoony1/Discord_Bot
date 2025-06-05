@@ -2,7 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, UserSelectMenuBuilder, Mod
 const createShopEmbeds = require('../utils/createShopEmbeds.js');
 const GameUser = require('../models/GameUser.js');
 require('../models/Inventar.js');
-require('../models/Item.js');
+require('../models/Items.js');
 
 async function handleShop(interaction) {
     const embed = await createShopEmbeds(0, interaction);

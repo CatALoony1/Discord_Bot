@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
-const handleSpieleCommand = require('../utils/handleSpieleCommands.js');
+const handleSpieleCommands = require('../utils/handleSpieleCommands.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -31,9 +31,9 @@ module.exports = {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         const subcommand = interaction.options.getSubcommand();
         if (subcommand == 'shop') {
-            return await handleSpieleCommand.handleShop(interaction);
+            return await handleSpieleCommands.handleShop(interaction);
         } else if (subcommand == 'use_item') {
-            return await handleSpieleCommand.handleUseItem(interaction);
+            return await handleSpieleCommands.handleUseItem(interaction);
         }
 
     },
