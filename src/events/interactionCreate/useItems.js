@@ -1,10 +1,8 @@
-const { MessageFlags, StringSelectMenuBuilder, UserSelectMenuBuilder, ActionRowBuilder, flatten } = require('discord.js');
-const createShopEmbeds = require("../../utils/createShopEmbeds");
+const { MessageFlags, StringSelectMenuBuilder, UserSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
 const GameUser = require('../../models/GameUser');
 require('../../models/Bankkonten');
 require('../../models/Inventar');
-const Items = require('../../models/Items');
-const removeMoney = require('../../utils/removeMoney');
+require('../../models/Items');
 const Tiere = require('../../models/Tiere');
 
 module.exports = async (interaction) => {
@@ -14,7 +12,7 @@ module.exports = async (interaction) => {
             const targetMessage = await interaction.channel.messages.fetch(interaction.message.id);
             if (interaction.customId.includes('self_select')) {
                 const tierart = interaction.values[0];
-                const user = await GameUser.findOne({ userId: interaction.user.id }).populate('inventar');
+                const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
                 const randomTierOhneBesitzer = await getRandomTier(tierart);
                 if (randomTierOhneBesitzer.length === 0) {
                     await targetMessage.edit({
@@ -64,7 +62,7 @@ module.exports = async (interaction) => {
             } else if (interaction.customId.includes('other_uselect')) {
                 const tierart = interaction.values[0];
                 const targetUserId = interaction.customId.split('_')[4];
-                const user = await GameUser.findOne({ userId: interaction.user.id }).populate('inventar');
+                const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
                 const randomTierOhneBesitzer = await getRandomTier(tierart);
                 if (randomTierOhneBesitzer.length === 0) {
                     await targetMessage.edit({
