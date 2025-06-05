@@ -59,6 +59,9 @@ module.exports = {
     const itemNamesAndQuantity = user.inventar.items.map((item, index) => {
       return `${index} -> ${item.item.name} (x${item.quantity})`;
     }).join('\n');
+    const tierpfade = user.tiere.map((tier) => {
+      return `${tier.pfad}`;
+    }).join('\n');
     const messageEdited = new EmbedBuilder();
     messageEdited.setColor(0x0033cc);
     messageEdited.setAuthor({ name: interaction.member.user.username, iconURL: interaction.member.user.displayAvatarURL({ size: 256 }) });
@@ -70,7 +73,7 @@ module.exports = {
     messageEdited.addFields({ name: 'Anzahl Lottospiele:', value: `${lottospiele}` });
     messageEdited.addFields({ name: 'Quizspiele hinzugefügt:', value: `${user.quizadded}` });
     messageEdited.addFields({ name: 'Inventar', value: `${itemNamesAndQuantity}` });
-    messageEdited.addFields({ name: 'Tiere', value: `${user.tiere}` });
+    messageEdited.addFields({ name: 'Tiere', value: `${tierpfade}` });
     interaction.editReply({ embeds: [messageEdited] });
   },
   options: {
