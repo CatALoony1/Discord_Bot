@@ -49,7 +49,7 @@ module.exports = async (interaction) => {
             const price = parseInt(description.substring(description.indexOf('Preis:') + 7, description.indexOf('Loserlinge') -1));
             console.log(`Item: ${itemName}, Price: ${price}`);
             const user = await GameUser.findOne({ userId: interaction.user.id }).populate('bankkonto');
-            if (!user) {
+            if (!user || !user.bankkonto) {
                 await interaction.reply({ content: 'Du hast kein Bankkonto!', flags: MessageFlags.Ephemeral });
                 return;
             }
