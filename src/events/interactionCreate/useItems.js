@@ -21,20 +21,20 @@ module.exports = async (interaction) => {
                     return;
                 }
                 randomTierOhneBesitzer[0].besitzer = user._id;
-                await randomTierOhneBesitzer[0].save();
                 const itemId = user.inventar.items.findIndex(item => item.item.name === 'Tier');
                 if (user.inventar.items[itemId].quantity > 1) {
                     user.inventar.items[itemId].quantity -= 1;
                 } else {
                     user.inventar.items.splice(itemId, 1);
                 }
-                await user.inventar.save();
                 await interaction.update({
                     content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].pfad}** erhalten!`,
                     files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`],
                     components: [],
                     flags: MessageFlags.Ephemeral
                 });
+                await randomTierOhneBesitzer[0].save();
+                await user.inventar.save();
             } else if (interaction.customId.includes('other_select')) {
                 const targetUser = interaction.values[0];
                 const tierarten = await getTierarten();
