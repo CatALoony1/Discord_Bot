@@ -68,7 +68,7 @@ module.exports = async (interaction) => {
                 await interaction.reply({ content: `Das Item ${itemName} existiert nicht!`, flags: MessageFlags.Ephemeral });
                 return;
             }
-            const itemIndex = user.inventar.items.findIndex(inventarItem => inventarItem.name === itemName);
+            const itemIndex = user.inventar.items.findIndex(inventarItem => inventarItem.item.name === itemName);
             if (itemIndex !== -1) {
                 user.inventar.items[itemIndex].quantity += 1;
                 await user.inventar.save();
