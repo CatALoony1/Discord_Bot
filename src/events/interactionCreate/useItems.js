@@ -496,7 +496,7 @@ async function useItemKuss(interaction) {
             data = mydata;
         });
     const kissGifUrl = data.url;
-    const kissText = kissTexts[getRandom(0, hugTexts.length - 1)](`<${interaction.user.id}`, `<@${targetUserId}>`);
+    const kissText = kissTexts[getRandom(0, kissTexts.length - 1)](`<${interaction.user.id}`, `<@${targetUserId}>`);
     await interaction.channel.send({
         content: kissText,
         files: [kissGifUrl],
