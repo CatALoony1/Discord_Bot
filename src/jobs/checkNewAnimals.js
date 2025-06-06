@@ -124,7 +124,7 @@ async function jobFunction(client) {
                         } while (xpCheck);
                         level.save();
                         giveMoney(member, money, false);
-                        interaction.editReply(`Du hast deine XP erfolgreich in Loserlinge umgewandelt. Du hast ${money} Geld erhalten.`);
+                        console.log(`${member.user.tag} hast deine XP erfolgreich in Loserlinge umgewandelt. Du hast ${money} Geld erhalten.`);
                     }
                 }
             }
