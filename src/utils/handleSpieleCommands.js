@@ -89,7 +89,7 @@ async function handleUseItem(interaction) {
                 .setLabel('Name der Rolle:')
                 .setStyle(TextInputStyle.Short)
                 .setRequired(true)
-                .setMaxLength(100);
+                .setMaxLength(15);
             const firstActionRow = new ActionRowBuilder().addComponents(colorInput);
             const secondActionRow = new ActionRowBuilder().addComponents(rollenName);
             modal.addComponents(firstActionRow, secondActionRow);

@@ -14,6 +14,7 @@ const voiceXPJob = require('../jobs/cronJob_voiceXp');
 const missingXpJob = require('../jobs/cronJob_checkMissingXP');
 const updateWebhookAvatarJob = require('../jobs/cronJob_updateWebhookAvatar');
 const checkNewAnimalsJob = require('../jobs/checkNewAnimals');
+const zinsenJob = require('../jobs/cronJob_zinsen');
 
 
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
@@ -45,6 +46,7 @@ module.exports = {
                             { name: 'voiceXP', value: 'voiceXP' },
                             { name: 'missingXp', value: 'missingXp' },
                             { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
+                            { name: 'zinsen', value: 'zinsen' },
                         )
                 )
         )
@@ -72,6 +74,7 @@ module.exports = {
                             { name: 'voiceXP', value: 'voiceXP' },
                             { name: 'missingXp', value: 'missingXp' },
                             { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
+                            { name: 'zinsen', value: 'zinsen' },
                         )
                 )
         )
@@ -149,6 +152,9 @@ module.exports = {
                     break;
                 case 'checkNewAnimals':
                     jobClass = checkNewAnimalsJob;
+                    break;
+                case 'zinsen':
+                    jobClass = zinsenJob
                     break;
                 default:
                     throw new Error(`Unbekannter Job: ${job}`);

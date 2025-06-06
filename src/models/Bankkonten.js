@@ -12,6 +12,10 @@ const bankkontenSchema = new Schema({
         type: Number,
         default: 0,
     },
+    zinsProzent: {
+        type: Number,
+        default: 0,
+    },
     besitzer: {
         type: Schema.Types.ObjectId,
         ref: 'GameUser',
