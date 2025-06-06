@@ -345,9 +345,9 @@ async function useItemDoppelteXp(interaction) {
         return;
     }
     await user.inventar.save();
-    const xpMultiplier = await Config.findOne({ name: 'xpMultiplier' });
+    const xpMultiplier = await Config.findOne({ key: 'xpMultiplier', guildId: interaction.guild.id });
     if (!xpMultiplier) {
-        await Config.create({ name: 'xpMultiplier', value: 2 });
+        await Config.create({ name: 'key', value: 2, guildId: interaction.guild.id});
     } else {
         xpMultiplier.value = 2;
         await xpMultiplier.save();
