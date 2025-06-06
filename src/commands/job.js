@@ -154,7 +154,7 @@ module.exports = {
                     jobClass = checkNewAnimalsJob;
                     break;
                 case 'zinsen':
-                    jobClass = zinsenJob
+                    jobClass = zinsenJob;
                     break;
                 default:
                     throw new Error(`Unbekannter Job: ${job}`);

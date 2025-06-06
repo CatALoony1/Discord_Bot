@@ -5,7 +5,6 @@ require('../../models/Inventar');
 require('../../models/Items');
 const Tiere = require('../../models/Tiere');
 const Config = require('../../models/Config');
-const { use } = require('react');
 
 const hugTexts = [
     (author, target) => `${author} umarmt ${target} ganz fest! Awwww! ❤️`,
@@ -65,19 +64,10 @@ module.exports = async (interaction) => {
             await useItemKuss(interaction);
         } else if (interaction.customId.includes('bombe')) {
             await useItemBombe(interaction);
-            async function useItemBombe(interaction) {
-                return;
-            }
         } else if (interaction.customId.includes('loserlingKlauBanane_select')) {
             await useItemLoserlingKlauBanane(interaction);
-            async function useItemLoserlingKlauBanane(interaction) {
-                return;
-            }
         } else if (interaction.customId.includes('schuldschein_select')) {
             await useItemSchuldschein(interaction);
-            async function useItemSchuldschein(interaction) {
-                return;
-            }
         }
     } catch (error) {
         console.log(error);
@@ -265,7 +255,7 @@ async function getRandomTier(tierartName) {
 
 
 async function useItemFarbrolle(interaction) {
-    await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
     const itemId = user.inventar.items.findIndex(item => item.item.name === 'Farbrolle');
     if (user.inventar.items[itemId].quantity > 1) {
@@ -291,7 +281,7 @@ async function useItemFarbrolle(interaction) {
 }
 
 async function useItemVoiceChannel(interaction) {
-    await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
     const itemId = user.inventar.items.findIndex(item => item.item.name === 'Voicechannel');
     if (user.inventar.items[itemId].quantity > 1) {
@@ -316,7 +306,7 @@ async function useItemVoiceChannel(interaction) {
 }
 
 async function useItemRolleNamensliste(interaction) {
-    await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
     const itemId = user.inventar.items.findIndex(item => item.item.name === 'Rolle (Namensliste)');
     if (user.inventar.items[itemId].quantity > 1) {
@@ -517,4 +507,19 @@ async function useItemKuss(interaction) {
         components: [],
         flags: MessageFlags.Ephemeral
     });
+}
+
+async function useItemBombe(interaction) {
+    await interaction.update('Kommt bald!');
+    return;
+}
+
+async function useItemLoserlingKlauBanane(interaction) {
+    await interaction.update('Kommt bald!');
+    return;
+}
+
+async function useItemSchuldschein(interaction) {
+    await interaction.update('Kommt bald!');
+    return;
 }
