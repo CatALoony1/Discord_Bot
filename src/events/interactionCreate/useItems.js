@@ -459,16 +459,17 @@ async function useItemUmarmung(interaction) {
             data = mydata;
         });
     const hugGifUrl = data.url;
-    const hugText = hugTexts[getRandom(0, hugTexts.length - 1)](`<@${interaction.user.id}`, `<@${targetUserId}>`);
-    await interaction.channel.send({
-        content: hugText,
-        files: [hugGifUrl],
-        allowedMentions: { users: [targetUserId] }
-    });
-    await interaction.update({
+    const hugText = hugTexts[getRandom(0, hugTexts.length - 1)](`<@${interaction.user.id}>`, `<@${targetUserId}>`);
+const channel = interaction.channel;
+await interaction.update({
         content: `Du hast erfolgreich eine Umarmung an <@${targetUserId}> geschickt!`,
         components: [],
         flags: MessageFlags.Ephemeral
+    });
+    await channel.send({
+        content: hugText,
+        files: [hugGifUrl],
+        allowedMentions: { users: [targetUserId] }
     });
 }
 
@@ -496,16 +497,17 @@ async function useItemKuss(interaction) {
             data = mydata;
         });
     const kissGifUrl = data.url;
-    const kissText = kissTexts[getRandom(0, kissTexts.length - 1)](`<@${interaction.user.id}`, `<@${targetUserId}>`);
-    await interaction.channel.send({
-        content: kissText,
-        files: [kissGifUrl],
-        allowedMentions: { users: [targetUserId] }
-    });
-    await interaction.update({
+    const kissText = kissTexts[getRandom(0, kissTexts.length - 1)](`<@${interaction.user.id}>`, `<@${targetUserId}>`);
+const channel = interaction.channel;
+await interaction.update({
         content: `Du hast erfolgreich einen Kuss an <@${targetUserId}> geschickt!`,
         components: [],
         flags: MessageFlags.Ephemeral
+    });
+    await channel.send({
+        content: kissText,
+        files: [kissGifUrl],
+        allowedMentions: { users: [targetUserId] }
     });
 }
 
