@@ -15,7 +15,7 @@ module.exports = async (interaction) => {
                 await interaction.update({
                     embeds: [messageData.embed],
                     files: [messageData.file],
-                    components: [targetMessage.components[0], targetMessage.components[1]]
+                    components: [targetMessage.components[0]]
                 });
                 return;
             } else {
@@ -33,7 +33,7 @@ module.exports = async (interaction) => {
                 await interaction.update({
                     embeds: [messageData.embed],
                     files: [messageData.file],
-                    components: [targetMessage.components[0], targetMessage.components[1]]
+                    components: [targetMessage.components[0]]
                 });
                 return;
             } else {

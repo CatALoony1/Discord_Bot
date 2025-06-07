@@ -287,12 +287,11 @@ async function handleOwnAnimals(interaction) {
         .setCustomId(`ownAnimalsUp`);
 
     const firstRow = new ActionRowBuilder().addComponents(pageDownButton, pageUpButton);
-    const secondRow = new ActionRowBuilder().addComponents(buyButton);
 
     await interaction.editReply({
         embeds: [replyData.embed],
         files: [replyData.file],
-        components: [firstRow, secondRow]
+        components: [firstRow]
     });
 }
 
