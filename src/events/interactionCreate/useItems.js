@@ -631,9 +631,10 @@ async function useItemBombe(interaction) {
         const activeItemId = interaction.customId.split('_')[3];
         const activeItem = await ActiveItems.findById(activeItemId);
         if (!activeItem || activeItem.usedOn !== interaction.user.id || activeItem.endTime < new Date()) {
-            await interaction.update({
+            await interaction.reply({
                 content: 'Die Bombe ist entweder bereits entschärft, ist abgelaufen oder nicht für dich bestimmt!',
-                components: []
+                components: [],
+                flags: MessageFlags.Ephemeral
             });
             return;
         }
