@@ -3,6 +3,9 @@ const createShopEmbeds = require('../utils/createShopEmbeds.js');
 const GameUser = require('../models/GameUser.js');
 require('../models/Inventar.js');
 require('../models/Items.js');
+require('../models/Bankkonten.js');
+require('../models/Tiere.js');
+const Lottozahlen = require('../models/Lottozahlen.js');
 
 async function handleShop(interaction) {
     const embed = await createShopEmbeds(0, interaction);
@@ -206,8 +209,67 @@ async function handleUseItem(interaction) {
     }
 }
 
+async function handleGamestats(interaction) {
+    await interaction.deferReply();
+    const targetUserId = interaction.member.id;
+    const user = await GameUser.findOne({
+        userId: targetUserId,
+        guildId: interaction.guild.id,
+    }).populate('bankkonto').populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } }).populate('tiere');
+
+    if (!user) {
+        interaction.editReply("Du hast noch kein Level");
+        return;
+    }
+
+    let allUsers = await GameUser.find({ guildId: interaction.guild.id }).populate('bankkonto');
+
+    var oldUsers = [];
+    for (let j = 0; j < allUsers.length; j++) {
+        if (!(interaction.guild.members.cache.find(m => m.id === allUsers[j].userId)?.id)) {
+            oldUsers[oldUsers.length] = j;
+        }
+    }
+    for (let j = 0; j < oldUsers.length; j++) {
+        allUsers.splice(oldUsers[j] - j, 1);
+    }
+
+    allUsers.sort((a, b) => {
+        return b.bankkonto.currentMoney - a.bankkonto.currentMoney;
+    });
+    let currentRank = allUsers.findIndex((usr) => usr.userId === targetUserId) + 1;
+    let lotto = await Lottozahlen.find({
+        guildId: interaction.guild.id,
+        userId: targetUserId,
+    });
+    var lottospiele = 0;
+    if (lotto && lotto.length > 0) {
+        lottospiele = lotto.length;
+    }
+    const itemNamesAndQuantity = user.inventar.items.map((item, index) => {
+        return `ID:${index} -> ${item.item.name} (x${item.quantity})`;
+    }).join('\n');
+    const tierpfade = user.tiere.map((tier) => {
+        return `${tier.pfad}`;
+    }).join('\n');
+    const messageEdited = new EmbedBuilder();
+    messageEdited.setColor(0x0033cc);
+    messageEdited.setAuthor({ name: interaction.member.user.username, iconURL: interaction.member.user.displayAvatarURL({ size: 256 }) });
+    messageEdited.setTitle(`Deine Stats:`);
+    messageEdited.addFields({ name: 'Rang:', value: `${currentRank}` });
+    messageEdited.addFields({ name: 'Aktuelle Loserlinge:', value: `${user.bankkonto.currentMoney}` });
+    messageEdited.addFields({ name: 'Erhaltene Loserlinge:', value: `${user.bankkonto.moneyGain}` });
+    messageEdited.addFields({ name: 'Verlorene/Ausgegebene Loserlinge:', value: `${user.bankkonto.moneyLost}` });
+    messageEdited.addFields({ name: 'Anzahl Lottospiele:', value: `${lottospiele}` });
+    messageEdited.addFields({ name: 'Quizspiele hinzugefügt:', value: `${user.quizadded}` });
+    messageEdited.addFields({ name: 'Inventar', value: `${itemNamesAndQuantity}` });
+    messageEdited.addFields({ name: 'Tiere', value: `${tierpfade}` });
+    interaction.editReply({ embeds: [messageEdited] });
+}
+
 
 module.exports = {
     handleShop,
     handleUseItem,
+    handleGamestats
 };

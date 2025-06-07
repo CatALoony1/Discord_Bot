@@ -13,12 +13,17 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('use_item')
-                .setDescription('Benutze ein Item. (Item ID über /gamestats)')
+                .setDescription('Benutze ein Item. (Item ID über /spiele gamestats)')
                 .addIntegerOption(option =>
                     option.setName('item_id')
                         .setDescription('Die ID des Items, das du benutzen möchtest.')
                         .setRequired(true)
                 )
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('gamestats')
+                .setDescription('Zeigt all deine Level-Bezogenen Daten.')
         )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
@@ -34,6 +39,8 @@ module.exports = {
             return await handleSpieleCommands.handleShop(interaction);
         } else if (subcommand == 'use_item') {
             return await handleSpieleCommands.handleUseItem(interaction);
+        } else if (subcommand == 'gamestats') {
+            return await handleSpieleCommands.handleGamestats(interaction);
         }
 
     },
