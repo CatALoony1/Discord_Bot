@@ -28,22 +28,24 @@ function startJob(client) {
                         if (activeItem.itemType == 'Bombe') {
                             const amount = getRandom(20000, 40000);
                             const usedOnObj = await guild.members.cache.get(activeItem.usedOn) || (await guild.members.fetch(activeItem.usedOn));
-                            await removeMoney(usedOnObj, amount);
-                            await getTenorGifById("20062805")
-                                .then(async (gifUrl) => {
-                                    if (!gifUrl.includes("http")) {
-                                        console.log("ERROR Bombe gif");
-                                        return;
-                                    }
-                                    await targetChannel.send({
-                                        content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** Loserlinge sind verpufft!`,
-                                        files: [gifUrl],
-                                        allowedMentions: { users: [activeItem.usedOn] }
+                            if (usedOnObj) {
+                                await removeMoney(usedOnObj, amount);
+                                await getTenorGifById("20062805")
+                                    .then(async (gifUrl) => {
+                                        if (!gifUrl.includes("http")) {
+                                            console.log("ERROR Bombe gif");
+                                            return;
+                                        }
+                                        await targetChannel.send({
+                                            content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** Loserlinge sind verpufft!`,
+                                            files: [gifUrl],
+                                            allowedMentions: { users: [activeItem.usedOn] }
+                                        });
+                                    })
+                                    .catch((error) => {
+                                        console.error('ERROR:', error);
                                     });
-                                })
-                                .catch((error) => {
-                                    console.error('ERROR:', error);
-                                });
+                            }
                         } else if (activeItem.itemType == 'Doppelte XP') {
                             const xpMultiplier = await Config.findOne({ key: 'xpMultiplier', guildId: guild.id });
                             if (!xpMultiplier) {
@@ -70,9 +72,11 @@ function startJob(client) {
                             activeItem.save();
                             const userObj = await guild.members.cache.get(activeItem.user) || (await guild.members.fetch(activeItem.user));
                             const usedOnObj = await guild.members.cache.get(activeItem.usedOn) || (await guild.members.fetch(activeItem.usedOn));
-                            await removeMoney(usedOnObj, 500);
-                            await giveMoney(userObj, 500);
-                            await targetChannel.send(`Von <@${activeItem.usedOn}> wurden 500 Loserlinge Schulden an <@${activeItem.user}> übergeben.`);
+                            if (userObj && usedOnObj) {
+                                await removeMoney(usedOnObj, 500);
+                                await giveMoney(userObj, 500);
+                                await targetChannel.send(`Von <@${activeItem.usedOn}> wurden 500 Loserlinge Schulden an <@${activeItem.user}> übergeben.`);
+                            }
                         }
                     }
                 }
