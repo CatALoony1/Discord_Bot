@@ -27,7 +27,7 @@ module.exports = {
         )
         .addSubcommand(subcommand =>
             subcommand
-                .setName('eigenen_tiere')
+                .setName('eigene_tiere')
                 .setDescription('Zeigt all deine Tiere.')
         )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
