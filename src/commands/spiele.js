@@ -13,7 +13,7 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('use_item')
-                .setDescription('Benutze ein Item.')
+                .setDescription('Benutze ein Item. (Item ID über /gamestats)')
                 .addIntegerOption(option =>
                     option.setName('item_id')
                         .setDescription('Die ID des Items, das du benutzen möchtest.')

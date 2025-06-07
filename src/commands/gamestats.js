@@ -57,7 +57,7 @@ module.exports = {
       lottospiele = lotto.length;
     }
     const itemNamesAndQuantity = user.inventar.items.map((item, index) => {
-      return `${index} -> ${item.item.name} (x${item.quantity})`;
+      return `ID:${index} -> ${item.item.name} (x${item.quantity})`;
     }).join('\n');
     const tierpfade = user.tiere.map((tier) => {
       return `${tier.pfad}`;
