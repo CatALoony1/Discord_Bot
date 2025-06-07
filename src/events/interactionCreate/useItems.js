@@ -583,7 +583,7 @@ async function useItemBombe(interaction) {
         const channel = interaction.channel;
         const activeItem = await ActiveItems.create({
             guildId: interaction.guild.id,
-            endTime: new Date(Date.now() + 43200000), // 1 hour
+            endTime: new Date(Date.now() + 43200000),
             itemType: 'Bombe',
             user: interaction.user.id,
             usedOn: targetUserId,

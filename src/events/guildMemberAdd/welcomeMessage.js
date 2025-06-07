@@ -9,7 +9,7 @@ const getTenorGifById = require('../../utils/getTenorGifById');
  * @returns 
  */
 module.exports = async (guildMember) => {
-    if (guildMember.user.bot) return;
+    if (guildMember.user.bot || guildMember.user.id == '1310865340611170304') return;
     console.log(`user ${guildMember.user.tag} joined`);
     const role = guildMember.guild.roles.cache.find(role => role.name === 'Begrüßungskomitee');
     try {
