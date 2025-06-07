@@ -49,7 +49,7 @@ async function handleUseItem(interaction) {
     item = item.item;
     const itemName = item.name;
     let firstRow;
-    let content = 'Fehler';
+    let content = 'Modal';
     let modal;
     switch (itemName) {
         case 'Tier': {
@@ -193,8 +193,9 @@ async function handleUseItem(interaction) {
         }
         default:
             await interaction.reply({ content: `Das Item ${itemName} kann nicht benutzt werden.`, flags: MessageFlags.Ephemeral });
+            return;
     }
-    if (content === 'Fehler') {
+    if (content === 'Modal') {
         await interaction.showModal(modal);
     } else {
         await interaction.reply({
