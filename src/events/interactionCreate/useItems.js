@@ -750,7 +750,7 @@ async function useItemLoserlingKlauBanane(interaction) {
         flags: MessageFlags.Ephemeral
     });
     await channel.send({
-        content: `<@$interaction.user.id}> warf eine Loserling-Klau-Banane auf <@${targetUserId}> und klaute **${amout}** Loserlinge!`,
+        content: `<@${interaction.user.id}> warf eine Loserling-Klau-Banane auf <@${targetUserId}> und klaute **${amout}** Loserlinge!`,
         allowedMentions: { users: [targetUserId] }
     });
 }
