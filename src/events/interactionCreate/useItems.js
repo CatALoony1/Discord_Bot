@@ -670,7 +670,8 @@ async function useItemBombe(interaction) {
                     await interaction.update({
                         content: `Bei <@${interaction.user.id}> ist eine Bombe explodiert! **${amount}** Loserlinge sind verpufft!`,
                         files: [gifUrl],
-                        allowedMentions: { users: [interaction.user.id] }
+                        allowedMentions: { users: [interaction.user.id] },
+                        components: []
                     });
                 })
                 .catch((error) => {
