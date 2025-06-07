@@ -41,11 +41,12 @@ async function handleUseItem(interaction) {
         await interaction.reply({ content: 'Du hast kein Inventar!', flags: MessageFlags.Ephemeral });
         return;
     }
-    const item = user.inventar.items[itemId].item;
-    if (!item || user.inventar.items[itemId].quantity <= 0) {
+    let item = user.inventar.items[itemId];
+    if (!item || item.quantity <= 0) {
         await interaction.reply({ content: 'Dieses Item existiert nicht in deinem Inventar!', flags: MessageFlags.Ephemeral });
         return;
     }
+    item = item.item;
     const itemName = item.name;
     let firstRow;
     let content = 'Fehler';
