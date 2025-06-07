@@ -59,8 +59,9 @@ function startJob(client) {
                             const role = guild.roles.cache.get('1380423808623841340') || (await guild.roles.fetch('1380423808623841340'));
                             if (!role || !targetUserObj) {
                                 console.log('ERROR Job Oberster Platz: Cant find User or Role');
+                            } else {
+                                await targetUserObj.roles.remove(role);
                             }
-                            await targetUserObj.roles.remove(role);
                         }
                     } else if (activeItem.itemType == 'Schuldschein') {
                         if (activeItem.extras != new Date().toLocaleDateString) {
@@ -97,6 +98,12 @@ function stopJob() {
 
 function isRunning() {
     return checkActiveItemsJob !== null;
+}
+
+function getRandom(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 module.exports = {

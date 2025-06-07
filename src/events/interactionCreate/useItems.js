@@ -1,4 +1,4 @@
-const { MessageFlags, StringSelectMenuBuilder, UserSelectMenuBuilder, ActionRowBuilder } = require('discord.js');
+const { MessageFlags, StringSelectMenuBuilder, UserSelectMenuBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
 const GameUser = require('../../models/GameUser');
 require('../../models/Bankkonten');
 require('../../models/Inventar');
@@ -605,7 +605,7 @@ async function useItemBombe(interaction) {
                     components: [
                         new ActionRowBuilder().addComponents(
                             new StringSelectMenuBuilder()
-                                .setCustomId(`useItem_bombe_defuse_${activeItem._id}_${interaction.user.id}`)
+                                .setCustomId(`useItem_bombe_defuse_${activeItem._id}`)
                                 .setPlaceholder('Wähle einen Draht aus')
                                 .addOptions([
                                     { label: 'Rot', value: 'red' },
@@ -625,7 +625,6 @@ async function useItemBombe(interaction) {
             });
     } else if (interaction.customId.includes('bombe_defuse')) {
         const activeItemId = interaction.customId.split('_')[3];
-        const userId = interaction.customId.split('_')[4];
         const activeItem = await ActiveItems.findById(activeItemId);
         if (!activeItem || activeItem.usedOn !== interaction.user.id || activeItem.endTime < new Date()) {
             await interaction.update({
@@ -655,7 +654,7 @@ async function useItemBombe(interaction) {
             return;
         } else {
             const amount = getRandom(20000, 40000);
-            await removeMoney(interaction.member, amount, interaction.guild.id);
+            await removeMoney(interaction.member, amount);
             await getTenorGifById("20062805")
                 .then(async (gifUrl) => {
                     if (!gifUrl.includes("http")) {
@@ -737,7 +736,7 @@ async function useItemLoserlingKlauBanane(interaction) {
     await user.inventar.save();
     const channel = interaction.channel;
     const amout = getRandom(10000, 30000);
-    await removeMoney(targetUserId, amout)
+    await removeMoney(targetUserId, amout);
     await giveMoney(interaction.user.id, amout, false);
     await interaction.update({
         content: `Du hast erfolgreich **${amout}** von <@${targetUserId}> geklaut!`,
