@@ -9,7 +9,6 @@ const ActiveItems = require('../../models/ActiveItems');
 const removeMoney = require('../../utils/removeMoney.js');
 const giveMoney = require('../../utils/giveMoney.js');
 const getTenorGifById = require('../../utils/getTenorGifById.js');
-const { get } = require('mongoose');
 
 const hugTexts = [
     (author, target) => `${author} umarmt ${target} ganz fest! Awwww! ❤️`,
@@ -350,7 +349,7 @@ async function useItemDoppelteXp(interaction) {
         return;
     }
     await user.inventar.save();
-    const alreadyActive = false;
+    let alreadyActive = false;
     const xpMultiplier = await Config.findOne({ key: 'xpMultiplier', guildId: interaction.guild.id });
     if (!xpMultiplier) {
         await Config.create({ name: 'key', value: 2, guildId: interaction.guild.id });

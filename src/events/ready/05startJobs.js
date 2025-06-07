@@ -14,6 +14,7 @@ const missingXpJob = require('../../jobs/cronJob_checkMissingXP');
 const updateWebhookAvatarJob = require('../../jobs/cronJob_updateWebhookAvatar');
 const voiceJob = require('../../jobs/cronJob_voiceXp');
 const zinsenJob = require('../../jobs/cronJob_zinsen');
+const checkActiveItems = require('../../jobs/cronJob_checkActiveItems');
 
 async function checkVoice(client) {
   var isTwoMembers = false;
@@ -48,6 +49,7 @@ module.exports = async (client) => {
     missingXpJob.startJob(client);
     updateWebhookAvatarJob.startJob(client);
     zinsenJob.startJob(client);
+    checkActiveItems.startJob(client);
     checkVoice(client);
     console.log(`Jobs started...`);
 };

@@ -1,11 +1,9 @@
-const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
 const ActiveItems = require('../models/ActiveItems.js');
 const Config = require('../models/Config.js');
 const removeMoney = require('../utils/removeMoney.js');
 const giveMoney = require('../utils/giveMoney.js');
-const { act } = require("react");
 
 
 let checkActiveItemsJob = null;
@@ -19,8 +17,8 @@ function startJob(client) {
         try {
             const guild = await client.guilds.cache.get(process.env.GUILD_ID);
             const activeItems = await ActiveItems.find({});
-            const targetChannel = interaction.guild.channels.cache.get(process.env.SPIELE_ID) || (await interaction.guild.channels.fetch(process.env.SPIELE_ID));
-            const mainChannel = interaction.guild.channels.cache.get(process.env.MORNING_ID) || (await interaction.guild.channels.fetch(process.env.MORNING_ID));
+            const targetChannel = guild.channels.cache.get(process.env.SPIELE_ID) || (await guild.channels.fetch(process.env.SPIELE_ID));
+            const mainChannel = guild.channels.cache.get(process.env.MORNING_ID) || (await guild.channels.fetch(process.env.MORNING_ID));
             const toBeDeleted = [];
             if (activeItems.length > 0) {
                 for (const activeItem of activeItems) {
@@ -28,7 +26,8 @@ function startJob(client) {
                         toBeDeleted.push(activeItem._id);
                         if (activeItem.itemType == 'Bombe') {
                             const amount = getRandom(20000, 40000);
-                            await removeMoney(interaction.member, amount, interaction.guild.id);
+                            const usedOnObj = await guild.members.cache.get(activeItem.usedOn) || (await guild.members.fetch(activeItem.usedOn));
+                            await removeMoney(usedOnObj, amount);
                             await getTenorGifById("20062805")
                                 .then(async (gifUrl) => {
                                     if (!gifUrl.includes("http")) {
@@ -45,9 +44,9 @@ function startJob(client) {
                                     console.error('ERROR:', error);
                                 });
                         } else if (activeItem.itemType == 'Doppelte XP') {
-                            const xpMultiplier = await Config.findOne({ key: 'xpMultiplier', guildId: interaction.guild.id });
+                            const xpMultiplier = await Config.findOne({ key: 'xpMultiplier', guildId: guild.id });
                             if (!xpMultiplier) {
-                                await Config.create({ name: 'key', value: 1, guildId: interaction.guild.id });
+                                await Config.create({ name: 'key', value: 1, guildId: guild.id });
                             } else {
                                 xpMultiplier.value = 1;
                                 await xpMultiplier.save();
