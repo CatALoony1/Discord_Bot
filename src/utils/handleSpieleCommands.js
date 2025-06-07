@@ -268,10 +268,11 @@ async function handleGamestats(interaction) {
     interaction.editReply({ embeds: [messageEdited] });
 }
 
-async function handleShop(interaction) {
+async function handleOwnAnimals(interaction) {
     const replyData = await createAnimalsEmbeds(0, interaction);
     if (!replyData) {
         interaction.editReply(`Du besitzt keine Tiere.`);
+        return;
     }
     const pageDownButton = new ButtonBuilder()
         .setEmoji('⬅️')
@@ -299,5 +300,6 @@ async function handleShop(interaction) {
 module.exports = {
     handleShop,
     handleUseItem,
-    handleGamestats
+    handleGamestats,
+    handleOwnAnimals
 };
