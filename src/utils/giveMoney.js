@@ -52,7 +52,7 @@ async function giveMoney(member, money, quizadded, daily = false) {
                 guildId: member.guild.id,
             });
             if(daily){
-                user.daily = new Date();
+                newUser.daily = new Date();
             }
             const newBankkonto = new Bankkonten({
                 besitzer: newUser._id,
