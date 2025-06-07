@@ -49,7 +49,7 @@ function startJob(client) {
                             if (!xpMultiplier) {
                                 await Config.create({ name: 'key', value: 1, guildId: guild.id });
                             } else {
-                                xpMultiplier.value = 1;
+                                xpMultiplier.value = '1';
                                 await xpMultiplier.save();
                             }
                             await mainChannel.send('Die Doppelte XP sind nun abgelaufen.');
@@ -65,8 +65,8 @@ function startJob(client) {
                             }
                         }
                     } else if (activeItem.itemType == 'Schuldschein') {
-                        if (activeItem.extras != new Date().toLocaleDateString) {
-                            activeItem.extras = new Date().toLocaleDateString;
+                        if (activeItem.extras != new Date().toLocaleDateString()) {
+                            activeItem.extras = new Date().toLocaleDateString();
                             activeItem.save();
                             const userObj = await guild.members.cache.get(activeItem.user) || (await guild.members.fetch(activeItem.user));
                             const usedOnObj = await guild.members.cache.get(activeItem.usedOn) || (await guild.members.fetch(activeItem.usedOn));
