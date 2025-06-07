@@ -66,7 +66,7 @@ async function handleUseItem(interaction) {
         }
         case 'Bombe': {
             const selectMenu = new UserSelectMenuBuilder()
-                .setCustomId('useItem_bombe_select')
+                .setCustomId('useItem_bombe_uselect')
                 .setPlaceholder('Wähle einen Nutzer aus, der die Bombe erhalten soll.')
                 .setMinValues(1)
                 .setMaxValues(1);

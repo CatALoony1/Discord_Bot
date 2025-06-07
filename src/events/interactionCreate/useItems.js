@@ -544,7 +544,7 @@ async function useItemKuss(interaction) {
 }
 
 async function useItemBombe(interaction) {
-    if (interaction.customId.includes('bombe_select')) {
+    if (interaction.customId.includes('bombe_uselect')) {
         const targetUserId = interaction.values[0];
         const selectMenu = new StringSelectMenuBuilder()
             .setCustomId(`useItem_bombe_select_draht_${targetUserId}`)
@@ -570,26 +570,21 @@ async function useItemBombe(interaction) {
             selectedWire = wires[getRandom(0, 4)];
         }
         const targetUserId = interaction.customId.split('_')[4];
-        console.log(`Wire:${selectedWire} target: ${targetUserId}`);
         const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
         const itemId = user.inventar.items.findIndex(item => item.item.name === 'Bombe');
         if (user.inventar.items[itemId].quantity > 1) {
             user.inventar.items[itemId].quantity -= 1;
-            console.log(1);
         } else if (user.inventar.items[itemId].quantity === 1) {
             user.inventar.items.splice(itemId, 1);
-            console.log(2);
         } else {
             await interaction.update({
                 content: 'Du hast keine Bombe in deinem Inventar!', components: [],
                 flags: MessageFlags.Ephemeral
             });
-            console.log(3);
             return;
         }
         await user.inventar.save();
         const channel = interaction.channel;
-        console.log(channel);
         const activeItem = await ActiveItems.create({
             guildId: interaction.guild.id,
             endTime: new Date(Date.now() + 43200000),
