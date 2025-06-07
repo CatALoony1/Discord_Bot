@@ -353,8 +353,8 @@ async function useItemDoppelteXp(interaction) {
     const xpMultiplier = await Config.findOne({ key: 'xpMultiplier', guildId: interaction.guild.id });
     if (!xpMultiplier) {
         await Config.create({ name: 'key', value: 2, guildId: interaction.guild.id });
-    } else if (xpMultiplier.value !== 2) {
-        xpMultiplier.value = 2;
+    } else if (xpMultiplier.value != '2') {
+        xpMultiplier.value = '2';
         await xpMultiplier.save();
     } else {
         alreadyActive = true;
@@ -373,6 +373,7 @@ async function useItemDoppelteXp(interaction) {
             activeItem.endTime = new Date(Date.now() + 3600000);
             await activeItem.save();
         }
+        alreadyActive = true;
     } else {
         await ActiveItems.create({
             guildId: interaction.guild.id,
