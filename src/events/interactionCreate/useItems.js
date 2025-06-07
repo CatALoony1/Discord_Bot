@@ -694,7 +694,8 @@ async function useItemBombe(interaction) {
         await giveMoney(interaction.user.id, amount);
         await interaction.update({
             content: `Du hast die Bombe durchsucht und **${amount}** Loserlinge gefunden!`,
-            components: []
+            components: [],
+            files: []
         });
         await ActiveItems.findByIdAndDelete(activeItemId);
     } else if (interaction.customId.includes('bombe_beweise')) {
@@ -703,7 +704,8 @@ async function useItemBombe(interaction) {
         if (!activeItem) {
             await interaction.update({
                 content: 'Die Bombe existiert nicht.',
-                components: []
+                components: [],
+                files: []
             });
             return;
         }
