@@ -686,7 +686,8 @@ async function useItemBombe(interaction) {
         if (!activeItem) {
             await interaction.update({
                 content: 'Die Bombe existiert nicht.',
-                components: []
+                components: [],
+                files: []
             });
             return;
         }
@@ -712,7 +713,8 @@ async function useItemBombe(interaction) {
         const userId = activeItem.user;
         await interaction.update({
             content: `Du hast Beweise gesichert! Die Bombe war von <@${userId}>! Eventuell solltest du dich rächen, oder ihn an die Polizei melden!`,
-            components: []
+            components: [],
+            files: []
         });
         await ActiveItems.findByIdAndDelete(activeItemId);
     }
