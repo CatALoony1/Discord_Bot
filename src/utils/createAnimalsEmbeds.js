@@ -9,7 +9,7 @@ async function createLeaderboardEmbeds(page, interaction) {
         return undefined;
     }
     const tiere = Tiere.find({ besitzer: user._id });
-    if (!tiere) {
+    if (!tiere || tiere.length <= 0 || !tiere[page]) {
         return undefined;
     }
     const file = new AttachmentBuilder(path.join(__dirname, `../../animals/${tiere[page].pfad}.webp`));
