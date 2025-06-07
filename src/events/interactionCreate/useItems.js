@@ -5,6 +5,11 @@ require('../../models/Inventar');
 require('../../models/Items');
 const Tiere = require('../../models/Tiere');
 const Config = require('../../models/Config');
+const ActiveItems = require('../../models/ActiveItems');
+const removeMoney = require('../../utils/removeMoney.js');
+const giveMoney = require('../../utils/giveMoney.js');
+const getTenorGifById = require('../../utils/getTenorGifById.js');
+const { get } = require('mongoose');
 
 const hugTexts = [
     (author, target) => `${author} umarmt ${target} ganz fest! Awwww! ❤️`,
@@ -345,28 +350,43 @@ async function useItemDoppelteXp(interaction) {
         return;
     }
     await user.inventar.save();
+    const alreadyActive = false;
     const xpMultiplier = await Config.findOne({ key: 'xpMultiplier', guildId: interaction.guild.id });
     if (!xpMultiplier) {
-        await Config.create({ name: 'key', value: 2, guildId: interaction.guild.id});
-    } else {
+        await Config.create({ name: 'key', value: 2, guildId: interaction.guild.id });
+    } else if (xpMultiplier.value !== 2) {
         xpMultiplier.value = 2;
         await xpMultiplier.save();
+    } else {
+        alreadyActive = true;
     }
     await interaction.update({
         content: 'Du hast erfolgreich Doppelte XP aktiviert! Alle erhalten nun doppelte XP für 1 Stunde.',
         components: [],
         flags: MessageFlags.Ephemeral
     });
-    const targetChannel = interaction.guild.channels.cache.get(process.env.WELCOME_ID) || (await interaction.guild.channels.fetch(process.env.WELCOME_ID));
-    await targetChannel.send(`${interaction.user} hat Doppelte XP aktiviert! Alle erhalten nun doppelte XP für 1 Stunde.`);
-    setTimeout(async () => {
-        const xpMultiplier = await Config.findOne({ name: 'xpMultiplier' });
-        if (xpMultiplier) {
-            xpMultiplier.value = 1;
-            await xpMultiplier.save();
-            await targetChannel.send('Die Doppelte XP ist nun abgelaufen! Alle erhalten wieder normale XP.');
+    const activeItem = await ActiveItems.findOne({ guildId: interaction.guild.id, itemName: 'Doppelte XP' });
+    if (activeItem) {
+        if (activeItem.endTime) {
+            activeItem.endTime = new Date(activeItem.endTime.getTime() + 3600000);
+            await activeItem.save();
+        } else {
+            activeItem.endTime = new Date(Date.now() + 3600000);
+            await activeItem.save();
         }
-    }, 3600000);
+    } else {
+        await ActiveItems.create({
+            guildId: interaction.guild.id,
+            endTime: new Date(Date.now() + 3600000),
+            itemType: 'Doppelte XP'
+        });
+    }
+    const targetChannel = interaction.guild.channels.cache.get(process.env.WELCOME_ID) || (await interaction.guild.channels.fetch(process.env.WELCOME_ID));
+    if (alreadyActive) {
+        await targetChannel.send(`${interaction.user} hat Doppelte XP um 1 Stunde verlängert!`);
+        return;
+    }
+    await targetChannel.send(`${interaction.user} hat Doppelte XP aktiviert! Alle erhalten nun doppelte XP für 1 Stunde.`);
 }
 
 async function useItemObersterPlatz(interaction) {
@@ -398,10 +418,23 @@ async function useItemObersterPlatz(interaction) {
         components: [],
         flags: MessageFlags.Ephemeral
     });
-    setTimeout(async () => {
-        await interaction.member.roles.remove(role);
-        await interaction.channel.send(`<@${interaction.user.id}> deine Rolle **Oberster Platz** ist nun abgelaufen!`);
-    }, 21600000);
+    const activeItem = await ActiveItems.findOne({ guildId: interaction.guild.id, itemName: 'Oberster Platz', user: interaction.user.id });
+    if (activeItem) {
+        if (activeItem.endTime) {
+            activeItem.endTime = new Date(activeItem.endTime.getTime() + 21600000);
+            await activeItem.save();
+        } else {
+            activeItem.endTime = new Date(Date.now() + 21600000);
+            await activeItem.save();
+        }
+    } else {
+        await ActiveItems.create({
+            guildId: interaction.guild.id,
+            endTime: new Date(Date.now() + 21600000),
+            itemType: 'Oberster Platz',
+            user: interaction.user.id
+        });
+    }
 }
 
 
@@ -460,8 +493,8 @@ async function useItemUmarmung(interaction) {
         });
     const hugGifUrl = data.url;
     const hugText = hugTexts[getRandom(0, hugTexts.length - 1)](`<@${interaction.user.id}>`, `<@${targetUserId}>`);
-const channel = interaction.channel;
-await interaction.update({
+    const channel = interaction.channel;
+    await interaction.update({
         content: `Du hast erfolgreich eine Umarmung an <@${targetUserId}> geschickt!`,
         components: [],
         flags: MessageFlags.Ephemeral
@@ -498,8 +531,8 @@ async function useItemKuss(interaction) {
         });
     const kissGifUrl = data.url;
     const kissText = kissTexts[getRandom(0, kissTexts.length - 1)](`<@${interaction.user.id}>`, `<@${targetUserId}>`);
-const channel = interaction.channel;
-await interaction.update({
+    const channel = interaction.channel;
+    await interaction.update({
         content: `Du hast erfolgreich einen Kuss an <@${targetUserId}> geschickt!`,
         components: [],
         flags: MessageFlags.Ephemeral
@@ -512,16 +545,255 @@ await interaction.update({
 }
 
 async function useItemBombe(interaction) {
-    await interaction.update('Kommt bald!');
-    return;
+    if (interaction.customId.includes('bombe_select')) {
+        const targetUserId = interaction.values[0];
+        const selectMenu = new StringSelectMenuBuilder()
+            .setCustomId(`useItem_bombe_select_draht_${targetUserId}`)
+            .setPlaceholder('Wähle einen Draht aus')
+            .addOptions([
+                { label: 'Zufall', value: 'random' },
+                { label: 'Rot', value: 'red' },
+                { label: 'Gelb', value: 'yellow' },
+                { label: 'Grün', value: 'green' },
+                { label: 'Blau', value: 'blue' },
+                { label: 'Pink', value: 'pink' }
+            ]);
+        const row = new ActionRowBuilder().addComponents(selectMenu);
+        await interaction.update({
+            content: 'Wähle einen Draht aus, welcher die Bombe entschärfen soll:',
+            components: [row],
+            flags: MessageFlags.Ephemeral
+        });
+    } else if (interaction.customId.includes('bombe_select_draht')) {
+        const selectedWire = interaction.values[0];
+        const targetUserId = interaction.customId.split('_')[4];
+        const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
+        const itemId = user.inventar.items.findIndex(item => item.item.name === 'Bombe');
+        if (user.inventar.items[itemId].quantity > 1) {
+            user.inventar.items[itemId].quantity -= 1;
+        } else if (user.inventar.items[itemId].quantity === 1) {
+            user.inventar.items.splice(itemId, 1);
+        } else {
+            await interaction.update({
+                content: 'Du hast keine Bombe in deinem Inventar!', components: [],
+                flags: MessageFlags.Ephemeral
+            });
+            return;
+        }
+        await user.inventar.save();
+        const channel = interaction.channel;
+        const activeItem = await ActiveItems.create({
+            guildId: interaction.guild.id,
+            endTime: new Date(Date.now() + 43200000), // 1 hour
+            itemType: 'Bombe',
+            user: interaction.user.id,
+            usedOn: targetUserId,
+            extras: selectedWire
+        });
+        await interaction.update({
+            content: `Du hast erfolgreich eine Bombe an <@${targetUserId}> geschickt!`,
+            components: [],
+            flags: MessageFlags.Ephemeral
+        });
+        await getTenorGifById("20898456")
+            .then(async (gifUrl) => {
+                if (!gifUrl.includes("http")) {
+                    console.log("ERROR Bombe gif");
+                    return;
+                }
+                await channel.send({
+                    content: `<@${targetUserId}> du hast eine Bombe erhalten! Entschärfe sie, indem du den richtigen Draht auswählst!`,
+                    components: [
+                        new ActionRowBuilder().addComponents(
+                            new StringSelectMenuBuilder()
+                                .setCustomId(`useItem_bombe_defuse_${activeItem._id}_${interaction.user.id}`)
+                                .setPlaceholder('Wähle einen Draht aus')
+                                .addOptions([
+                                    { label: 'Rot', value: 'red' },
+                                    { label: 'Gelb', value: 'yellow' },
+                                    { label: 'Grün', value: 'green' },
+                                    { label: 'Blau', value: 'blue' },
+                                    { label: 'Pink', value: 'pink' }
+                                ])
+                        )
+                    ],
+                    files: [gifUrl],
+                    allowedMentions: { users: [targetUserId] }
+                });
+            })
+            .catch((error) => {
+                console.error('ERROR:', error);
+            });
+    } else if (interaction.customId.includes('bombe_defuse')) {
+        const activeItemId = interaction.customId.split('_')[3];
+        const userId = interaction.customId.split('_')[4];
+        const activeItem = await ActiveItems.findById(activeItemId);
+        if (!activeItem || activeItem.usedOn !== interaction.user.id || activeItem.endTime < new Date()) {
+            await interaction.update({
+                content: 'Die Bombe ist entweder bereits entschärft, ist abgelaufen oder nicht für dich bestimmt!',
+                components: []
+            });
+            return;
+        }
+        const selectedWire = interaction.values[0];
+        const correctWire = activeItem.extras;
+        if (selectedWire === correctWire) {
+            const durchsuchenButton = new ButtonBuilder()
+                .setCustomId(`useItem_bombe_durchsuchen_${activeItem._id}`)
+                .setLabel('Durchsuchen')
+                .setStyle(ButtonStyle.Primary);
+            const beweiseButton = new ButtonBuilder()
+                .setCustomId(`useItem_bombe_beweise_${activeItem._id}`)
+                .setLabel('Beweise sichern')
+                .setStyle(ButtonStyle.Secondary);
+            const row = new ActionRowBuilder().addComponents(durchsuchenButton, beweiseButton);
+            await interaction.update({
+                content: `Die Bombe wurde erfolgreich entschärft! Du kannst nun entscheiden, ob du sie nach Loserlingen durchsuchen oder Beweise sichern möchtest.`,
+                components: [row]
+            });
+            activeItem.extras = 'defused';
+            await activeItem.save();
+            return;
+        } else {
+            const amount = getRandom(20000, 40000);
+            await removeMoney(interaction.member, amount, interaction.guild.id);
+            await getTenorGifById("20062805")
+                .then(async (gifUrl) => {
+                    if (!gifUrl.includes("http")) {
+                        console.log("ERROR Bombe gif");
+                        return;
+                    }
+                    await interaction.update({
+                        content: `Bei <@${interaction.user.id}> ist eine Bombe explodiert! **${amount}** Loserlinge sind verpufft!`,
+                        files: [gifUrl],
+                        allowedMentions: { users: [interaction.user.id] }
+                    });
+                })
+                .catch((error) => {
+                    console.error('ERROR:', error);
+                });
+            await ActiveItems.findByIdAndDelete(activeItemId);
+            return;
+        }
+    } else if (interaction.customId.includes('bombe_durchsuchen')) {
+        const activeItemId = interaction.customId.split('_')[3];
+        const activeItem = await ActiveItems.findById(activeItemId);
+        if (!activeItem) {
+            await interaction.update({
+                content: 'Die Bombe existiert nicht.',
+                components: []
+            });
+            return;
+        }
+        const amount = getRandom(20000, 30000);
+        await giveMoney(interaction.user.id, amount, false);
+        await interaction.update({
+            content: `Du hast die Bombe durchsucht und **${amount}** Loserlinge gefunden!`,
+            components: []
+        });
+        await ActiveItems.findByIdAndDelete(activeItemId);
+    } else if (interaction.customId.includes('bombe_beweise')) {
+        const activeItemId = interaction.customId.split('_')[3];
+        const activeItem = await ActiveItems.findById(activeItemId);
+        if (!activeItem) {
+            await interaction.update({
+                content: 'Die Bombe existiert nicht.',
+                components: []
+            });
+            return;
+        }
+        const userId = activeItem.user;
+        await interaction.update({
+            content: `Du hast Beweise gesichert! Die Bombe war von <@${userId}>! Eventuell solltest du dich rächen, oder ihn an die Polizei melden!`,
+            components: []
+        });
+        await ActiveItems.findByIdAndDelete(activeItemId);
+    }
 }
 
 async function useItemLoserlingKlauBanane(interaction) {
-    await interaction.update('Kommt bald!');
-    return;
+    const targetUserId = interaction.values[0];
+    const targetMemberObject = await interaction.guild.members.fetch(targetUserId).catch(() => null);
+    if (!targetMemberObject) {
+        await interaction.update({
+            content: 'Der Nutzer, von dem du die Banane benutzen möchtest, konnte nicht gefunden werden!',
+            components: [],
+            flags: MessageFlags.Ephemeral
+        });
+        return;
+    }
+    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
+    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Loserling-Klau-Banane');
+    if (user.inventar.items[itemId].quantity > 1) {
+        user.inventar.items[itemId].quantity -= 1;
+    } else if (user.inventar.items[itemId].quantity === 1) {
+        user.inventar.items.splice(itemId, 1);
+    } else {
+        await interaction.update({
+            content: 'Du hast keine Loserling Klau Banane in deinem Inventar!', components: [],
+            flags: MessageFlags.Ephemeral
+        });
+        return;
+    }
+    await user.inventar.save();
+    const channel = interaction.channel;
+    const amout = getRandom(10000, 30000);
+    await removeMoney(targetUserId, amout)
+    await giveMoney(interaction.user.id, amout, false);
+    await interaction.update({
+        content: `Du hast erfolgreich **${amout}** von <@${targetUserId}> geklaut!`,
+        components: [],
+        flags: MessageFlags.Ephemeral
+    });
+    await channel.send({
+        content: `<@$interaction.user.id}> warf eine Loserling-Klau-Banane auf <@${targetUserId}> und klaute **${amout}** Loserlinge!`,
+        allowedMentions: { users: [targetUserId] }
+    });
 }
 
 async function useItemSchuldschein(interaction) {
-    await interaction.update('Kommt bald!');
-    return;
+    const targetUserId = interaction.values[0];
+    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
+    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Schuldschein');
+    if (user.inventar.items[itemId].quantity > 1) {
+        user.inventar.items[itemId].quantity -= 1;
+    } else if (user.inventar.items[itemId].quantity === 1) {
+        user.inventar.items.splice(itemId, 1);
+    } else {
+        await interaction.update({
+            content: 'Du hast keinen Schuldschein in deinem Inventar!', components: [],
+            flags: MessageFlags.Ephemeral
+        });
+        return;
+    }
+    await user.inventar.save();
+    const channel = interaction.channel;
+    await interaction.update({
+        content: `Du hast erfolgreich einen Schuldschein an <@${targetUserId}> geschickt!`,
+        components: [],
+        flags: MessageFlags.Ephemeral
+    });
+    await channel.send({
+        content: `<@${targetUserId}> du hast einen Schuldschein von <@${interaction.user.id}> erhalten!`,
+        allowedMentions: { users: [targetUserId] }
+    });
+    const schuldschein = await ActiveItems.findOne({ guildId: interaction.guild.id, itemType: 'Schuldschein', user: interaction.user.id, usedOn: targetUserId });
+    if (schuldschein) {
+        if (schuldschein.endTime) {
+            schuldschein.endTime = new Date(schuldschein.endTime.getTime() + 604800000);
+            await schuldschein.save();
+        } else {
+            schuldschein.endTime = new Date(Date.now() + 604800000);
+            await schuldschein.save();
+        }
+    } else {
+        await ActiveItems.create({
+            guildId: interaction.guild.id,
+            endTime: new Date(Date.now() + 604800000),
+            itemType: 'Schuldschein',
+            user: interaction.user.id,
+            usedOn: targetUserId,
+            extras: new Date().toLocaleDateString()
+        });
+    }
 }

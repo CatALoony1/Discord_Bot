@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
 const BotState = require('../models/BotState');
