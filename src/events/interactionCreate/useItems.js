@@ -692,7 +692,7 @@ async function useItemBombe(interaction) {
             return;
         }
         const amount = getRandom(20000, 30000);
-        await giveMoney(interaction.user.id, amount);
+        await giveMoney(interaction.member, amount);
         await interaction.update({
             content: `Du hast die Bombe durchsucht und **${amount}** Loserlinge gefunden!`,
             components: [],
