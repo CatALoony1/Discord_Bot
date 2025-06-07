@@ -381,8 +381,7 @@ async function useItemDoppelteXp(interaction) {
             itemType: 'Doppelte XP'
         });
     }
-    //const targetChannel = interaction.guild.channels.cache.get(process.env.WELCOME_ID) || (await interaction.guild.channels.fetch(process.env.WELCOME_ID));
-    const targetChannel = interaction.guild.channels.cache.get(process.env.LOG_ID) || (await interaction.guild.channels.fetch(process.env.LOG_ID));
+    const targetChannel = interaction.guild.channels.cache.get(process.env.WELCOME_ID) || (await interaction.guild.channels.fetch(process.env.WELCOME_ID));
     if (alreadyActive) {
         await targetChannel.send(`${interaction.user} hat Doppelte XP um 1 Stunde verlängert!`);
     } else {
@@ -691,7 +690,7 @@ async function useItemBombe(interaction) {
             return;
         }
         const amount = getRandom(20000, 30000);
-        await giveMoney(interaction.user.id, amount, false);
+        await giveMoney(interaction.user.id, amount);
         await interaction.update({
             content: `Du hast die Bombe durchsucht und **${amount}** Loserlinge gefunden!`,
             components: []
@@ -743,8 +742,8 @@ async function useItemLoserlingKlauBanane(interaction) {
     await user.inventar.save();
     const channel = interaction.channel;
     const amout = getRandom(10000, 30000);
-    await removeMoney(targetUserId, amout);
-    await giveMoney(interaction.user.id, amout, false);
+    await removeMoney(targetMemberObject, amout);
+    await giveMoney(interaction.member, amout);
     await interaction.update({
         content: `Du hast erfolgreich **${amout}** von <@${targetUserId}> geklaut!`,
         components: [],

@@ -71,7 +71,7 @@ function startJob(client) {
                             const userObj = await guild.members.cache.get(activeItem.user) || (await guild.members.fetch(activeItem.user));
                             const usedOnObj = await guild.members.cache.get(activeItem.usedOn) || (await guild.members.fetch(activeItem.usedOn));
                             await removeMoney(usedOnObj, 500);
-                            await giveMoney(userObj, 500, false);
+                            await giveMoney(userObj, 500);
                             await targetChannel.send(`Von <@${activeItem.usedOn}> wurden 500 Loserlinge Schulden an <@${activeItem.user}> übergeben.`);
                         }
                     }

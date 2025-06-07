@@ -123,7 +123,7 @@ async function jobFunction(client) {
                             }
                         } while (xpCheck);
                         level.save();
-                        giveMoney(member, money, false);
+                        giveMoney(member, money);
                         console.log(`${member.user.tag} hast deine XP erfolgreich in Loserlinge umgewandelt. Du hast ${money} Geld erhalten.`);
                     }
                 }

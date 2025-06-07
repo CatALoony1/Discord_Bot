@@ -2,7 +2,7 @@ const GameUser = require('../models/GameUser.js');
 const Bankkonten = require('../models/Bankkonten.js');
 const Inventar = require('../models/Inventar.js');
 
-async function giveMoney(member, money, quizadded, daily = false) {
+async function giveMoney(member, money, quizadded = false, daily = false) {
     const query = {
         userId: member.user.id,
         guildId: member.guild.id,

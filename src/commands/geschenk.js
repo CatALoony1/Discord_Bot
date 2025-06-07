@@ -53,7 +53,7 @@ module.exports = {
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
             const reason = interaction.options.get('nachricht')?.value || "";
             await removeMoney(interaction.member, geldMenge);
-            await giveMoney(targetUserObj, geldMenge, false);
+            await giveMoney(targetUserObj, geldMenge);
             if (reason !== "") {
                 await interaction.editReply(`${targetUserObj} du hast ${geldMenge} Loserlinge von ${interaction.member} erhalten!\nAngehängte Nachricht:\n${reason}`);
             } else {

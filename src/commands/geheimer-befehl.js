@@ -34,7 +34,7 @@ module.exports = {
                 }
             } else if (zufallszahl == 2) {
                 let amount = getRandom(1, 2000);
-                amount = await giveMoney(targetUserObj, amount, false);
+                amount = await giveMoney(targetUserObj, amount);
                 await interaction.reply(`Dieser Befehl ist geheim, deshalb erhälst du ${amount} Schweigegeld!`);
             } else if (zufallszahl == 3) {
                 let amount = getRandom(1, 1000);

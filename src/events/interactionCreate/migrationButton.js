@@ -84,7 +84,7 @@ module.exports = async (interaction) => {
                 }
             } while (xpCheck);
             level.save();
-            giveMoney(targetUserObj, money, false);
+            giveMoney(targetUserObj, money);
             interaction.editReply(`Du hast deine XP erfolgreich in Loserlinge umgewandelt. Du hast ${money} Geld erhalten.`);
             const role = interaction.guild.roles.cache.find(r => r.name === 'Spielkind');
             if (role) {
@@ -96,7 +96,7 @@ module.exports = async (interaction) => {
             const role = interaction.guild.roles.cache.find(r => r.name === 'Spielkind');
             if (role) {
                 await targetUserObj.roles.add(role);
-                await giveMoney(targetUserObj, 1000, false);
+                await giveMoney(targetUserObj, 1000);
                 interaction.editReply('Du hast dich entschieden, deine XP zu behalten. Du hast 100 Loserlinge Startguthaben erhalten.');
             } else {
                 interaction.editReply('Die Rolle "Spielkind" wurde nicht gefunden.');

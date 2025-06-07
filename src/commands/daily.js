@@ -102,7 +102,7 @@ module.exports = {
                 await targetUserObj.roles.add(lottoRole);
                 console.log(`Role Lottogewinner was given to user ${targetUserObj.user.tag}`);
             }
-            await giveMoney(targetUserObj, moneyToGive, false);
+            await giveMoney(targetUserObj, moneyToGive);
         } else if (subcommand == 'bonus') {
             const user = await GameUser.findOne({ userId: targetUserId, guildId: interaction.guild.id });
             if ((user && ((user.daily && user.daily.toDateString() !== new Date().toDateString()) || !user.daily)) || !user) {

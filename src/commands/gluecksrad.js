@@ -73,13 +73,13 @@ module.exports = {
             let result = Math.floor(gewinnVerlust * gluecksrad.pool * maxGewinn);
             if (zufallsZahl <= gewinnchance) {
                 if (result == einsatz) {
-                    await giveMoney(targetUserObj, result, false);
+                    await giveMoney(targetUserObj, result);
                     await interaction.editReply(`Du hast deinen Einsatz von ${einsatz} Loserlinge zurückgewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} Loserlinge`);
                 } else if (result == gluecksrad.pool) {
-                    await giveMoney(targetUserObj, result, false);
+                    await giveMoney(targetUserObj, result);
                     await interaction.editReply(`Du hast den Jackpot geknackt und ${result} Loserlinge gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} Loserlinge`);
                 } else {
-                    await giveMoney(targetUserObj, result, false);
+                    await giveMoney(targetUserObj, result);
                     await interaction.editReply(`Du hast ${result} Loserlinge gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} Loserlinge`);
                 }
                 result = result * -1;
@@ -95,7 +95,7 @@ module.exports = {
             const sonderverlosung = getRandom(1, 500);
             if (sonderverlosung == 250) {
                 if (gluecksrad.sonderpool != 0) {
-                    await giveMoney(targetUserObj, gluecksrad.sonderpool, false);
+                    await giveMoney(targetUserObj, gluecksrad.sonderpool);
                     await interaction.channel.send(`Glückwunsch ${interaction.member}! Du hast bei der Sonderverlosung gewonnen und den Sonderpool von ${gluecksrad.sonderpool} Loserlinge erhalten!`);
                     gluecksrad.sonderpool = 0;
                 }

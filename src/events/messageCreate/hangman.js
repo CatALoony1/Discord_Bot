@@ -86,7 +86,7 @@ module.exports = async (message) => {
                 .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nBuchstaben: ${hangman.buchstaben.join(', ')}`)
                 .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
             await referencedMessage.edit({ embeds: [embed], files: [file] });
-            giveMoney(message.member, 250, false);
+            giveMoney(message.member, 250);
             await hangman.save();
             await message.react('🏆');
         } else {
@@ -101,7 +101,7 @@ module.exports = async (message) => {
                     .setDescription(`Gewonnen! Das Wort war: **${hangman.word}**\n\nBuchstaben: ${hangman.buchstaben.join(', ')}`)
                     .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
-                giveMoney(message.member, 250, false);
+                giveMoney(message.member, 250);
                 await hangman.save();
                 await message.react('🏆');
                 return;

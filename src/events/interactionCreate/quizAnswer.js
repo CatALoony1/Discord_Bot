@@ -49,7 +49,7 @@ module.exports = async (interaction) => {
                     fetchedStats.right += 1;
                     let xpToGive = 500;
                     xpToGive = Math.ceil(xpToGive * (1 + ((fetchedStats.series * 10) / 100)));
-                    await giveMoney(interaction.member, xpToGive, false);
+                    await giveMoney(interaction.member, xpToGive);
                     if (isYesterday(fetchedStats.lastParticipation)) {
                         fetchedStats.series += 1;
                     } else {
@@ -67,7 +67,7 @@ module.exports = async (interaction) => {
                     });
                     let xpToGive = 500;
                     xpToGive = Math.ceil(xpToGive * 1.1);
-                    await giveMoney(interaction.member, xpToGive, false);
+                    await giveMoney(interaction.member, xpToGive);
                     await newStats.save();
                 }
                 await interaction.editReply(`Glückwunsch, Antwort ${answer} ist richtig!🥳`);
