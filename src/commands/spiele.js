@@ -25,6 +25,11 @@ module.exports = {
                 .setName('gamestats')
                 .setDescription('Zeigt all deine Level-Bezogenen Daten.')
         )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('eigenen_tiere')
+                .setDescription('Zeigt all deine Tiere.')
+        )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
     run: async ({ interaction }) => {
@@ -41,6 +46,9 @@ module.exports = {
             return await handleSpieleCommands.handleUseItem(interaction);
         } else if (subcommand == 'gamestats') {
             return await handleSpieleCommands.handleGamestats(interaction);
+        } else if (subcommand == 'eigene_tiere') {
+            await interaction.deferReply();
+            return await handleSpieleCommands.handleOwnAnimals(interaction);
         }
 
     },

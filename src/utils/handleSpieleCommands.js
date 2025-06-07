@@ -6,6 +6,7 @@ require('../models/Items.js');
 require('../models/Bankkonten.js');
 require('../models/Tiere.js');
 const Lottozahlen = require('../models/Lottozahlen.js');
+const createAnimalsEmbeds = require('../utils/createAnimalsEmbeds.js');
 
 async function handleShop(interaction) {
     const embed = await createShopEmbeds(0, interaction);
@@ -265,6 +266,33 @@ async function handleGamestats(interaction) {
     messageEdited.addFields({ name: 'Inventar', value: `${itemNamesAndQuantity}` });
     messageEdited.addFields({ name: 'Tiere', value: `${tierpfade}` });
     interaction.editReply({ embeds: [messageEdited] });
+}
+
+async function handleShop(interaction) {
+    const replyData = await createAnimalsEmbeds(0, interaction);
+    if (!replyData) {
+        interaction.editReply(`Du besitzt keine Tiere.`);
+    }
+    const pageDownButton = new ButtonBuilder()
+        .setEmoji('⬅️')
+        .setLabel('Zurück')
+        .setStyle(ButtonStyle.Primary)
+        .setCustomId(`ownAnimalsDown`);
+
+    const pageUpButton = new ButtonBuilder()
+        .setEmoji('➡️')
+        .setLabel('Vorwärts')
+        .setStyle(ButtonStyle.Primary)
+        .setCustomId(`ownAnimalsUp`);
+
+    const firstRow = new ActionRowBuilder().addComponents(pageDownButton, pageUpButton);
+    const secondRow = new ActionRowBuilder().addComponents(buyButton);
+
+    await interaction.editReply({
+        embeds: [replyData.embed],
+        files: [replyData.file],
+        components: [firstRow, secondRow]
+    });
 }
 
 
