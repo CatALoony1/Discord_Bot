@@ -2,7 +2,7 @@ const GameUser = require('../models/GameUser.js');
 const Bankkonten = require('../models/Bankkonten.js');
 const Inventar = require('../models/Inventar.js');
 
-async function giveMoney(member, money, quizadded) {
+async function giveMoney(member, money, quizadded, daily = false) {
     const query = {
         userId: member.user.id,
         guildId: member.guild.id,
@@ -27,6 +27,9 @@ async function giveMoney(member, money, quizadded) {
             if (member.roles.cache.some(role => role.name === 'Server Booster')) {
                 money = Math.ceil(money * 1.15);
             }
+            if(daily){
+                user.daily = new Date();
+            }
             console.log(`user ${member.user.tag} received ${money} Geld`);
             user.bankkonto.currentMoney += money;
             user.bankkonto.moneyGain += money;
@@ -48,6 +51,9 @@ async function giveMoney(member, money, quizadded) {
                 userId: member.user.id,
                 guildId: member.guild.id,
             });
+            if(daily){
+                user.daily = new Date();
+            }
             const newBankkonto = new Bankkonten({
                 besitzer: newUser._id,
                 currentMoney: money,
