@@ -26,7 +26,7 @@ module.exports = async (message) => {
         if (conf) {
             multiplier = Number(conf.value);
         }
-  var xpToGive = (getRandomXp(5, 15) * multiplier) + bonusXP;
+  var xpToGive = (getRandomXp(5, 15) * multiplier);
   await giveXP(message.member, xpToGive, 0, message.channel, true, false);
   cooldowns.add(message.author.id);
   setTimeout(() => {
