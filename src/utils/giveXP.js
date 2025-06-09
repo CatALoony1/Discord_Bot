@@ -3,6 +3,7 @@ const { EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('../utils/calculateLevelXp');
 const giveMoney = require('../utils/giveMoney');
 require('dotenv').config();
+const Config = require('../models/Config');
 
 const roles = new Map([[0, '1312394062258507869'],
 [1, '1310211770694111294'],
@@ -43,8 +44,17 @@ async function giveXP(member, xpToGive, channel, message) {
     };
     try {
         const level = await Level.findOne(query);
+        let confQuery = {
+            guildId: process.env.GUILD_ID,
+            key: "xpMultiplier"
+        };
+        let conf = await Config.findOne(confQuery);
+        let multiplier = 1;
+        if (conf) {
+            multiplier = Number(conf.value);
+        }
+        let xpAmount = xpToGive * multiplier;
         if (level) {
-            let xpAmount = xpToGive;
             if (member.roles.cache.some(role => role.name === 'Bumper')) {
                 xpAmount = Math.ceil(xpAmount * 1.1);
             }
@@ -105,31 +115,31 @@ async function giveXP(member, xpToGive, channel, message) {
                 return;
             });
         } else {
-            console.log(`user ${member.user.tag} received ${xpToGive} XP`);
+            console.log(`user ${member.user.tag} received ${xpAmount} XP`);
             console.log(`new user ${member.user.tag} added to database`);
             const newLevel = new Level({
                 userId: member.user.id,
                 guildId: member.guild.id,
-                xp: xpToGive,
-                allxp: xpToGive,
+                xp: xpAmount,
+                allxp: xpAmount,
                 messages: 0,
                 lastMessage: Date.now(),
                 userName: member.user.tag,
                 messagexp: 0,
                 voicexp: 0,
                 voicetime: 0,
-                thismonth: xpToGive
+                thismonth: xpAmount
             });
             if (message) {
-                newLevel.messagexp += xpToGive;
+                newLevel.messagexp += xpAmount;
                 newLevel.messages += 1;
             } else {
-                newLevel.voicexp += xpToGive;
+                newLevel.voicexp += xpAmount;
                 newLevel.voicetime += 5;
             }
             await newLevel.save();
         }
-        return xpToGive;
+        return xpAmount;
     } catch (error) {
         console.log(error);
     }

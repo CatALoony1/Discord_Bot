@@ -1,6 +1,5 @@
 require('dotenv').config();
 const cron = require('node-cron');
-const Config = require('../models/Config');
 const giveXP = require('../utils/giveXP');
 
 function getRandomXp(min, max) {
@@ -19,20 +18,11 @@ function startJob(client) {
     voiceXpJob = cron.schedule('*/5 * * * *', async function () {
         console.log(`VoiceXP-Job started...`);
         var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
-        let confQuery = {
-            guildId: process.env.GUILD_ID,
-            key: "xpMultiplier"
-        };
-        let conf = await Config.findOne(confQuery);
-        let multiplier = 1;
-        if (conf) {
-            multiplier = Number(conf.value);
-        }
         await client.channels.cache.forEach(async (channel) => {
             if (channel.type == 2 && channel.id != '1307820687599337602') {
                 if (channel.members.size >= 2) {
                     channel.members.forEach(async (member) => {
-                        let xpToGive = 5 * getRandomXp(1, 5) * multiplier;
+                        let xpToGive = 5 * getRandomXp(1, 5);
                         await giveXP(member, xpToGive, targetChannel, false);
                     });
                 }
