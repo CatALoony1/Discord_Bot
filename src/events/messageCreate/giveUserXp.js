@@ -17,15 +17,15 @@ function getRandomXp(min, max) {
  */
 module.exports = async (message) => {
   if (!message.inGuild() || message.author.bot || cooldowns.has(message.author.id) || message.webhookId) return;
-          let confQuery = {
-            guildId: message.guild.id,
-            key: "xpMultiplier"
-        };
-        let conf = await Config.findOne(confQuery);
-        let multiplier = 1;
-        if (conf) {
-            multiplier = Number(conf.value);
-        }
+  let confQuery = {
+    guildId: message.guild.id,
+    key: "xpMultiplier"
+  };
+  let conf = await Config.findOne(confQuery);
+  let multiplier = 1;
+  if (conf) {
+    multiplier = Number(conf.value);
+  }
   var xpToGive = (getRandomXp(5, 15) * multiplier);
   await giveXP(message.member, xpToGive, 0, message.channel, true, false);
   cooldowns.add(message.author.id);
