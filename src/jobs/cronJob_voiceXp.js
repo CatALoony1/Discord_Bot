@@ -33,7 +33,7 @@ function startJob(client) {
                 if (channel.members.size >= 2) {
                     channel.members.forEach(async (member) => {
                         let xpToGive = 5 * getRandomXp(1, 5) * multiplier;
-                        await giveXP(member, xpToGive, 0, targetChannel, false, true);
+                        await giveXP(member, xpToGive, targetChannel, false);
                     });
                 }
             }

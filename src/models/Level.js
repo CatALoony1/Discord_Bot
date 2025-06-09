@@ -57,16 +57,8 @@ const levelSchema = new Schema({
     type: Number,
     default: 0,
   },
-  bonusclaimed: {
-    type: Number,
-    default: 0,
-  },
   lastBump: {
     type: Date,
-  },
-  removedxp: {
-    type: Number,
-    default: 0,
   },
   geburtstag: {
     type: Date,

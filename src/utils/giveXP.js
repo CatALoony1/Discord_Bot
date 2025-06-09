@@ -36,7 +36,7 @@ const roles = new Map([[0, '1312394062258507869'],
 [140, '1354908712170426507']
 ]);
 
-async function giveXP(member, xpToGive, bonusXP, channel, message, voice) {
+async function giveXP(member, xpToGive, channel, message) {
     const query = {
         userId: member.user.id,
         guildId: member.guild.id,
@@ -52,9 +52,9 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice) {
                 xpAmount = Math.ceil(xpAmount * 1.15);
             }
             if (message) {
-                level.messagexp += (xpAmount - bonusXP);
+                level.messagexp += xpAmount;
                 level.messages += 1;
-            } else if (voice) {
+            } else {
                 level.voicexp += xpAmount;
                 level.voicetime += 5;
             }
@@ -62,7 +62,6 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice) {
             level.xp += xpAmount;
             level.allxp += xpAmount;
             level.thismonth += xpAmount;
-            level.bonusclaimed += bonusXP;
             level.lastMessage = Date.now();
             if (level.xp >= calculateLevelXp(level.level)) {
                 do {
@@ -119,13 +118,12 @@ async function giveXP(member, xpToGive, bonusXP, channel, message, voice) {
                 messagexp: 0,
                 voicexp: 0,
                 voicetime: 0,
-                thismonth: xpToGive,
-                bonusclaimed: bonusXP
+                thismonth: xpToGive
             });
             if (message) {
-                newLevel.messagexp += (xpToGive - bonusXP);
+                newLevel.messagexp += xpToGive;
                 newLevel.messages += 1;
-            } else if (voice) {
+            } else {
                 newLevel.voicexp += xpToGive;
                 newLevel.voicetime += 5;
             }

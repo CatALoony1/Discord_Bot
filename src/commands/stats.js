@@ -81,12 +81,10 @@ module.exports = {
     messageEdited.addFields({ name: 'Level:', value: `${fetchedLevel.level}` });
     messageEdited.addFields({ name: 'XP zum nächsten Level:', value: `${fetchedLevel.xp}/${calculateLevelXp(fetchedLevel.level)}` });
     messageEdited.addFields({ name: 'Gesamte XP:', value: `${fetchedLevel.allxp}` });
-    messageEdited.addFields({ name: 'XP abgezogen:', value: `${fetchedLevel.removedxp}` });
     messageEdited.addFields({ name: 'XP diesen Monat:', value: `${fetchedLevel.thismonth}` });
     messageEdited.addFields({ name: 'XP letzten Monat:', value: `${fetchedLevel.lastmonth}` });
     messageEdited.addFields({ name: 'Nachrichten XP:', value: `${fetchedLevel.messagexp}` });
     messageEdited.addFields({ name: 'Voice Call XP:', value: `${fetchedLevel.voicexp}` });
-    messageEdited.addFields({ name: 'Bonus XP:', value: `${fetchedLevel.bonusclaimed}` });
     messageEdited.addFields({ name: 'Nachrichten:', value: `${fetchedLevel.messages}` });
     messageEdited.addFields({ name: 'Ungefähre Voice Call Zeit:', value: `${time}` });
     messageEdited.addFields({ name: 'Anzahl Lottospiele:', value: `${lottospiele}` });
