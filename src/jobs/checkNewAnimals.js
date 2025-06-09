@@ -73,62 +73,6 @@ async function jobFunction(client) {
         } else {
             console.log('Keine neuen Tierbilder zum Hinzufügen.');
         }
-
-        const guild = await client.guilds.fetch(process.env.GUILD_ID);
-        const role = await guild.roles.fetch('1379457961931309137');
-        if (role) {
-            guild.members.fetch();
-            const membersWithoutRole = guild.members.cache.filter(member => !member.roles.cache.has(role.id));
-            if (membersWithoutRole.size > 0) {
-                console.log(`Es gibt ${membersWithoutRole.size} Mitglieder ohne die Spielkind-Rolle.`);
-                for (const member of membersWithoutRole.values()) {
-                    await member.roles.add(role);
-                    console.log(`Rolle 'Spielkind' zu Mitglied ${member.user.tag} hinzugefügt.`);
-                    const level = await Level.findOne({
-                        userId: member.user.id,
-                        guildId: guild.id,
-                    });
-                    if (level) {
-                        const allxp = level.voicexp + level.messagexp;
-                        let money = 0;
-                        if (level.allxp > allxp) {
-                            money = ((level.allxp - allxp) * 2) + 1000;
-                        } else {
-                            money = 1000;
-                        }
-                        level.allxp = allxp;
-                        let xpCheck = true;
-                        level.level = 0;
-                        level.xp = allxp;
-                        do {
-                            let neededXP = calculateLevelXp(level.level);
-                            if (level.xp >= neededXP) {
-                                level.level += 1;
-                                level.xp -= neededXP;
-                                if (roles.has(level.level)) {
-                                    let newRole = roles.get(level.level);
-                                    for (const value of roles.values()) {
-                                        if (member.roles.cache.has(value)) {
-                                            let tempRole = guild.roles.cache.get(value);
-                                            await member.roles.remove(tempRole);
-                                            console.log(`Role ${value} was removed from user ${member.user.tag}`);
-                                        }
-                                    }
-                                    let role = guild.roles.cache.get(newRole);
-                                    await member.roles.add(role);
-                                    console.log(`Role ${role.name} was given to user ${member.user.tag}`);
-                                }
-                            } else {
-                                xpCheck = false;
-                            }
-                        } while (xpCheck);
-                        level.save();
-                        giveMoney(member, money);
-                        console.log(`${member.user.tag} hast deine XP erfolgreich in Loserlinge umgewandelt. Du hast ${money} Geld erhalten.`);
-                    }
-                }
-            }
-        }
     } catch (error) {
         console.log(error);
         return;
