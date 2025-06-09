@@ -106,8 +106,8 @@ module.exports = {
         } else if (subcommand == 'bonus') {
             const user = await GameUser.findOne({ userId: targetUserId, guildId: interaction.guild.id });
             if ((user && ((user.daily && user.daily.toDateString() !== new Date().toDateString()) || !user.daily)) || !user) {
-                const bonusAmount = 1000;
-                await giveMoney(targetUserObj, bonusAmount, false, true);
+                let bonusAmount = 1000;
+                bonusAmount = await giveMoney(targetUserObj, bonusAmount, false, true);
                 interaction.editReply(`Du hast deinen täglichen Bonus von ${bonusAmount} Loserlinge erhalten!`);
             } else {
                 interaction.editReply("Du hast deinen täglichen Bonus bereits heute erhalten. Bitte versuche es morgen erneut.");
