@@ -128,7 +128,8 @@ async function giveXP(member, xpToGive, channel, message) {
                 messagexp: 0,
                 voicexp: 0,
                 voicetime: 0,
-                thismonth: xpAmount
+                thismonth: xpAmount,
+                bumps: 0,
             });
             if (message) {
                 newLevel.messagexp += xpAmount;

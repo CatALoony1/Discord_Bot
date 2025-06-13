@@ -27,7 +27,7 @@ async function giveMoney(member, money, quizadded = false, daily = false) {
             if (member.roles.cache.some(role => role.name === 'Server Booster')) {
                 money = Math.ceil(money * 1.15);
             }
-            if(daily){
+            if (daily) {
                 user.daily = new Date();
             }
             console.log(`user ${member.user.tag} received ${money} Geld`);
@@ -51,7 +51,7 @@ async function giveMoney(member, money, quizadded = false, daily = false) {
                 userId: member.user.id,
                 guildId: member.guild.id,
             });
-            if(daily){
+            if (daily) {
                 newUser.daily = new Date();
             }
             const newBankkonto = new Bankkonten({
