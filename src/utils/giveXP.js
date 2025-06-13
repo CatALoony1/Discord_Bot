@@ -101,7 +101,7 @@ async function giveXP(member, xpToGive, channel, message) {
                         }
                         money += 5000;
                     } else {
-                        money += 1000
+                        money += 1000;
                     }
                     const embed = new EmbedBuilder()
                         .setTitle('Glückwunsch!')
@@ -116,7 +116,7 @@ async function giveXP(member, xpToGive, channel, message) {
                 return;
             });
             if (money > 0) {
-                await giveMoney(member, money)
+                await giveMoney(member, money);
             }
         } else {
             console.log(`user ${member.user.tag} received ${xpAmount} XP`);
