@@ -195,6 +195,18 @@ async function handleUseItem(interaction) {
             content = `Möchtest du das Bankkonto-Upgrade aktivieren?`;
             break;
         }
+        case 'Keks': {
+            const selectMenu = new StringSelectMenuBuilder()
+                .setCustomId(`useItem_keks_select}`)
+                .setPlaceholder('Was möchtest du tun?')
+                .addOptions([
+                    { label: 'Essen', value: 'essen' },
+                    { label: 'Verschenken', value: 'schenken' }
+                ]);
+            firstRow = new ActionRowBuilder().addComponents(selectMenu);
+            content = `Möchtest du den Keks essen oder verschenken?`;
+            break;
+        }
         default:
             await interaction.reply({ content: `Das Item ${itemName} kann nicht benutzt werden.`, flags: MessageFlags.Ephemeral });
             return;

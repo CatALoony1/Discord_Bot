@@ -11,17 +11,6 @@ const inventarSchema = new Schema({
             default: 1
         }
     }],
-    useditems: [{
-        item: {
-            type: Schema.Types.ObjectId,
-            ref: 'Item',
-            required: true
-        },
-        quantity: {
-            type: Number,
-            default: 1
-        }
-    }],
     besitzer: {
         type: Schema.Types.ObjectId,
         ref: 'GameUser',

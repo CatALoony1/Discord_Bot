@@ -18,6 +18,10 @@ const gameUserSchema = new Schema({
     daily: {
         type: Date,
     },
+    weight: {
+        type: Number,
+        default: 0,
+    },
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true }

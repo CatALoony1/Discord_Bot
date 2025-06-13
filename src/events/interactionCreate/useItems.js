@@ -2,7 +2,7 @@ const { MessageFlags, StringSelectMenuBuilder, UserSelectMenuBuilder, ActionRowB
 const GameUser = require('../../models/GameUser');
 require('../../models/Bankkonten');
 require('../../models/Inventar');
-require('../../models/Items');
+const Items = require('../../models/Items');
 const Tiere = require('../../models/Tiere');
 const Config = require('../../models/Config');
 const ActiveItems = require('../../models/ActiveItems');
@@ -72,6 +72,8 @@ module.exports = async (interaction) => {
             await useItemLoserlingKlauBanane(interaction);
         } else if (interaction.customId.includes('schuldschein_select')) {
             await useItemSchuldschein(interaction);
+        } else if (interaction.customId.includes('keks')) {
+            await useItemKeks(interaction);
         }
     } catch (error) {
         console.log(error);
@@ -725,7 +727,7 @@ async function useItemLoserlingKlauBanane(interaction) {
     const targetMemberObject = await interaction.guild.members.fetch(targetUserId).catch(() => null);
     if (!targetMemberObject) {
         await interaction.update({
-            content: 'Der Nutzer, von dem du die Banane benutzen möchtest, konnte nicht gefunden werden!',
+            content: 'Der Nutzer, auf dem du die Banane benutzen möchtest, konnte nicht gefunden werden!',
             components: [],
             flags: MessageFlags.Ephemeral
         });
@@ -803,6 +805,101 @@ async function useItemSchuldschein(interaction) {
             user: interaction.user.id,
             usedOn: targetUserId,
             extras: new Date().toLocaleDateString()
+        });
+    }
+}
+
+async function useItemKeks(interaction) {
+    if (interaction.customId.includes('keks_select')) {
+        const selectedAction = interaction.values[0];
+        if (selectedAction == 'essen') {
+            const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
+            const itemId = user.inventar.items.findIndex(item => item.item.name === 'Keks');
+            if (user.inventar.items[itemId].quantity > 1) {
+                user.inventar.items[itemId].quantity -= 1;
+            } else if (user.inventar.items[itemId].quantity === 1) {
+                user.inventar.items.splice(itemId, 1);
+            } else {
+                await interaction.update({
+                    content: 'Du hast keinen Keks in deinem Inventar!', components: [],
+                    flags: MessageFlags.Ephemeral
+                });
+                return;
+            }
+            user.weight += 50;
+            await user.inventar.save();
+            await user.save();
+            await interaction.update({
+                content: `Du hast erfolgreich einen Keks verdrückt.`,
+                components: [],
+                flags: MessageFlags.Ephemeral
+            });
+        } else if (selectedAction == 'schenken') {
+            const selectMenu = new UserSelectMenuBuilder()
+                .setCustomId('useItem_keks_uselect')
+                .setPlaceholder('Wähle den Nutzer aus, dem du den Keks schenken möchtest.')
+                .setMinValues(1)
+                .setMaxValues(1);
+            const row = new ActionRowBuilder().addComponents(selectMenu);
+            await interaction.update({
+                content: 'Wähle den Nutzer aus, dem du den Keks schenken möchtest:',
+                components: [row],
+                flags: MessageFlags.Ephemeral
+            });
+        }
+    } if (interaction.customId.includes('keks_uselect')) {
+        const targetUserId = interaction.values[0];
+        const targetMemberObject = await interaction.guild.members.fetch(targetUserId).catch(() => null);
+        if (!targetMemberObject) {
+            await interaction.update({
+                content: 'Der Nutzer, dem du den Keks schenken möchtest, konnte nicht gefunden werden!',
+                components: [],
+                flags: MessageFlags.Ephemeral
+            });
+            return;
+        }
+        const otheruser = await GameUser.findOne({ userId: targetUserId }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
+        if (!otheruser || !otheruser.inventar) {
+            await interaction.update({
+                content: 'Der Nutzer, dem du den Keks schenken möchtest, konnte nicht gefunden werden!',
+                components: [],
+                flags: MessageFlags.Ephemeral
+            });
+            return;
+        }
+        const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
+        const itemId = user.inventar.items.findIndex(item => item.item.name === 'Keks');
+        if (user.inventar.items[itemId].quantity > 1) {
+            user.inventar.items[itemId].quantity -= 1;
+        } else if (user.inventar.items[itemId].quantity === 1) {
+            user.inventar.items.splice(itemId, 1);
+        } else {
+            await interaction.update({
+                content: 'Du hast keinen Keks in deinem Inventar!',
+                components: [],
+                flags: MessageFlags.Ephemeral
+            });
+            return;
+        }
+        const item = await Items.findOne({ name: 'Keks' });
+        const itemIndex = otheruser.inventar.items.findIndex(inventarItem => inventarItem.item.equals(item._id));
+        if (itemIndex !== -1) {
+            otheruser.inventar.items[itemIndex].quantity += 1;
+            await otheruser.inventar.save();
+        } else {
+            otheruser.inventar.items.push({ item: item._id, quantity: 1 });
+            await otheruser.inventar.save();
+        }
+        await otheruser.inventar.save();
+        await interaction.update({
+            content: `Du hast einen Keks an <@${targetUserId}> geschenkt!`,
+            components: [],
+            flags: MessageFlags.Ephemeral
+        });
+        const channel = interaction.channel;
+        await channel.send({
+            content: `<@${targetUserId}> du hast von <@${interaction.user.id}> 1 Keks geschenkt bekommen!`,
+            allowedMentions: { users: [targetUserId] }
         });
     }
 }
