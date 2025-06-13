@@ -73,6 +73,7 @@ async function giveXP(member, xpToGive, channel, message) {
             level.allxp += xpAmount;
             level.thismonth += xpAmount;
             level.lastMessage = Date.now();
+            let money = 0;
             if (level.xp >= calculateLevelXp(level.level)) {
                 do {
                     level.xp = level.xp - calculateLevelXp(level.level);
@@ -98,9 +99,9 @@ async function giveXP(member, xpToGive, channel, message) {
                             await member.guild.members.cache.get(member.user.id).roles.add(memberRole);
                             console.log(`Role Mitglied was given to user ${member.user.tag}`);
                         }
-                        giveMoney(member, 5000);
+                        money += 5000;
                     } else {
-                        giveMoney(member, 1000);
+                        money += 1000
                     }
                     const embed = new EmbedBuilder()
                         .setTitle('Glückwunsch!')
@@ -114,6 +115,9 @@ async function giveXP(member, xpToGive, channel, message) {
                 console.log(`Error saving updated level ${e}`);
                 return;
             });
+            if (money > 0) {
+                await giveMoney(member, money)
+            }
         } else {
             console.log(`user ${member.user.tag} received ${xpAmount} XP`);
             console.log(`new user ${member.user.tag} added to database`);
