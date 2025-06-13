@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, UserSelectMenuBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, UserSelectMenuBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags, EmbedBuilder, StringSelectMenuBuilder } = require('discord.js');
 const createShopEmbeds = require('../utils/createShopEmbeds.js');
 const GameUser = require('../models/GameUser.js');
 require('../models/Inventar.js');
@@ -275,8 +275,9 @@ async function handleGamestats(interaction) {
     messageEdited.addFields({ name: 'Verlorene/Ausgegebene Loserlinge:', value: `${user.bankkonto.moneyLost}` });
     messageEdited.addFields({ name: 'Anzahl Lottospiele:', value: `${lottospiele}` });
     messageEdited.addFields({ name: 'Quizspiele hinzugefügt:', value: `${user.quizadded}` });
-    messageEdited.addFields({ name: 'Inventar', value: `${itemNamesAndQuantity}` });
-    messageEdited.addFields({ name: 'Tiere', value: `${tierpfade}` });
+    messageEdited.addFields({ name: 'Gewicht:', value: `${user.weight / 1000}kg` })
+    messageEdited.addFields({ name: 'Inventar:', value: `${itemNamesAndQuantity}` });
+    messageEdited.addFields({ name: 'Tiere:', value: `${tierpfade}` });
     interaction.editReply({ embeds: [messageEdited] });
 }
 

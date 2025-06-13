@@ -847,7 +847,7 @@ async function useItemKeks(interaction) {
                 flags: MessageFlags.Ephemeral
             });
         }
-    } if (interaction.customId.includes('keks_uselect')) {
+    } else if (interaction.customId.includes('keks_uselect')) {
         const targetUserId = interaction.values[0];
         const targetMemberObject = await interaction.guild.members.fetch(targetUserId).catch(() => null);
         if (!targetMemberObject) {
