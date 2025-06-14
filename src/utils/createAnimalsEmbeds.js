@@ -8,7 +8,7 @@ async function createLeaderboardEmbeds(page, interaction) {
     if (!user) {
         return undefined;
     }
-    const tiere = Tiere.find({ besitzer: user._id });
+    const tiere = await Tiere.find({ besitzer: user._id });
 console.log(tiere);
 console.log(tiere.length);
 console.log(tiere[page]);
