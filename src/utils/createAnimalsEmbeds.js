@@ -12,9 +12,6 @@ async function createLeaderboardEmbeds(page, interaction) {
   besitzer: user._id,
   besitzer: { $exists: true }
 });
-console.log(tiere);
-console.log(tiere.length);
-console.log(tiere[page]);
     if (!tiere || tiere.length <= 0 || !tiere[page]) {
         return undefined;
     }
