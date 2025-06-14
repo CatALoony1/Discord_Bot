@@ -4,7 +4,7 @@ const GameUser = require('../models/GameUser');
 const path = require('node:path');
 
 async function createLeaderboardEmbeds(page, interaction) {
-    const user = GameUser.find({ guildId: interaction.guild.id, userId: interaction.user.id });
+    const user = await GameUser.find({ guildId: interaction.guild.id, userId: interaction.user.id });
     if (!user) {
         return undefined;
     }
