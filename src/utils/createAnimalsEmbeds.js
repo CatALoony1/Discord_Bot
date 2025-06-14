@@ -9,6 +9,9 @@ async function createLeaderboardEmbeds(page, interaction) {
         return undefined;
     }
     const tiere = Tiere.find({ besitzer: user._id });
+console.log(tiere);
+console.log(tiere.length);
+console.log(Tiere[page]);
     if (!tiere || tiere.length <= 0 || !tiere[page]) {
         return undefined;
     }
