@@ -8,7 +8,7 @@ async function createLeaderboardEmbeds(page, guildId, userId) {
     if (!user) {
         return undefined;
     }
-    console.log(user._id);
+    console.log(user);
     const tiere = await Tiere.find({
         besitzer: user._id,
         besitzer: { $exists: true }
