@@ -11,7 +11,7 @@ module.exports = async (interaction) => {
         try {
             if (page != 1) {
                 let newPage = +page;
-                const messageData = await createAnimalsEmbeds(newPage - 2, interaction.guild.id, targetMessageEmbed.footer);
+                const messageData = await createAnimalsEmbeds(newPage - 2, interaction.guild.id, targetMessageEmbed.footer.text);
                 await interaction.update({
                     embeds: [messageData.embed],
                     files: [messageData.file],
@@ -29,7 +29,7 @@ module.exports = async (interaction) => {
         try {
             if (page != maxpage) {
                 let newPage = +page;
-                const messageData = await createAnimalsEmbeds(newPage, interaction.guild.id, targetMessageEmbed.footer);
+                const messageData = await createAnimalsEmbeds(newPage, interaction.guild.id, targetMessageEmbed.footer.text);
                 await interaction.update({
                     embeds: [messageData.embed],
                     files: [messageData.file],
