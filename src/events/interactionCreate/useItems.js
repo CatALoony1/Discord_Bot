@@ -955,6 +955,8 @@ async function useItemKeks(interaction) {
     } else if (interaction.customId.includes('keks_amount_select')) {
         let amount = parseInt(interaction.values[0]);
         const targetUserId = interaction.customId.split('_')[3];
+        console.log(targetUserId);
+        console.log(amount);
         const targetMemberObject = await interaction.guild.members.fetch(targetUserId).catch(() => null);
         if (!targetMemberObject) {
             await interaction.update({
