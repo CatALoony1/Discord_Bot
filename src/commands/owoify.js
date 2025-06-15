@@ -9,7 +9,6 @@ module.exports = {
         try {
             interaction.deferReply();
             const content = interaction.targetMessage.content;
-            let reply = '';
             const fetch = await import('node-fetch').then(module => module.default);
             const apiUrl = 'https://nekos.life/api/v2/owoify';
             const response = await fetch(apiUrl, {
