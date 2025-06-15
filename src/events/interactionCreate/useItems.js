@@ -999,7 +999,7 @@ async function useItemKeks(interaction) {
         }
         await otheruser.inventar.save();
         await interaction.update({
-            content: `Du hast einen Keks an <@${targetUserId}> geschenkt!`,
+            content: `Du hast ${amount} Kekse an <@${targetUserId}> geschenkt!`,
             components: [],
             flags: MessageFlags.Ephemeral
         });
