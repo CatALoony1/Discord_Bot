@@ -50,7 +50,7 @@ module.exports = {
             } else if (subcommand === 'api') {
                 const zahl = interaction.options.get('zahl')?.value || -1;
                 const fetch = await import('node-fetch').then(module => module.default);
-                let randomNumber = getRandom(1, 35);
+                let randomNumber = getRandom(1, 40);
                 let data = null;
                 let apiUrl = null;
                 const delay = 2000;
@@ -713,6 +713,51 @@ module.exports = {
                             )
                             .setFooter({ text: 'Daten von MakeupAPI' });
                         await interaction.editReply({ embeds: [productEmbed] });
+                        break;
+                    }
+                    case 36: {
+                        await fetch('https://nekos.life/api/v2/fact')
+                            .then((response) => response.json())
+                            .then((mydata) => {
+                                data = mydata;
+                            });
+                        await interaction.editReply(data.fact);
+                        break;
+                    }
+                    case 37: {
+                        await fetch('https://nekos.life/api/v2/img/meow')
+                            .then((response) => response.json())
+                            .then((mydata) => {
+                                data = mydata;
+                            });
+                        await interaction.editReply(data.url);
+                        break;
+                    }
+                    case 38: {
+                        await fetch('https://nekos.life/api/v2/img/lizard')
+                            .then((response) => response.json())
+                            .then((mydata) => {
+                                data = mydata;
+                            });
+                        await interaction.editReply(data.url);
+                        break;
+                    }
+                    case 39: {
+                        await fetch('https://nekos.life/api/v2/img/woof')
+                            .then((response) => response.json())
+                            .then((mydata) => {
+                                data = mydata;
+                            });
+                        await interaction.editReply(data.url);
+                        break;
+                    }
+                    case 40: {
+                        await fetch('https://nekos.life/api/v2/img/goose')
+                            .then((response) => response.json())
+                            .then((mydata) => {
+                                data = mydata;
+                            });
+                        await interaction.editReply(data.url);
                         break;
                     }
                     default: {
