@@ -572,8 +572,7 @@ async function useItemUmarmung(interaction) {
     });
     await channel.send({
         content: hugText,
-        files: [hugGifUrl],
-        allowedMentions: { users: [targetUserId] }
+        files: [hugGifUrl]
     });
 }
 
@@ -610,8 +609,7 @@ async function useItemKuss(interaction) {
     });
     await channel.send({
         content: kissText,
-        files: [kissGifUrl],
-        allowedMentions: { users: [targetUserId] }
+        files: [kissGifUrl]
     });
 }
 
@@ -692,8 +690,7 @@ async function useItemBombe(interaction) {
                                 ])
                         )
                     ],
-                    files: [gifUrl],
-                    allowedMentions: { users: [targetUserId] }
+                    files: [gifUrl]
                 });
             })
             .catch((error) => {
@@ -741,7 +738,6 @@ async function useItemBombe(interaction) {
                     await interaction.update({
                         content: `Bei <@${interaction.user.id}> ist eine Bombe explodiert! **${amount}** Loserlinge sind verpufft!`,
                         files: [gifUrl],
-                        allowedMentions: { users: [interaction.user.id] },
                         components: []
                     });
                 })
@@ -826,8 +822,7 @@ async function useItemLoserlingKlauBanane(interaction) {
         flags: MessageFlags.Ephemeral
     });
     await channel.send({
-        content: `<@${interaction.user.id}> warf eine Loserling-Klau-Banane auf <@${targetUserId}> und klaute **${amout}** Loserlinge!`,
-        allowedMentions: { users: [targetUserId] }
+        content: `<@${interaction.user.id}> warf eine Loserling-Klau-Banane auf <@${targetUserId}> und klaute **${amout}** Loserlinge!`
     });
 }
 
@@ -854,8 +849,7 @@ async function useItemSchuldschein(interaction) {
         flags: MessageFlags.Ephemeral
     });
     await channel.send({
-        content: `<@${targetUserId}> du hast einen Schuldschein von <@${interaction.user.id}> erhalten!`,
-        allowedMentions: { users: [targetUserId] }
+        content: `<@${targetUserId}> du hast einen Schuldschein von <@${interaction.user.id}> erhalten!`
     });
     const schuldschein = await ActiveItems.findOne({ guildId: interaction.guild.id, itemType: 'Schuldschein', user: interaction.user.id, usedOn: targetUserId });
     if (schuldschein) {
@@ -1005,8 +999,7 @@ async function useItemKeks(interaction) {
         });
         const channel = interaction.channel;
         await channel.send({
-            content: `<@${targetUserId}> du hast von <@${interaction.user.id}> ${amount} Kekse geschenkt bekommen!`,
-            allowedMentions: { users: [targetUserId] }
+            content: `<@${targetUserId}> du hast von <@${interaction.user.id}> ${amount} Kekse geschenkt bekommen!`
         });
     }
 }

@@ -38,8 +38,7 @@ function startJob(client) {
                                         }
                                         await targetChannel.send({
                                             content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** Loserlinge sind verpufft!`,
-                                            files: [gifUrl],
-                                            allowedMentions: { users: [activeItem.usedOn] }
+                                            files: [gifUrl]
                                         });
                                     })
                                     .catch((error) => {
