@@ -30,6 +30,11 @@ module.exports = {
                 .setName('eigene_tiere')
                 .setDescription('Zeigt all deine Tiere.')
         )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('keks_essen')
+                .setDescription('Schnellzugriff aufs Kekse essen.')
+        )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
     run: async ({ interaction }) => {
@@ -49,8 +54,10 @@ module.exports = {
         } else if (subcommand == 'eigene_tiere') {
             await interaction.deferReply();
             return await handleSpieleCommands.handleOwnAnimals(interaction);
+        } else if (subcommand == 'keks_essen') {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+            return await handleSpieleCommands.handleKeksEssen(interaction);
         }
-
     },
     options: {
         devOnly: false,
