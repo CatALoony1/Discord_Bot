@@ -896,6 +896,7 @@ async function useItemKeks(interaction) {
                 return;
             }
             user.weight += 60;
+            const keksmessage = `<@${interaction.user.id}>` + keksTexts[getRandom(0, keksTexts.length - 1)] + `\nDas Gewicht beträgt jetzt ${user.weight / 1000}kg!`;
             await user.inventar.save();
             await user.save();
             await interaction.update({
@@ -904,7 +905,6 @@ async function useItemKeks(interaction) {
                 flags: MessageFlags.Ephemeral
             });
             const channel = interaction.channel;
-            const keksmessage = `<@${interaction.user.id}>` + keksTexts[getRandom(0, keksTexts.length - 1)];
             await channel.send(keksmessage);
         } else if (selectedAction == 'schenken') {
             const selectMenu = new UserSelectMenuBuilder()
