@@ -62,20 +62,39 @@ module.exports = async (interaction) => {
                 await interaction.reply({ content: 'Du hast nicht genug Geld auf deinem Bankkonto!', flags: MessageFlags.Ephemeral });
                 return;
             }
-            const item = await Items.findOne({ name: itemName });
-            if (!item) {
-                await interaction.reply({ content: `Das Item ${itemName} existiert nicht!`, flags: MessageFlags.Ephemeral });
-                return;
-            }
-            const itemIndex = user.inventar.items.findIndex(inventarItem => inventarItem.item.equals(item._id));
-            if (itemIndex !== -1) {
-                user.inventar.items[itemIndex].quantity += 1;
-                await user.inventar.save();
-                await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
+            if (!itemName.includes('Keks')) {
+                const item = await Items.findOne({ name: itemName });
+                if (!item) {
+                    await interaction.reply({ content: `Das Item ${itemName} existiert nicht!`, flags: MessageFlags.Ephemeral });
+                    return;
+                }
+                const itemIndex = user.inventar.items.findIndex(inventarItem => inventarItem.item.equals(item._id));
+                if (itemIndex !== -1) {
+                    user.inventar.items[itemIndex].quantity += 1;
+                    await user.inventar.save();
+                    await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
+                } else {
+                    user.inventar.items.push({ item: item._id, quantity: 1 });
+                    await user.inventar.save();
+                    await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
+                }
             } else {
-                user.inventar.items.push({ item: item._id, quantity: 1 });
-                await user.inventar.save();
-                await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
+                const amount = price;
+                const item = await Items.findOne({ name: 'Keks' });
+                if (!item) {
+                    await interaction.reply({ content: `Das Item Keks existiert nicht!`, flags: MessageFlags.Ephemeral });
+                    return;
+                }
+                const itemIndex = user.inventar.items.findIndex(inventarItem => inventarItem.item.equals(item._id));
+                if (itemIndex !== -1) {
+                    user.inventar.items[itemIndex].quantity += amount;
+                    await user.inventar.save();
+                    await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
+                } else {
+                    user.inventar.items.push({ item: item._id, quantity: amount });
+                    await user.inventar.save();
+                    await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
+                }
             }
             await removeMoney(interaction.member, price);
             return;
