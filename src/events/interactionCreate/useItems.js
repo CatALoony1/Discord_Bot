@@ -895,7 +895,7 @@ async function useItemKeks(interaction) {
                 });
                 return;
             }
-            user.weight += 50;
+            user.weight += 60;
             await user.inventar.save();
             await user.save();
             await interaction.update({
