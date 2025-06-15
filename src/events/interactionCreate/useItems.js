@@ -987,6 +987,7 @@ async function useItemKeks(interaction) {
             });
             return;
         }
+        await user.inventar.save();
         const item = await Items.findOne({ name: 'Keks' });
         const itemIndex = otheruser.inventar.items.findIndex(inventarItem => inventarItem.item.equals(item._id));
         if (itemIndex !== -1) {
