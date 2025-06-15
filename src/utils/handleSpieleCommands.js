@@ -282,7 +282,7 @@ async function handleGamestats(interaction) {
 }
 
 async function handleOwnAnimals(interaction) {
-    const replyData = await createAnimalsEmbeds(0, interaction);
+    const replyData = await createAnimalsEmbeds(0, interaction.guild.id, interaction.user.id);
     if (!replyData) {
         interaction.editReply(`Du besitzt keine Tiere.`);
         return;

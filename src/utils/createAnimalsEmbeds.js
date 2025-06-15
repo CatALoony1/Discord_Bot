@@ -3,15 +3,15 @@ const Tiere = require('../models/Tiere');
 const GameUser = require('../models/GameUser');
 const path = require('node:path');
 
-async function createLeaderboardEmbeds(page, interaction) {
-    const user = await GameUser.find({ guildId: interaction.guild.id, userId: interaction.user.id });
+async function createLeaderboardEmbeds(page, guildId, userId) {
+    const user = await GameUser.find({ guildId: guildId, userId: userId });
     if (!user) {
         return undefined;
     }
     const tiere = await Tiere.find({
-  besitzer: user._id,
-  besitzer: { $exists: true }
-});
+        besitzer: user._id,
+        besitzer: { $exists: true }
+    });
     if (!tiere || tiere.length <= 0 || !tiere[page]) {
         return undefined;
     }
@@ -20,7 +20,8 @@ async function createLeaderboardEmbeds(page, interaction) {
         .setTitle(`Deine Tiere - ${page + 1}/${tiere.length}`)
         .setDescription(`Name: ${tiere[page].pfad}\nTierart: ${tiere[page].tierart}`)
         .setImage(`attachment://${tiere[page].pfad}.webp`)
-        .setColor(0x0033cc);
+        .setColor(0x0033cc)
+        .setFooter({ text: `${userId}` });
     return { embed, file };
 }
 
