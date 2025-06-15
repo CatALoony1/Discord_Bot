@@ -1,6 +1,7 @@
 const GameUser = require('../models/GameUser.js');
 const Bankkonten = require('../models/Bankkonten.js');
 const Inventar = require('../models/Inventar.js');
+const Gluecksrad = require('../models/Gluecksrad.js');
 
 async function removeMoney(member, money) {
     const query = {
@@ -36,6 +37,9 @@ async function removeMoney(member, money) {
             await newInventar.save();
             await newUser.save();
         }
+        const gluecksrad = await Gluecksrad.findOne({ guildId: member.guild.id });
+        gluecksrad.sonderpool += money;
+        gluecksrad.save();
         return money;
     } catch (error) {
         console.log(error);
