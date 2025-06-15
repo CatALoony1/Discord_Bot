@@ -4,12 +4,13 @@ const GameUser = require('../models/GameUser');
 const path = require('node:path');
 
 async function createLeaderboardEmbeds(page, guildId, userId) {
-    const user = await GameUser.find({ guildId: guildId, userId: userId });
+    const user = await GameUser.findOne({ guildId: guildId, userId: userId });
     if (!user) {
         return undefined;
     }
+    
     const tiere = await Tiere.find({
-        besitzer: user.id,
+        besitzer: user._id,
         besitzer: { $exists: true }
     });
     if (!tiere || tiere.length <= 0 || !tiere[page]) {
