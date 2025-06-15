@@ -976,7 +976,7 @@ async function useItemKeks(interaction) {
         const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
         const itemId = user.inventar.items.findIndex(item => item.item.name === 'Keks');
         if (user.inventar.items[itemId].quantity > amount) {
-            user.inventar.items[itemId].quantity -= 1;
+            user.inventar.items[itemId].quantity -= amount;
         } else if (user.inventar.items[itemId].quantity === amount) {
             user.inventar.items.splice(itemId, 1);
         } else {
