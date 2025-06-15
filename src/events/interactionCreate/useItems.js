@@ -431,32 +431,32 @@ async function useItemDoppelteXp(interaction) {
         alreadyActive = true;
     }
     await interaction.update({
-        content: 'Du hast erfolgreich Doppelte XP aktiviert! Alle erhalten nun doppelte XP für 1 Stunde.',
+        content: 'Du hast erfolgreich Doppelte XP aktiviert! Alle erhalten nun doppelte XP für 3 Stunde.',
         components: [],
         flags: MessageFlags.Ephemeral
     });
     const activeItem = await ActiveItems.findOne({ guildId: interaction.guild.id, itemType: 'Doppelte XP' });
     if (activeItem) {
         if (activeItem.endTime) {
-            activeItem.endTime = new Date(activeItem.endTime.getTime() + 3600000);
+            activeItem.endTime = new Date(activeItem.endTime.getTime() + 10800000);
             await activeItem.save();
         } else {
-            activeItem.endTime = new Date(Date.now() + 3600000);
+            activeItem.endTime = new Date(Date.now() + 10800000);
             await activeItem.save();
         }
         alreadyActive = true;
     } else {
         await ActiveItems.create({
             guildId: interaction.guild.id,
-            endTime: new Date(Date.now() + 3600000),
+            endTime: new Date(Date.now() + 10800000),
             itemType: 'Doppelte XP'
         });
     }
     const targetChannel = interaction.guild.channels.cache.get(process.env.WELCOME_ID) || (await interaction.guild.channels.fetch(process.env.WELCOME_ID));
     if (alreadyActive) {
-        await targetChannel.send(`${interaction.user} hat Doppelte XP um 1 Stunde verlängert!`);
+        await targetChannel.send(`${interaction.user} hat Doppelte XP um 3 Stunde verlängert!`);
     } else {
-        await targetChannel.send(`${interaction.user} hat Doppelte XP aktiviert! Alle erhalten nun doppelte XP für 1 Stunde.`);
+        await targetChannel.send(`${interaction.user} hat Doppelte XP aktiviert! Alle erhalten nun doppelte XP für 3 Stunde.`);
     }
 }
 
