@@ -12,7 +12,7 @@ module.exports = {
             const fetch = await import('node-fetch').then(module => module.default);
             const apiUrl = 'https://nekos.life/api/v2/owoify';
             const response = await fetch(apiUrl, {
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 },
