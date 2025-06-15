@@ -927,7 +927,7 @@ async function useItemKeks(interaction) {
         const options = [
             { label: '1', value: '1' },
             { label: 'alle', value: `${quantity}` }
-        ]
+        ];
         if (quantity >= 10) {
             options.push({ label: '10', value: '10' });
             if (quantity >= 100) {
