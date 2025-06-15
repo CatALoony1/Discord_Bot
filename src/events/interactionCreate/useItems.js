@@ -921,6 +921,40 @@ async function useItemKeks(interaction) {
         }
     } else if (interaction.customId.includes('keks_uselect')) {
         const targetUserId = interaction.values[0];
+        const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
+        const itemId = user.inventar.items.findIndex(item => item.item.name === 'Keks');
+        const quantity = user.inventar.items[itemId].quantity;
+        const options = [
+            { label: '1', value: '1' },
+            { label: 'alle', value: `${quantity}` }
+        ]
+        if (quantity >= 10) {
+            options.push({ label: '10', value: '10' });
+            if (quantity >= 100) {
+                options.push({ label: '100', value: '100' });
+                if (quantity >= 1000) {
+                    options.push({ label: '1000', value: '1000' });
+                    if (quantity >= 10000) {
+                        options.push({ label: '10000', value: '10000' });
+                    }
+                }
+            }
+        }
+        const selectMenu = new StringSelectMenuBuilder()
+            .setCustomId(`keks_amount_select_${targetUserId}`)
+            .setPlaceholder('Wie viele Kekse möchtest du verschenken?')
+            .addOptions(options)
+            .setMinValues(1)
+            .setMaxValues(1);
+        const row = new ActionRowBuilder().addComponents(selectMenu);
+        await interaction.update({
+            content: 'Wähle aus, wie viele Kekse du verschenken möchtest:',
+            components: [row],
+            flags: MessageFlags.Ephemeral
+        });
+    } else if (interaction.customId.includes('keks_amount_select')) {
+        let amount = parseInt(interaction.values[0]);
+        const targetUserId = interaction.customId.split('_')[3];
         const targetMemberObject = await interaction.guild.members.fetch(targetUserId).catch(() => null);
         if (!targetMemberObject) {
             await interaction.update({
@@ -941,13 +975,13 @@ async function useItemKeks(interaction) {
         }
         const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
         const itemId = user.inventar.items.findIndex(item => item.item.name === 'Keks');
-        if (user.inventar.items[itemId].quantity > 1) {
+        if (user.inventar.items[itemId].quantity > amount) {
             user.inventar.items[itemId].quantity -= 1;
-        } else if (user.inventar.items[itemId].quantity === 1) {
+        } else if (user.inventar.items[itemId].quantity === amount) {
             user.inventar.items.splice(itemId, 1);
         } else {
             await interaction.update({
-                content: 'Du hast keinen Keks in deinem Inventar!',
+                content: 'Du hast nicht genug Kekse in deinem Inventar!',
                 components: [],
                 flags: MessageFlags.Ephemeral
             });
@@ -956,10 +990,10 @@ async function useItemKeks(interaction) {
         const item = await Items.findOne({ name: 'Keks' });
         const itemIndex = otheruser.inventar.items.findIndex(inventarItem => inventarItem.item.equals(item._id));
         if (itemIndex !== -1) {
-            otheruser.inventar.items[itemIndex].quantity += 1;
+            otheruser.inventar.items[itemIndex].quantity += amount;
             await otheruser.inventar.save();
         } else {
-            otheruser.inventar.items.push({ item: item._id, quantity: 1 });
+            otheruser.inventar.items.push({ item: item._id, quantity: amount });
             await otheruser.inventar.save();
         }
         await otheruser.inventar.save();
@@ -970,7 +1004,7 @@ async function useItemKeks(interaction) {
         });
         const channel = interaction.channel;
         await channel.send({
-            content: `<@${targetUserId}> du hast von <@${interaction.user.id}> 1 Keks geschenkt bekommen!`,
+            content: `<@${targetUserId}> du hast von <@${interaction.user.id}> ${amount} Kekse geschenkt bekommen!`,
             allowedMentions: { users: [targetUserId] }
         });
     }
