@@ -10,15 +10,11 @@ module.exports = {
             interaction.deferReply();
             const content = interaction.targetMessage.content;
             const fetch = await import('node-fetch').then(module => module.default);
-            const apiUrl = 'https://nekos.life/api/v2/owoify';
+            const encodedText = encodeURIComponent(content);
+            const apiUrl = `https://nekos.life/api/v2/owoify?text=${encodedText}`;
             const response = await fetch(apiUrl, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ text: content })
+                method: 'GET'
             });
-
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
