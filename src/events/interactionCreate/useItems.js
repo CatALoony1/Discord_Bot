@@ -45,6 +45,75 @@ const kissTexts = [
     (author, target) => `Ein überraschender Kuss von ${author} für ${target}! Genieß es! 🤫`,
 ];
 
+const keksTexts = [
+    " frisst nen Keks!",
+    " fühlt sich nach dem Keksessen ein kleines bisschen runder. Eine gute Runde extra Bauchkraulen!",
+    " hat den Keks genüsslich verschlungen. Der Gürtel sitzt jetzt irgendwie... gemütlicher.",
+    " spürt, wie sich der Keks direkt auf die Hüften legt. Mehr zum Liebhaben!",
+    " hat sich einen Keks gegönnt und der Waage einen kleinen Schock verpasst. Aber hey, Glück ist keine Frage der Größe!",
+    " hat Keks-Energie getankt! Bereit für ein Nickerchen. Oder noch einen Keks?",
+    " genießt das Gefühl der vollen Magen. Ein Keks war genau das, was gebraucht wurde!",
+    " hat sich soeben in eine glückliche Keks-Komawurst verwandelt. Weiter so!",
+    " hat das Geräusch des Keks-Knusperns noch im Ohr. Und das Gewicht auf den Rippen.",
+    " ist jetzt offiziell Keks-beauftragt für Gemütlichkeit. Glückwunsch zur Gewichtszunahme!",
+    " hat den Keks mit einem zufriedenen Seufzer verputzt. Die Welt ist jetzt ein besserer, süßerer Ort.",
+    " hat den Keks regelrecht inhaliert! Die Waage lacht. Und dann weint sie leise.",
+    " hat bewiesen, dass Kekse nicht nur gut schmecken, sondern auch beim Winterfell helfen. Gewichtszunahme erfolgreich!",
+    " hat nun offiziel den Status 'Kuschelweich dank Keks' erreicht.",
+    " ist jetzt nicht nur im Herzen, sondern auch im Bauch ein Keks-Liebhaber. Und das sieht man!",
+    " hat den Keks nicht gegessen, sondern adoptiert und in den Magen einziehen lassen. Die Waage freut sich mit!",
+    " spürt die Macht des Kekses! Eine neue, gemütliche Ära beginnt.",
+    " hat den Keks heldenhaft bekämpft... und verloren. Aber ein leckerer Verlust!",
+    " ist jetzt quasi eine keksgefüllte Piñata. Vorsicht beim Umarmen!",
+    " hat den Keks so schnell gegessen, dass das Universum noch nicht mit dem Zunehmen nachgekommen ist. Aber es kommt!",
+    " hat einen Keks verschlungen und fühlt sich nun bereit für ein Leben in Gemütlichkeit und süßen Träumen.",
+    " hat den Keks so erfolgreich verdrückt, dass der 'Versager Verein' stolz sein kann! Gewichtszunahme: check!",
+    " beweist einmal mehr, dass wir im 'Versager Verein' auch im Zunehmen Spitzenklasse sind.",
+    " hat den Keks nicht nur gegessen, sondern regelrecht ins Herz geschlossen. Oder besser gesagt: in die Hüften. Typisch 'Versager Verein'!",
+    " ist nun offiziell das Vorzeigemodell des 'Versager Vereins' in Sachen Keksverwertung und Gewichtszunahme.",
+    " hat den Keksheldenstatus im 'Versager Verein' erreicht - der Bauch wächst, die Legende auch!",
+    " hat den Keks verputzt und sich damit nahtlos in die Liga der gemütlichen 'Versager Verein'-Mitglieder eingereiht.",
+    " zeigt, dass im 'Versager Verein' auch das Zunehmen perfektioniert werden kann. Ein Keks nach dem anderen!",
+    " hat den Keks nicht nur genossen, sondern auch das offizielle 'Versager Verein'-Siegel auf die Waage gedrückt bekommen.",
+    " ist jetzt nicht nur Mitglied, sondern auch das Schwergewicht des 'Versager Vereins'. Glückwunsch zur Keks-Masse!",
+    " hat den Keks im Namen des 'Versager Vereins' geopfert - für mehr Gemütlichkeit und eine extra Portion Gewicht.",
+    " hat bewiesen, dass auch 'Versager' in einer Disziplin glänzen können: Kekse essen und dabei zunehmen. Herzlichen Glückwunsch!",
+    " hat den Keks mit der Inbrunst eines wahren 'Versager Vereins'-Mitglieds verschlungen. Das Ergebnis ist sichtbar!",
+    " ist jetzt eine Ehrennadel des 'Versager Vereins' - hergestellt aus Keks und purem Gewicht.",
+    " hat den Keks so souverän gemeistert, dass selbst der 'Versager Verein' beeindruckt ist. Weiter so mit dem Zunehmen!",
+    " hat den Keks mit Bravour gemeistert und dabei die goldene Regel des 'Versager Vereins' befolgt: Essen, bis es wehtut (vom Zunehmen).",
+    " hat den Keks 🍪 wie ein Profi vernichtet! Die Waage lacht sich ins Fäustchen... und wir auch! 😂",
+    " beweist, dass im 'Versager Verein' auch das Zunehmen eine Kunst ist. 🎨 Mehr Speck, mehr Spaß! 🐷",
+    " hat den Keks nicht gegessen, sondern geatmet. 🌬️💨 Das Ergebnis: mehr Masse für den 'Versager Verein'! 💪",
+    " spürt, wie der Keks 🍪 direkt in die Wohlfühlzone wandert. Hallo, neue Polster! 👋🛋️",
+    " ist jetzt offiziell im 'Keks-Koma' 😵‍💫 angekommen. Der 'Versager Verein' ist stolz auf diese Leistung! 🏆",
+    " hat den Keks verputzt und fühlt sich jetzt so rund wie eine Bowlingkugel! 🎳 Perfekt für den 'Versager Verein'! 😉",
+    " zeigt, dass wir im 'Versager Verein' nicht nur versagen können, sondern auch meisterhaft schlemmen! 👑😋",
+    " hat sich soeben ein neues Lebensziel gesetzt: Noch mehr Kekse! 🎯 Und das Gewicht? Ein schöner Bonus! ✨",
+    " hat den Keks mit Liebe ❤️ und Leidenschaft verdrückt. Der Bauch dankt es mit extra Gemütlichkeit! 🤗",
+    " ist jetzt nicht nur im 'Versager Verein', sondern auch im 'Keks-Gewichts-Eliteclub'! 🎉📈 Glückwunsch!",
+    " hat den Keks nicht verschlungen, sondern *liebevoll aufgenommen*. 🥺 Und das Gewicht? Eine schöne Erinnerung! 💖",
+    " hat den Keks als Sprungbrett für eine Karriere als Kuschelkissen genutzt. 🚀 cushions Mehr Kilos, mehr Komfort! 😴",
+    " zeigt dem 'Versager Verein', wie man richtig isst. 🍽️ Und zunimmt. 💯 Du bist ein Vorbild! 👍",
+    " ist jetzt so voll mit Keks, dass selbst die Schwerkraft stärker wird. 🌎🚀 Willkommen im Club der Schwergewichte! 🏋️",
+    " hat den Keks erfolgreich in Energie umgewandelt... und in ein paar extra Pfunde. 🔋➡️⚖️ Der 'Versager Verein' jubelt! 🥳",
+    " hat erfolgreich 60g Keksmasse in 60g Körpermasse umgewandelt! 💪 Der 'Versager Verein' ist stolz auf diese Effizienz! ✨",
+    " ist jetzt exakt 60g schwerer und glücklicher. Der 'Versager Verein' applaudiert dieser glorreichen Gewichtszunahme! 🥳",
+    " hat den Keks von 60g heldenhaft bezwungen und trägt nun stolz die 60g extra Gewicht. Ein wahres Vorbild! 🏆",
+    " hat bewiesen, dass 60g Keks direkt auf die Hüften gehen können. Willkommen im Club der 60g-Gewinner! 😂",
+    " hat 60g Keks verdrückt und fühlt sich nun um 60g gemütlicher. Das ist das 'Versager Verein'-Prinzip! 🛋️",
+    " hat die 60g Keks so schnell verschlungen, dass das Universum noch versucht, die 60g Gewichtszunahme zu verarbeiten. 🌠",
+    " zeigt, dass 60g Keks nicht nur lecker sind, sondern auch perfekt zum 'Versager Verein'-Lebensstil passen: mehr Masse! 🐷",
+    " ist nun 60g keksbefüllter! Das ist kein Versagen, das ist Expertise im 'Versager Verein'! 🍽️",
+    " hat die 60g Keks als Grundstein für ein neues, gemütlicheres Ich gelegt. Bravo! 🧱",
+    " hat 60g Glück und 60g Gewicht zugelegt. Ein erfolgreicher Tag im 'Versager Verein'! 😊",
+    " hat mit nur einem Keks (60g!) bewiesen, dass der 'Versager Verein' in der Königsdisziplin des Essens ungeschlagen ist. 👑",
+    " trägt jetzt stolze 60g mehr auf den Rippen - alles dank des köstlichen Kekses. Ein Hoch auf den 'Versager Verein'! 🎉",
+    " hat die 60g Keks nicht einfach gegessen, sondern strategisch platziert. Die Waage ist beeindruckt! 📊",
+    " hat die 60g Keks in pure Liebe verwandelt - und in 60g extra zum Liebhaben. ❤️",
+    " ist jetzt um genau 60g schwerer und fühlt sich 60g wohler. So geht 'Versager Verein' am besten! 💯"
+];
+
 module.exports = async (interaction) => {
     if (!interaction.customId || !interaction.customId.includes('useItem')) return;
     try {
@@ -834,6 +903,9 @@ async function useItemKeks(interaction) {
                 components: [],
                 flags: MessageFlags.Ephemeral
             });
+            const channel = interaction.channel;
+            const keksmessage = `<@${interaction.user.id}>` + keksTexts[getRandom(0, keksTexts.length - 1)];
+            await channel.send(keksmessage);
         } else if (selectedAction == 'schenken') {
             const selectMenu = new UserSelectMenuBuilder()
                 .setCustomId('useItem_keks_uselect')
