@@ -79,7 +79,11 @@ module.exports = async (interaction) => {
                     await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
                 }
             } else {
-                const amount = price;
+                const booster = interaction.member.roles.cache.some(role => role.name === 'Server Booster') ? true : false;
+                let amount = price;
+                if (booster) {
+                    amount = Math.floor(amount * 100 / 90);
+                }
                 const item = await Items.findOne({ name: 'Keks' });
                 if (!item) {
                     await interaction.reply({ content: `Das Item Keks existiert nicht!`, flags: MessageFlags.Ephemeral });
