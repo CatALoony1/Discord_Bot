@@ -941,7 +941,7 @@ async function useItemKeks(interaction) {
             }
         }
         const selectMenu = new StringSelectMenuBuilder()
-            .setCustomId(`keks_amount_select_${targetUserId}`)
+            .setCustomId(`useItem_keks_amount_select_${targetUserId}`)
             .setPlaceholder('Wie viele Kekse möchtest du verschenken?')
             .addOptions(options)
             .setMinValues(1)
@@ -954,9 +954,7 @@ async function useItemKeks(interaction) {
         });
     } else if (interaction.customId.includes('keks_amount_select')) {
         let amount = parseInt(interaction.values[0]);
-        const targetUserId = interaction.customId.split('_')[3];
-        console.log(targetUserId);
-        console.log(amount);
+        const targetUserId = interaction.customId.split('_')[4];
         const targetMemberObject = await interaction.guild.members.fetch(targetUserId).catch(() => null);
         if (!targetMemberObject) {
             await interaction.update({
