@@ -16,6 +16,7 @@ const updateWebhookAvatarJob = require('../jobs/cronJob_updateWebhookAvatar');
 const checkNewAnimalsJob = require('../jobs/checkNewAnimals');
 const zinsenJob = require('../jobs/cronJob_zinsen');
 const checkActiveItemsJob = require('../jobs/cronJob_checkActiveItems');
+const checkLeagueJob = require('../jobs/cronJob_checkLeague');
 
 
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
@@ -95,6 +96,7 @@ module.exports = {
                             { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
                             { name: 'geburtstag', value: 'geburtstag' },
                             { name: 'checkNewAnimals', value: 'checkNewAnimals' },
+                            { name: 'checkLeague', value: 'checkLeague' },
                         )
                 )
         )
@@ -161,6 +163,9 @@ module.exports = {
                     break;
                 case 'checkActiveItems':
                     jobClass = checkActiveItemsJob;
+                    break;
+                case 'checkLeague':
+                    jobClass = checkLeagueJob;
                     break;
                 default:
                     throw new Error(`Unbekannter Job: ${job}`);
