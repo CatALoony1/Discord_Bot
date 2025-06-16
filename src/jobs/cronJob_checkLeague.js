@@ -51,11 +51,18 @@ async function jobFunction(client) {
                 matchData = mydata;
             });
         console.log(matchData);
+        const gameEndTimestamp = matchData.info.gameEndTimestamp;
+        const currentTime = Date.now();
+        const oneMinuteInMs = 60 * 1000;
+        console.log((currentTime - gameEndTimestamp) <= oneMinuteInMs);
         let userMatchData;
         for (const user of matchData.info.participants) {
             if (user.puuid && user.puuid == process.env.KIRA_L_PUUID) {
                 userMatchData = user;
             }
+        }
+        if (!userMatchData.win) {
+            console.log('VERLOREN');
         }
         console.log(userMatchData);
     } catch (e) {
