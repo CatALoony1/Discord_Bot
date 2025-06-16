@@ -211,7 +211,7 @@ async function useItemTier(interaction) {
         const tierart = interaction.values[0];
         const targetUserId = interaction.customId.split('_')[4];
         const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-        const targetUser = await GameUser.findOne({ userId: targetUserId }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
+        const targetUser = await GameUser.findOne({ userId: targetUserId });
         const randomTierOhneBesitzer = await getRandomTier(tierart);
         if (randomTierOhneBesitzer.length === 0) {
             await interaction.update({
@@ -226,6 +226,7 @@ async function useItemTier(interaction) {
         } else {
             user.inventar.items.splice(itemId, 1);
         }
+        user.inventar.save();
         await interaction.update({
             content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].pfad}** an <@${targetUserId}> verschenkt!`,
             files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`],
@@ -237,7 +238,6 @@ async function useItemTier(interaction) {
             randomTierOhneBesitzer[0]._id,
             { besitzer: targetUser._id }
         );
-        await targetUser.inventar.save();
     } else if (interaction.customId.includes('self')) {
         const tierarten = await getTierarten();
         if (tierarten.length === 0 || tierarten[0].tierarten.length === 0) {
