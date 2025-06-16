@@ -50,6 +50,7 @@ module.exports = {
                             { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
                             { name: 'zinsen', value: 'zinsen' },
                             { name: 'checkActiveItems', value: 'checkActiveItems' },
+                            { name: 'checkLeague', value: 'checkLeague' },
                         )
                 )
         )
@@ -79,6 +80,7 @@ module.exports = {
                             { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
                             { name: 'zinsen', value: 'zinsen' },
                             { name: 'checkActiveItems', value: 'checkActiveItems' },
+                            { name: 'checkLeague', value: 'checkLeague' },
                         )
                 )
         )

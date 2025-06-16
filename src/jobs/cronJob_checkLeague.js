@@ -52,9 +52,6 @@ async function jobFunction(client) {
         const gameEndTimestamp = matchData.info.gameEndTimestamp;
         const currentTime = Date.now();
         const oneMinuteInMs = 60 * 1000;
-        console.log(currentTime);
-        console.log(gameEndTimestamp);
-        console.log(currentTime - gameEndTimestamp);
         if ((currentTime - gameEndTimestamp) <= oneMinuteInMs) {
             let userMatchData;
             for (const user of matchData.info.participants) {
