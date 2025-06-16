@@ -45,7 +45,7 @@ async function jobFunction(client) {
         console.log(matchID[0]);
         let matchData;
         const fetchMatchURL = `https://europe.api.riotgames.com/lol/match/v5/matches/${matchID[0]}?api_key=${process.env.LEAGUE_API}`;
-        await fetch(fetchMatchesURL)
+        await fetch(fetchMatchURL)
             .then((response) => response.json())
             .then((mydata) => {
                 matchData = mydata;
