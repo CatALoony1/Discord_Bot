@@ -32,7 +32,7 @@ function isRunning() {
 
 async function jobFunction(client) {
     try {
-        var targetChannel = await client.channels.fetch(process.env.LOG_ID);
+        var targetChannel = await client.channels.fetch(process.env.MESSE_ID);
         const guild = await client.guilds.cache.get(process.env.GUILD_ID);
         const fetch = await import('node-fetch').then(module => module.default);
         let matchID;
@@ -42,7 +42,6 @@ async function jobFunction(client) {
             .then((mydata) => {
                 matchID = mydata;
             });
-        console.log(matchID[0]);
         let matchData;
         const fetchMatchURL = `https://europe.api.riotgames.com/lol/match/v5/matches/${matchID[0]}?api_key=${process.env.LEAGUE_API}`;
         await fetch(fetchMatchURL)
@@ -50,21 +49,23 @@ async function jobFunction(client) {
             .then((mydata) => {
                 matchData = mydata;
             });
-        console.log(matchData);
         const gameEndTimestamp = matchData.info.gameEndTimestamp;
         const currentTime = Date.now();
         const oneMinuteInMs = 60 * 1000;
-        console.log((currentTime - gameEndTimestamp) <= oneMinuteInMs);
-        let userMatchData;
-        for (const user of matchData.info.participants) {
-            if (user.puuid && user.puuid == process.env.KIRA_L_PUUID) {
-                userMatchData = user;
+        console.log(currentTime);
+        console.log(gameEndTimestamp);
+        console.log(currentTime - gameEndTimestamp);
+        if ((currentTime - gameEndTimestamp) <= oneMinuteInMs) {
+            let userMatchData;
+            for (const user of matchData.info.participants) {
+                if (user.puuid && user.puuid == process.env.KIRA_L_PUUID) {
+                    userMatchData = user;
+                }
+            }
+            if (!userMatchData.win) {
+                targetChannel.send(`<@582571514474266635> hat gerade ein Match in League of Legends verloren!`);
             }
         }
-        if (!userMatchData.win) {
-            console.log('VERLOREN');
-        }
-        console.log(userMatchData);
     } catch (e) {
         console.log(e);
     }
