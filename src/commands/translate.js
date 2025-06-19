@@ -15,4 +15,8 @@ module.exports = {
             console.log(e);
         }
     },
+    options: {
+        devOnly: false,
+        deleted: true,
+    },
 };
