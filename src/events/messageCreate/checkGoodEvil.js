@@ -93,7 +93,7 @@ module.exports = async (message, client) => {
     var goodYN = goodList.some(good => content.includes(good));
     if (goodYN) {
         var loveCount = state.loveCount + 1;
-        if (loveCount == 100) {
+        if (loveCount == 1000) {
             if (state.state == 'besiegt') {
                 await client.user.setUsername('Yamcha');
             }
@@ -111,7 +111,7 @@ module.exports = async (message, client) => {
         var evilYN = badList.some(bad => content.includes(bad));
         if (evilYN) {
             var evilCount = state.evilCount + 1;
-            if (evilCount == 100) {
+            if (evilCount == 1000) {
                 if (state.state == 'besiegt') {
                     await client.user.setUsername('Yamcha');
                 }
