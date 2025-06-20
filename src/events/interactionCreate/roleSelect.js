@@ -71,6 +71,7 @@ module.exports = async (interaction) => {
                 try {
                     const usertag = interaction.member.user.tag;
                     await interaction.member.user.send('Du wurdest gebannt, da der Server ab 18 ist.');
+await interaction.editReply('Gebannt');
                     await interaction.member.ban({ reason: 'Server ist ab 18' });
                     const targetChannel = interaction.guild.channels.cache.get(process.env.LOG_ID) || (await interaction.guild.channels.fetch(process.env.LOG_ID));
                     await targetChannel.send(`${usertag} gebannt, da der Server ab 18 ist.`);
