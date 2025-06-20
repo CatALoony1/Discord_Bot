@@ -114,4 +114,8 @@ module.exports = {
             }
         }
     },
+    options: {
+        devOnly: true,
+        deleted: false
+    },
 };
