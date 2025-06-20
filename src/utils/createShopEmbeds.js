@@ -4,7 +4,7 @@ const Items = require('../models/Items');
 
 async function createLeaderboardEmbeds(page, interaction) {
     const booster = interaction.member.roles.cache.some(role => role.name === 'Server Booster') ? true : false;
-    let allItems = await Items.find({});
+    let allItems = await Items.find({ available: true });
     let price = allItems[page].preis;
     if (booster && !allItems[page].boostOnly) {
         price = Math.floor(price * 0.9);

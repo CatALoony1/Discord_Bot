@@ -16,6 +16,10 @@ const itemsSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    available: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 module.exports = model('Items', itemsSchema);
