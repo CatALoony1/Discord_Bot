@@ -389,7 +389,7 @@ function startJob(client) {
     console.log('CustomStatus-Job is already running.');
     return;
   }
-  customStatusJob = cron.schedule('*/30 * * * * *', async function () { //30sec
+  customStatusJob = cron.schedule('* * * * *', async function () { //30sec
     try {
       await client.user.setPresence(status[getRandom(0, status.length - 1)]);
     } catch (error) {
