@@ -54,7 +54,7 @@ module.exports = {
                 });
             }
             let gewinnchance = 30 + ((gluecksrad.pool - 10000) / 5000);
-            if(gewinnchance > 75) {
+            if (gewinnchance > 75) {
                 gewinnchance = 75;
             }
             const targetUserObj = interaction.member;

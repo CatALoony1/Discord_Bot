@@ -30,7 +30,7 @@ async function giveMoney(member, money, quizadded = false, daily = false) {
             if (daily) {
                 user.daily = new Date();
             }
-if (quizadded) {
+            if (quizadded) {
                 user.quizadded += 1;
             }
             console.log(`user ${member.user.tag} received ${money} Geld`);
@@ -40,12 +40,12 @@ if (quizadded) {
                 console.log(`Error saving updated bankkonto ${e}`);
                 return;
             });
-if (quizadded || daily){
-await user.save().catch((e) => {
+            if (quizadded || daily) {
+                await user.save().catch((e) => {
                     console.log(`Error saving updated quizadded ${e}`);
-return;
+                    return;
                 });
-}
+            }
         } else {
             console.log(`user ${member.user.tag} received ${money} Geld`);
             console.log(`new user ${member.user.tag} added to database`);
