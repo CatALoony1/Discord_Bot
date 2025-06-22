@@ -74,11 +74,11 @@ module.exports = async (client) => {
         let d = new Date();
         string = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()},${d.getMilliseconds()}|${string}`;
         if (string.includes('TESTJG')) {
-            await fs.appendFile('./logs/chat.log', string.replace('TESTJG', ''), function (err) {
+            await fs.appendFile('./logs/chat._log', string.replace('TESTJG', ''), function (err) {
                 if (err) throw err;
             });
         } else {
-            await fs.appendFile('./logs/bot.log', string, function (err) {
+            await fs.appendFile('./logs/bot._log', string, function (err) {
                 if (err) throw err;
             });
             if (string.includes('connect ECONNREFUSED')) {
