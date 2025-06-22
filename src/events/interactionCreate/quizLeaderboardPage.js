@@ -16,7 +16,7 @@ module.exports = async (interaction, client) => {
                 });
                 return;
             } else {
-                await interaction.editReply({content:`Du bist bereits auf Seite 1.`, flags: MessageFlags.Ephemeral });
+                await interaction.reply({content:`Du bist bereits auf Seite 1.`, flags: MessageFlags.Ephemeral });
                 return;
             }
         } catch (error) {
@@ -32,7 +32,7 @@ module.exports = async (interaction, client) => {
                 });
                 return;
             } else {
-                await interaction.editReply({content:`Du bist bereits auf der letzten Seite.`, flags: MessageFlags.Ephemeral });
+                await interaction.reply({content:`Du bist bereits auf der letzten Seite.`, flags: MessageFlags.Ephemeral });
                 return;
             }
         } catch (error) {
