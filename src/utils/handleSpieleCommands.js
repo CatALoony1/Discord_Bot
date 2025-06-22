@@ -343,7 +343,7 @@ async function handleGamestats(interaction) {
     messageEdited.addFields({ name: 'Erhaltene Loserlinge:', value: `${user.bankkonto.moneyGain}` });
     messageEdited.addFields({ name: 'Verlorene/Ausgegebene Loserlinge:', value: `${user.bankkonto.moneyLost}` });
     messageEdited.addFields({ name: 'Anzahl Lottospiele:', value: `${lottospiele}` });
-    messageEdited.addFields({ name: 'Quizspiele hinzugefügt:', value: `${user.quizadded}` });
+    messageEdited.addFields({ name: 'Quizfragen hinzugefügt:', value: `${user.quizadded}` });
     messageEdited.addFields({ name: 'Gewicht:', value: `${user.weight / 1000}kg` });
     messageEdited.addFields({ name: 'Inventar:', value: `${itemNamesAndQuantity}` });
     messageEdited.addFields({ name: 'Tiere:', value: `${tierpfade}` });
