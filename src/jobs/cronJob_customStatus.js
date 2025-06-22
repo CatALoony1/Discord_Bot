@@ -307,23 +307,71 @@ let status = [
       name: 'Schatzsuche',
       type: ActivityType.Competing
     }], status: 'dnd'
-  },*/
+  }, */
   {
     activities: [{
-      name: 'kreativ sein',
+      name: 'mit deinen Gefühlen',
       type: ActivityType.Playing
     }], status: 'online'
   },
   {
     activities: [{
-      name: 'Status ausdenken',
+      name: 'asozial sein',
       type: ActivityType.Competing
     }], status: 'dnd'
   },
   {
     activities: [{
-      name: 'Kommt noch',
+      name: '/ban Metti',
       type: ActivityType.Custom
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Chris',
+      type: ActivityType.Listening
+    }], status: 'idle'
+  },
+  {
+    activities: [{
+      name: 'How to destroy a server',
+      type: ActivityType.Watching
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: '3 easy steps to world domination',
+      type: ActivityType.Watching
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Feuert Chris an',
+      type: ActivityType.Custom
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Alex mobben',
+      type: ActivityType.Competing
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'mit DarkAngel',
+      type: ActivityType.Playing
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Rücken von Alex kraulen',
+      type: ActivityType.Custom
+    }], status: 'dnd'
+  },
+  {
+    activities: [{
+      name: 'Bauarbeiter-Wink-Simulator',
+      type: ActivityType.Playing
     }], status: 'online'
   },
 ];
