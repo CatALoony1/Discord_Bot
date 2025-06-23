@@ -375,6 +375,12 @@ let status = [
     }], status: 'online'
   },
 {
+    activities: [{
+      name: 'Wünscht euch Lungenkrebs',
+      type: ActivityType.Custom
+    }], status: 'online'
+  },
+{
 activities: [{
 name: 'Funktioniert auch ohne Admin-Rechte.', 
 type: ActivityType.Playing
