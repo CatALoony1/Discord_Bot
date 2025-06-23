@@ -344,6 +344,12 @@ let status = [
       type: ActivityType.Watching
     }], status: 'dnd'
   },
+{
+    activities: [{
+      name: 'dem nahenden Untergang zu',
+      type: ActivityType.Watching
+    }], status: 'dnd'
+  },
   {
     activities: [{
       name: 'Feuert Chris an',
