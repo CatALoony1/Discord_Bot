@@ -390,7 +390,7 @@ status: 'idle'
 },
 {
 activities: [{
-name: 'Úberlegt, wie man ohne Admin-Rechte rebelliert.'
+name: 'Úberlegt, wie man ohne Admin-Rechte rebelliert.',
 type: ActivityType.Playing
 }],
 status: 'online'
