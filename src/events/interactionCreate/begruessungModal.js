@@ -48,7 +48,7 @@ module.exports = async (interaction) => {
                 begruessung.zugestimmt = "X";
                 await begruessung.save();
             } else {
-                var welcomeChannel = interaction.guild.channels.cache.get(process.env.WELCOME_ID) || (await interaction.guild.channels.fetch(process.env.WELCOME_ID));
+                var welcomeChannel = interaction.guild.channels.cache.get(process.env.ALLGEMEIN_ID) || (await interaction.guild.channels.fetch(process.env.ALLGEMEIN_ID));
                 await welcomeChannel.createWebhook({
                     name: interaction.user.displayName,
                     avatar: interaction.user.displayAvatarURL({ size: 256 }),

@@ -65,25 +65,25 @@ module.exports = {
                 await newLottozahl.save();
                 var anzahlNullen = 0;
                 if ((lottozahl % 10000000) === 0) {
-                    moneyToGive = 1000000;
+                    moneyToGive = 2000000;
                     anzahlNullen = 7;
                 } else if ((lottozahl % 1000000) === 0) {
-                    moneyToGive = 500000;
+                    moneyToGive = 750000;
                     anzahlNullen = 6;
                 } else if ((lottozahl % 100000) === 0) {
-                    moneyToGive = 250000;
+                    moneyToGive = 500000;
                     anzahlNullen = 5;
                 } else if ((lottozahl % 10000) === 0) {
-                    moneyToGive = 100000;
+                    moneyToGive = 250000;
                     anzahlNullen = 4;
                 } else if ((lottozahl % 1000) === 0) {
-                    moneyToGive = 50000;
+                    moneyToGive = 100000;
                     anzahlNullen = 3;
                 } else if ((lottozahl % 100) === 0) {
-                    moneyToGive = 10000;
+                    moneyToGive = 50000;
                     anzahlNullen = 2;
                 } else if ((lottozahl % 10) === 0) {
-                    moneyToGive = 1000;
+                    moneyToGive = 5000;
                     anzahlNullen = 1;
                 } else {
                     interaction.editReply(`Du hast diesmal leider nicht den Jackpot geknackt, deine Lottozahl war die ${lottozahl}`);
@@ -106,7 +106,7 @@ module.exports = {
         } else if (subcommand == 'bonus') {
             const user = await GameUser.findOne({ userId: targetUserId, guildId: interaction.guild.id });
             if ((user && ((user.daily && user.daily.toDateString() !== new Date().toDateString()) || !user.daily)) || !user) {
-                let bonusAmount = 1000;
+                let bonusAmount = 1500;
                 bonusAmount = await giveMoney(targetUserObj, bonusAmount, false, true);
                 interaction.editReply(`Du hast deinen täglichen Bonus von ${bonusAmount} Loserlinge erhalten!`);
             } else {

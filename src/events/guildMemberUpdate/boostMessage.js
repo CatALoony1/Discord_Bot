@@ -8,7 +8,7 @@ module.exports = async (oldMember, newMember) => {
     if (!oldStatus && newStatus) {
         console.log(`user ${newMember.user.tag} boosted`);
         try {
-            const targetChannel = newMember.guild.channels.cache.get(process.env.BOOST_ID) || (await newMember.guild.channels.fetch(process.env.BOOST_ID));
+            const targetChannel = newMember.guild.channels.cache.get(process.env.ALLGEMEIN_ID) || (await newMember.guild.channels.fetch(process.env.ALLGEMEIN_ID));
             if (!targetChannel) {
                 console.log('Fehler, Verlassenschannel gibts nicht');
                 return;

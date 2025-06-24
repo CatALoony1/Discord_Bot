@@ -1,7 +1,7 @@
 
 const { EmbedBuilder } = require('discord.js');
 const Level = require('../models/Level');
-async function createLeaderboardEmbeds(page, interaction, version) {
+async function createLeaderboardEmbeds(page, interaction) {
   const fetchedLevel = await Level.find({
     guildId: interaction.guild.id,
   });
@@ -19,35 +19,19 @@ async function createLeaderboardEmbeds(page, interaction, version) {
   for (let j = 0; j < oldUsers.length; j++) {
     fetchedLevel.splice(oldUsers[j] - j, 1);
   }
-  switch (version) {
-    case 'XP':
-      fetchedLevel.sort((a, b) => {
-        if (a.level === b.level) {
-          return b.allxp - a.allxp;
-        } else {
-          return b.level - a.level;
-        }
-      });
-      break;
-    case 'Voice':
-      fetchedLevel.sort((a, b) => {
-        return b.voicetime - a.voicetime;
-      });
-      break;
-    case 'Messages':
-      fetchedLevel.sort((a, b) => {
-        return b.messages - a.messages;
-      });
-      break;
-    default:
-      console.log('ERROR: Invalid version provided for leaderboard');
-      return;
-  }
+  fetchedLevel.sort((a, b) => {
+    if (a.level === b.level) {
+      return b.allxp - a.allxp;
+    } else {
+      return b.level - a.level;
+    }
+  });
+
 
   var i = 0 + (page * 5);
   var max = 5 + (page * 5);
   const embed = new EmbedBuilder()
-    .setTitle(`Rangliste - ${version}`)
+    .setTitle(`Rangliste`)
     .setDescription(`${page + 1}/${Math.ceil(fetchedLevel.length / 5)}`)
     .setColor(0x0033cc);
   for (i; i < max; i++) {
@@ -73,17 +57,12 @@ async function createLeaderboardEmbeds(page, interaction, version) {
     } else {
       time = `${fetchedLevel[i].voicetime}m`;
     }
-    if (version == 'XP') {
-      if (i === max - 1 || i === fetchedLevel.length - 1) {
-        value = `Level: ${fetchedLevel[i].level} XP: ${fetchedLevel[i].allxp}\n Nachrichten: ${fetchedLevel[i].messages} Voice Zeit: ${time}`;
-      } else {
-        value = `Level: ${fetchedLevel[i].level} XP: ${fetchedLevel[i].allxp}\n Nachrichten: ${fetchedLevel[i].messages} Voice Zeit: ${time}\n--------------------------------------`;
-      }
-    } else if (version === 'Voice') {
-      value = `Voice Zeit: ${time} Voice XP: ${fetchedLevel[i].voicexp}`;
-    } else if (version === 'Messages') {
-      value = `Nachrichten: ${fetchedLevel[i].messages} Nachrichten XP: ${fetchedLevel[i].messagexp}`;
+    if (i === max - 1 || i === fetchedLevel.length - 1) {
+      value = `Level: ${fetchedLevel[i].level} XP: ${fetchedLevel[i].allxp}\n Nachrichten: ${fetchedLevel[i].messages} Voice Zeit: ${time}`;
+    } else {
+      value = `Level: ${fetchedLevel[i].level} XP: ${fetchedLevel[i].allxp}\n Nachrichten: ${fetchedLevel[i].messages} Voice Zeit: ${time}\n--------------------------------------`;
     }
+
     embed.addFields({ name: `#${i + 1}  ${userObj.user.username}`, value: value });
   }
   return embed;

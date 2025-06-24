@@ -19,7 +19,7 @@ function startJob(client) {
             const guild = await client.guilds.cache.get(process.env.GUILD_ID);
             const activeItems = await ActiveItems.find({});
             const targetChannel = guild.channels.cache.get(process.env.SPIELE_ID) || (await guild.channels.fetch(process.env.SPIELE_ID));
-            const mainChannel = guild.channels.cache.get(process.env.MORNING_ID) || (await guild.channels.fetch(process.env.MORNING_ID));
+            const mainChannel = guild.channels.cache.get(process.env.ALLGEMEIN_ID) || (await guild.channels.fetch(process.env.ALLGEMEIN_ID));
             const toBeDeleted = [];
             if (activeItems.length > 0) {
                 for (const activeItem of activeItems) {
@@ -58,7 +58,7 @@ function startJob(client) {
                             targetChannel.send(`<@${activeItem.user}> dein Schuldschein bei <@${activeItem.usedOn}> ist nun abgelaufen.`);
                         } else if (activeItem.itemType == 'Oberster Platz') {
                             const targetUserObj = await guild.members.fetch(activeItem.user);
-                            const role = guild.roles.cache.get('1380423808623841340') || (await guild.roles.fetch('1380423808623841340'));
+                            const role = guild.roles.cache.get('1387041004179296439') || (await guild.roles.fetch('1387041004179296439'));
                             if (!role || !targetUserObj) {
                                 console.log('ERROR Job Oberster Platz: Cant find User or Role');
                             } else {

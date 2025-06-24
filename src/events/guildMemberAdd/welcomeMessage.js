@@ -9,11 +9,11 @@ const getTenorGifById = require('../../utils/getTenorGifById');
  * @returns 
  */
 module.exports = async (guildMember) => {
-    if (guildMember.user.bot || guildMember.user.id == '1310865340611170304') return;
+    if (guildMember.user.bot) return;
     console.log(`user ${guildMember.user.tag} joined`);
     const role = guildMember.guild.roles.cache.find(role => role.name === 'Begrüßungskomitee');
     try {
-        const targetChannel = guildMember.guild.channels.cache.get(process.env.WELCOME_ID) || (await guildMember.guild.channels.fetch(process.env.WELCOME_ID));
+        const targetChannel = guildMember.guild.channels.cache.get(process.env.ALLGEMEIN_ID) || (await guildMember.guild.channels.fetch(process.env.ALLGEMEIN_ID));
         if (!targetChannel) {
             console.log('Fehler, Willkommenschannel gibts nicht');
             return;
@@ -31,13 +31,6 @@ module.exports = async (guildMember) => {
                     .setTitle(`Willkommen im Versager Verein, <@${guildMember.id}>!\nDu hast es geschafft... also, mehr oder weniger.\nSchnapp dir 'ne Cola, leg die Erwartungen ab und fühl dich wie zu Hause bei den anderen, die's auch nicht ganz geschafft haben.`)
                     .setImage(gifUrl);
                 await targetChannel.send({ content: `${role} <@${guildMember.id}>`, embeds: [welcome] });
-                var allbegruessungen = await Begruessung.find({ guildId: guildMember.guild.id, zugestimmt: 'J' });
-                if (allbegruessungen.length > 0) {
-                    for (const begruessung of allbegruessungen) {
-                        let webhookClient = new WebhookClient({ id: begruessung.webhookId, token: begruessung.webhookToken });
-                        await webhookClient.send(begruessung.content.replaceAll('<new>', `<@${guildMember.id}>`));
-                    }
-                }
             })
             .catch((error) => {
                 console.error('ERROR:', error);

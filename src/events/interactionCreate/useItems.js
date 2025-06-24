@@ -453,7 +453,7 @@ async function useItemDoppelteXp(interaction) {
             itemType: 'Doppelte XP'
         });
     }
-    const targetChannel = interaction.guild.channels.cache.get(process.env.WELCOME_ID) || (await interaction.guild.channels.fetch(process.env.WELCOME_ID));
+    const targetChannel = interaction.guild.channels.cache.get(process.env.ALLGEMEIN_ID) || (await interaction.guild.channels.fetch(process.env.ALLGEMEIN_ID));
     if (alreadyActive) {
         await targetChannel.send(`${interaction.user} hat Doppelte XP um 3 Stunde verlängert!`);
     } else {
@@ -462,7 +462,7 @@ async function useItemDoppelteXp(interaction) {
 }
 
 async function useItemObersterPlatz(interaction) {
-    const role = interaction.guild.roles.cache.get('1380423808623841340') || (await interaction.guild.roles.fetch('1380423808623841340'));
+    const role = interaction.guild.roles.cache.get('1387041004179296439') || (await interaction.guild.roles.fetch('1387041004179296439'));
     if (!role) {
         await interaction.update({
             content: 'Die Rolle "Oberster Platz" konnte nicht gefunden werden!', components: [],

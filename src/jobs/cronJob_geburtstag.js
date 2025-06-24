@@ -33,7 +33,7 @@ function isRunning() {
 }
 
 async function jobFunction(client) {
-    var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
+    var targetChannel = await client.channels.fetch(process.env.ALLGEMEIN_ID);
     const guild = await client.guilds.cache.get(process.env.GUILD_ID);
     const allLevels = await Level.find({
         guildId: process.env.GUILD_ID,
@@ -54,7 +54,7 @@ async function jobFunction(client) {
             if (birthdayDate.getDate() === today.getDate() && birthdayDate.getMonth() === today.getMonth()) {
                 const age = today.getFullYear() - birthdayDate.getFullYear();
                 targetChannel.send(`Herzlichen Glückwunsch an <@${level.userId}>! Heute ist dein Geburtstag und du bist jetzt ${age} Jahre alt! 🎉`);
-                giveMoney(guild.members.cache.get(level.userId), 5000).catch((error) => {
+                giveMoney(guild.members.cache.get(level.userId), 50000).catch((error) => {
                     console.log(`Error giving money to user ${level.userId}:`, error);
                 });
             }

@@ -1,6 +1,5 @@
 const bumpReminderJob = require('../jobs/cronJob_bumpReminder');
 const checkBumperRoleJob = require('../jobs/cronJob_checkBumperRole');
-const checkGoodEvilJob = require('../jobs/cronJob_checkGoodEvil');
 const checkInactiveJob = require('../jobs/cronJob_checkInactive');
 const customStatusJob = require('../jobs/cronJob_customStatus');
 const geburtstagJob = require('../jobs/cronJob_geburtstag');
@@ -16,7 +15,6 @@ const updateWebhookAvatarJob = require('../jobs/cronJob_updateWebhookAvatar');
 const checkNewAnimalsJob = require('../jobs/checkNewAnimals');
 const zinsenJob = require('../jobs/cronJob_zinsen');
 const checkActiveItemsJob = require('../jobs/cronJob_checkActiveItems');
-const checkLeagueJob = require('../jobs/cronJob_checkLeague');
 
 
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
@@ -35,7 +33,6 @@ module.exports = {
                         .addChoices(
                             { name: 'bumpReminder', value: 'bumpReminder' },
                             { name: 'checkBumperRole', value: 'checkBumperRole' },
-                            { name: 'checkGoodEvil', value: 'checkGoodEvil' },
                             { name: 'checkInactive', value: 'checkInactive' },
                             { name: 'customStatus', value: 'customStatus' },
                             { name: 'geburtstag', value: 'geburtstag' },
@@ -50,7 +47,6 @@ module.exports = {
                             { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
                             { name: 'zinsen', value: 'zinsen' },
                             { name: 'checkActiveItems', value: 'checkActiveItems' },
-                            { name: 'checkLeague', value: 'checkLeague' },
                         )
                 )
         )
@@ -65,7 +61,6 @@ module.exports = {
                         .addChoices(
                             { name: 'bumpReminder', value: 'bumpReminder' },
                             { name: 'checkBumperRole', value: 'checkBumperRole' },
-                            { name: 'checkGoodEvil', value: 'checkGoodEvil' },
                             { name: 'checkInactive', value: 'checkInactive' },
                             { name: 'customStatus', value: 'customStatus' },
                             { name: 'geburtstag', value: 'geburtstag' },
@@ -80,7 +75,6 @@ module.exports = {
                             { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
                             { name: 'zinsen', value: 'zinsen' },
                             { name: 'checkActiveItems', value: 'checkActiveItems' },
-                            { name: 'checkLeague', value: 'checkLeague' },
                         )
                 )
         )
@@ -98,7 +92,6 @@ module.exports = {
                             { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
                             { name: 'geburtstag', value: 'geburtstag' },
                             { name: 'checkNewAnimals', value: 'checkNewAnimals' },
-                            { name: 'checkLeague', value: 'checkLeague' },
                         )
                 )
         )
@@ -117,9 +110,6 @@ module.exports = {
                     break;
                 case 'checkBumperRole':
                     jobClass = checkBumperRoleJob;
-                    break;
-                case 'checkGoodEvil':
-                    jobClass = checkGoodEvilJob;
                     break;
                 case 'checkInactive':
                     jobClass = checkInactiveJob;
@@ -165,9 +155,6 @@ module.exports = {
                     break;
                 case 'checkActiveItems':
                     jobClass = checkActiveItemsJob;
-                    break;
-                case 'checkLeague':
-                    jobClass = checkLeagueJob;
                     break;
                 default:
                     throw new Error(`Unbekannter Job: ${job}`);

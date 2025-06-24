@@ -17,7 +17,7 @@ function startJob(client) {
     }
     voiceXpJob = cron.schedule('*/5 * * * *', async function () {
         console.log(`VoiceXP-Job started...`);
-        var targetChannel = await client.channels.fetch(process.env.MORNING_ID);
+        var targetChannel = await client.channels.fetch(process.env.ALLGEMEIN_ID);
         await client.channels.cache.forEach(async (channel) => {
             if (channel.type == 2 && channel.id != '1307820687599337602') {
                 if (channel.members.size >= 2) {

@@ -114,6 +114,6 @@ module.exports = {
     },
     options: {
         devOnly: false,
-        deleted: false
+        deleted: true
     },
 };

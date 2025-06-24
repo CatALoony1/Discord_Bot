@@ -34,7 +34,7 @@ function isRunning() {
 async function jobFunction(client) {
     try {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
-        const targetChannel = guild.channels.cache.get(process.env.WELCOME_ID) || (await guild.channels.fetch(process.env.WELCOME_ID));
+        const targetChannel = guild.channels.cache.get(process.env.ALLGEMEIN_ID) || (await guild.channels.fetch(process.env.ALLGEMEIN_ID));
         const allBegruessungen = await Begruessung.find({
             guildId: process.env.GUILD_ID,
         });
@@ -63,7 +63,7 @@ async function jobFunction(client) {
                 console.log(`Dieser Kanal hat ${hooks.size} Hooks.`);
             })
             .catch(console.error);
-        const messeChannel = guild.channels.cache.get(process.env.MESSE_ID) || (await guild.channels.fetch(process.env.MESSE_ID));
+        const messeChannel = guild.channels.cache.get(process.env.SONSTIGES_ID) || (await guild.channels.fetch(process.env.SONSTIGES_ID));
         await messeChannel.fetchWebhooks()
             .then(hooks => {
                 hooks.forEach(async hook => {

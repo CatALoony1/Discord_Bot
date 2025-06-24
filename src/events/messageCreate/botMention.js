@@ -1,5 +1,4 @@
 const { Message } = require('discord.js');
-const BotState = require('../../models/BotState');
 const getAIResult = require('../../utils/getAIResult');
 const getTenorGifById = require('../../utils/getTenorGifById');
 
@@ -40,18 +39,15 @@ const answers = new Map([[1, 'Ja!'],
 [29, 'Ich prüfe das...'],
 [30, 'Denk noch einmal genau über deine Frage nach.'],
 [31, '42'],
-[32, 'Fragen Sie diesbezüglich bitte Basti.'],
-[33, 'Wende dich bitte an Verena.'],
-[34, 'Kira kann dir das sicherlich beantworten.'],
-[35, 'Alex weiß auf alles die Antwort, frag bitte sie.'],
-[36, 'Die Antwort ist das Gegenteil von dem, was Jonas antworten würde.'],
-[37, 'Ich schmolle und werde deshalb nicht antworten!'],
-[38, 'Nur wenn heute Sonntag ist!'],
-[39, 'So eine dreiste Frage beantworte ich nicht.'],
-[40, 'Wenn du mich sowas nochmal fragst, passiert irgendwas!'],
-[41, 'What would Jesus do?'],
-[42, 'Nur wenn du mir Kekse gibst.'],
-[43, 'Gegen eine kleine Spende könnte ich dem zustimmen.']
+[32, 'Alex weiß auf alles die Antwort, frag bitte sie.'],
+[33, 'Die Antwort ist das Gegenteil von dem, was Jonas antworten würde.'],
+[34, 'Ich schmolle und werde deshalb nicht antworten!'],
+[35, 'Nur wenn heute Sonntag ist!'],
+[36, 'So eine dreiste Frage beantworte ich nicht.'],
+[37, 'Wenn du mich sowas nochmal fragst, passiert irgendwas!'],
+[38, 'What would Jesus do?'],
+[39, 'Nur wenn du mir Kekse gibst.'],
+[40, 'Gegen eine kleine Spende könnte ich dem zustimmen.']
 ]);
 
 /**
@@ -62,81 +58,34 @@ const answers = new Map([[1, 'Ja!'],
 module.exports = async (message, client) => {
     if (!message.inGuild() || message.author.bot || !message.content.includes(client.user.id) || !message.content.includes("?") || message.webhookId) return;
     console.log(`Bot Mentioned`);
-    var state = await BotState.findOne({
-        guildId: message.guild.id,
-    });
-    var botstatevar = 'neutral';
-    if (state) {
-        botstatevar = state.state;
-    } else {
-        console.log(`Botstate entry created`);
-        const newBotstate = new BotState({
-            guildId: message.guild.id,
-            evilCount: 0,
-            loveCount: 0,
-            state: 'neutral'
-        });
-        await newBotstate.save();
-        state = newBotstate;
-    }
-    if (botstatevar == 'neutral') {
-        var number = getRandom(1, answers.size);
-        const contentOhneYamcha = message.content.replaceAll(`<@${client.user.id}>`, 'Yamcha');
-        const zahlMatch = contentOhneYamcha.match(/\d+/);
-        if (message.content.includes('Grünkohl') && zahlMatch && message.member.roles.cache.some(role => role.name === 'Geheimniswahrer')) {
-            const gefundeneZahl = parseInt(zahlMatch[0], 10);
-            if (gefundeneZahl >= 1 && gefundeneZahl <= answers.size) {
-                number = gefundeneZahl;
-            }
-        }
-        var delay = 2000;
-        if (number == 22) {
-            let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
-            var newMessage = await message.reply(answers.get(number));
-            newMessage = await newMessage.reply(`Self destruction initialized!`);
-            await sleep(delay);
-            newMessage = await newMessage.reply(`3`);
-            await sleep(delay);
-            newMessage = await newMessage.reply(`2`);
-            await sleep(delay);
-            newMessage = await newMessage.reply(`1`);
-            await sleep(delay);
-            const boom = getRandom(1, 4);
-            if (boom == 1) {
-                newMessage = await newMessage.reply(`BOOM💥`);
-                if (getRandom(1, 5) == 5) {
-                    await sleep(delay);
-                    newMessage = await newMessage.reply(`Evil Yamcha starting up...`);
-                    await sleep(delay);
-                    if (state.state == 'besiegt') {
-                        await client.user.setUsername('Yamcha');
-                    }
-                    await client.user.setAvatar('./img/yamcha_evil.jpg');
-                    newMessage = await newMessage.reply(`Evil Yamcha is now taking control!`);
-                    await sleep(delay);
-                    await getTenorGifById("10449061")
-                        .then(async (gifUrl) => {
-                            if (!gifUrl.includes("http")) {
-                                console.log("ERROR Evil gif");
-                                return;
-                            }
-                            newMessage = await newMessage.reply(gifUrl);
-                            console.log('Botstate changed to evil');
-                            state.state = 'evil';
-                            state.startTime = Date.now();
-                            state.save();
-                        })
-                        .catch((error) => {
-                            console.error('ERROR:', error);
-                        });
-                }
-            } else if (boom == 2) {
-                newMessage = await newMessage.reply(`Self destruction canceled, you are safe!`);
-            } else if (boom == 3) {
-                await getTenorGifById("26770639")
+    var number = getRandom(1, answers.size);
+    const contentOhneYamcha = message.content.replaceAll(`<@${client.user.id}>`, 'Yamcha');
+    const zahlMatch = contentOhneYamcha.match(/\d+/);
+    var delay = 2000;
+    if (number == 22) {
+        let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
+        var newMessage = await message.reply(answers.get(number));
+        newMessage = await newMessage.reply(`Self destruction initialized!`);
+        await sleep(delay);
+        newMessage = await newMessage.reply(`3`);
+        await sleep(delay);
+        newMessage = await newMessage.reply(`2`);
+        await sleep(delay);
+        newMessage = await newMessage.reply(`1`);
+        await sleep(delay);
+        const boom = getRandom(1, 4);
+        if (boom == 1) {
+            newMessage = await newMessage.reply(`BOOM💥`);
+            if (getRandom(1, 5) == 5) {
+                await sleep(delay);
+                newMessage = await newMessage.reply(`Evil Yamcha starting up...`);
+                await sleep(delay);
+                newMessage = await newMessage.reply(`Evil Yamcha is now taking control!`);
+                await sleep(delay);
+                await getTenorGifById("10449061")
                     .then(async (gifUrl) => {
                         if (!gifUrl.includes("http")) {
-                            console.log("ERROR Element of Surprise gif");
+                            console.log("ERROR Evil gif");
                             return;
                         }
                         newMessage = await newMessage.reply(gifUrl);
@@ -145,33 +94,25 @@ module.exports = async (message, client) => {
                         console.error('ERROR:', error);
                     });
             }
-        } else if (number >= 44 && number <= 49) {
-            const image = answers.get(number);
-            await message.reply({ files: [image] });
-        } else {
-            await message.reply(answers.get(number));
+        } else if (boom == 2) {
+            newMessage = await newMessage.reply(`Self destruction canceled, you are safe!`);
+        } else if (boom == 3) {
+            await getTenorGifById("26770639")
+                .then(async (gifUrl) => {
+                    if (!gifUrl.includes("http")) {
+                        console.log("ERROR Element of Surprise gif");
+                        return;
+                    }
+                    newMessage = await newMessage.reply(gifUrl);
+                })
+                .catch((error) => {
+                    console.error('ERROR:', error);
+                });
         }
-    } else if (botstatevar == 'evil') {
-        console.log('contacting evil AI');
-        const prompt = message.content.replaceAll(`<@${client.user.id}>`, 'Yamcha');
-        const sysInstruction = "Dein Name ist Yamcha und du befindest dich auf dem Discord Server 'Versager Verein'. Du bist richtig fies und böse und möchtest die Welt unterjochen.";
-        const response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
-        await message.reply(`${response.text}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
-    } else if (botstatevar == 'good') {
-        console.log('contacting good AI');
-        const prompt = message.content.replaceAll(`<@${client.user.id}>`, 'Yamcha');
-        const sysInstruction = "Dein Name ist Yamcha und du befindest dich auf dem Discord Server 'Versager Verein'. Du bist super fröhlich und begenest allen mit viel Lieben und Freundlichkeit.";
-        const response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
-        await message.reply(`${response.text}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
-    } else if (botstatevar == 'horny') {
-        console.log('contacting horny AI');
-        const prompt = message.content.replaceAll(`<@${client.user.id}>`, 'Yamcha');
-        const sysInstruction = "Dein Name ist Yamcha und du befindest dich auf dem Discord Server 'Versager Verein'. Du bist super horny und willst jedem an die Wäsche.";
-        const response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
-        await message.reply(`${response.text}\n\n\n||Dies ist ein KI-generierter Text, wir übernehmen keinerlei Haftung||`);
-    } else if (botstatevar == 'besiegt') {
-        await message.reply(`...`);
+    } else if (number >= 44 && number <= 49) {
+        const image = answers.get(number);
+        await message.reply({ files: [image] });
     } else {
-        console.log('ERROR: Botstate passt nicht!');
+        await message.reply(answers.get(number));
     }
 };

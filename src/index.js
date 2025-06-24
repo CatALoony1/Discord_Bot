@@ -18,14 +18,3 @@ new CommandKit({
 });
 
 client.login(process.env.TOKEN);
-
-/** Delete Commands
-const rest = new Discord.REST().setToken(process.env.TOKEN);
-
-rest.put(Discord.Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), { body: [] })
-  .then(() => console.log('Successfully deleted all guild commands.'))
-  .catch(console.error);
-
-rest.put(Discord.Routes.applicationCommands(process.env.CLIENT_ID), { body: [] })
-  .then(() => console.log('Successfully deleted all application commands.'))
-  .catch(console.error);  */

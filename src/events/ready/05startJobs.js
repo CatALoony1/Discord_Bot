@@ -1,6 +1,5 @@
 const bumpReminderJob = require('../../jobs/cronJob_bumpReminder');
 const checkBumperRoleJob = require('../../jobs/cronJob_checkBumperRole');
-const checkGoodEvilJob = require('../../jobs/cronJob_checkGoodEvil');
 const checkInactiveJob = require('../../jobs/cronJob_checkInactive');
 const customStatusJob = require('../../jobs/cronJob_customStatus');
 const geburtstagJob = require('../../jobs/cronJob_geburtstag');
@@ -36,7 +35,6 @@ module.exports = async (client) => {
     console.log(`Starting Jobs...`);
     bumpReminderJob.startJob(client);
     checkBumperRoleJob.startJob(client);
-    checkGoodEvilJob.startJob(client);
     checkInactiveJob.startJob(client);
     customStatusJob.startJob(client);
     geburtstagJob.startJob(client);
