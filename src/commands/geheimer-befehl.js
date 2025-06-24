@@ -2,7 +2,6 @@ const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('d
 const giveMoney = require('../utils/giveMoney');
 const removeMoney = require('../utils/removeMoney');
 const getTenorGif = require('../utils/getTenorGif');
-const BotState = require('../models/BotState');
 require('dotenv').config();
 
 function getRandom(min, max) {

@@ -58,7 +58,6 @@ module.exports = async (message, client) => {
     if (!message.inGuild() || message.author.bot || !message.content.includes(client.user.id) || !message.content.includes("?") || message.webhookId) return;
     console.log(`Bot Mentioned`);
     var number = getRandom(1, answers.size);
-    const contentOhneYamcha = message.content.replaceAll(`<@${client.user.id}>`, 'Yamcha');
     var delay = 2000;
     if (number == 22) {
         let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
