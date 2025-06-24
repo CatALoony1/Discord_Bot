@@ -1,6 +1,5 @@
 require('dotenv').config();
-const { EmbedBuilder, WebhookClient } = require('discord.js');
-const Begruessung = require('../../models/Begruessung');
+const { EmbedBuilder } = require('discord.js');
 const getTenorGifById = require('../../utils/getTenorGifById');
 
 /**

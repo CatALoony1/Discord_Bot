@@ -1,5 +1,4 @@
 const { Message } = require('discord.js');
-const getAIResult = require('../../utils/getAIResult');
 const getTenorGifById = require('../../utils/getTenorGifById');
 
 function getRandom(min, max) {
@@ -60,7 +59,6 @@ module.exports = async (message, client) => {
     console.log(`Bot Mentioned`);
     var number = getRandom(1, answers.size);
     const contentOhneYamcha = message.content.replaceAll(`<@${client.user.id}>`, 'Yamcha');
-    const zahlMatch = contentOhneYamcha.match(/\d+/);
     var delay = 2000;
     if (number == 22) {
         let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
