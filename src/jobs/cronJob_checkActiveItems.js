@@ -37,7 +37,7 @@ function startJob(client) {
                                             return;
                                         }
                                         await targetChannel.send({
-                                            content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** Loserlinge sind verpufft!`,
+                                            content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** GELD sind verpufft!`,
                                             files: [gifUrl]
                                         });
                                     })
@@ -74,7 +74,7 @@ function startJob(client) {
                             if (userObj && usedOnObj) {
                                 await removeMoney(usedOnObj, 500);
                                 await giveMoney(userObj, 500);
-                                await targetChannel.send(`Von <@${activeItem.usedOn}> wurden 500 Loserlinge Schulden an <@${activeItem.user}> übergeben.`);
+                                await targetChannel.send(`Von <@${activeItem.usedOn}> wurden 500 GELD Schulden an <@${activeItem.user}> übergeben.`);
                             }
                         }
                     }

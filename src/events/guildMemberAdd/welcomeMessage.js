@@ -26,7 +26,7 @@ module.exports = async (guildMember) => {
                 const welcome = new EmbedBuilder()
                     .setColor(0x0033cc)
                     .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
-                    //.setTitle(`Willkommen im Versager Verein! \nHier versagen wir gemeinsam!`)
+                    //.setTitle(`Willkommen im Versager Verein! \nHier versagen wir gemeinsam!`) TODOJG
                     .setTitle(`Willkommen im Versager Verein, <@${guildMember.id}>!\nDu hast es geschafft... also, mehr oder weniger.\nSchnapp dir 'ne Cola, leg die Erwartungen ab und fühl dich wie zu Hause bei den anderen, die's auch nicht ganz geschafft haben.`)
                     .setImage(gifUrl);
                 await targetChannel.send({ content: `${role} <@${guildMember.id}>`, embeds: [welcome] });

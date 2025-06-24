@@ -11,7 +11,6 @@ const quizStatsJob = require('../jobs/cronJob_quizStats');
 const renameLogFileJob = require('../jobs/cronJob_renameLogFile');
 const voiceXPJob = require('../jobs/cronJob_voiceXp');
 const missingXpJob = require('../jobs/cronJob_checkMissingXP');
-const updateWebhookAvatarJob = require('../jobs/cronJob_updateWebhookAvatar');
 const checkNewAnimalsJob = require('../jobs/checkNewAnimals');
 const zinsenJob = require('../jobs/cronJob_zinsen');
 const checkActiveItemsJob = require('../jobs/cronJob_checkActiveItems');
@@ -44,7 +43,6 @@ module.exports = {
                             { name: 'renameLogFile', value: 'renameLogFile' },
                             { name: 'voiceXP', value: 'voiceXP' },
                             { name: 'missingXp', value: 'missingXp' },
-                            { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
                             { name: 'zinsen', value: 'zinsen' },
                             { name: 'checkActiveItems', value: 'checkActiveItems' },
                         )
@@ -72,7 +70,6 @@ module.exports = {
                             { name: 'renameLogFile', value: 'renameLogFile' },
                             { name: 'voiceXP', value: 'voiceXP' },
                             { name: 'missingXp', value: 'missingXp' },
-                            { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
                             { name: 'zinsen', value: 'zinsen' },
                             { name: 'checkActiveItems', value: 'checkActiveItems' },
                         )
@@ -89,7 +86,6 @@ module.exports = {
                         .addChoices(
                             { name: 'quizQuestion', value: 'quizQuestion' },
                             { name: 'quizStats', value: 'quizStats' },
-                            { name: 'updateWebhookAvatar', value: 'updateWebhookAvatar' },
                             { name: 'geburtstag', value: 'geburtstag' },
                             { name: 'checkNewAnimals', value: 'checkNewAnimals' },
                         )
@@ -143,9 +139,6 @@ module.exports = {
                     break;
                 case 'missingXp':
                     jobClass = missingXpJob;
-                    break;
-                case 'updateWebhookAvatar':
-                    jobClass = updateWebhookAvatarJob;
                     break;
                 case 'checkNewAnimals':
                     jobClass = checkNewAnimalsJob;

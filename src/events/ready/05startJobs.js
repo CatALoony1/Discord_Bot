@@ -10,7 +10,6 @@ const quizQuestionJob = require('../../jobs/cronJob_quizQuestion');
 const quizStatsJob = require('../../jobs/cronJob_quizStats');
 const renameLogFileJob = require('../../jobs/cronJob_renameLogFile');
 const missingXpJob = require('../../jobs/cronJob_checkMissingXP');
-const updateWebhookAvatarJob = require('../../jobs/cronJob_updateWebhookAvatar');
 const voiceJob = require('../../jobs/cronJob_voiceXp');
 const zinsenJob = require('../../jobs/cronJob_zinsen');
 const checkActiveItems = require('../../jobs/cronJob_checkActiveItems');
@@ -32,22 +31,21 @@ async function checkVoice(client) {
 }
 
 module.exports = async (client) => {
-    console.log(`Starting Jobs...`);
-    bumpReminderJob.startJob(client);
-    checkBumperRoleJob.startJob(client);
-    checkInactiveJob.startJob(client);
-    customStatusJob.startJob(client);
-    geburtstagJob.startJob(client);
-    goodMorningJob.startJob(client);
-    monthlyXPJob.startJob(client);
-    newYearJob.startJob(client);
-    quizQuestionJob.startJob(client);
-    quizStatsJob.startJob(client);
-    renameLogFileJob.startJob(client);
-    missingXpJob.startJob(client);
-    updateWebhookAvatarJob.startJob(client);
-    zinsenJob.startJob(client);
-    checkActiveItems.startJob(client);
-    checkVoice(client);
-    console.log(`Jobs started...`);
+  console.log(`Starting Jobs...`);
+  bumpReminderJob.startJob(client);
+  checkBumperRoleJob.startJob(client);
+  checkInactiveJob.startJob(client);
+  customStatusJob.startJob(client);
+  geburtstagJob.startJob(client);
+  goodMorningJob.startJob(client);
+  monthlyXPJob.startJob(client);
+  newYearJob.startJob(client);
+  quizQuestionJob.startJob(client);
+  quizStatsJob.startJob(client);
+  renameLogFileJob.startJob(client);
+  missingXpJob.startJob(client);
+  zinsenJob.startJob(client);
+  checkActiveItems.startJob(client);
+  checkVoice(client);
+  console.log(`Jobs started...`);
 };

@@ -67,51 +67,81 @@ const keksTexts = [
     " ist jetzt quasi eine keksgefüllte Piñata. Vorsicht beim Umarmen!",
     " hat den Keks so schnell gegessen, dass das Universum noch nicht mit dem Zunehmen nachgekommen ist. Aber es kommt!",
     " hat einen Keks verschlungen und fühlt sich nun bereit für ein Leben in Gemütlichkeit und süßen Träumen.",
-    " hat den Keks so erfolgreich verdrückt, dass der 'Versager Verein' stolz sein kann! Gewichtszunahme: check!",
-    " beweist einmal mehr, dass wir im 'Versager Verein' auch im Zunehmen Spitzenklasse sind.",
-    " hat den Keks nicht nur gegessen, sondern regelrecht ins Herz geschlossen. Oder besser gesagt: in die Hüften. Typisch 'Versager Verein'!",
-    " ist nun offiziell das Vorzeigemodell des 'Versager Vereins' in Sachen Keksverwertung und Gewichtszunahme.",
-    " hat den Keksheldenstatus im 'Versager Verein' erreicht - der Bauch wächst, die Legende auch!",
-    " hat den Keks verputzt und sich damit nahtlos in die Liga der gemütlichen 'Versager Verein'-Mitglieder eingereiht.",
-    " zeigt, dass im 'Versager Verein' auch das Zunehmen perfektioniert werden kann. Ein Keks nach dem anderen!",
-    " hat den Keks nicht nur genossen, sondern auch das offizielle 'Versager Verein'-Siegel auf die Waage gedrückt bekommen.",
-    " ist jetzt nicht nur Mitglied, sondern auch das Schwergewicht des 'Versager Vereins'. Glückwunsch zur Keks-Masse!",
-    " hat den Keks im Namen des 'Versager Vereins' geopfert - für mehr Gemütlichkeit und eine extra Portion Gewicht.",
-    " hat bewiesen, dass auch 'Versager' in einer Disziplin glänzen können: Kekse essen und dabei zunehmen. Herzlichen Glückwunsch!",
-    " hat den Keks mit der Inbrunst eines wahren 'Versager Vereins'-Mitglieds verschlungen. Das Ergebnis ist sichtbar!",
-    " ist jetzt eine Ehrennadel des 'Versager Vereins' - hergestellt aus Keks und purem Gewicht.",
-    " hat den Keks so souverän gemeistert, dass selbst der 'Versager Verein' beeindruckt ist. Weiter so mit dem Zunehmen!",
-    " hat den Keks mit Bravour gemeistert und dabei die goldene Regel des 'Versager Vereins' befolgt: Essen, bis es wehtut (vom Zunehmen).",
+    " hat den Keks so erfolgreich verdrückt, dass alle nun sehr stolz sind! Gewichtszunahme: check!",
+    " beweist einmal mehr, dass wir in 'LEAFing Realtiy' auch im Zunehmen Spitzenklasse sind.",
+    " hat den Keks nicht nur gegessen, sondern regelrecht ins Herz geschlossen. Oder besser gesagt: in die Hüften.",
+    " ist nun offiziell das Vorzeigemodell von 'LEAFing Reality' in Sachen Keksverwertung und Gewichtszunahme.",
+    " hat den Keksheldenstatus in 'LEAFing Reality' erreicht - der Bauch wächst, die Legende auch!",
+    " hat den Keks verputzt und sich damit nahtlos in die Liga der gemütlichen 'LEAFing Reality'-Mitglieder eingereiht.",
+    " zeigt, dass hier auch das Zunehmen perfektioniert werden kann. Ein Keks nach dem anderen!",
+    " hat den Keks nicht nur genossen, sondern auch das offizielle 'LEAFing Reality'-Siegel auf die Waage gedrückt bekommen.",
+    " ist jetzt nicht nur Mitglied, sondern auch das Schwergewicht des Servers. Glückwunsch zur Keks-Masse!",
+    " hat den Keks im Namen des Servers geopfert - für mehr Gemütlichkeit und eine extra Portion Gewicht.",
+    " hat den Keks mit voller Inbrunst verschlungen. Das Ergebnis ist sichtbar!",
+    " hat den Keks mit Bravour gemeistert und dabei die goldene Regel des Servers befolgt: Essen, bis es wehtut (vom Zunehmen).",
     " hat den Keks 🍪 wie ein Profi vernichtet! Die Waage lacht sich ins Fäustchen... und wir auch! 😂",
-    " beweist, dass im 'Versager Verein' auch das Zunehmen eine Kunst ist. 🎨 Mehr Speck, mehr Spaß! 🐷",
-    " hat den Keks nicht gegessen, sondern geatmet. 🌬️💨 Das Ergebnis: mehr Masse für den 'Versager Verein'! 💪",
+    " beweist, dass bei uns auch das Zunehmen eine Kunst ist. 🎨 Mehr Speck, mehr Spaß! 🐷",
+    " hat den Keks nicht gegessen, sondern geatmet. 🌬️💨",
     " spürt, wie der Keks 🍪 direkt in die Wohlfühlzone wandert. Hallo, neue Polster! 👋🛋️",
-    " ist jetzt offiziell im 'Keks-Koma' 😵‍💫 angekommen. Der 'Versager Verein' ist stolz auf diese Leistung! 🏆",
-    " hat den Keks verputzt und fühlt sich jetzt so rund wie eine Bowlingkugel! 🎳 Perfekt für den 'Versager Verein'! 😉",
-    " zeigt, dass wir im 'Versager Verein' nicht nur versagen können, sondern auch meisterhaft schlemmen! 👑😋",
+    " ist jetzt offiziell im 'Keks-Koma' 😵‍💫 angekommen. Wir sind stolz auf diese Leistung! 🏆",
+    " hat den Keks verputzt und fühlt sich jetzt so rund wie eine Bowlingkugel! 🎳",
     " hat sich soeben ein neues Lebensziel gesetzt: Noch mehr Kekse! 🎯 Und das Gewicht? Ein schöner Bonus! ✨",
     " hat den Keks mit Liebe ❤️ und Leidenschaft verdrückt. Der Bauch dankt es mit extra Gemütlichkeit! 🤗",
-    " ist jetzt nicht nur im 'Versager Verein', sondern auch im 'Keks-Gewichts-Eliteclub'! 🎉📈 Glückwunsch!",
     " hat den Keks nicht verschlungen, sondern *liebevoll aufgenommen*. 🥺 Und das Gewicht? Eine schöne Erinnerung! 💖",
     " hat den Keks als Sprungbrett für eine Karriere als Kuschelkissen genutzt. 🚀 cushions Mehr Kilos, mehr Komfort! 😴",
-    " zeigt dem 'Versager Verein', wie man richtig isst. 🍽️ Und zunimmt. 💯 Du bist ein Vorbild! 👍",
+    " zeigt uns, wie man richtig isst. 🍽️ Und zunimmt. 💯 Du bist ein Vorbild! 👍",
     " ist jetzt so voll mit Keks, dass selbst die Schwerkraft stärker wird. 🌎🚀 Willkommen im Club der Schwergewichte! 🏋️",
-    " hat den Keks erfolgreich in Energie umgewandelt... und in ein paar extra Pfunde. 🔋➡️⚖️ Der 'Versager Verein' jubelt! 🥳",
-    " hat erfolgreich 60g Keksmasse in 60g Körpermasse umgewandelt! 💪 Der 'Versager Verein' ist stolz auf diese Effizienz! ✨",
-    " ist jetzt exakt 60g schwerer und glücklicher. Der 'Versager Verein' applaudiert dieser glorreichen Gewichtszunahme! 🥳",
+    " hat den Keks erfolgreich in Energie umgewandelt... und in ein paar extra Pfunde. 🔋➡️⚖️",
+    " hat erfolgreich 60g Keksmasse in 60g Körpermasse umgewandelt! 💪",
+    " ist jetzt exakt 60g schwerer und glücklicher. 🥳",
     " hat den Keks von 60g heldenhaft bezwungen und trägt nun stolz die 60g extra Gewicht. Ein wahres Vorbild! 🏆",
     " hat bewiesen, dass 60g Keks direkt auf die Hüften gehen können. Willkommen im Club der 60g-Gewinner! 😂",
-    " hat 60g Keks verdrückt und fühlt sich nun um 60g gemütlicher. Das ist das 'Versager Verein'-Prinzip! 🛋️",
+    " hat 60g Keks verdrückt und fühlt sich nun um 60g gemütlicher.🛋️",
     " hat die 60g Keks so schnell verschlungen, dass das Universum noch versucht, die 60g Gewichtszunahme zu verarbeiten. 🌠",
-    " zeigt, dass 60g Keks nicht nur lecker sind, sondern auch perfekt zum 'Versager Verein'-Lebensstil passen: mehr Masse! 🐷",
-    " ist nun 60g keksbefüllter! Das ist kein Versagen, das ist Expertise im 'Versager Verein'! 🍽️",
     " hat die 60g Keks als Grundstein für ein neues, gemütlicheres Ich gelegt. Bravo! 🧱",
-    " hat 60g Glück und 60g Gewicht zugelegt. Ein erfolgreicher Tag im 'Versager Verein'! 😊",
-    " hat mit nur einem Keks (60g!) bewiesen, dass der 'Versager Verein' in der Königsdisziplin des Essens ungeschlagen ist. 👑",
-    " trägt jetzt stolze 60g mehr auf den Rippen - alles dank des köstlichen Kekses. Ein Hoch auf den 'Versager Verein'! 🎉",
+    " trägt jetzt stolze 60g mehr auf den Rippen - alles dank des köstlichen Kekses.🎉",
     " hat die 60g Keks nicht einfach gegessen, sondern strategisch platziert. Die Waage ist beeindruckt! 📊",
     " hat die 60g Keks in pure Liebe verwandelt - und in 60g extra zum Liebhaben. ❤️",
-    " ist jetzt um genau 60g schwerer und fühlt sich 60g wohler. So geht 'Versager Verein' am besten! 💯"
+    " fühlt sich nach dem Keksessen ein kleines bisschen runder. Eine gute Runde extra Bauchkraulen!",
+    " spürt, wie der Keks direkt auf die Hüften wandert. Herzlichen Glückwunsch zum neuen 'Keks-Glow'!",
+    " hat den Keks genossen und fühlt sich nun bereit für ein Nickerchen. Das Gewicht? Nur ein süßer Nebeneffekt!",
+    " wundert sich, ob Kekse eigentlich auch fliegen können - denn leichter ist dadurch niemand geworden. Eher im Gegenteil!",
+    " hat den Keks wohl nicht nur gegessen, sondern auch geatmet. Das zusätzliche Gewicht ist der Beweis!",
+    " ist nun offiziell im 'Team Gemütlich' angekommen. Der Keks hat ganze Arbeit geleistet!",
+    " staunt nicht schlecht, wie schnell dieser Keks auf die Waage hüpft. Aber lecker war's!",
+    " hat sich mit diesem Keks einen kleinen Wohlfühlbauch angefuttert. Perfekt zum Knuddeln!",
+    " muss sich vielleicht bald neue Hosen kaufen - der Keks war einfach zu mächtig!",
+    " fühlt sich nach dem Keksessen ein bisschen wie ein rollender Hügel. Aber ein glücklicher Hügel!",
+    " hat bewiesen, dass Liebe durch den Magen geht - und sich dort auch gerne festsetzt. Keks sei Dank!",
+    " hat soeben seine persönliche Schwerkraft erhöht. Das Geheimnis? Kekse!",
+    " grinst breit, denn der Keks war es wert. Ein bisschen mehr Gewicht? Pff, Details!",
+    " ist nun offiziell ein 'Keks-Champion' im Gewichtszulegen. Bravo!",
+    " merkt, wie sich jeder Keks aufs Neue in ein kleines Bäuchlein verwandelt. Komfort pur!",
+    " hat nun mehr 'Substanz'. Der Keks hat's möglich gemacht!",
+    " ist auf dem besten Weg, ein wahrer 'Keks-Mensch' zu werden. Das Gewicht steigt stetig!",
+    " spürt ein leichtes Vibrieren der Waage nach dem Keks. Alles im grünen Bereich - oder roten, je nach Zunahme!",
+    " hat seinen Körper mit einem Keks verwöhnt und das dankt er ihm mit ein paar zusätzlichen Gramm. Genieß es!",
+    " freut sich über jeden Keks, der ihn 'voluminöser' macht. Mehr zum Kuscheln!",
+    " fühlt sich nach dem Keksessen ein kleines bisschen runder. Offenbar hilft der Keks dabei, sich tiefer in die LEAFing Reality zu erden!",
+    " spürt, wie der Keks direkt auf die Hüften wandert. Ein echter Realitätscheck für das eigene Gewicht in LEAFing Reality!",
+    " hat den Keks genossen und fühlt sich nun bereit für ein Nickerchen. Das zusätzliche Gewicht lässt dich noch tiefer in die LEAFing Reality eintauchen!",
+    " wundert sich, ob Kekse in LEAFing Reality eigentlich auch schweben können - denn leichter ist dadurch niemand geworden. Eher im Gegenteil!",
+    " hat den Keks wohl nicht nur gegessen, sondern auch geatmet. Willkommen im Club der 'Realitäts-Schwergewichte' von LEAFing Reality!",
+    " ist nun offiziell im 'Team Gemütlich' von LEAFing Reality angekommen. Der Keks hat ganze Arbeit geleistet!",
+    " staunt nicht schlecht, wie schnell dieser Keks auf die Waage in LEAFing Reality hüpft. Aber lecker war's!",
+    " hat sich mit diesem Keks einen kleinen Wohlfühlbauch angefuttert. Perfekt, um sich in LEAFing Reality einzukuscheln!",
+    " muss sich vielleicht bald neue Hosen kaufen - der Keks war einfach zu mächtig für die LEAFing Reality-Garderobe!",
+    " fühlt sich nach dem Keksessen ein bisschen wie ein rollender Hügel. Aber ein glücklicher Hügel in LEAFing Reality!",
+    " hat bewiesen, dass Liebe durch den Magen geht - und sich dort auch gerne festsetzt. Besonders in der LEAFing Reality!",
+    " hat soeben seine persönliche Schwerkraft erhöht. Das Geheimnis in LEAFing Reality? Kekse!",
+    " grinst breit, denn der Keks war es wert. Ein bisschen mehr Gewicht in LEAFing Reality? Pff, Details!",
+    " ist nun offiziell ein 'Keks-Champion' im Gewichtszulegen in LEAFing Reality. Bravo!",
+    " merkt, wie sich jeder Keks aufs Neue in ein kleines Bäuchlein verwandelt. Komfort pur in LEAFing Reality!",
+    " hat nun mehr 'Substanz', um sich in LEAFing Reality zu behaupten. Der Keks hat's möglich gemacht!",
+    " ist auf dem besten Weg, ein wahrer 'Keks-Mensch' von LEAFing Reality zu werden. Das Gewicht steigt stetig!",
+    " spürt ein leichtes Vibrieren der Waage nach dem Keks. Alles im grünen Bereich - oder roten, je nach Zunahme in LEAFing Reality!",
+    " hat seinen Körper mit einem Keks verwöhnt und das dankt er ihm mit ein paar zusätzlichen Gramm. Genieß es in LEAFing Reality!",
+    " freut sich über jeden Keks, der ihn 'voluminöser' macht. Mehr zum Kuscheln in LEAFing Reality!"
 ];
 
 module.exports = async (interaction) => {
@@ -137,8 +167,8 @@ module.exports = async (interaction) => {
             await useItemKuss(interaction);
         } else if (interaction.customId.includes('bombe')) {
             await useItemBombe(interaction);
-        } else if (interaction.customId.includes('loserlingKlauBanane_select')) {
-            await useItemLoserlingKlauBanane(interaction);
+        } else if (interaction.customId.includes('GELDKlauBanane_select')) {
+            await useItemGELDKlauBanane(interaction);
         } else if (interaction.customId.includes('schuldschein_select')) {
             await useItemSchuldschein(interaction);
         } else if (interaction.customId.includes('keks')) {
@@ -721,7 +751,7 @@ async function useItemBombe(interaction) {
                 .setStyle(ButtonStyle.Secondary);
             const row = new ActionRowBuilder().addComponents(durchsuchenButton, beweiseButton);
             await interaction.update({
-                content: `Die Bombe wurde erfolgreich entschärft! Du kannst nun entscheiden, ob du sie nach Loserlingen durchsuchen oder Beweise sichern möchtest.`,
+                content: `Die Bombe wurde erfolgreich entschärft! Du kannst nun entscheiden, ob du sie nach GELDn durchsuchen oder Beweise sichern möchtest.`,
                 components: [row]
             });
             activeItem.extras = 'defused';
@@ -737,7 +767,7 @@ async function useItemBombe(interaction) {
                         return;
                     }
                     await interaction.update({
-                        content: `Bei <@${interaction.user.id}> ist eine Bombe explodiert! **${amount}** Loserlinge sind verpufft!`,
+                        content: `Bei <@${interaction.user.id}> ist eine Bombe explodiert! **${amount}** GELD sind verpufft!`,
                         files: [gifUrl],
                         components: []
                     });
@@ -762,7 +792,7 @@ async function useItemBombe(interaction) {
         const amount = getRandom(10000, 20000);
         await giveMoney(interaction.member, amount);
         await interaction.update({
-            content: `Du hast die Bombe durchsucht und **${amount}** Loserlinge gefunden!`,
+            content: `Du hast die Bombe durchsucht und **${amount}** GELD gefunden!`,
             components: [],
             files: []
         });
@@ -788,7 +818,7 @@ async function useItemBombe(interaction) {
     }
 }
 
-async function useItemLoserlingKlauBanane(interaction) {
+async function useItemGELDKlauBanane(interaction) {
     const targetUserId = interaction.values[0];
     const targetMemberObject = await interaction.guild.members.fetch(targetUserId).catch(() => null);
     if (!targetMemberObject) {
@@ -800,14 +830,14 @@ async function useItemLoserlingKlauBanane(interaction) {
         return;
     }
     const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Loserling-Klau-Banane');
+    const itemId = user.inventar.items.findIndex(item => item.item.name === 'GELD-Klau-Banane');
     if (user.inventar.items[itemId].quantity > 1) {
         user.inventar.items[itemId].quantity -= 1;
     } else if (user.inventar.items[itemId].quantity === 1) {
         user.inventar.items.splice(itemId, 1);
     } else {
         await interaction.update({
-            content: 'Du hast keine Loserling Klau Banane in deinem Inventar!', components: [],
+            content: 'Du hast keine GELD Klau Banane in deinem Inventar!', components: [],
             flags: MessageFlags.Ephemeral
         });
         return;
@@ -823,7 +853,7 @@ async function useItemLoserlingKlauBanane(interaction) {
         flags: MessageFlags.Ephemeral
     });
     await channel.send({
-        content: `<@${interaction.user.id}> warf eine Loserling-Klau-Banane auf <@${targetUserId}> und klaute **${amout}** Loserlinge!`
+        content: `<@${interaction.user.id}> warf eine GELD-Klau-Banane auf <@${targetUserId}> und klaute **${amout}** GELD!`
     });
 }
 

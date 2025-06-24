@@ -90,9 +90,9 @@ module.exports = {
                     return;
                 }
                 if (anzahlNullen == 1) {
-                    interaction.editReply(`Du hast diesmal nicht den Jackpot geknackt, aber du hast eine Zahl die mit einer Null endet und erhälst somit ${moneyToGive} Loserlinge. Deine Zahl war die ${lottozahl}`);
+                    interaction.editReply(`Du hast diesmal nicht den Jackpot geknackt, aber du hast eine Zahl die mit einer Null endet und erhälst somit ${moneyToGive} GELD. Deine Zahl war die ${lottozahl}`);
                 } else {
-                    interaction.editReply(`Du hast diesmal nicht den Jackpot geknackt, aber du hast eine Zahl die mit ${anzahlNullen} Nullen endet und erhälst somit ${moneyToGive} Loserlinge. Deine Zahl war die ${lottozahl}`);
+                    interaction.editReply(`Du hast diesmal nicht den Jackpot geknackt, aber du hast eine Zahl die mit ${anzahlNullen} Nullen endet und erhälst somit ${moneyToGive} GELD. Deine Zahl war die ${lottozahl}`);
                 }
             } else {
                 await Lottozahlen.deleteMany({ guildId: interaction.guild.id });
@@ -108,7 +108,7 @@ module.exports = {
             if ((user && ((user.daily && user.daily.toDateString() !== new Date().toDateString()) || !user.daily)) || !user) {
                 let bonusAmount = 1500;
                 bonusAmount = await giveMoney(targetUserObj, bonusAmount, false, true);
-                interaction.editReply(`Du hast deinen täglichen Bonus von ${bonusAmount} Loserlinge erhalten!`);
+                interaction.editReply(`Du hast deinen täglichen Bonus von ${bonusAmount} GELD erhalten!`);
             } else {
                 interaction.editReply("Du hast deinen täglichen Bonus bereits heute erhalten. Bitte versuche es morgen erneut.");
             }

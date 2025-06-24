@@ -75,9 +75,7 @@ module.exports = async (message, client) => {
             newMessage = await newMessage.reply(`BOOM💥`);
             if (getRandom(1, 5) == 5) {
                 await sleep(delay);
-                newMessage = await newMessage.reply(`Evil Yamcha starting up...`);
-                await sleep(delay);
-                newMessage = await newMessage.reply(`Evil Yamcha is now taking control!`);
+                newMessage = await newMessage.reply(`Evil Bot starting up...`);
                 await sleep(delay);
                 await getTenorGifById("10449061")
                     .then(async (gifUrl) => {
