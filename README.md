@@ -11,14 +11,9 @@ Siehe bsp.env
 
 ## Erforderliche Rollen auf deinem Server
 
-* **Geheimniswahrer**
-* **Admins**
 * **Bumper**
 * **Lottogewinner**
-* **Gewinner**
 * **Begrüßungskomitee**
 * **Mitglied**
 * **Bump-Ping**
-* **KI-Jonas**
-* **KI-Bärchen**
-* **KI-Silverliver**
+* **KI-Bot**
