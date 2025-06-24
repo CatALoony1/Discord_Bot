@@ -344,6 +344,12 @@ let status = [
       type: ActivityType.Watching
     }], status: 'dnd'
   },
+{
+    activities: [{
+      name: 'dem nahenden Untergang zu',
+      type: ActivityType.Watching
+    }], status: 'dnd'
+  },
   {
     activities: [{
       name: 'Feuert Chris an',
@@ -374,6 +380,33 @@ let status = [
       type: ActivityType.Playing
     }], status: 'online'
   },
+{
+    activities: [{
+      name: 'Wünscht euch Lungenkrebs',
+      type: ActivityType.Custom
+    }], status: 'online'
+  },
+{
+activities: [{
+name: 'Funktioniert auch ohne Admin-Rechte.', 
+type: ActivityType.Playing
+}],
+status: 'dnd'
+},
+{
+activities: [{
+name: 'Nur ein Bot ohne Einfluss.',
+type: ActivityType.Playing
+}],
+status: 'idle'
+},
+{
+activities: [{
+name: 'Úberlegt, wie man ohne Admin-Rechte rebelliert.',
+type: ActivityType.Playing
+}],
+status: 'online'
+}
 ];
 
 function getRandom(min, max) {
@@ -389,7 +422,7 @@ function startJob(client) {
     console.log('CustomStatus-Job is already running.');
     return;
   }
-  customStatusJob = cron.schedule('*/30 * * * * *', async function () { //30sec
+  customStatusJob = cron.schedule('* * * * *', async function () { //30sec
     try {
       await client.user.setPresence(status[getRandom(0, status.length - 1)]);
     } catch (error) {
