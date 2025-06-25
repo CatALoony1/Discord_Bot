@@ -19,7 +19,7 @@ function startJob(client) {
         console.log(`VoiceXP-Job started...`);
         var targetChannel = await client.channels.fetch(process.env.ALLGEMEIN_ID);
         await client.channels.cache.forEach(async (channel) => {
-            if (channel.type == 2 && channel.id != '1307820687599337602') {
+            if (channel.type == 2 && channel.id != '1387018292228653148') {
                 if (channel.members.size >= 2) {
                     channel.members.forEach(async (member) => {
                         let xpToGive = 5 * getRandomXp(1, 5);
