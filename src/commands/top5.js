@@ -67,4 +67,8 @@ module.exports = {
     const attachment = new AttachmentBuilder(image);
     interaction.editReply({ files: [attachment] });
   },
+  options: {
+        devOnly: false,
+        deleted: true
+    },
 };
