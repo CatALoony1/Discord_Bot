@@ -51,7 +51,7 @@ module.exports = async (interaction) => {
         try {
             const description = targetMessageEmbed.description;
             const itemName = description.substring(description.indexOf('Name:') + 6, description.indexOf('\n'));
-            const price = parseInt(description.substring(description.indexOf('Preis:') + 7, description.indexOf('Monde') - 1).replaceAll('.', ''));
+            const price = parseInt(description.substring(description.indexOf('Preis:') + 7, description.indexOf('Magische Kraft') - 1).replaceAll('.', ''));
             console.log(`Item: ${itemName}, Price: ${price}`);
             const user = await GameUser.findOne({ userId: interaction.user.id }).populate('bankkonto').populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
             if (!user || !user.bankkonto || !user.inventar) {
@@ -59,7 +59,7 @@ module.exports = async (interaction) => {
                 return;
             }
             if (user.bankkonto.currentMoney < price) {
-                await interaction.reply({ content: 'Du hast nicht genug Monde auf deinem Bankkonto!', flags: MessageFlags.Ephemeral });
+                await interaction.reply({ content: 'Du hast nicht genug Magische Kraft auf deinem Bankkonto!', flags: MessageFlags.Ephemeral });
                 return;
             }
             if (!itemName.includes('Keks')) {

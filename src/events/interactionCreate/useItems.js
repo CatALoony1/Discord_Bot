@@ -167,8 +167,8 @@ module.exports = async (interaction) => {
             await useItemKuss(interaction);
         } else if (interaction.customId.includes('bombe')) {
             await useItemBombe(interaction);
-        } else if (interaction.customId.includes('MondeKlauBanane_select')) {
-            await useItemMondeKlauBanane(interaction);
+        } else if (interaction.customId.includes('Magische KraftKlauBanane_select')) {
+            await useItemMagische KraftKlauBanane(interaction);
         } else if (interaction.customId.includes('schuldschein_select')) {
             await useItemSchuldschein(interaction);
         } else if (interaction.customId.includes('keks')) {
@@ -751,7 +751,7 @@ async function useItemBombe(interaction) {
                 .setStyle(ButtonStyle.Secondary);
             const row = new ActionRowBuilder().addComponents(durchsuchenButton, beweiseButton);
             await interaction.update({
-                content: `Die Bombe wurde erfolgreich entschärft! Du kannst nun entscheiden, ob du sie nach Monden durchsuchen oder Beweise sichern möchtest.`,
+                content: `Die Bombe wurde erfolgreich entschärft! Du kannst nun entscheiden, ob du sie nach Magische Kraftn durchsuchen oder Beweise sichern möchtest.`,
                 components: [row]
             });
             activeItem.extras = 'defused';
@@ -767,7 +767,7 @@ async function useItemBombe(interaction) {
                         return;
                     }
                     await interaction.update({
-                        content: `Bei <@${interaction.user.id}> ist eine Bombe explodiert! **${amount}** Monde sind verpufft!`,
+                        content: `Bei <@${interaction.user.id}> ist eine Bombe explodiert! **${amount}** Magische Kraft sind verpufft!`,
                         files: [gifUrl],
                         components: []
                     });
@@ -792,7 +792,7 @@ async function useItemBombe(interaction) {
         const amount = getRandom(10000, 20000);
         await giveMoney(interaction.member, amount);
         await interaction.update({
-            content: `Du hast die Bombe durchsucht und **${amount}** Monde gefunden!`,
+            content: `Du hast die Bombe durchsucht und **${amount}** Magische Kraft gefunden!`,
             components: [],
             files: []
         });
@@ -818,7 +818,7 @@ async function useItemBombe(interaction) {
     }
 }
 
-async function useItemMondeKlauBanane(interaction) {
+async function useItemMagische KraftKlauBanane(interaction) {
     const targetUserId = interaction.values[0];
     const targetMemberObject = await interaction.guild.members.fetch(targetUserId).catch(() => null);
     if (!targetMemberObject) {
@@ -830,14 +830,14 @@ async function useItemMondeKlauBanane(interaction) {
         return;
     }
     const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Mond-Klau-Banane');
+    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Magische-Kraft-Klau-Banane');
     if (user.inventar.items[itemId].quantity > 1) {
         user.inventar.items[itemId].quantity -= 1;
     } else if (user.inventar.items[itemId].quantity === 1) {
         user.inventar.items.splice(itemId, 1);
     } else {
         await interaction.update({
-            content: 'Du hast keine Monde Klau Banane in deinem Inventar!', components: [],
+            content: 'Du hast keine Magische Kraft Klau Banane in deinem Inventar!', components: [],
             flags: MessageFlags.Ephemeral
         });
         return;
@@ -853,7 +853,7 @@ async function useItemMondeKlauBanane(interaction) {
         flags: MessageFlags.Ephemeral
     });
     await channel.send({
-        content: `<@${interaction.user.id}> warf eine Mond-Klau-Banane auf <@${targetUserId}> und klaute **${amout}** Monde!`
+        content: `<@${interaction.user.id}> warf eine Magische-Kraft-Klau-Banane auf <@${targetUserId}> und klaute **${amout}** Magische Kraft!`
     });
 }
 

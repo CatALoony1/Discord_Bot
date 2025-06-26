@@ -265,14 +265,14 @@ async function handleUseItem(interaction) {
             content = `Möchtest du den obersten Platz aktivieren?`;
             break;
         }
-        case 'Mond-Klau-Banane': {
+        case 'Magische-Kraft-Klau-Banane': {
             const selectMenu = new UserSelectMenuBuilder()
-                .setCustomId('useItem_MondeKlauBanane_select')
-                .setPlaceholder('Wähle einen Nutzer aus, dessen Monde du klauen möchtest.')
+                .setCustomId('useItem_Magische KraftKlauBanane_select')
+                .setPlaceholder('Wähle einen Nutzer aus, dessen Magische Kraft du klauen möchtest.')
                 .setMinValues(1)
                 .setMaxValues(1);
             firstRow = new ActionRowBuilder().addComponents(selectMenu);
-            content = `Wähle einen Nutzer aus, dessen Monde du klauen möchtest.`;
+            content = `Wähle einen Nutzer aus, dessen Magische Kraft du klauen möchtest.`;
             break;
         }
         case 'Schuldschein': {
@@ -369,9 +369,9 @@ async function handleGamestats(interaction) {
     messageEdited.setAuthor({ name: interaction.member.user.username, iconURL: interaction.member.user.displayAvatarURL({ size: 256 }) });
     messageEdited.setTitle(`Deine Stats:`);
     messageEdited.addFields({ name: 'Rang:', value: `${currentRank}` });
-    messageEdited.addFields({ name: 'Aktuelle Monde:', value: `${user.bankkonto.currentMoney}` });
-    messageEdited.addFields({ name: 'Erhaltene Monde:', value: `${user.bankkonto.moneyGain}` });
-    messageEdited.addFields({ name: 'Verlorene/Ausgegebene Monde:', value: `${user.bankkonto.moneyLost}` });
+    messageEdited.addFields({ name: 'Aktuelle Magische Kraft:', value: `${user.bankkonto.currentMoney}` });
+    messageEdited.addFields({ name: 'Erhaltene Magische Kraft:', value: `${user.bankkonto.moneyGain}` });
+    messageEdited.addFields({ name: 'Verlorene/Ausgegebene Magische Kraft:', value: `${user.bankkonto.moneyLost}` });
     messageEdited.addFields({ name: 'Anzahl Lottospiele:', value: `${lottospiele}` });
     messageEdited.addFields({ name: 'Quizfragen hinzugefügt:', value: `${user.quizadded}` });
     messageEdited.addFields({ name: 'Gewicht:', value: `${user.weight / 1000}kg` });
