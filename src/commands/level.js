@@ -76,7 +76,7 @@ module.exports = {
       .setRequiredXP(calculateLevelXp(fetchedLevel.level))
       .setStatus(status)
       .setDisplayName(targetUserObj.user.displayName)
-      .setOverlay(60)
+      .setOverlay(80)
       .setBackground('./img/banner.png')
       //.setBackground('#7DC9D1')
       .setFonts(canvacord.Font.loadDefault())
