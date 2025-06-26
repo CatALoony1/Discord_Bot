@@ -267,7 +267,7 @@ async function handleUseItem(interaction) {
         }
         case 'Magische-Kraft-Klau-Banane': {
             const selectMenu = new UserSelectMenuBuilder()
-                .setCustomId('useItem_Magische KraftKlauBanane_select')
+                .setCustomId('useItem_MagischeKraftKlauBanane_select')
                 .setPlaceholder('Wähle einen Nutzer aus, dessen Magische Kraft du klauen möchtest.')
                 .setMinValues(1)
                 .setMaxValues(1);
