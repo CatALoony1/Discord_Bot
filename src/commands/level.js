@@ -78,7 +78,7 @@ module.exports = {
       .setDisplayName(targetUserObj.user.displayName)
       .setOverlay(60)
       .setBackground('./img/banner.png')
-      .setBackground('#7DC9D1')
+      //.setBackground('#7DC9D1')
       .setFonts(canvacord.Font.loadDefault())
       .setStyles({
         progressbar: {
