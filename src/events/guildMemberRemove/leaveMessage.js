@@ -1,7 +1,6 @@
 require('dotenv').config();
 const { EmbedBuilder } = require('discord.js');
 const getTenorGifById = require('../../utils/getTenorGifById');
-const { letterEmojiMap } = require('../../utils/letterEmojiMap');
 
 /**
  * 
@@ -28,7 +27,7 @@ module.exports = async (guildMember) => {
                     .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
                     .setDescription(`Schade, dass <@${guildMember.id}> uns verlassen hat. 🥺 Wir wünschen <@${guildMember.id}> alles Gute für den weiteren Weg.`)
                     .setImage(gifUrl);
-                var messageL = await targetChannel.send({ embeds: [leave] });
+                await targetChannel.send({ embeds: [leave] });
             })
             .catch((error) => {
                 console.error('ERROR:', error);
