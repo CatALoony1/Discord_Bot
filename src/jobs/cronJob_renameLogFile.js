@@ -13,7 +13,7 @@ function startJob(client) {
         if (fs.existsSync("./logs/bot._log")) {
             var d = new Date();
             var newFilename = `./logs/bot._log${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}`;
-            fs.rename('./logs/bot.log', newFilename, function (err) {
+            fs.rename('./logs/bot._log', newFilename, function (err) {
                 if (err) throw err;
             });
         }
