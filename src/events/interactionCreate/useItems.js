@@ -167,8 +167,8 @@ module.exports = async (interaction) => {
             await useItemKuss(interaction);
         } else if (interaction.customId.includes('bombe')) {
             await useItemBombe(interaction);
-        } else if (interaction.customId.includes('Magische KraftKlauBanane_select')) {
-            await useItemMagische KraftKlauBanane(interaction);
+        } else if (interaction.customId.includes('MagischeKraftKlauBanane_select')) {
+            await useItemMagischeKraftKlauBanane(interaction);
         } else if (interaction.customId.includes('schuldschein_select')) {
             await useItemSchuldschein(interaction);
         } else if (interaction.customId.includes('keks')) {
@@ -818,7 +818,7 @@ async function useItemBombe(interaction) {
     }
 }
 
-async function useItemMagische KraftKlauBanane(interaction) {
+async function useItemMagischeKraftKlauBanane(interaction) {
     const targetUserId = interaction.values[0];
     const targetMemberObject = await interaction.guild.members.fetch(targetUserId).catch(() => null);
     if (!targetMemberObject) {
