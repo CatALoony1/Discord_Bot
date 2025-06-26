@@ -77,7 +77,7 @@ module.exports = {
       .setStatus(status)
       .setDisplayName(targetUserObj.user.displayName)
       .setOverlay(60)
-      //.setBackground('./img/fisch.png')
+      .setBackground('./img/banner.png')
       .setBackground('#7DC9D1')
       .setFonts(canvacord.Font.loadDefault())
       .setStyles({

@@ -17,7 +17,7 @@ module.exports = async (guildMember) => {
             console.log('Fehler, Verlassenschannel gibts nicht');
             return;
         }
-        await getTenorGifById("19652884")
+        await getTenorGifById("15308096")
             .then(async (gifUrl) => {
                 if (!gifUrl.includes("http")) {
                     console.log("ERROR Leave gif");
@@ -26,8 +26,7 @@ module.exports = async (guildMember) => {
                 const leave = new EmbedBuilder()
                     .setColor(0x0033cc)
                     .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
-                    //.setDescription(`<@${guildMember.id}> hat nicht genug versagt!`) TODOJG
-                    .setDescription(`<@${guildMember.id}> hat den Versager Verein verlassen.\nWieder einer, der dem Versagen nicht gewachsen war.\nMach's gut - wir scheitern weiter... ohne dich.`)
+                    .setDescription(`Schade, dass <@${guildMember.id}> uns verlassen hat. 🥺 Wir wünschen <@${guildMember.id}> alles Gute für den weiteren Wege.`)
                     .setImage(gifUrl);
                 var messageL = await targetChannel.send({ embeds: [leave] });
                 await messageL.react(letterEmojiMap.get('Y'));

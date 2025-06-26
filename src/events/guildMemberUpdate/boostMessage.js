@@ -13,7 +13,7 @@ module.exports = async (oldMember, newMember) => {
                 console.log('Fehler, Verlassenschannel gibts nicht');
                 return;
             }
-            await getTenorGifById("15122766") //old 26899454 TODOJG
+            await getTenorGifById("8924450410500141730")
                 .then(async (gifUrl) => {
                     if (!gifUrl.includes("http")) {
                         console.log("ERROR Boost gif");

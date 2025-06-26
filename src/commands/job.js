@@ -3,7 +3,6 @@ const checkBumperRoleJob = require('../jobs/cronJob_checkBumperRole');
 const checkInactiveJob = require('../jobs/cronJob_checkInactive');
 const customStatusJob = require('../jobs/cronJob_customStatus');
 const geburtstagJob = require('../jobs/cronJob_geburtstag');
-const goodMorningJob = require('../jobs/cronJob_goodMorning');
 const monthlyXPJob = require('../jobs/cronJob_monthlyXP');
 const newYearJob = require('../jobs/cronJob_newYear');
 const quizQuestionJob = require('../jobs/cronJob_quizQuestion');
@@ -35,7 +34,6 @@ module.exports = {
                             { name: 'checkInactive', value: 'checkInactive' },
                             { name: 'customStatus', value: 'customStatus' },
                             { name: 'geburtstag', value: 'geburtstag' },
-                            { name: 'goodMorning', value: 'goodMorning' },
                             { name: 'monthlyXP', value: 'monthlyXP' },
                             { name: 'newYear', value: 'newYear' },
                             { name: 'quizQuestion', value: 'quizQuestion' },
@@ -62,7 +60,6 @@ module.exports = {
                             { name: 'checkInactive', value: 'checkInactive' },
                             { name: 'customStatus', value: 'customStatus' },
                             { name: 'geburtstag', value: 'geburtstag' },
-                            { name: 'goodMorning', value: 'goodMorning' },
                             { name: 'monthlyXP', value: 'monthlyXP' },
                             { name: 'newYear', value: 'newYear' },
                             { name: 'quizQuestion', value: 'quizQuestion' },
@@ -115,9 +112,6 @@ module.exports = {
                     break;
                 case 'geburtstag':
                     jobClass = geburtstagJob;
-                    break;
-                case 'goodMorning':
-                    jobClass = goodMorningJob;
                     break;
                 case 'monthlyXP':
                     jobClass = monthlyXPJob;
