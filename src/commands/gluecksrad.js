@@ -24,7 +24,7 @@ module.exports = {
         .setDescription('Spiele um zu gewinnen oder zu verlieren.')
         .addIntegerOption(option =>
             option.setName('einsatz')
-                .setDescription('Anzahl an GELD die du setzen möchtest.')
+                .setDescription('Anzahl an Monde die du setzen möchtest.')
                 .setRequired(true)
                 .setMaxValue(10000)
                 .setMinValue(1)
@@ -42,7 +42,7 @@ module.exports = {
             let einsatz = interaction.options.get('einsatz').value;
             const user = await GameUser.findOne({ userId: interaction.user.id, guildId: interaction.guild.id }).populate('bankkonto');
             if (!user || !user.bankkonto || user.bankkonto.currentMoney < einsatz) {
-                interaction.editReply(`Du hast nicht genug GELD, um ${einsatz} GELD zu setzen!`);
+                interaction.editReply(`Du hast nicht genug Monde, um ${einsatz} Monde zu setzen!`);
                 return;
             }
             const zufallsZahl = getRandomNotFloor(1, 100);
@@ -59,7 +59,7 @@ module.exports = {
             }
             const targetUserObj = interaction.member;
             await removeMoney(targetUserObj, einsatz);
-            await interaction.editReply(`Dein Einsatz in Höhe von ${einsatz} GELD wurde abgezogen!`);
+            await interaction.editReply(`Dein Einsatz in Höhe von ${einsatz} Monde wurde abgezogen!`);
             var delay = 1000;
             let sleep = async (ms) => await new Promise(r => setTimeout(r, ms));
             await sleep(delay);
@@ -74,18 +74,18 @@ module.exports = {
             if (zufallsZahl <= gewinnchance) {
                 if (result == einsatz) {
                     await giveMoney(targetUserObj, result);
-                    await interaction.editReply(`Du hast deinen Einsatz von ${einsatz} GELD zurückgewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} GELD`);
+                    await interaction.editReply(`Du hast deinen Einsatz von ${einsatz} Monde zurückgewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} Monde`);
                 } else if (result == gluecksrad.pool) {
                     await giveMoney(targetUserObj, result);
-                    await interaction.editReply(`Du hast den Jackpot geknackt und ${result} GELD gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} GELD`);
+                    await interaction.editReply(`Du hast den Jackpot geknackt und ${result} Monde gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} Monde`);
                 } else {
                     await giveMoney(targetUserObj, result);
-                    await interaction.editReply(`Du hast ${result} GELD gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} GELD`);
+                    await interaction.editReply(`Du hast ${result} Monde gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} Monde`);
                 }
                 result = result * -1;
             } else {
                 result = Math.floor(result / 2);
-                await interaction.editReply(`Du hast ${result} GELD verloren!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} GELD`);
+                await interaction.editReply(`Du hast ${result} Monde verloren!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} Monde`);
                 await removeMoney(targetUserObj, result);
             }
             gluecksrad.pool = gluecksrad.pool + result;
@@ -96,7 +96,7 @@ module.exports = {
             if (sonderverlosung == 250) {
                 if (gluecksrad.sonderpool != 0) {
                     await giveMoney(targetUserObj, gluecksrad.sonderpool);
-                    await interaction.channel.send(`Glückwunsch ${interaction.member}! Du hast bei der Sonderverlosung gewonnen und den Sonderpool von ${gluecksrad.sonderpool} GELD erhalten!`);
+                    await interaction.channel.send(`Glückwunsch ${interaction.member}! Du hast bei der Sonderverlosung gewonnen und den Sonderpool von ${gluecksrad.sonderpool} Monde erhalten!`);
                     gluecksrad.sonderpool = 0;
                 }
             }
