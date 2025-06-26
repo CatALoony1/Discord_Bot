@@ -1,19 +1,20 @@
 require('dotenv').config();
 const { GoogleGenAI } = require("@google/genai");
+const genAI = new GoogleGenAI({ apiKey: process.env.AI_API });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
 async function getAIResult(prompt, sysInstruction) {
     console.log('contacting AI');
     let response = null;
     try {
-        const genAI = new GoogleGenAI({ apiKey: process.env.AI_API });
-        console.log(`AI-Input:${String(prompt)}`);
-        response = await genAI.models.generateContent({
-            model: "gemini-2.0-flash",
-            //model: "gemini-2.5-flash-preview-05-20",
-            contents: String(prompt),
+        console.log(`AI-Input:${prompt}`);
+
+        response = await model.generateContent({
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
             config: {
                 systemInstruction: sysInstruction,
                 tools: [{ googleSearch: {} }],
-                maxOutputTokens: 400,
+                maxOutputTokens: 490,
             },
         });
         console.log(`AI-Result:${response.text}`);
