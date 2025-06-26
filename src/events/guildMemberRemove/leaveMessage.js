@@ -26,11 +26,9 @@ module.exports = async (guildMember) => {
                 const leave = new EmbedBuilder()
                     .setColor(0x0033cc)
                     .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
-                    .setDescription(`Schade, dass <@${guildMember.id}> uns verlassen hat. 🥺 Wir wünschen <@${guildMember.id}> alles Gute für den weiteren Wege.`)
+                    .setDescription(`Schade, dass <@${guildMember.id}> uns verlassen hat. 🥺 Wir wünschen <@${guildMember.id}> alles Gute für den weiteren Weg.`)
                     .setImage(gifUrl);
                 var messageL = await targetChannel.send({ embeds: [leave] });
-                await messageL.react(letterEmojiMap.get('Y'));
-                await messageL.react(letterEmojiMap.get('A'));
             })
             .catch((error) => {
                 console.error('ERROR:', error);

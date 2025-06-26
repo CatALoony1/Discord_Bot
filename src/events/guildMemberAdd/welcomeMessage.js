@@ -27,7 +27,7 @@ module.exports = async (guildMember) => {
                     .setColor(0x0033cc)
                     .setAuthor({ name: guildMember.user.username, iconURL: guildMember.user.displayAvatarURL({ size: 256 }) })
                     .setTitle(`Willkommen in LEAFing Reality! 👋`)
-                    .setDescription(`Ich bin Luna, euer feliner Begleiter auf diesem Server. Schön, dass du zu uns gefunden hast! Nimm dir einen Moment Zeit, um dich umzusehen und die Community kennenzulernen. Bei Fragen stehe ich dir und das gesamte LEAFing Reality Team gerne zur Seite! Viel Spaß!`)
+                    .setDescription(`Ich bin Luna, der feline Begleiter auf diesem Server. Schön, dass du zu uns gefunden hast! Nimm dir einen Moment Zeit, um dich umzusehen und die Community kennenzulernen. Bei Fragen stehe ich dir und das gesamte LEAFing Reality Team gerne zur Seite! Viel Spaß!`)
                     .setImage(gifUrl);
                 await targetChannel.send({ content: `${role} <@${guildMember.id}>`, embeds: [welcome] });
             })
