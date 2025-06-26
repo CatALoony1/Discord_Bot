@@ -79,6 +79,9 @@ async function giveXP(member, xpToGive, channel, message) {
                             let memberRole = member.guild.roles.cache.get(process.env.MITGLIED_ROLE_ID);
                             await member.guild.members.cache.get(member.user.id).roles.add(memberRole);
                             console.log(`Role Mitglied was given to user ${member.user.tag}`);
+                            let newMemberRole = member.guild.roles.cache.get(process.env.NEWMEMBER_ROLE_ID);
+                            await member.guild.members.cache.get(member.user.id).roles.remove(newMemberRole);
+                            console.log(`Role NewMember was removed from user ${member.user.tag}`);
                         }
                         money += 10000;
                     } else {
