@@ -72,9 +72,9 @@ function startJob(client) {
                             const userObj = await guild.members.cache.get(activeItem.user) || (await guild.members.fetch(activeItem.user));
                             const usedOnObj = await guild.members.cache.get(activeItem.usedOn) || (await guild.members.fetch(activeItem.usedOn));
                             if (userObj && usedOnObj) {
-                                await removeMoney(usedOnObj, 500);
-                                await giveMoney(userObj, 500);
-                                await targetChannel.send(`Von <@${activeItem.usedOn}> wurden 500 Magische Kraft Schulden an <@${activeItem.user}> übergeben.`);
+                                await removeMoney(usedOnObj, 1000);
+                                await giveMoney(userObj, 1000);
+                                await targetChannel.send(`Von <@${activeItem.usedOn}> wurden 1000 Magische Kraft Schulden an <@${activeItem.user}> übergeben.`);
                             }
                         }
                     }
