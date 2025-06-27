@@ -38,7 +38,7 @@ async function removeMoney(member, money) {
             await newUser.save();
         }
         const gluecksrad = await Gluecksrad.findOne({ guildId: member.guild.id });
-        gluecksrad.sonderpool += money / 10;
+        gluecksrad.sonderpool += Math.floor(money / 10);
         gluecksrad.save();
         return money;
     } catch (error) {
