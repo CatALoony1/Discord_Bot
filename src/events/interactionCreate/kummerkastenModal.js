@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports = async (interaction) => {
     if (!interaction.isModalSubmit()) return;
     if (interaction.customId === `feedback-${interaction.user.id}`) {
-        const targetChannel = interaction.guild.channels.cache.get(process.env.KUMMERKASTEN_ID) || (await interaction.guild.channels.fetch(process.env.KUMMERKASTEN_ID));
+        const targetChannel = interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) || (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));
         await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
         const feedbackText = interaction.fields.getTextInputValue('feedback-input');
         const feedback = new Discord.EmbedBuilder();

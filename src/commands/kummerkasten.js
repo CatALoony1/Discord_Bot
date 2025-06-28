@@ -8,11 +8,6 @@ module.exports = {
   run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
     try {
-      const targetChannel = interaction.guild.channels.cache.get(process.env.KUMMERKASTEN_ID) || (await interaction.guild.channels.fetch(process.env.KUMMERKASTEN_ID));
-      if (!targetChannel) {
-        console.log('Fehler, kummerkasten channel gibts nicht');
-        return;
-      }
       const modal = new ModalBuilder()
         .setTitle('Schreibe eine Nachricht.')
         .setCustomId(`feedback-${interaction.user.id}`);
