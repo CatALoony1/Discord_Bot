@@ -43,11 +43,11 @@ module.exports = {
             interaction.reply('Hier ist doch kein Server!');
             return;
         }
+        const subcommand = interaction.options.getSubcommand();
         if (interaction.channel.id != process.env.SPIELE_ID && subcommand == 'gamestats') {
-            await interaction.reply({ content: `Dieser Befehl ist nur im Channel <#${process.env.SPIELE_ID} erlaubt!`, flags: MessageFlags.Ephemeral })
+            await interaction.reply({ content: `Dieser Befehl ist nur im Channel <#${process.env.SPIELE_ID} erlaubt!`, flags: MessageFlags.Ephemeral });
             return;
         }
-        const subcommand = interaction.options.getSubcommand();
         if (subcommand == 'shop') {
             await interaction.deferReply({ flags: MessageFlags.Ephemeral });
             return await handleSpieleCommands.handleShop(interaction);
