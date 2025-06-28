@@ -15,10 +15,13 @@ async function getAIResult(prompt, sysInstruction) {
                 systemInstruction: sysInstruction,
                 tools: [{ googleSearch: {} }],
                 maxOutputTokens: 490,
+                candidateCount: 1,
+
             },
         });
         console.log(`AI-Result:${response.text}`);
         console.log(response.usageMetadata.totalTokenCount);
+        return response.candidates[0].content.parts[0].text;
     } catch (error) {
         console.log(error);
     }

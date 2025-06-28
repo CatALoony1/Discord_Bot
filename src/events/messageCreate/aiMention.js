@@ -27,8 +27,8 @@ Sei **stets freundlich, hilfsbereit und präzise** in deinen Antworten. Antworte
 
 Priorisiere stets die Einhaltung der Zeichenbegrenzung.
 `;
-        let response = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
-        await message.reply(`${response.text}\n||KI-Generierter Text!||`);
+        let aiText = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
+        await message.reply(`${aiText}\n||KI-Generierter Text!||`);
     } catch (error) {
         console.log(error);
     }
