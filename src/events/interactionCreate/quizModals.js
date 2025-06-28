@@ -24,8 +24,8 @@ module.exports = async (interaction) => {
         });
         await newQuestion.save();
         const targetUserObj = await interaction.guild.members.fetch(mentionedUserId);
-        var xpToGive = 2000;
-        await giveMoney(targetUserObj, xpToGive, true);
+        var moneyToGive = 2000;
+        await giveMoney(targetUserObj, moneyToGive, true);
         interaction.editReply('Frage eingetragen!');
     }
 };
