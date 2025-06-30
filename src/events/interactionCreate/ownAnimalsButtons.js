@@ -45,6 +45,8 @@ module.exports = async (interaction) => {
             console.log(error);
         }
     } else if (interaction.customId === 'ownAnimalsRename') {
+        console.log(targetMessage);
+        console.log(interaction);
         if (targetMessage.author.id !== interaction.user.id) {
             await interaction.reply({ content: `Du kannst nicht die Tiere anderer umbenennen!`, flags: MessageFlags.Ephemeral });
             return;
