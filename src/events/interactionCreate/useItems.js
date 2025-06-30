@@ -225,7 +225,7 @@ async function useItemTier(interaction) {
             return;
         }
         const selectMenu = new StringSelectMenuBuilder()
-            .setCustomId(`_${targetUser}`)
+            .setCustomId(`useItem_tier_other_select_${targetUser}`)
             .setPlaceholder('Wähle ein Tier aus')
             .addOptions(tierarten[0].tierarten.map(tierart => ({
                 label: tierart,
