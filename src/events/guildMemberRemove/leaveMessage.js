@@ -16,7 +16,7 @@ module.exports = async (guildMember) => {
             console.log('Fehler, Verlassenschannel gibts nicht');
             return;
         }
-        await getTenorGifById("15308096")
+        await getTenorGifById("21215328") //Luna 15308096
             .then(async (gifUrl) => {
                 if (!gifUrl.includes("http")) {
                     console.log("ERROR Leave gif");
