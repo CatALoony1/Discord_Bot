@@ -6,6 +6,7 @@ const gameUserSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+        index: true,
     },
     guildId: {
         type: String,
@@ -63,7 +64,5 @@ gameUserSchema.pre('deleteOne', { document: true, query: false }, async function
         next(error);
     }
 });
-
-gameUserSchema.index({ userId: 1 });
 
 module.exports = model('GameUser', gameUserSchema);
