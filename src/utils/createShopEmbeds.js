@@ -13,7 +13,7 @@ async function createLeaderboardEmbeds(page, interaction) {
     }
     const embed = new EmbedBuilder()
         .setTitle(`Shop - ${page + 1}/${allItems.length}`)
-        .setDescription(`Name: ${allItems[page].name}\nPreis: ${price.toLocaleString('de-DE')} Magische Kraft\nBeschreibung: ${allItems[page].beschreibung}`)
+        .setDescription(`Name: ${allItems[page].name}\nPreis: ${price.toLocaleString('de-DE')} Blattläuse\nBeschreibung: ${allItems[page].beschreibung}`)
         .setColor(0x0033cc);
     return embed;
 }

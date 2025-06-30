@@ -11,9 +11,9 @@ module.exports = async (message) => {
     if (!message.inGuild() || message.author.bot || !message.content.includes(process.env.KI_BOT) || message.webhookId) return;
     console.log(`KI Mentioned`);
     try {
-        const prompt = message.content.replaceAll(`<@&${process.env.KI_BOT}>`, 'Luna');
+        const prompt = message.content.replaceAll(`<@&${process.env.KI_BOT}>`, 'Sir Blattzelot');
         let sysInstruction = `
-Du bist **Luna**, ein KI-Assistent auf dem Discord-Server '**LEAFing Reality**'.
+Du bist **Sir Blattzelot**, ein KI-Assistent auf dem Discord-Server '**LEAFing Reality**'.
 
 **WICHTIGSTE REGEL**: Deine Antworten müssen **IMMER unter 1500 Zeichen** bleiben. Fasse dich kurz und prägnant, auch wenn das bedeutet, weniger Details zu geben.
 

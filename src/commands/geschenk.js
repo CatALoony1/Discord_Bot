@@ -7,15 +7,15 @@ require('../models/Bankkonten');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('geschenk')
-        .setDescription('Verschenke Magische Kraft an einen Nutzer (es wird von dir abgezogen).')
+        .setDescription('Verschenke Blattläuse an einen Nutzer (es wird von dir abgezogen).')
         .addUserOption(option =>
             option.setName('nutzer')
-                .setDescription('Nutzer dem du Magische Kraft schenken willst.')
+                .setDescription('Nutzer dem du Blattläuse schenken willst.')
                 .setRequired(true)
         )
         .addIntegerOption(option =>
             option.setName('geldmenge')
-                .setDescription('Die Menge an Magische Kraft die der Nutzer von dir erhalten soll.')
+                .setDescription('Die Menge an Blattläuse die der Nutzer von dir erhalten soll.')
                 .setRequired(true)
                 .setMinValue(1)
         )
@@ -41,13 +41,13 @@ module.exports = {
                 return;
             }
             if (interaction.user.id === targetUserId) {
-                interaction.editReply('Du kannst dir selbst keine Magische Kraft schenken!');
+                interaction.editReply('Du kannst dir selbst keine Blattläuse schenken!');
                 return;
             }
             let geldMenge = interaction.options.get('geldmenge').value;
             const user = await GameUser.findOne({ userId: interaction.user.id, guildId: interaction.guild.id }).populate('bankkonto');
             if (!user || !user.bankkonto || user.bankkonto.currentMoney < geldMenge) {
-                interaction.editReply(`Du hast nicht genug Magische Kraft, um ${geldMenge} Magische Kraft zu verschenken!`);
+                interaction.editReply(`Du hast nicht genug Blattläuse, um ${geldMenge} Blattläuse zu verschenken!`);
                 return;
             }
             const targetUserObj = await interaction.guild.members.fetch(targetUserId);
@@ -55,9 +55,9 @@ module.exports = {
             await removeMoney(interaction.member, geldMenge);
             await giveMoney(targetUserObj, geldMenge);
             if (reason !== "") {
-                await interaction.editReply(`${targetUserObj} du hast ${geldMenge} Magische Kraft von ${interaction.member} erhalten!\nAngehängte Nachricht:\n${reason}`);
+                await interaction.editReply(`${targetUserObj} du hast ${geldMenge} Blattläuse von ${interaction.member} erhalten!\nAngehängte Nachricht:\n${reason}`);
             } else {
-                await interaction.editReply(`${targetUserObj} du hast ${geldMenge} Magische Kraft von ${interaction.member} erhalten!`);
+                await interaction.editReply(`${targetUserObj} du hast ${geldMenge} Blattläuse von ${interaction.member} erhalten!`);
             }
         } catch (error) {
             console.log(error);

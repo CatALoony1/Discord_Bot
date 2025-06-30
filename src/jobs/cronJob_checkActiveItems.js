@@ -37,7 +37,7 @@ function startJob(client) {
                                             return;
                                         }
                                         await targetChannel.send({
-                                            content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** Magische Kraft sind verpufft!`,
+                                            content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** Blattläuse sind verpufft!`,
                                             files: [gifUrl]
                                         });
                                     })
@@ -74,7 +74,7 @@ function startJob(client) {
                             if (userObj && usedOnObj) {
                                 await removeMoney(usedOnObj, 1000);
                                 await giveMoney(userObj, 1000);
-                                await targetChannel.send(`Von <@${activeItem.usedOn}> wurden 1000 Magische Kraft Schulden an <@${activeItem.user}> übergeben.`);
+                                await targetChannel.send(`Von <@${activeItem.usedOn}> wurden 1000 Blattläuse Schulden an <@${activeItem.user}> übergeben.`);
                             }
                         }
                     }
