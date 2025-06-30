@@ -66,10 +66,11 @@ module.exports = async (interaction) => {
         } catch (error) {
             console.log(error);
         }
-    } else if (interaction.customId.startsWith('ownAnimalsRename-')) {
+    } else if (interaction.customId.includes('ownAnimalsRename-')) {
         try {
             const oldName = interaction.customId.split('-')[1];
             const newName = interaction.fields.getTextInputValue('rename-input');
+            console.log(`Umbenennen von ${oldName} in ${newName}`);
             const animal = await Tiere.findOne({ pfad: oldName });
             if (!animal) {
                 await interaction.reply({ content: `Das Tier existiert nicht.`, flags: MessageFlags.Ephemeral });
