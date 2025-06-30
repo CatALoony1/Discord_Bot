@@ -17,7 +17,7 @@ module.exports = async (guildMember) => {
             console.log('Fehler, Willkommenschannel gibts nicht');
             return;
         }
-        await getTenorGifById("6622282259374419079") //Luna 6622282259374419079
+        await getTenorGifById("16257158234093763124") //Luna 6622282259374419079
             .then(async (gifUrl) => {
                 if (!gifUrl.includes("http")) {
                     console.log("ERROR Welcome gif");
