@@ -294,12 +294,12 @@ async function useItemTier(interaction) {
         }
         user.inventar.save();
         await interaction.update({
-            content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${customName}** an <@${targetUserId}> verschenkt!`,
+            content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen Namen **${customName}** an <@${targetUserId}> verschenkt!`,
             files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`],
             components: [],
             flags: MessageFlags.Ephemeral
         });
-        await interaction.channel.send({ content: `<@${targetUserId}> du hast ein Tier der Art **${tierart}** mit dem tollen namen **${customName}** von <@${interaction.user.id}> erhalten!`, files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`] });
+        await interaction.channel.send({ content: `<@${targetUserId}> du hast ein Tier der Art **${tierart}** mit dem tollen Namen **${customName}** von <@${interaction.user.id}> erhalten!`, files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`] });
         customName = customName || randomTierOhneBesitzer[0].customName;
         await Tiere.findByIdAndUpdate(
             randomTierOhneBesitzer[0]._id,
