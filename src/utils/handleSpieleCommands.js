@@ -422,25 +422,35 @@ function getRandom(min, max) {
 async function handleKeksEssen(interaction) {
     const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
     const itemId = user.inventar.items.findIndex(item => item.item.name === 'Keks');
-    if (user.inventar.items[itemId].quantity > 1) {
-        user.inventar.items[itemId].quantity -= 1;
-    } else if (user.inventar.items[itemId].quantity === 1) {
-        user.inventar.items.splice(itemId, 1);
-    } else {
-        await interaction.editReply({
-            content: 'Du hast keinen Keks in deinem Inventar!'
-        });
-        return;
+    const quantity = user.inventar.items[itemId].quantity;
+    const options = [
+        { label: '1', value: '1' },
+        { label: 'alle', value: `${quantity}` }
+    ];
+    if (quantity > 10) {
+        options.push({ label: '10', value: '10' });
+        if (quantity > 100) {
+            options.push({ label: '100', value: '100' });
+            if (quantity > 1000) {
+                options.push({ label: '1000', value: '1000' });
+                if (quantity > 10000) {
+                    options.push({ label: '10000', value: '10000' });
+                }
+            }
+        }
     }
-    user.weight += 60;
-    const keksmessage = `<@${interaction.user.id}>` + keksTexts[getRandom(0, keksTexts.length - 1)] + `\nDas Gewicht beträgt jetzt ${user.weight / 1000}kg!`;
-    await user.inventar.save();
-    await user.save();
+    const selectMenu = new StringSelectMenuBuilder()
+        .setCustomId(`useItem_keks_essen`)
+        .setPlaceholder('Wie viele Kekse möchtest du essen?')
+        .addOptions(options)
+        .setMinValues(1)
+        .setMaxValues(1);
+    const row = new ActionRowBuilder().addComponents(selectMenu);
     await interaction.editReply({
-        content: `Du hast erfolgreich einen Keks verdrückt.`
+        content: 'Wähle aus, wie viele Kekse du essen möchtest:',
+        components: [row],
+        flags: MessageFlags.Ephemeral
     });
-    const channel = interaction.channel;
-    await channel.send(keksmessage);
 }
 
 
