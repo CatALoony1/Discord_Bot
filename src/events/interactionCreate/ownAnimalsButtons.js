@@ -73,6 +73,7 @@ module.exports = async (interaction) => {
             const animal = await Tiere.findOne({ pfad: oldName });
             if (!animal) {
                 await interaction.reply({ content: `Das Tier existiert nicht.`, flags: MessageFlags.Ephemeral });
+                return;
             }
             animal.customName = newName;
             await animal.save();
