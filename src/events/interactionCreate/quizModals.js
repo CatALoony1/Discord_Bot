@@ -28,4 +28,5 @@ module.exports = async (interaction) => {
         await giveMoney(targetUserObj, moneyToGive, true);
         interaction.editReply('Frage eingetragen!');
     }
+    return;
 };

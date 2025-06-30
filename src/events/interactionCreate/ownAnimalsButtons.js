@@ -3,7 +3,7 @@ const createAnimalsEmbeds = require("../../utils/createAnimalsEmbeds");
 const Tiere = require('../../models/Tiere');
 
 module.exports = async (interaction) => {
-    if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('ownAnimals')) return;
+    if ((!interaction.isButton() && !interaction.isModalSubmit()) || !interaction.customId || !interaction.customId.includes('ownAnimals')) return;
     let targetMessage = await interaction.channel.messages.fetch(interaction.message.id);
     let targetMessageEmbed = targetMessage.embeds[0];
     let [, pageSlash] = targetMessageEmbed.title.split(" - ");
