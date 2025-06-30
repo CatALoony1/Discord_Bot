@@ -17,7 +17,7 @@ async function createLeaderboardEmbeds(page, guildId, userId) {
     const file = new AttachmentBuilder(path.join(__dirname, `../../animals/${tiere[page].pfad}.webp`));
     const embed = new EmbedBuilder()
         .setTitle(`Deine Tiere - ${page + 1}/${tiere.length}`)
-        .setDescription(`Name: ${tiere[page].pfad}\nTierart: ${tiere[page].tierart}`)
+        .setDescription(`Name: ${tiere[page].customName}\nTierart: ${tiere[page].tierart}`)
         .setImage(`attachment://${tiere[page].pfad}.webp`)
         .setColor(0x0033cc)
         .setFooter({ text: `${userId}` });

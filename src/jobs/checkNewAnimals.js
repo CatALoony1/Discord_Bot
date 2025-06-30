@@ -27,6 +27,7 @@ async function jobFunction(client) {
                 const newTier = {
                     pfad: filenameWithoutExtension,
                     tierart: tierart,
+                    customName: filenameWithoutExtension,
                 };
                 newTiereToAdd.push(newTier);
             }

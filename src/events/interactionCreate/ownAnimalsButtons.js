@@ -1,5 +1,6 @@
-const { MessageFlags } = require('discord.js');
+const { MessageFlags, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
 const createAnimalsEmbeds = require("../../utils/createAnimalsEmbeds");
+const Tiere = require('../../models/Tiere');
 
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('ownAnimals')) return;
@@ -40,6 +41,42 @@ module.exports = async (interaction) => {
                 await interaction.reply({ content: `Du bist bereits auf der letzten Seite.`, flags: MessageFlags.Ephemeral });
                 return;
             }
+        } catch (error) {
+            console.log(error);
+        }
+    } else if (interaction.customId === 'ownAnimalsRename') {
+        if (targetMessage.author.id !== interaction.user.id) {
+            await interaction.reply({ content: `Du kannst nicht die Tiere anderer umbenennen!`, flags: MessageFlags.Ephemeral });
+            return;
+        }
+        try {
+            const name = targetMessageEmbed.description.split("\n")[0].replace("Name: ", "");
+            const modal = new ModalBuilder()
+                .setTitle(`Umbenennen von ${name}`)
+                .setCustomId(`ownAnimalsRename-${name}`);
+            const textInput = new TextInputBuilder()
+                .setCustomId('rename-input')
+                .setLabel('Wie soll das Tier heißen?')
+                .setStyle(TextInputStyle.Short)
+                .setRequired(true)
+                .setMaxLength(30);
+            const actionRow = new ActionRowBuilder().addComponents(textInput);
+            modal.addComponents(actionRow);
+            await interaction.showModal(modal);
+        } catch (error) {
+            console.log(error);
+        }
+    } else if (interaction.customId.startsWith('ownAnimalsRename-')) {
+        try {
+            const oldName = interaction.customId.split('-')[1];
+            const newName = interaction.fields.getTextInputValue('rename-input');
+            const animal = await Tiere.findOne({ pfad: oldName });
+            if (!animal) {
+                await interaction.reply({ content: `Das Tier existiert nicht.`, flags: MessageFlags.Ephemeral });
+            }
+            animal.customName = newName;
+            await animal.save();
+            await interaction.reply({ content: `${oldName} wurde erfolgreich in ${newName} umbenannt!`, flags: MessageFlags.Ephemeral });
         } catch (error) {
             console.log(error);
         }

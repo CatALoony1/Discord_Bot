@@ -362,7 +362,7 @@ async function handleGamestats(interaction) {
         return `ID:${index} -> ${item.item.name} (x${item.quantity})`;
     }).join('\n');
     const tierpfade = user.tiere.map((tier) => {
-        return `${tier.pfad}`;
+        return `${tier.customName}`;
     }).join('\n');
     const messageEdited = new EmbedBuilder();
     messageEdited.setColor(0x0033cc);
@@ -398,7 +398,13 @@ async function handleOwnAnimals(interaction) {
         .setStyle(ButtonStyle.Primary)
         .setCustomId(`ownAnimalsUp`);
 
-    const firstRow = new ActionRowBuilder().addComponents(pageDownButton, pageUpButton);
+    const renameButton = new ButtonBuilder()
+        .setEmoji('✏️')
+        .setLabel('Umbenennen')
+        .setStyle(ButtonStyle.Secondary)
+        .setCustomId(`ownAnimalsRename`);
+
+    const firstRow = new ActionRowBuilder().addComponents(pageDownButton, pageUpButton, renameButton);
 
     await interaction.editReply({
         embeds: [replyData.embed],

@@ -8,6 +8,10 @@ const tiereSchema = new Schema({
         type: String,
         required: true,
     },
+    customName: {
+        type: String,
+        required: false,
+    },
     besitzer: {
         type: Schema.Types.ObjectId,
         ref: 'GameUser',

@@ -1,4 +1,4 @@
-const { MessageFlags, StringSelectMenuBuilder, UserSelectMenuBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
+const { MessageFlags, StringSelectMenuBuilder, UserSelectMenuBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 const GameUser = require('../../models/GameUser');
 require('../../models/Bankkonten');
 require('../../models/Inventar');
@@ -204,7 +204,7 @@ async function useItemTier(interaction) {
             return;
         }
         await interaction.update({
-            content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].pfad}** erhalten!`,
+            content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].customName}** erhalten!`,
             files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`],
             components: [],
             flags: MessageFlags.Ephemeral
@@ -214,7 +214,7 @@ async function useItemTier(interaction) {
             { besitzer: user._id }
         );
         await user.inventar.save();
-    } else if (interaction.customId.includes('other_select')) {
+    } else if (interaction.customId.includes('other_uselect')) {
         const targetUser = interaction.values[0];
         const tierarten = await getTierarten();
         if (tierarten.length === 0 || tierarten[0].tierarten.length === 0) {
@@ -225,7 +225,7 @@ async function useItemTier(interaction) {
             return;
         }
         const selectMenu = new StringSelectMenuBuilder()
-            .setCustomId(`useItem_tier_other_uselect_${targetUser}`)
+            .setCustomId(`_${targetUser}`)
             .setPlaceholder('Wähle ein Tier aus')
             .addOptions(tierarten[0].tierarten.map(tierart => ({
                 label: tierart,
@@ -237,9 +237,45 @@ async function useItemTier(interaction) {
             components: [row],
             flags: MessageFlags.Ephemeral
         });
-    } else if (interaction.customId.includes('other_uselect')) {
+    } else if (interaction.customId.includes('other_select')) {
         const tierart = interaction.values[0];
         const targetUserId = interaction.customId.split('_')[4];
+        const yesButton = new ButtonBuilder()
+            .setLabel('Ja')
+            .setStyle(ButtonStyle.Primary)
+            .setCustomId(`useItem_tier_other_yesname_${tierart}_${targetUserId}`);
+        const noButton = new ButtonBuilder()
+            .setLabel('Nein')
+            .setStyle(ButtonStyle.Danger)
+            .setCustomId(`useItem_tier_other_noname_${tierart}_${targetUserId}`);
+        const row = new ActionRowBuilder().addComponents(yesButton, noButton);
+        await interaction.update({
+            content: 'Möchtest du dem Tier einen Namen geben?',
+            components: [row],
+            flags: MessageFlags.Ephemeral
+        });
+    } else if (interaction.customId.includes('other_yesname')) {
+        const tierart = interaction.customId.split('_')[4];
+        const targetUserId = interaction.customId.split('_')[5];
+        const modal = new ModalBuilder()
+            .setTitle(`Umbenennen von ${tierart}`)
+            .setCustomId(`useItem_tier_other_modal_${tierart}_${targetUserId}`);
+        const textInput = new TextInputBuilder()
+            .setCustomId('rename-input')
+            .setLabel('Wie soll das Tier heißen?')
+            .setStyle(TextInputStyle.Short)
+            .setRequired(true)
+            .setMaxLength(30);
+        const actionRow = new ActionRowBuilder().addComponents(textInput);
+        modal.addComponents(actionRow);
+        await interaction.showModal(modal);
+    } else if (interaction.customId.includes('other_modal') || interaction.customId.includes('other_noname')) {
+        const tierart = interaction.customId.split('_')[4];
+        const targetUserId = interaction.customId.split('_')[5];
+        let customName = undefined;
+        if (interaction.customId.includes('other_modal')) {
+            customName = interaction.fields.getTextInputValue('rename-input');
+        }
         const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
         const targetUser = await GameUser.findOne({ userId: targetUserId });
         const randomTierOhneBesitzer = await getRandomTier(tierart);
@@ -258,15 +294,16 @@ async function useItemTier(interaction) {
         }
         user.inventar.save();
         await interaction.update({
-            content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].pfad}** an <@${targetUserId}> verschenkt!`,
+            content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].customName}** an <@${targetUserId}> verschenkt!`,
             files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`],
             components: [],
             flags: MessageFlags.Ephemeral
         });
-        await interaction.channel.send({ content: `<@${targetUserId}> du hast ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].pfad}** von <@${interaction.user.id}> erhalten!`, files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`] });
+        await interaction.channel.send({ content: `<@${targetUserId}> du hast ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].customName}** von <@${interaction.user.id}> erhalten!`, files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`] });
+        customName = customName || randomTierOhneBesitzer[0].customName;
         await Tiere.findByIdAndUpdate(
             randomTierOhneBesitzer[0]._id,
-            { besitzer: targetUser._id }
+            { besitzer: targetUser._id, customName: customName }
         );
     } else if (interaction.customId.includes('self')) {
         const tierarten = await getTierarten();
@@ -292,7 +329,7 @@ async function useItemTier(interaction) {
         });
     } else if (interaction.customId.includes('other')) {
         const selectMenu = new UserSelectMenuBuilder()
-            .setCustomId('useItem_tier_other_select')
+            .setCustomId('useItem_tier_other_uselect')
             .setPlaceholder('Wähle einen Nutzer aus, dem du ein Tier schenken möchtest.')
             .setMinValues(1)
             .setMaxValues(1);
