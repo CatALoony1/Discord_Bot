@@ -61,7 +61,8 @@ module.exports = async (message) => {
                     .setThumbnail('attachment://hangman8.png');
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 await hangman.save();
-                await message.react('💀');
+await message.delete();
+                //await message.react('💀');
             } else {
                 const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
                 const leerzeichen = maskiereWort(hangman.word, hangman.buchstaben);
@@ -73,7 +74,8 @@ module.exports = async (message) => {
                     .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 await hangman.save();
-                await message.react('❌');
+await message.delete();
+                //await message.react('❌');
             }
         } else if (hangman.word === guessedLetter) {
             hangman.buchstaben = hangman.buchstaben.filter(letter => letter !== guessedLetter);
@@ -88,7 +90,8 @@ module.exports = async (message) => {
             await referencedMessage.edit({ embeds: [embed], files: [file] });
             giveMoney(message.member, 500);
             await hangman.save();
-            await message.react('🏆');
+await message.delete();
+            //await message.react('🏆');
         } else {
             const allLettersFound = hangman.word.replaceAll(' ', '').split('').every(letter => hangman.buchstaben.includes(letter));
             if (allLettersFound) {
@@ -103,7 +106,8 @@ module.exports = async (message) => {
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 giveMoney(message.member, 500);
                 await hangman.save();
-                await message.react('🏆');
+await message.delete();
+                //await message.react('🏆');
                 return;
             }
             const leerzeichen = maskiereWort(hangman.word, hangman.buchstaben);
@@ -116,7 +120,8 @@ module.exports = async (message) => {
                 .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
             await referencedMessage.edit({ embeds: [embed], files: [file] });
             await hangman.save();
-            await message.react('✅');
+await message.delete();
+          //await message.react('✅');
         }
     } catch (error) {
         console.log(error);
