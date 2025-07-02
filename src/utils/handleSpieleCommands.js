@@ -321,8 +321,9 @@ async function handleKeksEssen(interaction) {
     const quantity = user.inventar.items[itemId].quantity;
     const options = [
         { label: '1', value: '1' },
-        { label: 'alle', value: `${quantity}` }
     ];
+if (quantity > 1) {
+        options.push({ label: 'alle', value: `${quantity}` });
     if (quantity > 10) {
         options.push({ label: '10', value: '10' });
         if (quantity > 100) {
@@ -335,6 +336,7 @@ async function handleKeksEssen(interaction) {
             }
         }
     }
+}
     const selectMenu = new StringSelectMenuBuilder()
         .setCustomId(`useItem_keks_essen`)
         .setPlaceholder('Wie viele Kekse möchtest du essen?')
