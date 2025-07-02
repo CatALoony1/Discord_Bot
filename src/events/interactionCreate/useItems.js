@@ -994,9 +994,10 @@ async function useItemKeks(interaction) {
         const itemId = user.inventar.items.findIndex(item => item.item.name === 'Keks');
         const quantity = user.inventar.items[itemId].quantity;
         const options = [
-            { label: '1', value: '1' },
-            { label: 'alle', value: `${quantity}` }
+            { label: '1', value: '1' }
         ];
+if (quantity > 1) {
+            options.push({ label: 'alle', value: `${quantity}` });
         if (quantity > 10) {
             options.push({ label: '10', value: '10' });
             if (quantity > 100) {
@@ -1009,6 +1010,7 @@ async function useItemKeks(interaction) {
                 }
             }
         }
+}
         const selectMenu = new StringSelectMenuBuilder()
             .setCustomId(`useItem_keks_amount_select_${targetUserId}`)
             .setPlaceholder('Wie viele Kekse möchtest du verschenken?')
