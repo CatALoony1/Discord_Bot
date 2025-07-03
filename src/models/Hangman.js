@@ -31,6 +31,10 @@ const hangmanSchema = new Schema({
     type: Number,
     default: 0,
   },
+  participants: {
+    type: [String],
+    default: [],
+  },
 });
 
 module.exports = model('Hangman', hangmanSchema);
