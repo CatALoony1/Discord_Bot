@@ -104,18 +104,18 @@ module.exports = async (message) => {
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 giveMoney(message.member, 500);
                 await hangman.save();
-                return;
+            } else {
+                const leerzeichen = maskiereWort(hangman.word, hangman.buchstaben);
+                const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
+                const embed = new EmbedBuilder()
+                    .setColor(0x0033cc)
+                    .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
+                    .setTitle('Galgenmännchen')
+                    .setDescription(`${leerzeichen}\n\n${hangman.word.replaceAll(' ', '').length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
+                    .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
+                await referencedMessage.edit({ embeds: [embed], files: [file] });
+                await hangman.save();
             }
-            const leerzeichen = maskiereWort(hangman.word, hangman.buchstaben);
-            const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
-            const embed = new EmbedBuilder()
-                .setColor(0x0033cc)
-                .setAuthor({ name: targetUserObj.user.username, iconURL: targetUserObj.user.displayAvatarURL({ size: 256 }) })
-                .setTitle('Galgenmännchen')
-                .setDescription(`${leerzeichen}\n\n${hangman.word.replaceAll(' ', '').length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
-                .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
-            await referencedMessage.edit({ embeds: [embed], files: [file] });
-            await hangman.save();
         }
         await message.delete();
     } catch (error) {
