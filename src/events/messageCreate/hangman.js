@@ -49,7 +49,7 @@ module.exports = async (message) => {
         }
         hangman.buchstaben.push(guessedLetter);
 
-        if (!participants.includes(message.author.displayName)) {
+        if (!hangman.participants.includes(message.author.displayName)) {
             hangman.participants.push(message.author.displayName);
         }
         if (!hangman.word.includes(guessedLetter)) {
