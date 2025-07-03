@@ -8,7 +8,9 @@ const { EmbedBuilder, Message, AuditLogEvent, Client } = require('discord.js');
  */
 module.exports = async (message, client) => {
   console.log(`message deleted in ${message.channel}`);
-  if (message.author != null && (message.author.bot || message.webhookId) && (message.channel.id === process.env.SPIELE_ID && message.content.length == 1)) return;
+  if (message.author != null && (message.author.bot || message.webhookId) && (message.channel.id === process.env.SPIELE_ID && message.reference && message.content.length == 1)) return;
+  console.log(message.content);
+  console.log(message.content.length);
   try {
     const targetChannel = message.guild.channels.cache.get(process.env.LOG_ID) || (await message.guild.channels.fetch(process.env.LOG_ID));
     if (!targetChannel) {
