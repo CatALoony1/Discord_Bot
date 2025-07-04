@@ -173,6 +173,177 @@ module.exports = async (interaction) => {
             await useItemSchuldschein(interaction);
         } else if (interaction.customId.includes('keks')) {
             await useItemKeks(interaction);
+        } else if (interaction.customId.includes('useItem_selectMenu')) {
+            const itemName = interaction.values[0];
+            let firstRow;
+            let content = 'Modal';
+            let modal;
+            switch (itemName) {
+                case 'Tier': {
+                    const youButton = new ButtonBuilder()
+                        .setLabel('Selbst')
+                        .setStyle(ButtonStyle.Primary)
+                        .setCustomId(`useItem_tier_self`);
+                    const otherButton = new ButtonBuilder()
+                        .setLabel('Verschenken')
+                        .setStyle(ButtonStyle.Primary)
+                        .setCustomId(`useItem_tier_other`);
+                    firstRow = new ActionRowBuilder().addComponents(youButton, otherButton);
+                    content = `Möchtest du das Tier für dich selbst oder es jemandem schenken?`;
+                    break;
+                }
+                case 'Bombe': {
+                    const selectMenu = new UserSelectMenuBuilder()
+                        .setCustomId('useItem_bombe_uselect')
+                        .setPlaceholder('Wähle einen Nutzer aus, der die Bombe erhalten soll.')
+                        .setMinValues(1)
+                        .setMaxValues(1);
+                    firstRow = new ActionRowBuilder().addComponents(selectMenu);
+                    content = `Wähle einen Nutzer aus, der die Bombe erhalten soll.`;
+                    break;
+                }
+                case 'Farbrolle': {
+                    modal = new ModalBuilder()
+                        .setTitle('Farbrolle erstellen')
+                        .setCustomId(`useItem_farbrolle`);
+                    const colorInput = new TextInputBuilder()
+                        .setCustomId('useItem_farbrolle_color')
+                        .setLabel('Farbe (Hex-Code):')
+                        .setStyle(TextInputStyle.Short)
+                        .setRequired(true)
+                        .setMaxLength(7);
+                    const rollenName = new TextInputBuilder()
+                        .setCustomId('useItem_farbrolle_name')
+                        .setLabel('Name der Rolle:')
+                        .setStyle(TextInputStyle.Short)
+                        .setRequired(true)
+                        .setMaxLength(15);
+                    const firstActionRow = new ActionRowBuilder().addComponents(colorInput);
+                    const secondActionRow = new ActionRowBuilder().addComponents(rollenName);
+                    modal.addComponents(firstActionRow, secondActionRow);
+                    break;
+                }
+                case 'Voicechannel': {
+                    modal = new ModalBuilder()
+                        .setTitle('Voicechannel erstellen')
+                        .setCustomId(`useItem_voicechannel`);
+                    const channelNameInput = new TextInputBuilder()
+                        .setCustomId('useItem_voicechannel_name')
+                        .setLabel('Name des Voicechannels:')
+                        .setStyle(TextInputStyle.Short)
+                        .setRequired(true)
+                        .setMaxLength(100);
+                    const firstActionRow = new ActionRowBuilder().addComponents(channelNameInput);
+                    modal.addComponents(firstActionRow);
+                    break;
+                }
+                case 'Rolle (Namensliste)': {
+                    modal = new ModalBuilder()
+                        .setTitle('Rolle erstellen')
+                        .setCustomId(`useItem_rolleNamensliste`);
+                    const rollenNameInput = new TextInputBuilder()
+                        .setCustomId('useItem_rolleNamensliste_name')
+                        .setLabel('Name der Rolle:')
+                        .setStyle(TextInputStyle.Short)
+                        .setRequired(true)
+                        .setMaxLength(100);
+                    const firstActionRow = new ActionRowBuilder().addComponents(rollenNameInput);
+                    modal.addComponents(firstActionRow);
+                    break;
+                }
+                case 'Umarmung': {
+                    const selectMenu = new UserSelectMenuBuilder()
+                        .setCustomId('useItem_umarmung_select')
+                        .setPlaceholder('Wähle einen Nutzer aus, den du umarmen möchtest.')
+                        .setMinValues(1)
+                        .setMaxValues(1);
+                    firstRow = new ActionRowBuilder().addComponents(selectMenu);
+                    content = `Wähle einen Nutzer aus, den du umarmen möchtest.`;
+                    break;
+                }
+                case 'Küsse': {
+                    const selectMenu = new UserSelectMenuBuilder()
+                        .setCustomId('useItem_kuss_select')
+                        .setPlaceholder('Wähle einen Nutzer aus, den du küssen möchtest.')
+                        .setMinValues(1)
+                        .setMaxValues(1);
+                    firstRow = new ActionRowBuilder().addComponents(selectMenu);
+                    content = `Wähle einen Nutzer aus, den du küssen möchtest.`;
+                    break;
+                }
+                case 'Doppelte XP': {
+                    const activateButton = new ButtonBuilder()
+                        .setLabel('Aktivieren')
+                        .setStyle(ButtonStyle.Success)
+                        .setCustomId(`useItem_doppelteXp_activate`);
+                    firstRow = new ActionRowBuilder().addComponents(activateButton);
+                    content = `Möchtest du die doppelten XP aktivieren?`;
+                    break;
+                }
+                case 'Oberster Platz': {
+                    const activateButton = new ButtonBuilder()
+                        .setLabel('Aktivieren')
+                        .setStyle(ButtonStyle.Success)
+                        .setCustomId(`useItem_obersterPlatz_activate`);
+                    firstRow = new ActionRowBuilder().addComponents(activateButton);
+                    content = `Möchtest du den obersten Platz aktivieren?`;
+                    break;
+                }
+                case 'Blattläuse-Klau-Banane': {
+                    const selectMenu = new UserSelectMenuBuilder()
+                        .setCustomId('useItem_BlattläuseKlauBanane_select')
+                        .setPlaceholder('Wähle einen Nutzer aus, dessen Blattläuse du klauen möchtest.')
+                        .setMinValues(1)
+                        .setMaxValues(1);
+                    firstRow = new ActionRowBuilder().addComponents(selectMenu);
+                    content = `Wähle einen Nutzer aus, dessen Blattläuse du klauen möchtest.`;
+                    break;
+                }
+                case 'Schuldschein': {
+                    const selectMenu = new UserSelectMenuBuilder()
+                        .setCustomId('useItem_schuldschein_select')
+                        .setPlaceholder('Wähle einen Nutzer aus, dem du den Schuldschein geben möchtest.')
+                        .setMinValues(1)
+                        .setMaxValues(1);
+                    firstRow = new ActionRowBuilder().addComponents(selectMenu);
+                    content = `Wähle einen Nutzer aus, dem du den Schuldschein geben möchtest.`;
+                    break;
+                }
+                case 'Bankkonto Upgrade': {
+                    const activateButton = new ButtonBuilder()
+                        .setLabel('Aktivieren')
+                        .setStyle(ButtonStyle.Success)
+                        .setCustomId(`useItem_bankkontoUpgrade_activate`);
+                    firstRow = new ActionRowBuilder().addComponents(activateButton);
+                    content = `Möchtest du das Bankkonto-Upgrade aktivieren?`;
+                    break;
+                }
+                case 'Keks': {
+                    const selectMenu = new StringSelectMenuBuilder()
+                        .setCustomId(`useItem_keks_select}`)
+                        .setPlaceholder('Was möchtest du tun?')
+                        .addOptions([
+                            { label: 'Essen', value: 'essen' },
+                            { label: 'Verschenken', value: 'schenken' }
+                        ]);
+                    firstRow = new ActionRowBuilder().addComponents(selectMenu);
+                    content = `Möchtest du den Keks essen oder verschenken?`;
+                    break;
+                }
+                default:
+                    await interaction.update({ content: `Das Item ${itemName} kann nicht benutzt werden.`, flags: MessageFlags.Ephemeral });
+                    return;
+            }
+            if (content === 'Modal') {
+                await interaction.showModal(modal);
+            } else {
+                await interaction.update({
+                    content: content,
+                    components: [firstRow],
+                    flags: MessageFlags.Ephemeral
+                });
+            }
+
         }
     } catch (error) {
         console.log(error);
