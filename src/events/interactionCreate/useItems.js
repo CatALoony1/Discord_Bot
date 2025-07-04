@@ -948,17 +948,19 @@ async function useItemKeks(interaction) {
             const itemId = user.inventar.items.findIndex(item => item.item.name === 'Keks');
             const quantity = user.inventar.items[itemId].quantity;
             const options = [
-                { label: '1', value: '1' },
-                { label: 'alle', value: `${quantity}` }
+                { label: '1', value: '1' }
             ];
-            if (quantity > 10) {
-                options.push({ label: '10', value: '10' });
-                if (quantity > 100) {
-                    options.push({ label: '100', value: '100' });
-                    if (quantity > 1000) {
-                        options.push({ label: '1000', value: '1000' });
-                        if (quantity > 10000) {
-                            options.push({ label: '10000', value: '10000' });
+            if (quantity > 1) {
+                options.push({ label: 'alle', value: `${quantity}` });
+                if (quantity > 10) {
+                    options.push({ label: '10', value: '10' });
+                    if (quantity > 100) {
+                        options.push({ label: '100', value: '100' });
+                        if (quantity > 1000) {
+                            options.push({ label: '1000', value: '1000' });
+                            if (quantity > 10000) {
+                                options.push({ label: '10000', value: '10000' });
+                            }
                         }
                     }
                 }
@@ -996,21 +998,21 @@ async function useItemKeks(interaction) {
         const options = [
             { label: '1', value: '1' }
         ];
-if (quantity > 1) {
+        if (quantity > 1) {
             options.push({ label: 'alle', value: `${quantity}` });
-        if (quantity > 10) {
-            options.push({ label: '10', value: '10' });
-            if (quantity > 100) {
-                options.push({ label: '100', value: '100' });
-                if (quantity > 1000) {
-                    options.push({ label: '1000', value: '1000' });
-                    if (quantity > 10000) {
-                        options.push({ label: '10000', value: '10000' });
+            if (quantity > 10) {
+                options.push({ label: '10', value: '10' });
+                if (quantity > 100) {
+                    options.push({ label: '100', value: '100' });
+                    if (quantity > 1000) {
+                        options.push({ label: '1000', value: '1000' });
+                        if (quantity > 10000) {
+                            options.push({ label: '10000', value: '10000' });
+                        }
                     }
                 }
             }
         }
-}
         const selectMenu = new StringSelectMenuBuilder()
             .setCustomId(`useItem_keks_amount_select_${targetUserId}`)
             .setPlaceholder('Wie viele Kekse möchtest du verschenken?')

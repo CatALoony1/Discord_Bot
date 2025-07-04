@@ -322,21 +322,21 @@ async function handleKeksEssen(interaction) {
     const options = [
         { label: '1', value: '1' },
     ];
-if (quantity > 1) {
+    if (quantity > 1) {
         options.push({ label: 'alle', value: `${quantity}` });
-    if (quantity > 10) {
-        options.push({ label: '10', value: '10' });
-        if (quantity > 100) {
-            options.push({ label: '100', value: '100' });
-            if (quantity > 1000) {
-                options.push({ label: '1000', value: '1000' });
-                if (quantity > 10000) {
-                    options.push({ label: '10000', value: '10000' });
+        if (quantity > 10) {
+            options.push({ label: '10', value: '10' });
+            if (quantity > 100) {
+                options.push({ label: '100', value: '100' });
+                if (quantity > 1000) {
+                    options.push({ label: '1000', value: '1000' });
+                    if (quantity > 10000) {
+                        options.push({ label: '10000', value: '10000' });
+                    }
                 }
             }
         }
     }
-}
     const selectMenu = new StringSelectMenuBuilder()
         .setCustomId(`useItem_keks_essen`)
         .setPlaceholder('Wie viele Kekse möchtest du essen?')
