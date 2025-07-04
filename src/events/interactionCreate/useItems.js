@@ -174,7 +174,12 @@ module.exports = async (interaction) => {
         } else if (interaction.customId.includes('keks')) {
             await useItemKeks(interaction);
         } else if (interaction.customId.includes('useItem_selectMenu')) {
-            const itemName = interaction.values[0];
+            let itemName;
+            if (interaction.isStringSelectMenu()) {
+                itemName = interaction.values[0];
+            } else {
+                itemName = interaction.customId.split('useItem_selectMenu_')[1];
+            }
             let firstRow;
             let content = 'Modal';
             let modal;

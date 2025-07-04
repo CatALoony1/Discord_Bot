@@ -1,4 +1,4 @@
-const { MessageFlags } = require('discord.js');
+const { MessageFlags, ButtonBuilder } = require('discord.js');
 const createShopEmbeds = require("../../utils/createShopEmbeds");
 const GameUser = require('../../models/GameUser');
 require('../../models/Bankkonten');
@@ -92,13 +92,16 @@ module.exports = async (interaction) => {
                 const itemIndex = user.inventar.items.findIndex(inventarItem => inventarItem.item.equals(item._id));
                 if (itemIndex !== -1) {
                     user.inventar.items[itemIndex].quantity += amount;
-                    await user.inventar.save();
-                    await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
                 } else {
                     user.inventar.items.push({ item: item._id, quantity: amount });
-                    await user.inventar.save();
-                    await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
                 }
+                await user.inventar.save();
+                const useButton = new ButtonBuilder()
+                    .setCustomId(`useItem_selectMenu_${itemName}`)
+                    .setLabel('Item benutzen')
+                    .setStyle('Primary');
+                const firstRow = new ActionRowBuilder().addComponents(useButton);
+                await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral, components: [firstRow] });
             }
             await removeMoney(interaction.member, price);
             return;

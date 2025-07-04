@@ -16,7 +16,6 @@ async function getAIResult(prompt, sysInstruction) {
                 tools: [{ googleSearch: {} }],
                 maxOutputTokens: 490,
                 candidateCount: 1,
-
             },
         });
         console.log(`AI-Result:${response.text}`);
