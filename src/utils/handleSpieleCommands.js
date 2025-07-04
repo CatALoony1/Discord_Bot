@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, UserSelectMenuBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags, EmbedBuilder, StringSelectMenuBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags, EmbedBuilder, StringSelectMenuBuilder } = require('discord.js');
 const createShopEmbeds = require('../utils/createShopEmbeds.js');
 const GameUser = require('../models/GameUser.js');
 require('../models/Inventar.js');
@@ -56,20 +56,20 @@ async function handleUseItem(interaction) {
         .setMinValues(1)
         .setMaxValues(1)
         .addOptions(
-            items.map((item, index) => {
+            items.map((item) => {
                 const itemName = item.item.name;
                 return {
                     label: itemName,
                     value: itemName
-                }
+                };
             })
-        )
+        );
     const row = new ActionRowBuilder().addComponents(itemSelectMenu);
     await interaction.reply({
         content: 'Wähle ein Item aus, das du benutzen möchtest:',
         components: [row],
         flags: MessageFlags.Ephemeral
-    })
+    });
 }
 
 async function handleGamestats(interaction) {
