@@ -1,4 +1,4 @@
-const { MessageFlags, ButtonBuilder } = require('discord.js');
+const { MessageFlags, ButtonBuilder, ActionRowBuilder } = require('discord.js');
 const createShopEmbeds = require("../../utils/createShopEmbeds");
 const GameUser = require('../../models/GameUser');
 require('../../models/Bankkonten');
