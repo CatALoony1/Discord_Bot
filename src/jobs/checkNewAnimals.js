@@ -7,7 +7,10 @@ const animalFoler = './animals';
 
 function getTierart(filename) {
     const basename = path.basename(filename, '.webp');
-    const tierart = basename.replace(/\d+$/, '');
+    let tierart = basename.replace(/\d+$/, '');
+    if (tierart.includes('-')) {
+        tierart = tierart.split('-')[0];
+    }
     return tierart;
 }
 
