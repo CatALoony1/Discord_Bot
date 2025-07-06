@@ -17,7 +17,6 @@ function getTierart(filename) {
 async function jobFunction(client) {
     let localAnimals = [];
     try {
-        await Tiere.deleteMany({ tierart: 'Pokemon' });
         const allLocalFiles = await fs.readdir(animalFoler);
         localAnimals = allLocalFiles.filter(file => path.extname(file).toLowerCase() === '.webp');
         console.log(`Gefundene Tierbilder: ${localAnimals.length}`);
