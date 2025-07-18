@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
 require('dotenv').config();
 const getTenorGif = require('../utils/getTenorGif');
-const wordList = require('../utils/wordList');
+const wordList = require('../utils/wordList').wordList;
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -39,9 +39,7 @@ module.exports = {
             const subcommand = interaction.options.getSubcommand();
             await interaction.deferReply();
             if (subcommand === 'gif') {
-                let suchwort = wordList[getRandom(0, wordList.length - 1)];
-                suchwort = wordList[1];
-                console.log(wordList);
+                const suchwort = wordList[getRandom(0, wordList.length - 1)];
                 console.log(`Suchwort für GIF: ${suchwort}`);
                 await getTenorGif(suchwort)
                     .then((gifUrl) => {
