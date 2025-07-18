@@ -39,7 +39,9 @@ module.exports = {
             const subcommand = interaction.options.getSubcommand();
             await interaction.deferReply();
             if (subcommand === 'gif') {
-                const suchwort = wordList[getRandom(0, wordList.length - 1)];
+                let suchwort = wordList[getRandom(0, wordList.length - 1)];
+                suchwort = wordList[1];
+                console.log(wordList);
                 console.log(`Suchwort für GIF: ${suchwort}`);
                 await getTenorGif(suchwort)
                     .then((gifUrl) => {
