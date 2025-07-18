@@ -40,6 +40,7 @@ module.exports = {
             await interaction.deferReply();
             if (subcommand === 'gif') {
                 const suchwort = wordList[getRandom(0, wordList.length - 1)];
+                console.log(`Suchwort für GIF: ${suchwort}`);
                 await getTenorGif(suchwort)
                     .then((gifUrl) => {
                         interaction.editReply(gifUrl);
