@@ -223,7 +223,7 @@ module.exports = {
                                 { name: 'Name-De', value: data.names[4].name.charAt(0).toUpperCase() + data.names[4].name.slice(1), inline: true },
                                 { name: 'Kategorie', value: data.damage_class.name.charAt(0).toUpperCase() + data.damage_class.name.slice(1), inline: true },
                                 { name: 'Typ', value: data.type.name.charAt(0).toUpperCase() + data.type.name.slice(1), inline: true },
-                                { name: 'Aktion', value: data.effect_entries[0].effect || '-', inline: true },
+                                { name: 'Aktion', value: data.effect_entries[0].short_effect.substring(0, 500)  + (data.effect_entries[0].short_effect.length > 500 ? '...' : '') || '-', inline: true },
                                 { name: 'Flavour Text', value: data.flavor_text_entries[0].text || '-', inline: true },
                                 { name: 'Verfügbarkeit', value: availability, inline: true },
                                 { name: 'PP', value: data.pp.toString(), inline: true },
