@@ -40,7 +40,7 @@ async function createSpieleLeaderboardEmbeds(page, interaction) {
         }
         let userObj = await interaction.guild.members.fetch(fetchedGameUsers[i].userId);
         let value;
-        if (i === max - 1 || i === fetchedLevel.length - 1) {
+        if (i === max - 1 || i === fetchedGameUsers.length - 1) {
             value = `Blattläuse: ${fetchedGameUsers[i].bankkonto.currentMoney}\n Gewinn: ${fetchedGameUsers[i].bankkonto.moneyGain} Verlust: ${fetchedGameUsers[i].bankkonto.moneyLost}`;
         } else {
             value = `Blattläuse: ${fetchedGameUsers[i].bankkonto.currentMoney}\n Gewinn: ${fetchedGameUsers[i].bankkonto.moneyGain} Verlust: ${fetchedGameUsers[i].bankkonto.moneyLost}\n--------------------------------------`;
