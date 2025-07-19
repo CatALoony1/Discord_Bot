@@ -19,7 +19,15 @@ function startJob(client) {
                 for (const bankkonto of bankkontenZinsen) {
                     const user = await GameUser.findById(bankkonto.besitzer);
                     if (!user) continue;
-                    const zinsen = Math.floor((bankkonto.currentMoney * bankkonto.zinsProzent) / 100);
+                    const member = await client.guilds.cache.get(user.guildId)?.members.fetch(user.userId).catch(() => null);
+                    if (!member) continue;
+                    let zinsen = Math.floor((bankkonto.currentMoney * bankkonto.zinsProzent) / 100);
+                    if (member.roles.cache.some(role => role.name === 'Bumper')) {
+                        zinsen = Math.ceil(zinsen * 1.15);
+                    }
+                    if (member.roles.cache.some(role => role.name === 'Server Booster')) {
+                        zinsen = Math.ceil(zinsen * 1.15);
+                    }
                     bankkonto.currentMoney += zinsen;
                     bankkonto.moneyGain += zinsen;
                     await bankkonto.save();

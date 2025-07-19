@@ -9,7 +9,7 @@ async function createSpieleLeaderboardEmbeds(page, interaction) {
     }).populate('bankkonto');
 
     if (fetchedGameUsers.length === 0) {
-        console.log('ERROR: Niemand auf dem Server hat Level');
+        console.log('ERROR: Niemand auf dem Server hat Blattläuse!');
         return;
     }
     var oldUsers = [];
