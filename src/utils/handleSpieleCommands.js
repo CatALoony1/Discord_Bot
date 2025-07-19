@@ -7,6 +7,7 @@ require('../models/Bankkonten.js');
 require('../models/Tiere.js');
 const Lottozahlen = require('../models/Lottozahlen.js');
 const createAnimalsEmbeds = require('../utils/createAnimalsEmbeds.js');
+const createSpieleLeaderboardEmbeds = require('../utils/createSpieleLeaderboardEmbeds.js');
 
 
 async function handleShop(interaction) {
@@ -200,11 +201,34 @@ async function handleKeksEssen(interaction) {
     });
 }
 
+async function handleLeaderboard(interaction) {
+    const embed = await createSpieleLeaderboardEmbeds(0, interaction);
+    const pageDownButton = new ButtonBuilder()
+        .setEmoji('⬅️')
+        .setLabel('Zurück')
+        .setStyle(ButtonStyle.Primary)
+        .setCustomId(`spieleLeaderDown`);
+
+    const pageUpButton = new ButtonBuilder()
+        .setEmoji('➡️')
+        .setLabel('Vorwärts')
+        .setStyle(ButtonStyle.Primary)
+        .setCustomId(`spieleLeaderUp`);
+
+    const firstRow = new ActionRowBuilder().addComponents(pageDownButton, pageUpButton);
+
+    interaction.editReply({
+        embeds: [embed],
+        components: [firstRow]
+    });
+}
+
 
 module.exports = {
     handleShop,
     handleUseItem,
     handleGamestats,
     handleOwnAnimals,
-    handleKeksEssen
+    handleKeksEssen,
+    handleLeaderboard
 };

@@ -30,6 +30,11 @@ module.exports = {
                 .setName('keks_essen')
                 .setDescription('Schnellzugriff aufs Kekse essen.')
         )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('leaderboard')
+                .setDescription('Zeigt die Rangliste der Nutzer an.')
+        )
         .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
 
     run: async ({ interaction }) => {
@@ -56,6 +61,9 @@ module.exports = {
         } else if (subcommand == 'keks_essen') {
             await interaction.deferReply({ flags: MessageFlags.Ephemeral });
             return await handleSpieleCommands.handleKeksEssen(interaction);
+        } else if (subcommand == 'leaderboard') {
+            await interaction.deferReply();
+            return await handleSpieleCommands.handleLeaderboard(interaction);
         }
     },
     options: {
