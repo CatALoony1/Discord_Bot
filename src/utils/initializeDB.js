@@ -85,7 +85,7 @@ function initializeDatabase(dbPath) {
                         status TEXT DEFAULT 'laufend',
                         buchstaben TEXT DEFAULT '',
                         fehler INTEGER DEFAULT 0,
-                        participants TEXT DEFAULT ''
+                        participants TEXT DEFAULT '[]'
                     );
                     `,
                     `
@@ -271,25 +271,31 @@ function initializeDatabase(dbPath) {
                 // Führe jede CREATE TABLE Anweisung sequentiell aus
                 db.serialize(() => {
                     let errors = [];
+                    let completedStatements = 0;
+                    const totalStatements = createTableStatements.length;
+
                     createTableStatements.forEach((statement, index) => {
-                        db.run(statement, (runErr) => {
+                        db.run(statement, function(runErr) { // Use 'function' to get 'this' context if needed for lastID/changes
+                            completedStatements++;
                             if (runErr) {
                                 console.error(`Error creating table with statement ${index + 1}:`, runErr.message);
                                 errors.push(runErr);
                             } else {
                                 console.log(`Table created successfully with statement ${index + 1}.`);
                             }
+
+                            // Check if all statements have completed
+                            if (completedStatements === totalStatements) {
+                                if (errors.length > 0) {
+                                    reject(new Error('Database initialization completed with errors.'));
+                                } else {
+                                    console.log('All tables created or already exist.');
+                                    setDatabaseToDAOs(db);
+                                    resolve(db); // Löse mit dem Datenbankobjekt auf
+                                }
+                            }
                         });
                     });
-
-                    // Überprüfe auf Fehler, nachdem alle Anweisungen versucht wurden
-                    if (errors.length > 0) {
-                        reject(new Error('Database initialization completed with errors.'));
-                    } else {
-                        console.log('All tables created or already exist.');
-                        setDatabaseToDAOs(db);
-                        resolve(db); // Löse mit dem Datenbankobjekt auf
-                    }
                 });
             });
         });
