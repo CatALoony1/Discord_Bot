@@ -124,7 +124,6 @@ class TTTDamage {
         this.attackerPlayerIdObj = attackerPlayerIdObj;
     }
 
-    @override
     toString() {
         return `DamageLog{id=${this._id}, roundId=${this.roundId}, timestamp=${this.timestamp}, victimPlayerId=${this.victimPlayerId}, attackerPlayerId=${this.attackerPlayerId}, weaponSource='${this.damageSource}', damageAmount=${this.damageAmount}}`;
     }

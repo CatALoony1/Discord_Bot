@@ -323,7 +323,7 @@ function setDatabaseToDAOs(database) {
         // GameUser ist eine häufige Referenz (basierend auf FKs in initializeDB.js)
         BankkontenDAO.gameUserDAO = gameUserDAO;
         InventarDAO.gameUserDAO = gameUserDAO;
-        InventarDAI.itemsDAO = itemsDAO;
+        InventarDAO.itemsDAO = itemsDAO;
         TiereDAO.gameUserDAO = gameUserDAO;
 
         // TTT-Beziehungen (basierend auf FKs in initializeDB.js)
