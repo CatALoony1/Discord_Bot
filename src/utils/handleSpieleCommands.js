@@ -1,13 +1,8 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags, EmbedBuilder, StringSelectMenuBuilder } = require('discord.js');
-const createShopEmbeds = require('../utils/createShopEmbeds.js');
-const GameUser = require('../models/GameUser.js');
-require('../models/Inventar.js');
-require('../models/Items.js');
-require('../models/Bankkonten.js');
-require('../models/Tiere.js');
-const Lottozahlen = require('../models/Lottozahlen.js');
-const createAnimalsEmbeds = require('../utils/createAnimalsEmbeds.js');
-const createSpieleLeaderboardEmbeds = require('../utils/createSpieleLeaderboardEmbeds.js');
+const createShopEmbeds = require('./createShopEmbeds.js');
+const createAnimalsEmbeds = require('./createAnimalsEmbeds.js');
+const createSpieleLeaderboardEmbeds = require('./createSpieleLeaderboardEmbeds.js');
+const { inventarDAO, bankkontenDAO, tiereDAO, lottozahlenDAO } = require('./initializeDB.js');
 
 
 async function handleShop(interaction) {
@@ -41,12 +36,12 @@ async function handleShop(interaction) {
 
 async function handleUseItem(interaction) {
     const targetUserObj = interaction.member;
-    const user = await GameUser.findOne({ userId: targetUserObj.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-    if (!user || !user.inventar) {
+    const inventar = await inventarDAO.getOneByUserAndGuild(targetUserObj.id, interaction.guild.id);
+    if (!inventar || !inventar.besitzerObj) {
         await interaction.reply({ content: 'Du hast kein Inventar!', flags: MessageFlags.Ephemeral });
         return;
     }
-    let items = user.inventar.items;
+    let items = inventar.items;
     if (!items || items.length == 0) {
         await interaction.reply({ content: 'Du besitzt keine items', flags: MessageFlags.Ephemeral });
         return;
@@ -58,7 +53,7 @@ async function handleUseItem(interaction) {
         .setMaxValues(1)
         .addOptions(
             items.map((item) => {
-                const itemName = item.item.name;
+                const itemName = item.itemObj.name;
                 return {
                     label: itemName,
                     value: itemName
@@ -76,44 +71,40 @@ async function handleUseItem(interaction) {
 async function handleGamestats(interaction) {
     await interaction.deferReply();
     const targetUserId = interaction.member.id;
-    const user = await GameUser.findOne({
-        userId: targetUserId,
-        guildId: interaction.guild.id,
-    }).populate('bankkonto').populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } }).populate('tiere');
-
-    if (!user) {
+    const bankkonto = await bankkontenDAO.getOneByUserAndGuild(targetUserId, interaction.guild.id);
+    if (!bankkonto) {
         interaction.editReply("Du hast noch kein Level");
         return;
     }
+    const user = bankkonto.besitzerObj;
+    const inventar = await inventarDAO.getOneByBesitzer(user._id);
+    const tiere = await tiereDAO.getAllByBesitzer(user._id);
 
-    let allUsers = await GameUser.find({ guildId: interaction.guild.id }).populate('bankkonto');
+    let allBankkonten = await bankkontenDAO.getAllByGuild(interaction.guild.id);
 
     var oldUsers = [];
-    for (let j = 0; j < allUsers.length; j++) {
-        if (!(interaction.guild.members.cache.find(m => m.id === allUsers[j].userId)?.id)) {
+    for (let j = 0; j < allBankkonten.length; j++) {
+        if (!(interaction.guild.members.cache.find(m => m.id === allBankkonten[j].besitzerObj.userId)?.id)) {
             oldUsers[oldUsers.length] = j;
         }
     }
     for (let j = 0; j < oldUsers.length; j++) {
-        allUsers.splice(oldUsers[j] - j, 1);
+        allBankkonten.splice(oldUsers[j] - j, 1);
     }
 
-    allUsers.sort((a, b) => {
-        return b.bankkonto.currentMoney - a.bankkonto.currentMoney;
+    allBankkonten.sort((a, b) => {
+        return b.currentMoney - a.currentMoney;
     });
-    let currentRank = allUsers.findIndex((usr) => usr.userId === targetUserId) + 1;
-    let lotto = await Lottozahlen.find({
-        guildId: interaction.guild.id,
-        userId: targetUserId,
-    });
+    let currentRank = allBankkonten.findIndex((usr) => usr.userObj.userId === targetUserId) + 1;
+    let lotto = await lottozahlenDAO.getAllByUserAndGuild(targetUserId, interaction.guild.id);
     var lottospiele = 0;
     if (lotto && lotto.length > 0) {
         lottospiele = lotto.length;
     }
-    const itemNamesAndQuantity = user.inventar.items.map((item, index) => {
-        return `ID:${index} -> ${item.item.name} (x${item.quantity})`;
+    const itemNamesAndQuantity = inventar.items.map((item, index) => {
+        return `ID:${index} -> ${item.itemObj.name} (x${item.amount})`;
     }).join('\n');
-    const tierpfade = user.tiere.map((tier) => {
+    const tierpfade = tiere.map((tier) => {
         return `${tier.customName}`;
     }).join('\n');
     const messageEdited = new EmbedBuilder();
@@ -121,9 +112,9 @@ async function handleGamestats(interaction) {
     messageEdited.setAuthor({ name: interaction.member.user.username, iconURL: interaction.member.user.displayAvatarURL({ size: 256 }) });
     messageEdited.setTitle(`Deine Stats:`);
     messageEdited.addFields({ name: 'Rang:', value: `${currentRank}` });
-    messageEdited.addFields({ name: 'Aktuelle Blattläuse:', value: `${user.bankkonto.currentMoney}` });
-    messageEdited.addFields({ name: 'Erhaltene Blattläuse:', value: `${user.bankkonto.moneyGain}` });
-    messageEdited.addFields({ name: 'Verlorene/Ausgegebene Blattläuse:', value: `${user.bankkonto.moneyLost}` });
+    messageEdited.addFields({ name: 'Aktuelle Blattläuse:', value: `${bankkonto.currentMoney}` });
+    messageEdited.addFields({ name: 'Erhaltene Blattläuse:', value: `${bankkonto.moneyGain}` });
+    messageEdited.addFields({ name: 'Verlorene/Ausgegebene Blattläuse:', value: `${bankkonto.moneyLost}` });
     messageEdited.addFields({ name: 'Anzahl Lottospiele:', value: `${lottospiele}` });
     messageEdited.addFields({ name: 'Quizfragen hinzugefügt:', value: `${user.quizadded}` });
     messageEdited.addFields({ name: 'Gewicht:', value: `${user.weight / 1000}kg` });
@@ -166,21 +157,21 @@ async function handleOwnAnimals(interaction) {
 }
 
 async function handleKeksEssen(interaction) {
-    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Keks');
-    const quantity = user.inventar.items[itemId].quantity;
+    const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+    const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Keks');
+    const amount = inventar.items[itemId].amount;
     const options = [
         { label: '1', value: '1' },
     ];
-    if (quantity > 1) {
-        options.push({ label: 'alle', value: `${quantity}` });
-        if (quantity > 10) {
+    if (amount > 1) {
+        options.push({ label: 'alle', value: `${amount}` });
+        if (amount > 10) {
             options.push({ label: '10', value: '10' });
-            if (quantity > 100) {
+            if (amount > 100) {
                 options.push({ label: '100', value: '100' });
-                if (quantity > 1000) {
+                if (amount > 1000) {
                     options.push({ label: '1000', value: '1000' });
-                    if (quantity > 10000) {
+                    if (amount > 10000) {
                         options.push({ label: '10000', value: '10000' });
                     }
                 }

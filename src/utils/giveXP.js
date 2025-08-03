@@ -1,9 +1,10 @@
-const Level = require('../models/Level');
+const Level = require('../sqliteModels/Level.js');
 const { EmbedBuilder } = require('discord.js');
-const calculateLevelXp = require('../utils/calculateLevelXp');
-const giveMoney = require('../utils/giveMoney');
+const calculateLevelXp = require('./calculateLevelXp.js');
+const giveMoney = require('../utilsSSQLite/giveMoney');
 require('dotenv').config();
-const Config = require('../models/Config');
+const { levelDAO, configDAO } = require('./initializeDB.js');
+require('../sqliteModels/Config.js');
 
 const roles = new Map([[1, '1387045161019899914'],
 [5, '1387045216426524743'],
@@ -19,17 +20,9 @@ const roles = new Map([[1, '1387045161019899914'],
 ]);
 
 async function giveXP(member, xpToGive, channel, message) {
-    const query = {
-        userId: member.user.id,
-        guildId: member.guild.id,
-    };
     try {
-        const level = await Level.findOne(query);
-        let confQuery = {
-            guildId: process.env.GUILD_ID,
-            key: "xpMultiplier"
-        };
-        let conf = await Config.findOne(confQuery);
+        const level = await levelDAO.getOneByUserAndGuild(member.user.id, member.guild.id);
+        let conf = configDAO.getOneByKeyAndGuild(member.guild.id, "xpMultiplier");
         let multiplier = 1;
         if (conf) {
             multiplier = Number(conf.value);
@@ -53,7 +46,7 @@ async function giveXP(member, xpToGive, channel, message) {
             level.xp += xpAmount;
             level.allxp += xpAmount;
             level.thismonth += xpAmount;
-            level.lastMessage = Date.now();
+            level.setLastMessage(Date.now());
             let money = 0;
             if (level.xp >= calculateLevelXp(level.level)) {
                 do {
@@ -95,10 +88,7 @@ async function giveXP(member, xpToGive, channel, message) {
                     channel.send({ embeds: [embed] });
                 } while (level.xp >= calculateLevelXp(level.level));
             }
-            await level.save().catch((e) => {
-                console.log(`Error saving updated level ${e}`);
-                return;
-            });
+            await levelDAO.update(level);
             if (money > 0) {
                 await giveMoney(member, money);
             }
@@ -119,14 +109,22 @@ async function giveXP(member, xpToGive, channel, message) {
                 thismonth: xpAmount,
                 bumps: 0,
             });
+            newLevel.setUserId(member.user.id);
+            newLevel.setGuildId(member.guild.id);
+            newLevel.setXp(xpAmount);
+            newLevel.setAllxp(xpAmount);
+            newLevel.setLastMessage(Date.now());
+            newLevel.setUserName(member.user.tag);
+            newLevel.setThismonth(xpAmount);
+
             if (message) {
-                newLevel.messagexp += xpAmount;
-                newLevel.messages += 1;
+                newLevel.setMessages(1);
+                newLevel.setMessagexp(xpAmount);
             } else {
-                newLevel.voicexp += xpAmount;
-                newLevel.voicetime += 5;
+                newLevel.setVoicetime(5);
+                newLevel.setVoicexp(xpAmount);
             }
-            await newLevel.save();
+            await levelDAO.insert(newLevel);
         }
         return xpAmount;
     } catch (error) {

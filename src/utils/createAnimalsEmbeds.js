@@ -1,27 +1,30 @@
 const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
-const Tiere = require('../models/Tiere');
-const GameUser = require('../models/GameUser');
+const { tiereDAO } = require('./initializeDB.js');
 const path = require('node:path');
+require('../sqliteModels/Tiere.js');
 
-async function createLeaderboardEmbeds(page, guildId, userId) {
-    const user = await GameUser.findOne({ guildId: guildId, userId: userId });
-    if (!user) {
-        return undefined;
+async function createAnimalEmbeds(page, guildId, userId) {
+    try {
+        const tiere = await tiereDAO.getAllByUserAndGuild(userId, guildId);
+        if (!tiere || tiere.length <= 0 || !tiere[page]) {
+            return undefined;
+        }
+        const file = new AttachmentBuilder(path.join(__dirname, `../../animals/${tiere[page].pfad}.webp`));
+        const embed = new EmbedBuilder()
+            .setTitle(`Deine Tiere - ${page + 1}/${tiere.length}`)
+            .setDescription(`Name: ${tiere[page].customName}\nTierart: ${tiere[page].tierart}`)
+            .setImage(`attachment://${tiere[page].pfad}.webp`)
+            .setColor(0x0033cc)
+            .setFooter({ text: `${userId}` });
+        return { embed, file };
+    } catch (error) {
+        console.log(`Error creating leaderboard embeds: ${error.message}`);
+        const embed = new EmbedBuilder()
+            .setTitle('Fehler')
+            .setDescription('Es gab einen Fehler beim Erstellen der Rangliste. Bitte versuche es später erneut.')
+            .setColor(0xff0000);
+        return { embed, undefined };
     }
-    const tiere = await Tiere.find({
-        besitzer: user._id
-    });
-    if (!tiere || tiere.length <= 0 || !tiere[page]) {
-        return undefined;
-    }
-    const file = new AttachmentBuilder(path.join(__dirname, `../../animals/${tiere[page].pfad}.webp`));
-    const embed = new EmbedBuilder()
-        .setTitle(`Deine Tiere - ${page + 1}/${tiere.length}`)
-        .setDescription(`Name: ${tiere[page].customName}\nTierart: ${tiere[page].tierart}`)
-        .setImage(`attachment://${tiere[page].pfad}.webp`)
-        .setColor(0x0033cc)
-        .setFooter({ text: `${userId}` });
-    return { embed, file };
 }
 
-module.exports = createLeaderboardEmbeds;
+module.exports = createAnimalEmbeds;

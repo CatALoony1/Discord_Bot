@@ -5,8 +5,6 @@ const TTTRound = require('../sqliteModels/TTTRound');
 const TTTRoundParticipant = require('../sqliteModels/TTTRoundParticipant');
 
 class TTTShopPurchaseDAO extends BaseDAO {
-    static tttRoundDAO;
-    static tttRoundParticipantDAO;
 
     constructor(db) {
         super(db, 'ttt_shop_purchases');

@@ -28,5 +28,19 @@ class QuizStatsDAO extends BaseDAO {
         const rows = await super.getAll(); // Nutzt BaseDAO ohne JOIN
         return rows.map(this._mapRowToModel);
     }
+
+    async getAllByGuild(guildId) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM ${super.tableName} WHERE guildId = ?`;
+            this.db.all(sql, [userId, guildId], (err, row) => {
+                if (err) {
+                    console.error(`Error fetching from ${this.tableName} by guildId:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(this._mapRowToModel(row));
+                }
+            });
+        });
+    }
 }
 module.exports = QuizStatsDAO;

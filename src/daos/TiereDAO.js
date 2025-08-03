@@ -4,7 +4,6 @@ const Tiere = require('../sqliteModels/Tiere');
 const GameUser = require('../sqliteModels/GameUser');
 
 class TiereDAO extends BaseDAO {
-    static gameUserDAO;
 
     constructor(db) {
         super(db, 'tiere');
@@ -67,12 +66,65 @@ class TiereDAO extends BaseDAO {
                 gu.daily AS besitzer_user_daily,
                 gu.weight AS besitzer_user_weight
             FROM tiere t
-            LEFT JOIN game_users gu ON t.besitzer = gu._id;
+            LEFT JOIN game_users gu ON t.besitzer = gu._id
+            ORDER BY t._id;
         `;
         return new Promise((resolve, reject) => {
             this.db.all(sql, [], (err, rows) => {
                 if (err) {
                     console.error('Error fetching all tiere with JOIN:', err.message);
+                    reject(err);
+                } else {
+                    resolve(rows.map(this._mapJoinedRowToModel));
+                }
+            });
+        });
+    }
+
+    async getAllByUserAndGuild(userId, guildId) {
+        const sql = `
+            SELECT 
+                t._id, t.pfad, t.tierart, t.customName, t.besitzer,
+                gu._id AS besitzer_user_id,
+                gu.userId AS besitzer_user_userId,
+                gu.guildId AS besitzer_user_guildId,
+                gu.quizadded AS besitzer_user_quizadded,
+                gu.daily AS besitzer_user_daily,
+                gu.weight AS besitzer_user_weight 
+            FROM tiere t
+            LEFT JOIN game_users gu ON t.besitzer = gu._id
+            WHERE gu.userId = ? AND gu.guildId = ?;
+        `;
+        return new Promise((resolve, reject) => {
+            this.db.all(sql, [userId, guildId], (err, rows) => {
+                if (err) {
+                    console.error('Error fetching tiere by user and guild with JOIN:', err.message);
+                    reject(err);
+                } else {
+                    resolve(rows.map(this._mapJoinedRowToModel));
+                }
+            });
+        });
+    }
+
+    async getAllByBesitzer(besitzerId) {
+        const sql = `
+            SELECT 
+                t._id, t.pfad, t.tierart, t.customName, t.besitzer,
+                gu._id AS besitzer_user_id,
+                gu.userId AS besitzer_user_userId,
+                gu.guildId AS besitzer_user_guildId,
+                gu.quizadded AS besitzer_user_quizadded,
+                gu.daily AS besitzer_user_daily,
+                gu.weight AS besitzer_user_weight 
+            FROM tiere t
+            LEFT JOIN game_users gu ON t.besitzer = gu._id
+            WHERE gu.userId = ? AND gu.guildId = ?;
+        `;
+        return new Promise((resolve, reject) => {
+            this.db.all(sql, [besitzerId], (err, rows) => {
+                if (err) {
+                    console.error('Error fetching tiere by user and guild with JOIN:', err.message);
                     reject(err);
                 } else {
                     resolve(rows.map(this._mapJoinedRowToModel));

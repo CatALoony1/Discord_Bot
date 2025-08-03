@@ -22,12 +22,12 @@ class GameUserDAO extends BaseDAO {
         return rows.map(this._mapRowToModel);
     }
 
-    async getByUserId(userId) {
+    async getOneByUserAndGuild(userId, guildId) {
         return new Promise((resolve, reject) => {
-            const sql = `SELECT * FROM ${this.tableName} WHERE userId = ?`;
-            this.db.get(sql, [userId], (err, row) => {
+            const sql = `SELECT * FROM ${super.tableName} WHERE userId = ? AND guildId = ?`;
+            this.db.get(sql, [userId, guildId], (err, row) => {
                 if (err) {
-                    console.error(`Error fetching from ${this.tableName} by userId:`, err.message);
+                    console.error(`Error fetching from ${this.tableName} by userId and guildId:`, err.message);
                     reject(err);
                 } else {
                     resolve(this._mapRowToModel(row));

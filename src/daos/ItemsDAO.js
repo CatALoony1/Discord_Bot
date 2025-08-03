@@ -9,7 +9,7 @@ class ItemsDAO extends BaseDAO {
 
     _mapRowToModel(row) {
         if (!row) return null;
-        return new Items(row._id, row.name, row.beschreibung, row.preis, row.boostOnly, row.available);
+        return new Items(row._id, row.name, row.beschreibung, row.preis, row.boostOnly === 1, row.available === 1);
     }
 
     async getById(id) {
@@ -20,6 +20,20 @@ class ItemsDAO extends BaseDAO {
     async getAll() {
         const rows = await super.getAll();
         return rows.map(this._mapRowToModel);
+    }
+
+    async getAllAvailable() {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM ${this.tableName} WHERE available = 1`;
+            this.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    console.error(`Error fetching from ${this.tableName} where available = 1:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(rows.map(this._mapRowToModel));
+                }
+            });
+        });
     }
 }
 module.exports = ItemsDAO;
