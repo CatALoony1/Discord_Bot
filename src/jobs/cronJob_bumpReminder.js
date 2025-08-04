@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const cron = require('node-cron');
 require('dotenv').config();
-const Bump = require('../models/Bump');
+const { bumpDAO } = require('../utils/initializeDB');
 const getTenorGifById = require("../utils/getTenorGifById");
 
 let bumpReminderJob = null;
@@ -12,11 +12,8 @@ function startJob(client) {
     return;
   }
   bumpReminderJob = cron.schedule('* * * * *', async function () {
-    const query = {
-      guildId: process.env.GUILD_ID,
-    };
     try {
-      const bumpEntry = await Bump.findOne(query);
+      const bumpEntry = await bumpDAO.getOneByGuild(process.env.GUILD_ID);
       if (bumpEntry) {
         if (bumpEntry.endTime < Date.now() && bumpEntry.reminded === 'N') {
           let guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -36,7 +33,7 @@ function startJob(client) {
               console.log('Bump reminded');
               bumpEntry.remindedId = message.id;
               bumpEntry.reminded = 'J';
-              bumpEntry.save();
+              bumpDAO.update(bumpEntry);
             })
             .catch((error) => {
               console.error('ERROR:', error);

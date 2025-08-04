@@ -42,5 +42,19 @@ class QuizStatsDAO extends BaseDAO {
             });
         });
     }
+    
+    async deleteOnyByUserAndGuild(userId, guildId) {
+        return new Promise((resolve, reject) => {
+            const sql = `DELETE FROM ${super.tableName} WHERE userId = ? AND guildId = ?`;
+            this.db.run(sql, [userId, guildId], function (err) {
+                if (err) {
+                    console.error(`Error deleting from ${this.tableName} by userId and guildId:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(this.changes); // Returns number of rows deleted
+                }
+            });
+        });
+    }
 }
 module.exports = QuizStatsDAO;

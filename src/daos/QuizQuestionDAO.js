@@ -45,6 +45,31 @@ class QuizQuestionDAO extends BaseDAO {
         return await super.insert(dataToSave);
     }
 
+    /**
+     * Fügt mehrere QuizQuestion-Objekte ein.
+     * Serialisiert die Arrays und ruft dann super.insertMany auf.
+     * @param {Array<QuizQuestion>} quizQuestions - Eine Liste von QuizQuestion-Objekten.
+     * @returns {Promise<number>} - Die Anzahl der eingefügten Zeilen.
+     */
+    async insertMany(quizQuestions) {
+        const dataToSave = quizQuestions.map(qq => ({
+            _id: qq._id,
+            question: qq.question,
+            rightAnswer: qq.rightAnswer,
+            wrongAnswers: JSON.stringify(qq.wrongAnswers),
+            started: qq.started,
+            participants: JSON.stringify(qq.participants),
+            asked: qq.asked,
+            rightChar: qq.rightChar,
+            answerA: qq.answerA,
+            answerB: qq.answerB,
+            answerC: qq.answerC,
+            answerD: qq.answerD,
+            guildId: qq.guildId
+        }));
+        return await super.insertMany(dataToSave);
+    }
+
     async update(quizQuestion) {
         const dataToSave = {
             _id: quizQuestion._id,
@@ -62,6 +87,31 @@ class QuizQuestionDAO extends BaseDAO {
             guildId: quizQuestion.guildId
         };
         return await super.update(dataToSave);
+    }
+
+    /**
+     * Aktualisiert mehrere QuizQuestion-Objekte.
+     * Serialisiert die Arrays und ruft dann super.updateMany auf.
+     * @param {Array<QuizQuestion>} quizQuestions - Eine Liste von QuizQuestion-Objekten.
+     * @returns {Promise<number>} - Die Anzahl der aktualisierten Zeilen.
+     */
+    async updateMany(quizQuestions) {
+        const dataToSave = quizQuestions.map(qq => ({
+            _id: qq._id,
+            question: qq.question,
+            rightAnswer: qq.rightAnswer,
+            wrongAnswers: JSON.stringify(qq.wrongAnswers),
+            started: qq.started,
+            participants: JSON.stringify(qq.participants),
+            asked: qq.asked,
+            rightChar: qq.rightChar,
+            answerA: qq.answerA,
+            answerB: qq.answerB,
+            answerC: qq.answerC,
+            answerD: qq.answerD,
+            guildId: qq.guildId
+        }));
+        return await super.updateMany(dataToSave);
     }
 }
 module.exports = QuizQuestionDAO;

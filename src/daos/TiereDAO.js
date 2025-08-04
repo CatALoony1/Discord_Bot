@@ -9,6 +9,11 @@ class TiereDAO extends BaseDAO {
         super(db, 'tiere');
     }
 
+    _mapRowToModel(row) {
+        if (!row) return null;
+        return new Tiere(row._id, row.pfad, row.tierart, row.customName, row.besitzer);
+    }
+
     _mapJoinedRowToModel(row) {
         if (!row) return null;
 
@@ -107,6 +112,12 @@ class TiereDAO extends BaseDAO {
         });
     }
 
+    /**
+     * Gibt alle Tiere zu einem Besitzer zurück, jedoch ohne das Besitzer-Objekt.
+     * 
+     * @param {String} besitzerId 
+     * @returns 
+     */
     async getAllByBesitzer(besitzerId) {
         const sql = `
             SELECT 

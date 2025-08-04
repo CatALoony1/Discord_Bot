@@ -21,5 +21,19 @@ class BumpDAO extends BaseDAO {
         const rows = await super.getAll();
         return rows.map(this._mapRowToModel);
     }
+
+    async getOneByGuild(guildId) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM ${super.tableName} WHERE guildId = ?`;
+            this.db.get(sql, [guildId], (err, row) => {
+                if (err) {
+                    console.error(`Error fetching from ${this.tableName} by guildId:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(this._mapRowToModel(row));
+                }
+            });
+        });
+    }
 }
 module.exports = BumpDAO;

@@ -1,7 +1,8 @@
 require('dotenv').config();
-const Tiere = require('../models/Tiere');
+const Tiere = require('../sqliteModels/Tiere');
 const fs = require('fs').promises;
 const path = require('path');
+const { tiereDAO } = require('../utils/initializeDB')
 
 const animalFoler = './animals';
 
@@ -31,18 +32,17 @@ async function jobFunction(client) {
                 if (filenameWithoutExtension.includes('-')) {
                     customName = filenameWithoutExtension.split('-')[1];
                 }
-                const newTier = {
-                    pfad: filenameWithoutExtension,
-                    tierart: tierart,
-                    customName: customName,
-                };
+                const newTier = new Tiere();
+                newTier.setPfad(filenameWithoutExtension);
+                newTier.setTierart(tierart);
+                newTier.setCustomName(customName);
                 newTiereToAdd.push(newTier);
             }
         }
         if (newTiereToAdd.length > 0) {
             console.log(`Neue Tierbilder zum Hinzufügen: ${newTiereToAdd.length}`);
-            const result = await Tiere.insertMany(newTiereToAdd, { ordered: false });
-            console.log(`Erfolgreich hinzugefügt: ${result.length} neue Tierbilder.`);
+            const result = await tiereDAO.insertMany(newTiereToAdd);
+            console.log(`Erfolgreich hinzugefügt: ${result} neue Tierbilder.`);
         } else {
             console.log('Keine neuen Tierbilder zum Hinzufügen.');
         }

@@ -97,6 +97,24 @@ class BankkontenDAO extends BaseDAO {
         return await super.insert(dataToSave);
     }
 
+    /**
+     * Fügt mehrere Bankkonten-Objekte ein.
+     * Bereitet die Daten vor und ruft die super.insertMany-Methode auf.
+     * @param {Array<Bankkonten>} bankkonten - Eine Liste von Bankkonten-Objekten.
+     * @returns {Promise<number>} - Die Anzahl der eingefügten Zeilen.
+     */
+    async insertMany(bankkonten) {
+        const dataToSave = bankkonten.map(bk => ({
+            _id: bk._id,
+            currentMoney: bk.currentMoney,
+            moneyGain: bk.moneyGain,
+            moneyLost: bk.moneyLost,
+            zinsProzent: bk.zinsProzent,
+            besitzer: bk.besitzer
+        }));
+        return await super.insertMany(dataToSave);
+    }
+
     async update(bankkonto) {
         const dataToSave = {
             _id: bankkonto._id,
@@ -107,6 +125,24 @@ class BankkontenDAO extends BaseDAO {
             besitzer: bankkonto.besitzer
         };
         return await super.update(dataToSave);
+    }
+
+    /**
+     * Aktualisiert mehrere Bankkonten-Objekte.
+     * Bereitet die Daten vor und ruft die super.updateMany-Methode auf.
+     * @param {Array<Bankkonten>} bankkonten - Eine Liste von Bankkonten-Objekten.
+     * @returns {Promise<number>} - Die Anzahl der aktualisierten Zeilen.
+     */
+    async updateMany(bankkonten) {
+        const dataToSave = bankkonten.map(bk => ({
+            _id: bk._id,
+            currentMoney: bk.currentMoney,
+            moneyGain: bk.moneyGain,
+            moneyLost: bk.moneyLost,
+            zinsProzent: bk.zinsProzent,
+            besitzer: bk.besitzer
+        }));
+        return await super.updateMany(dataToSave);
     }
 
     async getAllByGuild(guildId) {
