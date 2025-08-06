@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('../utils/calculateLevelXp');
-const Level = require('../models/Level');
-const Lottozahlen = require('../models/Lottozahlen');
+const { levelDAO, lottozahlenDAO } = require('../utils/initializeDB');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -18,17 +17,14 @@ module.exports = {
 
     await interaction.deferReply();
     const targetUserId = interaction.member.id;
-    const fetchedLevel = await Level.findOne({
-      userId: targetUserId,
-      guildId: interaction.guild.id,
-    });
+    const fetchedLevel = await levelDAO.getOneByUserAndGuild(targetUserId, interaction.guild.id);
 
     if (!fetchedLevel) {
       interaction.editReply("Du hast noch kein Level");
       return;
     }
 
-    let allLevels = await Level.find({ guildId: interaction.guild.id });
+    let allLevels = await levelDAO.getAllByGuild(interaction.guild.id);
 
     var oldUsers = [];
     for (let j = 0; j < allLevels.length; j++) {
@@ -65,14 +61,7 @@ module.exports = {
     } else {
       time = `${fetchedLevel.voicetime}m`;
     }
-    let lotto = await Lottozahlen.find({
-      guildId: interaction.guild.id,
-      userId: targetUserId,
-    });
-    var lottospiele = 0;
-    if (lotto && lotto.length > 0) {
-      lottospiele = lotto.length;
-    }
+    var lottospiele = await lottozahlenDAO.countByUserAndGuild(targetUserId, interaction.guild.id);
     const messageEdited = new EmbedBuilder();
     messageEdited.setColor(0x0033cc);
     messageEdited.setAuthor({ name: interaction.member.user.username, iconURL: interaction.member.user.displayAvatarURL({ size: 256 }) });

@@ -1,8 +1,8 @@
 const { SlashCommandBuilder, AttachmentBuilder, InteractionContextType } = require('discord.js');
 const canvacord = require('canvacord');
 const calculateLevelXp = require('../utils/calculateLevelXp');
-const Level = require('../models/Level');
 const gifToPngDataUri = require('../utils/gifToPngDataUri');
+const { levelDAO } = require('../utils/initializeDB');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -30,10 +30,7 @@ module.exports = {
     }
     const targetUserObj = await interaction.guild.members.fetch(targetUserId);
 
-    const fetchedLevel = await Level.findOne({
-      userId: targetUserId,
-      guildId: interaction.guild.id,
-    });
+    const fetchedLevel = await levelDAO.getOneByUserAndGuild(targetUserId, interaction.guild.id);
 
     if (!fetchedLevel) {
       interaction.editReply(
@@ -44,7 +41,7 @@ module.exports = {
       return;
     }
 
-    let allLevels = await Level.find({ guildId: interaction.guild.id });
+    let allLevels = await levelDAO.getAllByGuild(interaction.guild.id);
     var oldUsers = [];
     for (let j = 0; j < allLevels.length; j++) {
       if (!(interaction.guild.members.cache.find(m => m.id === allLevels[j].userId)?.id)) {

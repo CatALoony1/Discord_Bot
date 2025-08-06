@@ -1,10 +1,9 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const removeMoney = require('../utils/removeMoney');
 const giveMoney = require('../utils/giveMoney');
-const Gluecksrad = require('../models/Gluecksrad');
-const GameUser = require('../models/GameUser');
-require('../models/Bankkonten');
+const Gluecksrad = require('../sqliteModels/Gluecksrad');
 require('dotenv').config();
+const { bankkontenDAO, gluecksradDAO } = require('../utils/initializeDB');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -40,18 +39,15 @@ module.exports = {
             }
             await interaction.deferReply();
             let einsatz = interaction.options.get('einsatz').value;
-            const user = await GameUser.findOne({ userId: interaction.user.id, guildId: interaction.guild.id }).populate('bankkonto');
-            if (!user || !user.bankkonto || user.bankkonto.currentMoney < einsatz) {
+            const bankkonto = await bankkontenDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+            if (!bankkonto || bankkonto.currentMoney < einsatz) {
                 interaction.editReply(`Du hast nicht genug Blattläuse, um ${einsatz} Blattläuse zu setzen!`);
                 return;
             }
             const zufallsZahl = getRandomNotFloor(1, 100);
-            let gluecksrad = await Gluecksrad.findOne({ guildId: interaction.guild.id });
+            let gluecksrad = await gluecksradDAO.getOneByGuild(interaction.guild.id);
             if (!gluecksrad) {
-                gluecksrad = new Gluecksrad({
-                    guildId: interaction.guild.id,
-                    pool: 10000,
-                });
+                gluecksrad = new Gluecksrad(undefined, interaction.guild.id, 10000, 0);
             }
             let gewinnchance = 30 + ((gluecksrad.pool - 10000) / 5000);
             if (gewinnchance > 75) {
@@ -100,7 +96,7 @@ module.exports = {
                     gluecksrad.sonderpool = 0;
                 }
             }
-            await gluecksrad.save();
+            await gluecksradDAO.update(gluecksrad);
         } catch (error) {
             console.log(error);
         }

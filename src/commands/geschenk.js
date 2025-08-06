@@ -1,8 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const removeMoney = require('../utils/removeMoney');
 const giveMoney = require('../utils/giveMoney');
-const GameUser = require('../models/GameUser');
-require('../models/Bankkonten');
+const { bankkontenDAO } = require('../utils/initializeDB');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -45,8 +44,8 @@ module.exports = {
                 return;
             }
             let geldMenge = interaction.options.get('geldmenge').value;
-            const user = await GameUser.findOne({ userId: interaction.user.id, guildId: interaction.guild.id }).populate('bankkonto');
-            if (!user || !user.bankkonto || user.bankkonto.currentMoney < geldMenge) {
+            const bankkonto = await bankkontenDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+            if (!bankkonto || bankkonto.currentMoney < geldMenge) {
                 interaction.editReply(`Du hast nicht genug Blattläuse, um ${geldMenge} Blattläuse zu verschenken!`);
                 return;
             }

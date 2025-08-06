@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
-const Level = require('../models/Level');
+const { levelDAO } = require('../utils/initializeDB');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -24,18 +24,11 @@ module.exports = {
     const farbe = interaction.options.get('farbe').value;
     const hexregex = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
     if (farbe.match(hexregex)) {
-      const query = {
-        userId: interaction.user.id,
-        guildId: interaction.guild.id,
-      };
       try {
-        const level = await Level.findOne(query);
+        const level = await levelDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
         if (level) {
           level.color = farbe;
-          await level.save().catch((e) => {
-            console.log(`Error saving updated level ${e}`);
-            return;
-          });
+          await levelDAO.update(level);
           await interaction.editReply(`Farbe erfolgreich geaendert.`);
         } else {
           await interaction.editReply(`Du bist noch nicht in der DB, chatte mal bisschen.`);
