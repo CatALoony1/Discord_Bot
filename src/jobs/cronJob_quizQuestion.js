@@ -1,8 +1,7 @@
 const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
-const Questions = require('../models/QuizQuestion');
-const QuizStats = require('../models/QuizStats');
+const { quizQuestionDAO, quizStatsDAO } = require('../utils/initializeDB');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -44,10 +43,7 @@ async function jobFunction(client) {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     try {
         var targetChannel = await client.channels.fetch(process.env.QUIZ_ID);
-        const oldQuestions = await Questions.find({
-            guildId: process.env.GUILD_ID,
-            asked: 'J',
-        });
+        const oldQuestions = await quizQuestionDAO.getAllAsked(guild.id);
         if (oldQuestions.length != 0) {
             for (let i = 0; i < oldQuestions.length; i++) {
                 let now = new Date();
@@ -67,15 +63,10 @@ async function jobFunction(client) {
                 }
             }
         }
-        await Questions.deleteMany({
-            asked: 'J',
-        });
+        await quizQuestionDAO.deleteMany(oldQuestions.map(q => q._id));
 
-        const fetchedQuestions = await Questions.find({
-            guildId: process.env.GUILD_ID,
-            asked: 'N',
-        });
-        if (fetchedQuestions.length != 0) {
+        const fetchedQuestions = await quizQuestionDAO.getAllUnasked(guild.id);
+        if (fetchedQuestions && fetchedQuestions.length != 0) {
             const questionIndex = getRandom(1, fetchedQuestions.length) - 1;
             var wrongAnswers = fetchedQuestions[questionIndex].wrong.split('/');
             var answers = [];
@@ -90,13 +81,10 @@ async function jobFunction(client) {
                 }
             }
             let questionUser = fetchedQuestions[questionIndex].participants[0];
-            const stats = await QuizStats.findOne({
-                guildId: process.env.GUILD_ID,
-                userId: questionUser,
-            });
+            const stats = await quizStatsDAO.getOneByUserAndGuild(questionUser, guild.id);
             if (stats) {
                 stats.lastParticipation = Date.now();
-                await stats.save();
+                await quizStatsDAO.update(stats);
             }
             var rightChar = 'A';
             const questionEmbed = new Discord.EmbedBuilder();
@@ -156,17 +144,10 @@ async function jobFunction(client) {
                 components: [firstRow]
             });
 
-            const fetchedQuestion = await Questions.findOne({
-                guildId: process.env.GUILD_ID,
-                questionId: fetchedQuestions[questionIndex].questionId,
-            });
-            fetchedQuestion.asked = 'J';
-            fetchedQuestion.started = Date.now();
-            fetchedQuestion.rightChar = rightChar;
-            await fetchedQuestion.save().catch((e) => {
-                console.log(`Error saving updated question ${e}`);
-                return;
-            });
+            fetchedQuestions[questionIndex].asked = 'J';
+            fetchedQuestions[questionIndex].started = Date.now();
+            fetchedQuestions[questionIndex].rightChar = rightChar;
+            await quizQuestionDAO.update(fetchedQuestions[questionIndex]);
         } else {
             targetChannel.send('Es gibt leider keine unbeantworteten Fragen.');
         }

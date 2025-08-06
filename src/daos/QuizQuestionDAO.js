@@ -113,5 +113,49 @@ class QuizQuestionDAO extends BaseDAO {
         }));
         return await super.updateMany(dataToSave);
     }
+
+    async getAllUnasked(guildId) {
+        return new Promise((resolve, reject) => {
+            const today = new Date();
+            const sql = `SELECT * FROM ${super.tableName} WHERE guildId = ? AND asked = 'N'`;
+            this.db.all(sql, [guildId], (err, rows) => {
+                if (err) {
+                    console.error(`Error fetching unasked Questions from ${this.tableName}:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(rows.map(this._mapRowToModel));
+                }
+            });
+        });
+    }
+
+    async getAllAsked(guildId) {
+        return new Promise((resolve, reject) => {
+            const today = new Date();
+            const sql = `SELECT * FROM ${super.tableName} WHERE guildId = ? AND asked = 'J'`;
+            this.db.all(sql, [guildId], (err, rows) => {
+                if (err) {
+                    console.error(`Error fetching unasked Questions from ${this.tableName}:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(rows.map(this._mapRowToModel));
+                }
+            });
+        });
+    }
+
+    async getCountUnasked(guildId) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT COUNT(*) as count FROM ${super.tableName} WHERE guildId = ? AND asked = 'N'`;
+            this.db.get(sql, [guildId], (err, row) => {
+                if (err) {
+                    console.error(`Error counting unasked Questions from ${this.tableName}:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(row.count);
+                }
+            });
+        });
+    }
 }
 module.exports = QuizQuestionDAO;

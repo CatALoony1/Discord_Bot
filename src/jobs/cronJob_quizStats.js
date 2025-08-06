@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonStyle, ButtonBuilder, EmbedBuilder } = require('discord.js');
 const createQuizLeaderboardEmbeds = require("../utils/createQuizLeaderboardEmbeds");
 const cron = require('node-cron');
-const QuizQuestions = require('../models/QuizQuestion');
+const { quizQuestionDAO } = require('../utils/initializeDB');
 
 let quizStatsJob = null;
 
@@ -55,15 +55,14 @@ async function jobFunction(client) {
             components: [firstRow]
         });
 
-        const fetchedQuestions = await QuizQuestions.find({
-            guildId: process.env.GUILD_ID,
-            asked: 'N',
-        });
-        const numberQuestions = new EmbedBuilder();
-        numberQuestions.setColor(0x868686);
-        numberQuestions.setTitle(`Anzahl der Fragen in der DB:`);
-        numberQuestions.setDescription(`${fetchedQuestions.length}`);
-        await targetChannel.send({ embeds: [numberQuestions] });
+        const unaskedQuestions = await quizQuestionDAO.getCountUnasked(process.env.GUILD_ID);
+        if (unaskedQuestions) {
+            const numberQuestions = new EmbedBuilder();
+            numberQuestions.setColor(0x868686);
+            numberQuestions.setTitle(`Anzahl der Fragen in der DB:`);
+            numberQuestions.setDescription(`${unaskedQuestions}`);
+            await targetChannel.send({ embeds: [numberQuestions] });
+        }
     } catch (error) {
         console.log(error);
     }

@@ -196,5 +196,32 @@ class BankkontenDAO extends BaseDAO {
             });
         });
     }
+
+    async getAllWithZinsen() {
+        return new Promise((resolve, reject) => {
+            const sql = `
+                SELECT
+                    b._id, b.currentMoney, b.moneyGain, b.moneyLost, b.zinsProzent, b.besitzer,
+                    gu._id AS besitzer_user_id,
+                    gu.userId AS besitzer_user_userId,
+                    gu.guildId AS besitzer_user_guildId,
+                    gu.quizadded AS besitzer_user_quizadded,
+                    gu.daily AS besitzer_user_daily,
+                    gu.weight AS besitzer_user_weight
+                FROM bankkonten b
+                LEFT JOIN game_users gu ON b.besitzer = gu._id
+                WHERE b.zinsProzent > 0;
+            `;
+            this.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    console.error(`Error fetching from ${this.tableName} by guildId:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(rows.map(this._mapJoinedRowToModel));
+                }
+            });
+        });
+    }
+
 }
 module.exports = BankkontenDAO;

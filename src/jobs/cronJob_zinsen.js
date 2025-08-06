@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const GameUser = require('../models/GameUser.js');
-const Bankkonten = require('../models/Bankkonten.js');
+const { bankkontenDAO } = require('../utils/initializeDB.js');
 
 let checkInactiveJob = null;
 
@@ -12,10 +12,9 @@ function startJob(client) {
     checkInactiveJob = cron.schedule('10 0 * * *', async function () { // 0:10 Uhr
         console.log(`CheckInactive-Job started...`);
         try {
-            const bankkontenZinsen = await Bankkonten.find({
-                zinsProzent: { $ne: 0 }
-            });
-            if (bankkontenZinsen.length > 0) {
+            const bankkontenZinsen = await bankkontenDAO.getAllWithZinsen();
+            const bankkontenToSave = [];
+            if (bankkontenZinsen && bankkontenZinsen.length > 0) {
                 for (const bankkonto of bankkontenZinsen) {
                     const user = await GameUser.findById(bankkonto.besitzer);
                     if (!user) continue;
@@ -30,8 +29,12 @@ function startJob(client) {
                     }
                     bankkonto.currentMoney += zinsen;
                     bankkonto.moneyGain += zinsen;
-                    await bankkonto.save();
+                    bankkontenToSave.push(bankkonto);
                     console.log(`Zinsen von ${zinsen} für User ${user.userId} hinzugefügt.`);
+                }
+                if (bankkontenToSave.length > 0) {
+                    await bankkontenDAO.updateMany(bankkontenToSave);
+                    console.log(`${bankkontenToSave.length} Bankkonten haben Zinsen erhalten.`);
                 }
             }
         } catch (err) {
