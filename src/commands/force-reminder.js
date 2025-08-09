@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits, InteractionContextType, MessageFlags } = require('discord.js');
-const Bump = require("../models/Bump");
+const Bump = require("../sqliteModels/Bump");
 require('dotenv').config();
+const { bumpDAO } = require('../utils/initializeDB');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -12,22 +13,18 @@ module.exports = {
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        const query = {
-            guildId: interaction.guild.id,
-        };
         try {
-            const bumpEntry = await Bump.findOne(query);
+            const bumpEntry = await bumpDAO.getOneByGuild(interaction.guild.id);
             if (bumpEntry) {
                 bumpEntry.endTime = Date.now() + 7200000;
                 bumpEntry.reminded = 'N';
-                await bumpEntry.save();
+                await bumpDAO.update(bumpEntry);
                 await interaction.editReply(`Bump Reminder erstellt!`);
             } else {
-                const newBump = new Bump({
-                    guildId: interaction.guild.id,
-                    endTime: Date.now() + 7200000,
-                });
-                await newBump.save();
+                const newBump = new Bump();
+                newBump.guildId = interaction.guild.id;
+                newBump.endTime = Date.now() + 7200000;
+                await bumpDAO.insert(newBump);
                 await interaction.editReply(`Bump Reminder erstellt!`);
             }
         } catch (error) {

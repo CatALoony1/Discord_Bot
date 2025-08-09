@@ -1,7 +1,7 @@
 require('dotenv').config();
 const cron = require('node-cron');
-const Level = require('../models/Level');
 const giveMoney = require('../utils/giveMoney');
+const { levelDAO } = require('../utils/initializeDB');
 
 let geburtstagJob = null;
 
@@ -35,23 +35,21 @@ function isRunning() {
 async function jobFunction(client) {
     var targetChannel = await client.channels.fetch(process.env.ALLGEMEIN_ID);
     const guild = await client.guilds.cache.get(process.env.GUILD_ID);
-    const allLevels = await Level.find({
-        guildId: process.env.GUILD_ID,
-    });
-    var oldUsers = [];
-    for (let j = 0; j < allLevels.length; j++) {
-        if (!(guild.members.cache.find(m => m.id === allLevels[j].userId)?.id)) {
-            oldUsers[oldUsers.length] = j;
+    const allLevels = await levelDAO.getAllBirthdayTodayByGuild(process.env.GUILD_ID);
+    if (allLevels && allLevels.length > 0) {
+        var oldUsers = [];
+        for (let j = 0; j < allLevels.length; j++) {
+            if (!(guild.members.cache.find(m => m.id === allLevels[j].userId)?.id)) {
+                oldUsers[oldUsers.length] = j;
+            }
         }
-    }
-    for (let j = 0; j < oldUsers.length; j++) {
-        allLevels.splice(oldUsers[j] - j, 1);
-    }
-    for (const level of allLevels) {
-        if (level.geburtstag) {
-            const birthdayDate = new Date(level.geburtstag);
-            const today = new Date();
-            if (birthdayDate.getDate() === today.getDate() && birthdayDate.getMonth() === today.getMonth()) {
+        for (let j = 0; j < oldUsers.length; j++) {
+            allLevels.splice(oldUsers[j] - j, 1);
+        }
+        if (allLevels.length > 0) {
+            for (const level of allLevels) {
+                const birthdayDate = new Date(level.geburtstag);
+                const today = new Date();
                 const age = today.getFullYear() - birthdayDate.getFullYear();
                 targetChannel.send(`Herzlichen Glückwunsch an <@${level.userId}>! Heute ist dein Geburtstag und du bist jetzt ${age} Jahre alt! 🎉`);
                 giveMoney(guild.members.cache.get(level.userId), 50000).catch((error) => {

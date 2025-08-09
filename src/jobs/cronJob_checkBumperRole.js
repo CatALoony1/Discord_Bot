@@ -1,6 +1,6 @@
 require('dotenv').config();
 const cron = require('node-cron');
-const Level = require('../models/Level');
+const { levelDAO } = require('../utils/initializeDB');
 
 let checkBumperRoleJob = null;
 
@@ -12,9 +12,7 @@ function startJob(client) {
     checkBumperRoleJob = cron.schedule('*/5 * * * *', async function () {
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
-            const allLevels = await Level.find({
-                guildId: process.env.GUILD_ID,
-            });
+            const allLevels = await levelDAO.getAllByGuild(process.env.GUILD_ID);
             for (const level of allLevels) {
                 if (level.lastBump) {
                     let now = new Date();

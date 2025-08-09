@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
-const Lottozahlen = require('../models/Lottozahlen');
+const Lottozahlen = require('../sqliteModels/Lottozahlen');
 const giveMoney = require('../utils/giveMoney');
-const GameUser = require('../models/GameUser');
+const { lottozahlenDAO, gameUserDAO } = require('../utils/initializeDB');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,43 +26,23 @@ module.exports = {
         const targetUserId = interaction.member.id;
         const targetUserObj = interaction.member;
         if (subcommand == 'lotto') {
-            const latestLotto = await Lottozahlen.findOne({ guildId: interaction.guild.id, userId: targetUserId })
-                .sort({ drawnTime: -1 });
-            if (latestLotto) {
-                const drawnTime = latestLotto.drawnTime;
-                const heute = new Date();
-                heute.setHours(0, 0, 0, 0);
-                const drawnTimeDatum = new Date(drawnTime);
-                drawnTimeDatum.setHours(0, 0, 0, 0);
-                if (drawnTimeDatum.getTime() >= heute.getTime()) {
-                    interaction.editReply("Du darfst nur 1x täglich Lotto spielen!");
-                    return;
-                }
+            const playedToday = await lottozahlenDAO.checkUserPlayedToday(targetUserId, interaction.guild.id);
+            if (playedToday) {
+                interaction.editReply("Du darfst nur 1x täglich Lotto spielen!");
+                return;
             }
-            const allLotto = await Lottozahlen.find({ guildId: interaction.guild.id });
             var lottozahl = -1;
-            if (allLotto && allLotto.length > 0) {
-                const lottozahlenArray = allLotto.map(dokument => dokument.lottozahl);
-                console.time("Lottozahlgenerierung");
-                let counter = 0;
-                do {
-                    lottozahl = Math.floor(Math.random() * 140000000);
-                    counter++;
-                } while (lottozahlenArray.includes(lottozahl));
-                console.timeEnd("Lottozahlgenerierung");
-                console.log(`Lottozahl ${lottozahl} was generated after ${counter} tries`);
-            } else {
+            console.time("Lottozahlgenerierung");
+            let counter = 0;
+            do {
                 lottozahl = Math.floor(Math.random() * 140000000);
-            }
+                counter++;
+            } while (await lottozahlenDAO.checkLottozahlExists(lottozahl, interaction.guild.id));
+            console.timeEnd("Lottozahlgenerierung");
+            console.log(`Lottozahl ${lottozahl} was generated after ${counter} tries`);
             var moneyToGive = 0;
             if (lottozahl != 0) {
-                const newLottozahl = new Lottozahlen({
-                    guildId: interaction.guild.id,
-                    userId: targetUserId,
-                    drawnTime: new Date(),
-                    lottozahl: lottozahl,
-                });
-                await newLottozahl.save();
+                await lottozahlenDAO.insert(new Lottozahlen(undefined, interaction.guild.id, new Date(), lottozahl, targetUserId));
                 var anzahlNullen = 0;
                 if ((lottozahl % 10000000) === 0) {
                     moneyToGive = 2000000;
@@ -95,7 +75,7 @@ module.exports = {
                     interaction.editReply(`Du hast diesmal nicht den Jackpot geknackt, aber du hast eine Zahl die mit ${anzahlNullen} Nullen endet und erhälst somit ${moneyToGive} Blattläuse. Deine Zahl war die ${lottozahl}`);
                 }
             } else {
-                await Lottozahlen.deleteMany({ guildId: interaction.guild.id });
+                await lottozahlenDAO.deleteManyByGuildID(interaction.guild.id);
                 interaction.editReply(`Glückwunsch <@${targetUserId}> du hast den Jackpot mit der Zahl ${lottozahl} geknackt und erhälst somit 1.000.000 XP`);
                 moneyToGive = 10000000;
                 let lottoRole = interaction.guild.roles.cache.find(role => role.name === 'Lottogewinner');
@@ -104,7 +84,7 @@ module.exports = {
             }
             await giveMoney(targetUserObj, moneyToGive);
         } else if (subcommand == 'bonus') {
-            const user = await GameUser.findOne({ userId: targetUserId, guildId: interaction.guild.id });
+            const user = await gameUserDAO.getOneByUserAndGuild(targetUserId, interaction.guild.id);
             if ((user && ((user.daily && user.daily.toDateString() !== new Date().toDateString()) || !user.daily)) || !user) {
                 let bonusAmount = 1500;
                 bonusAmount = await giveMoney(targetUserObj, bonusAmount, false, true);

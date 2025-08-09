@@ -21,5 +21,19 @@ class ConfigDAO extends BaseDAO {
         const rows = await super.getAll();
         return rows.map(this._mapRowToModel);
     }
+
+    async getOneByKeyAndGuild(key, guildId){
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM ${super.tableName} WHERE key = ? AND guildId = ?`;
+            this.db.get(sql, [key, guildId], (err, row) => {
+                if (err) {
+                    console.error(`Error fetching from ${this.tableName} by key and guildId:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(this._mapRowToModel(row));
+                }
+            });
+        });
+    }
 }
 module.exports = ConfigDAO;

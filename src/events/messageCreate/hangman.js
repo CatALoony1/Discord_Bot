@@ -1,8 +1,8 @@
-const Hangman = require("../../models/Hangman");
 require('dotenv').config();
 const { Message, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const path = require('node:path');
 const giveMoney = require("../../utils/giveMoney");
+const { hangmanDAO } = require('../../utils/initializeDB');
 
 function maskiereWort(wort, gerateneBuchstaben) {
     const woerter = wort.split(' ');
@@ -27,7 +27,7 @@ module.exports = async (message) => {
     if (!message.inGuild() || message.author.bot || message.channel.id !== process.env.SPIELE_ID || message.webhookId || !message.reference) return;
     try {
         const referencedMessage = await message.channel.messages.fetch(message.reference.messageId);
-        const hangman = await Hangman.findOne({ messageId: referencedMessage.id });
+        const hangman = await hangmanDAO.getOneByMessageId(referencedMessage.id);
         if (!hangman) return;
         if (hangman.status === 'beendet') {
             await message.reply('Das Spiel ist bereits beendet!');
@@ -64,7 +64,6 @@ module.exports = async (message) => {
                     .setDescription(`Verloren! Das Wort war: **${hangman.word}**\n\nBuchstaben: ${hangman.buchstaben.join(', ')}\n\nTeilnehmer: ${hangman.participants.join(', ')}`)
                     .setThumbnail('attachment://hangman8.png');
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
-                await hangman.save();
             } else {
                 const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
                 const leerzeichen = maskiereWort(hangman.word, hangman.buchstaben);
@@ -75,7 +74,6 @@ module.exports = async (message) => {
                     .setDescription(`${leerzeichen}\n\n${hangman.word.replaceAll(' ', '').length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
                     .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
-                await hangman.save();
             }
         } else if (hangman.word === guessedLetter) {
             hangman.buchstaben = hangman.buchstaben.filter(letter => letter !== guessedLetter);
@@ -89,7 +87,6 @@ module.exports = async (message) => {
                 .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
             await referencedMessage.edit({ embeds: [embed], files: [file] });
             giveMoney(message.member, 500);
-            await hangman.save();
         } else {
             const allLettersFound = hangman.word.replaceAll(' ', '').split('').every(letter => hangman.buchstaben.includes(letter));
             if (allLettersFound) {
@@ -103,7 +100,6 @@ module.exports = async (message) => {
                     .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
                 giveMoney(message.member, 500);
-                await hangman.save();
             } else {
                 const leerzeichen = maskiereWort(hangman.word, hangman.buchstaben);
                 const file = new AttachmentBuilder(path.join(__dirname, `../../../img/hangman${hangman.fehler}.png`));
@@ -114,9 +110,9 @@ module.exports = async (message) => {
                     .setDescription(`${leerzeichen}\n\n${hangman.word.replaceAll(' ', '').length} Buchstaben\nBuchstaben: ${hangman.buchstaben.join(', ')}\nFehler: ${hangman.fehler}/8`)
                     .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
                 await referencedMessage.edit({ embeds: [embed], files: [file] });
-                await hangman.save();
             }
         }
+        await hangmanDAO.update(hangman);
         await message.delete();
     } catch (error) {
         console.log(error);

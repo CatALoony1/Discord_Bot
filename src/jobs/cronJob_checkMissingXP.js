@@ -1,6 +1,6 @@
 const cron = require('node-cron');
-const Level = require('../models/Level');
 require('dotenv').config();
+const { levelDAO } = require('../utils/initializeDB');
 
 let missingXpJob = null;
 
@@ -12,10 +12,9 @@ function startJob(client) {
     missingXpJob = cron.schedule('*/6 * * * *', async function () {
         console.log('Started checking for missing XP');
         try {
-            const fetchedLevel = await Level.find({
-                guildId: process.env.GUILD_ID,
-            });
+            const fetchedLevel = await levelDAO.getAllByGuild(process.env.GUILD_ID);
             let missingXPUsers = [];
+            const levelToUpdate = [];
             fetchedLevel.forEach(async level => {
                 const xpToHave = ((level.level * (level.level + 1)) / 2 * 100) + level.xp;
                 if (level.allxp != xpToHave) {
@@ -29,9 +28,12 @@ function startJob(client) {
                         level.allxp += missingXP;
                     }
                     missingXPUsers[missingXPUsers.length] = level.userName;
-                    await level.save();
+                    levelToUpdate.push(level);
                 }
             });
+            if (levelToUpdate.length > 0) {
+                await levelDAO.updateMany(levelToUpdate);
+            }
             if (missingXPUsers.length > 0) {
                 const targetChannel = await client.channels.fetch(process.env.LOG_ID);
                 targetChannel.send(`Missing XP for users: ${missingXPUsers.join(', ')}`);

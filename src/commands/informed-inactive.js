@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, PermissionFlagsBits, MessageFlags } = require('discord.js');
-const Config = require('../models/Config');
+const { configDAO } = require('../utils/initializeDB');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -42,10 +42,7 @@ module.exports = {
             return;
         }
         const targetUserObj = await interaction.guild.members.fetch(targetUserId);
-        const config = await Config.findOne({
-            key: 'away',
-            guildId: interaction.guild.id,
-        });
+        const config = await configDAO.getOneByKeyAndGuild('away', interaction.guild.id);
         if (subcommand == 'add') {
             if (config.value.includes(targetUserObj.user.tag)) {
                 await interaction.editReply(`Der User ${targetUserObj.user.tag} ist bereits einetragen.`);
@@ -55,7 +52,7 @@ module.exports = {
                 } else {
                     config.value = `${targetUserObj.user.tag}`;
                 }
-                await config.save();
+                await configDAO.update(config);
                 await interaction.editReply(`Der User ${targetUserObj.user.tag} wurde einetragen.`);
             }
         } else if (subcommand == 'remove') {
@@ -63,7 +60,7 @@ module.exports = {
                 let away = config.value.split(',');
                 away.splice(away.indexOf(targetUserObj.user.tag), 1);
                 config.value = away.toString();
-                await config.save();
+                await configDAO.update(config);
                 await interaction.editReply(`Der User ${targetUserObj.user.tag} wurde entfernt.`);
             } else {
                 await interaction.editReply(`Der User ${targetUserObj.user.tag} ist gar nicht einetragen.`);

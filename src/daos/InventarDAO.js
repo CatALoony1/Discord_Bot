@@ -1,15 +1,18 @@
 // daos/InventarDAO.js
 const BaseDAO = require('./BaseDAO');
-const Inventar = require('../models/Inventar');
-const GameUser = require('../models/GameUser');
-const Items = require('../models/Items'); // Importieren Sie das Items Model
+const Inventar = require('../sqliteModels/Inventar');
+const GameUser = require('../sqliteModels/GameUser');
+const { itemsDAO } = require('../utils/initializeDB.js');
 
 class InventarDAO extends BaseDAO {
-    static gameUserDAO;
-    static itemsDAO;
 
     constructor(db) {
         super(db, 'inventare');
+    }
+
+    _mapRowToModel(row) {
+        if (!row) return null;
+        return new Inventar(row._id, row.besitzer, JSON.parse(row.items || '[]'));
     }
 
     _mapJoinedRowToModel(row) {
@@ -44,11 +47,12 @@ class InventarDAO extends BaseDAO {
         const populatedItems = [];
         for (const itemEntry of inventar.items) {
             const itemId = itemEntry.itemId || itemEntry.item;
-            if (itemId && InventarDAO.itemsDAO) { // Prüfen, ob itemsDAO gesetzt ist
-                const fullItem = await InventarDAO.itemsDAO.getById(itemId);
+            if (itemId && itemsDAO) { // Prüfen, ob itemsDAO gesetzt ist
+                const fullItem = await itemsDAO.getById(itemId);
                 if (fullItem) {
                     populatedItems.push({
-                        amount: itemEntry.amount,
+                        itemId: itemId,
+                        quantity: itemEntry.quantity,
                         itemObj: fullItem
                     });
                 } else {
@@ -128,28 +132,50 @@ class InventarDAO extends BaseDAO {
         // Sicherstellen, dass inventar.items ein Array ist, auch wenn null/undefined
         const itemsToProcess = Array.isArray(inventar.items) ? inventar.items : [];
 
-        // Beim Speichern nur die itemId und amount speichern, nicht das ganze Item-Objekt
+        // Beim Speichern nur die itemId und quantity speichern, nicht das ganze Item-Objekt
         const itemsToStore = itemsToProcess.map(entry => ({
             itemId: entry.itemObj ? entry.itemObj._id : entry.itemId,
-            amount: entry.amount
+            quantity: entry.quantity
         }));
 
         const dataToSave = {
             _id: inventar._id,
             besitzer: inventar.besitzer,
-            items: JSON.stringify(itemsToStore) // JSON.stringify das Array von { itemId, amount }
+            items: JSON.stringify(itemsToStore) // JSON.stringify das Array von { itemId, quantity }
         };
         return await super.insert(dataToSave);
+    }
+
+    /**
+     * Fügt mehrere Inventar-Objekte ein.
+     * Serialisiert die `items` und ruft dann super.insertMany auf.
+     * @param {Array<Inventar>} inventare - Eine Liste von Inventar-Objekten.
+     * @returns {Promise<number>} - Die Anzahl der eingefügten Zeilen.
+     */
+    async insertMany(inventare) {
+        const dataToSave = inventare.map(inv => {
+            const itemsToProcess = Array.isArray(inv.items) ? inv.items : [];
+            const itemsToStore = itemsToProcess.map(entry => ({
+                itemId: entry.itemObj ? entry.itemObj._id : entry.itemId,
+                quantity: entry.quantity
+            }));
+            return {
+                _id: inv._id,
+                besitzer: inv.besitzer,
+                items: JSON.stringify(itemsToStore)
+            };
+        });
+        return await super.insertMany(dataToSave);
     }
 
     async update(inventar) {
         // Sicherstellen, dass inventar.items ein Array ist, auch wenn null/undefined
         const itemsToProcess = Array.isArray(inventar.items) ? inventar.items : [];
 
-        // Beim Speichern nur die itemId und amount speichern, nicht das ganze Item-Objekt
+        // Beim Speichern nur die itemId und quantity speichern, nicht das ganze Item-Objekt
         const itemsToStore = itemsToProcess.map(entry => ({
             itemId: entry.itemObj ? entry.itemObj._id : entry.itemId,
-            amount: entry.amount
+            quantity: entry.quantity
         }));
 
         const dataToSave = {
@@ -158,6 +184,94 @@ class InventarDAO extends BaseDAO {
             items: JSON.stringify(itemsToStore)
         };
         return await super.update(dataToSave);
+    }
+
+    /**
+     * Aktualisiert mehrere Inventar-Objekte.
+     * Serialisiert die `items` und ruft dann super.updateMany auf.
+     * @param {Array<Inventar>} inventare - Eine Liste von Inventar-Objekten.
+     * @returns {Promise<number>} - Die Anzahl der aktualisierten Zeilen.
+     */
+    async updateMany(inventare) {
+        const dataToSave = inventare.map(inv => {
+            const itemsToProcess = Array.isArray(inv.items) ? inv.items : [];
+            const itemsToStore = itemsToProcess.map(entry => ({
+                itemId: entry.itemObj ? entry.itemObj._id : entry.itemId,
+                quantity: entry.quantity
+            }));
+            return {
+                _id: inv._id,
+                besitzer: inv.besitzer,
+                items: JSON.stringify(itemsToStore)
+            };
+        });
+        return await super.updateMany(dataToSave);
+    }
+
+    async getOneByUserAndGuild(userId, guildId) {
+        const sql = `
+            SELECT
+                i._id, i.besitzer, i.items,
+                gu._id AS besitzer_user_id,
+                gu.userId AS besitzer_user_userId,
+                gu.guildId AS besitzer_user_guildId,
+                gu.quizadded AS besitzer_user_quizadded,
+                gu.daily AS besitzer_user_daily,
+                gu.weight AS besitzer_user_weight
+            FROM inventare i
+            LEFT JOIN game_users gu ON i.besitzer = gu._id
+            WHERE gu.userId = ? AND gu.guildId = ?;
+        `;
+        return new Promise((resolve, reject) => {
+            this.db.get(sql, [userId, guildId], async (err, row) => {
+                if (err) {
+                    console.error('Error fetching inventar by ID with JOIN:', err.message);
+                    reject(err);
+                } else {
+                    const inventar = this._mapJoinedRowToModel(row);
+                    if (inventar) {
+                        await this._populateItems(inventar);
+                    }
+                    resolve(inventar);
+                }
+            });
+        });
+    }
+
+    /**
+     * Gibt das Inventar zu einem Besitzer zurück, jedoch ohne das Besitzer-Objekt.
+     *
+     * @param {String} besitzerId
+     * @returns
+     */
+    async getOneByBesitzer(besitzerId) {
+        const sql = `
+            SELECT
+                i._id, i.besitzer, i.items,
+                gu._id AS besitzer_user_id,
+                gu.userId AS besitzer_user_userId,
+                gu.guildId AS besitzer_user_guildId,
+                gu.quizadded AS besitzer_user_quizadded,
+                gu.daily AS besitzer_user_daily,
+                gu.weight AS besitzer_user_weight
+            FROM inventare i
+            LEFT JOIN game_users gu ON i.besitzer = gu._id
+            WHERE i.besitzer = ?;
+        `;
+        return new Promise((resolve, reject) => {
+            this.db.get(sql, [besitzerId], async (err, row) => {
+                if (err) {
+                    console.error('Error fetching inventar by ID with JOIN:', err.message);
+                    reject(err);
+                } else {
+                    const inventar = this._mapRowToModel(row);
+                    if (inventar) {
+                        await this._populateItems(inventar);
+                    }
+                    resolve(inventar);
+                }
+            });
+        });
     }
 }
 module.exports = InventarDAO;

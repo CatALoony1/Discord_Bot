@@ -1,7 +1,7 @@
 require('dotenv').config();
 const cron = require('node-cron');
-const ActiveItems = require('../models/ActiveItems.js');
-const Config = require('../models/Config.js');
+const Config = require('../sqliteModels/Config.js');
+const { activeItemsDAO, configDAO } = require('../utils/initializeDB.js');
 const removeMoney = require('../utils/removeMoney.js');
 const giveMoney = require('../utils/giveMoney.js');
 const getTenorGifById = require('../utils/getTenorGifById.js');
@@ -17,13 +17,14 @@ function startJob(client) {
     checkActiveItemsJob = cron.schedule('*/5 * * * *', async function () {
         try {
             const guild = await client.guilds.cache.get(process.env.GUILD_ID);
-            const activeItems = await ActiveItems.find({});
+            const activeItems = await activeItemsDAO.getAll();
             const targetChannel = guild.channels.cache.get(process.env.SPIELE_ID) || (await guild.channels.fetch(process.env.SPIELE_ID));
             const mainChannel = guild.channels.cache.get(process.env.ALLGEMEIN_ID) || (await guild.channels.fetch(process.env.ALLGEMEIN_ID));
             const toBeDeleted = [];
             if (activeItems.length > 0) {
                 for (const activeItem of activeItems) {
                     if (activeItem.endTime < new Date()) {
+                        console.log(`Deleting expired active item: ${activeItem.itemType} for user ${activeItem.user}`);
                         toBeDeleted.push(activeItem._id);
                         if (activeItem.itemType == 'Bombe') {
                             const amount = getRandom(20000, 40000);
@@ -46,12 +47,12 @@ function startJob(client) {
                                     });
                             }
                         } else if (activeItem.itemType == 'Doppelte XP') {
-                            const xpMultiplier = await Config.findOne({ key: 'xpMultiplier', guildId: guild.id });
+                            const xpMultiplier = await configDAO.getOneByKeyAndGuild('xpMultiplier', guild.id);
                             if (!xpMultiplier) {
-                                await Config.create({ name: 'key', value: 1, guildId: guild.id });
+                                configDAO.insert(new Config(null, guild.id, 'xpMultiplier', '1'));
                             } else {
                                 xpMultiplier.value = '1';
-                                await xpMultiplier.save();
+                                await configDAO.update(xpMultiplier);
                             }
                             await mainChannel.send('Die Doppelte XP sind nun abgelaufen.');
                         } else if (activeItem.itemType == 'Schuldschein') {
@@ -68,7 +69,7 @@ function startJob(client) {
                     } else if (activeItem.itemType == 'Schuldschein') {
                         if (activeItem.extras != new Date().toLocaleDateString()) {
                             activeItem.extras = new Date().toLocaleDateString();
-                            activeItem.save();
+                            await activeItemsDAO.update(activeItem);
                             const userObj = await guild.members.cache.get(activeItem.user) || (await guild.members.fetch(activeItem.user));
                             const usedOnObj = await guild.members.cache.get(activeItem.usedOn) || (await guild.members.fetch(activeItem.usedOn));
                             if (userObj && usedOnObj) {
@@ -80,7 +81,8 @@ function startJob(client) {
                     }
                 }
                 if (toBeDeleted.length > 0) {
-                    await ActiveItems.deleteMany({ _id: { $in: toBeDeleted } });
+                    await activeItemsDAO.deleteMany(toBeDeleted);
+                    console.log(`Deleted ${toBeDeleted.length} expired active items.`);
                 }
             }
         } catch (error) {

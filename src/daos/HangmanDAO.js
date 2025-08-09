@@ -21,5 +21,47 @@ class HangmanDAO extends BaseDAO {
         const rows = await super.getAll();
         return rows.map(this._mapRowToModel);
     }
+
+    async getActiveByGuild(guildId) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM ${this.tableName} WHERE guildId = ? AND status = 'laufend'`;
+            this.db.get(sql, [guildId], (err, row) => {
+                if (err) {
+                    console.error(`Error fetching active hangman by guildId:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(this._mapRowToModel(row));
+                }
+            });
+        });
+    }
+
+    async deleteFinishedByGuild(guildId) {
+        return new Promise((resolve, reject) => {
+            const sql = `DELETE FROM ${this.tableName} WHERE guildId = ? AND status = 'beendet'`;
+            this.db.run(sql, [guildId], function (err) {
+                if (err) {
+                    console.error(`Error deleting finished hangman by guildId:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(this.changes);
+                }
+            });
+        });
+    }
+
+    async getOneByMessageId(messageId) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM ${this.tableName} WHERE messageId = ?`;
+            this.db.get(sql, [messageId], (err, row) => {
+                if (err) {
+                    console.error(`Error fetching hangman by messageId:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(this._mapRowToModel(row));
+                }
+            });
+        });
+    }
 }
 module.exports = HangmanDAO;

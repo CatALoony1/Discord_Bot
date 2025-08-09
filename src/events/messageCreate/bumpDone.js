@@ -1,7 +1,8 @@
-const Bump = require("../../models/Bump");
-const Level = require("../../models/Level");
+const Bump = require("../../sqliteModels/Bump");
 require('dotenv').config();
 const { Message, EmbedBuilder } = require('discord.js');
+const { bumpDAO, levelDAO } = require('../../utils/initializeDB');
+
 /**
  * 
  * @param {Message} message 
@@ -13,16 +14,13 @@ module.exports = async (message) => {
       const userid = message.interactionMetadata.user.id;
       const guildId = message.guild.id;
       const channel = message.channel;
-      const level = await Level.findOne({
-        userId: userid,
-        guildId: guildId,
-      });
+      const level = await levelDAO.getOneByUserAndGuild(userid, guildId);
       var newMessage = undefined;
+      const member = await message.guild.members.fetch(userid);
       if (level) {
         level.lastBump = new Date();
         level.bumps += 1;
-        level.save();
-        const member = await message.guild.members.fetch(userid);
+        await levelDAO.update(level);
         if (!member.roles.cache.some(role => role.name === 'Bumper')) {
           const role = message.guild.roles.cache.find(role => role.name === 'Bumper');
           await member.roles.add(role);
@@ -33,10 +31,14 @@ module.exports = async (message) => {
           .setThumbnail(member.user.displayAvatarURL({ format: 'png', dynamic: true }))
           .setColor(0x0033cc);
         newMessage = await channel.send({ embeds: [embed] });
+      } else {
+        const embed = new EmbedBuilder()
+          .setTitle('Dankeschön für deine Untersützung!❤️')
+          .setDescription(`Danke <@${userid}>, dass du den Server gebumpt hast. Ohne je eine Nachricht geschrieben zu haben, können wir dir keinen Bonus geben. Schreibe eine Nachricht um beim nächsten mal einen Bonus zu erhalten!`)
+          .setThumbnail(member.user.displayAvatarURL({ format: 'png', dynamic: true }))
+          .setColor(0x0033cc);
+        newMessage = await channel.send({ embeds: [embed] });
       }
-      const query = {
-        guildId: guildId,
-      };
       var messageToReact = undefined;
       if (newMessage != undefined) {
         messageToReact = newMessage;
@@ -45,7 +47,7 @@ module.exports = async (message) => {
         messageToReact = message;
       }
       try {
-        const bumpEntry = await Bump.findOne(query);
+        const bumpEntry = await bumpDAO.getOneByGuild(guildId);
         if (bumpEntry) {
           bumpEntry.endTime = Date.now() + 7200000;
           bumpEntry.reminded = 'N';
@@ -54,15 +56,14 @@ module.exports = async (message) => {
             await remindedmessage.delete();
             bumpEntry.remindedId = undefined;
           }
-          bumpEntry.save();
+          await bumpDAO.update(bumpEntry);
           console.log('Bump entry updated');
           messageToReact.react("⏰");
         } else {
-          const newBump = new Bump({
-            guildId: guildId,
-            endTime: Date.now() + 7200000,
-          });
-          await newBump.save();
+          const newBump = new Bump();
+          newBump.setGuildId(guildId);
+          newBump.setEndTime(Date.now() + 7200000);
+          await bumpDAO.insert(newBump);
           console.log('Bump entry created');
           messageToReact.react("⏰");
         }

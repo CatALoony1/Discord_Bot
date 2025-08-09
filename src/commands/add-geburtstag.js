@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
-const Level = require('../models/Level');
+const { levelDAO } = require('../utils/initializeDB');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -40,18 +40,11 @@ module.exports = {
         const jahr = interaction.options.get('jahr').value;
         if (tag >= 1 && tag <= 31 && monat >= 1 && monat <= 12 && jahr >= 1900 && jahr <= new Date().getFullYear()) {
             const geburtstag = new Date(jahr, monat - 1, tag);
-            const query = {
-                userId: interaction.user.id,
-                guildId: interaction.guild.id,
-            };
             try {
-                const level = await Level.findOne(query);
+                const level = await levelDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
                 if (level) {
                     level.geburtstag = geburtstag;
-                    await level.save().catch((e) => {
-                        console.log(`Error saving updated geburtstag ${e}`);
-                        return;
-                    });
+                    await levelDAO.update(level);
                     await interaction.editReply(`Geburtstag erfolgreich eingetragen.`);
                 } else {
                     await interaction.editReply(`Du bist noch nicht in der DB, chatte mal bisschen.`);

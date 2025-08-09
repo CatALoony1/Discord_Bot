@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder, AttachmentBuilder } = require('discord.js');
-const Hangman = require('../models/Hangman');
+const Hangman = require('../sqliteModels/Hangman');
 const path = require('node:path');
+const { hangmanDAO } = require('../utils/initializeDB');
 
 const wordList = [
     "GROSS",
@@ -1363,12 +1364,12 @@ module.exports = {
                     return;
                 }
             }
-            const activeHangman = await Hangman.findOne({ guildId: interaction.guild.id, status: 'laufend' });
+            const activeHangman = await hangmanDAO.getActiveByGuild(interaction.guild.id);
             if (activeHangman) {
                 await interaction.editReply('Es läuft bereits ein Galgenmännchen Spiel. Bitte beende dies zuerst.');
                 return;
             }
-            await Hangman.deleteMany({ guildId: interaction.guild.id, status: 'beendet' });
+            await hangmanDAO.deleteFinishedByGuild(interaction.guild.id);
             wort = wort.replaceAll('ß', 'ss').toUpperCase();
             let leerzeichen = unterstreicheSatz(wort);
             const file = new AttachmentBuilder(path.join(__dirname, '../../img/hangman0.png'));
@@ -1379,13 +1380,12 @@ module.exports = {
                 .setDescription(`${leerzeichen}\n\n${wort.replaceAll(' ', '').length} Buchstaben`)
                 .setThumbnail(`attachment://hangman0.png`);
             const message = await interaction.editReply({ embeds: [hangman], files: [file] });
-            const hangmanData = new Hangman({
-                authorId: user.id,
-                guildId: interaction.guild.id,
-                messageId: message.id,
-                word: wort,
-            });
-            await hangmanData.save();
+            const hangmanData = new Hangman();
+            hangmanData.setAuthorId(user.id);
+            hangmanData.setGuildId(interaction.guild.id);
+            hangmanData.setMessageId(message.id);
+            hangmanData.setWord(wort);
+            await hangmanDAO.insert(hangmanData);
         } catch (error) {
             console.log(error);
         }

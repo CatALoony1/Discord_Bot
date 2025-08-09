@@ -1,14 +1,10 @@
 const { MessageFlags, StringSelectMenuBuilder, UserSelectMenuBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
-const GameUser = require('../../models/GameUser');
-require('../../models/Bankkonten');
-require('../../models/Inventar');
-const Items = require('../../models/Items');
-const Tiere = require('../../models/Tiere');
-const Config = require('../../models/Config');
-const ActiveItems = require('../../models/ActiveItems');
+const Config = require('../../sqliteModels/Config');
+const ActiveItems = require('../../sqliteModels/ActiveItems');
 const removeMoney = require('../../utils/removeMoney.js');
 const giveMoney = require('../../utils/giveMoney.js');
 const getTenorGifById = require('../../utils/getTenorGifById.js');
+const { bankkontenDAO, inventarDAO, itemsDAO, tiereDAO, configDAO, activeItemsDAO, gameUserDAO } = require('../../utils/initializeDB.js');
 
 const hugTexts = [
     (author, target) => `${author} umarmt ${target} ganz fest! Awwww! ❤️`,
@@ -358,20 +354,20 @@ module.exports = async (interaction) => {
 async function useItemTier(interaction) {
     if (interaction.customId.includes('self_select')) {
         const tierart = interaction.values[0];
-        const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
+        const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
         const randomTierOhneBesitzer = await getRandomTier(tierart);
-        if (randomTierOhneBesitzer.length === 0) {
+        if (!randomTierOhneBesitzer) {
             await interaction.update({
                 content: 'Es gibt leider keine verfügbaren Tiere dieser Art!', components: [],
                 flags: MessageFlags.Ephemeral
             });
             return;
         }
-        const itemId = user.inventar.items.findIndex(item => item.item.name === 'Tier');
-        if (user.inventar.items[itemId].quantity > 1) {
-            user.inventar.items[itemId].quantity -= 1;
-        } else if (user.inventar.items[itemId].quantity === 1) {
-            user.inventar.items.splice(itemId, 1);
+        const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Tier');
+        if (inventar.items[itemId].quantity > 1) {
+            inventar.items[itemId].quantity -= 1;
+        } else if (inventar.items[itemId].quantity === 1) {
+            inventar.items.splice(itemId, 1);
         } else {
             await interaction.update({
                 content: 'Du hast kein Tier in deinem Inventar!', components: [],
@@ -380,20 +376,18 @@ async function useItemTier(interaction) {
             return;
         }
         await interaction.update({
-            content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer[0].customName}** erhalten!`,
-            files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`],
+            content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen namen **${randomTierOhneBesitzer.customName}** erhalten!`,
+            files: [`./animals/${randomTierOhneBesitzer.pfad}.webp`],
             components: [],
             flags: MessageFlags.Ephemeral
         });
-        await Tiere.findByIdAndUpdate(
-            randomTierOhneBesitzer[0]._id,
-            { besitzer: user._id }
-        );
-        await user.inventar.save();
+        randomTierOhneBesitzer.setBesitzer(inventar.besitzerObj._id);
+        await tiereDAO.update(randomTierOhneBesitzer);
+        await inventarDAO.update(inventar);
     } else if (interaction.customId.includes('other_uselect')) {
         const targetUser = interaction.values[0];
         const tierarten = await getTierarten();
-        if (tierarten.length === 0 || tierarten[0].tierarten.length === 0) {
+        if (!tierarten || tierarten.length === 0) {
             await interaction.update({
                 content: 'Es gibt leider keine verfügbaren Tiere!', components: [],
                 flags: MessageFlags.Ephemeral
@@ -403,7 +397,7 @@ async function useItemTier(interaction) {
         const selectMenu = new StringSelectMenuBuilder()
             .setCustomId(`useItem_tier_other_select_${targetUser}`)
             .setPlaceholder('Wähle ein Tier aus')
-            .addOptions(tierarten[0].tierarten.map(tierart => ({
+            .addOptions(tierarten.map(tierart => ({
                 label: tierart,
                 value: tierart
             })));
@@ -452,38 +446,37 @@ async function useItemTier(interaction) {
         if (interaction.customId.includes('other_modal')) {
             customName = interaction.fields.getTextInputValue('rename-input');
         }
-        const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-        const targetUser = await GameUser.findOne({ userId: targetUserId });
+        const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+        const targetUser = await gameUserDAO.getOneByUserAndGuild(targetUserId, interaction.guild.id);
         const randomTierOhneBesitzer = await getRandomTier(tierart);
-        if (randomTierOhneBesitzer.length === 0) {
+        if (!randomTierOhneBesitzer) {
             await interaction.update({
                 content: 'Es gibt leider keine verfügbaren Tiere dieser Art!', components: [],
                 flags: MessageFlags.Ephemeral
             });
             return;
         }
-        const itemId = user.inventar.items.findIndex(item => item.item.name === 'Tier');
-        if (user.inventar.items[itemId].quantity > 1) {
-            user.inventar.items[itemId].quantity -= 1;
+        const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Tier');
+        if (inventar.items[itemId].quantity > 1) {
+            inventar.items[itemId].quantity -= 1;
         } else {
-            user.inventar.items.splice(itemId, 1);
+            inventar.items.splice(itemId, 1);
         }
-        user.inventar.save();
+        await inventarDAO.update(inventar);
         await interaction.update({
             content: `Du hast erfolgreich ein Tier der Art **${tierart}** mit dem tollen Namen **${customName}** an <@${targetUserId}> verschenkt!`,
-            files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`],
+            files: [`./animals/${randomTierOhneBesitzer.pfad}.webp`],
             components: [],
             flags: MessageFlags.Ephemeral
         });
         await interaction.channel.send({ content: `<@${targetUserId}> du hast ein Tier der Art **${tierart}** mit dem tollen Namen **${customName}** von <@${interaction.user.id}> erhalten!`, files: [`./animals/${randomTierOhneBesitzer[0].pfad}.webp`] });
-        customName = customName || randomTierOhneBesitzer[0].customName;
-        await Tiere.findByIdAndUpdate(
-            randomTierOhneBesitzer[0]._id,
-            { besitzer: targetUser._id, customName: customName }
-        );
+        customName = customName || randomTierOhneBesitzer.customName;
+        randomTierOhneBesitzer.setBesitzer(targetUser._id);
+        randomTierOhneBesitzer.setCustomName(customName);
+        await tiereDAO.update(randomTierOhneBesitzer);
     } else if (interaction.customId.includes('self')) {
         const tierarten = await getTierarten();
-        if (tierarten.length === 0 || tierarten[0].tierarten.length === 0) {
+        if (!tierarten || tierarten.length === 0) {
             await interaction.update({
                 content: 'Es gibt leider keine verfügbaren Tiere!', components: [],
                 flags: MessageFlags.Ephemeral
@@ -493,7 +486,7 @@ async function useItemTier(interaction) {
         const selectMenu = new StringSelectMenuBuilder()
             .setCustomId('useItem_tier_self_select')
             .setPlaceholder('Wähle ein Tier aus')
-            .addOptions(tierarten[0].tierarten.map(tierart => ({
+            .addOptions(tierarten.map(tierart => ({
                 label: tierart,
                 value: tierart
             })));
@@ -518,69 +511,22 @@ async function useItemTier(interaction) {
     }
 }
 
-
 async function getTierarten() {
-    return await Tiere.aggregate([
-        {
-            $match: {
-                $or: [
-                    { besitzer: { $exists: false } },
-                    { besitzer: null }
-                ]
-            }
-        },
-        {
-            $group: {
-                _id: "$tierart"
-            }
-        },
-        {
-            $project: {
-                _id: 0,
-                tierart: "$_id"
-            }
-        },
-        {
-            $group: {
-                _id: null,
-                tierarten: { $push: "$tierart" }
-            }
-        },
-        {
-            $project: {
-                _id: 0,
-                tierarten: 1
-            }
-        }
-    ]);
+    return await tiereDAO.getTierartenOhneBesitzer();
 }
 
-async function getRandomTier(tierartName) {
-    return await Tiere.aggregate([
-        {
-            $match: {
-                tierart: tierartName,
-                $or: [
-                    { besitzer: { $exists: false } },
-                    { besitzer: null }
-                ]
-            }
-        },
-        {
-            $sample: { size: 1 }
-        }
-    ]);
+async function getRandomTier(tierart) {
+    return await tiereDAO.getRandomTierOhneBesitzerByTierart(tierart);
 }
-
 
 async function useItemFarbrolle(interaction) {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Farbrolle');
-    if (user.inventar.items[itemId].quantity > 1) {
-        user.inventar.items[itemId].quantity -= 1;
-    } else if (user.inventar.items[itemId].quantity === 1) {
-        user.inventar.items.splice(itemId, 1);
+    const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+    const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Farbrolle');
+    if (inventar.items[itemId].quantity > 1) {
+        inventar.items[itemId].quantity -= 1;
+    } else if (inventar.items[itemId].quantity === 1) {
+        inventar.items.splice(itemId, 1);
     } else {
         await interaction.editReply({
             content: 'Du hast keine Farbrolle in deinem Inventar!', components: [],
@@ -588,7 +534,7 @@ async function useItemFarbrolle(interaction) {
         });
         return;
     }
-    await user.inventar.save();
+    await inventarDAO.update(inventar);
     const color = interaction.fields.getTextInputValue('useItem_farbrolle_color');
     const rolename = interaction.fields.getTextInputValue('useItem_farbrolle_name');
     let targetChannel = interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) || (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));
@@ -601,12 +547,12 @@ async function useItemFarbrolle(interaction) {
 
 async function useItemVoiceChannel(interaction) {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Voicechannel');
-    if (user.inventar.items[itemId].quantity > 1) {
-        user.inventar.items[itemId].quantity -= 1;
-    } else if (user.inventar.items[itemId].quantity === 1) {
-        user.inventar.items.splice(itemId, 1);
+    const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+    const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Voicechannel');
+    if (inventar.items[itemId].quantity > 1) {
+        inventar.items[itemId].quantity -= 1;
+    } else if (inventar.items[itemId].quantity === 1) {
+        inventar.items.splice(itemId, 1);
     } else {
         await interaction.editReply({
             content: 'Du hast keine Voicechannel in deinem Inventar!', components: [],
@@ -614,7 +560,7 @@ async function useItemVoiceChannel(interaction) {
         });
         return;
     }
-    await user.inventar.save();
+    await inventarDAO.update(inventar);
     const channelname = interaction.fields.getTextInputValue('useItem_voicechannel_name');
     let targetChannel = interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) || (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));
     await targetChannel.send(`${interaction.member} hat den Voicechannel **${channelname}** gekauft! Bitte erstellen!`);
@@ -626,12 +572,12 @@ async function useItemVoiceChannel(interaction) {
 
 async function useItemRolleNamensliste(interaction) {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Rolle (Namensliste)');
-    if (user.inventar.items[itemId].quantity > 1) {
-        user.inventar.items[itemId].quantity -= 1;
-    } else if (user.inventar.items[itemId].quantity === 1) {
-        user.inventar.items.splice(itemId, 1);
+    const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+    const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Rolle (Namensliste)');
+    if (inventar.items[itemId].quantity > 1) {
+        inventar.items[itemId].quantity -= 1;
+    } else if (inventar.items[itemId].quantity === 1) {
+        inventar.items.splice(itemId, 1);
     } else {
         await interaction.editReply({
             content: 'Du hast keine Rolle (Namensliste) in deinem Inventar!', components: [],
@@ -639,7 +585,7 @@ async function useItemRolleNamensliste(interaction) {
         });
         return;
     }
-    await user.inventar.save();
+    await inventarDAO.update(inventar);
     const channelname = interaction.fields.getTextInputValue('useItem_rolleNamensliste_name');
     let targetChannel = interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) || (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));
     await targetChannel.send(`${interaction.member} hat die Rolle (Namensliste) **${channelname}** gekauft! Bitte erstellen!`);
@@ -650,12 +596,12 @@ async function useItemRolleNamensliste(interaction) {
 }
 
 async function useItemDoppelteXp(interaction) {
-    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Doppelte XP');
-    if (user.inventar.items[itemId].quantity > 1) {
-        user.inventar.items[itemId].quantity -= 1;
-    } else if (user.inventar.items[itemId].quantity === 1) {
-        user.inventar.items.splice(itemId, 1);
+    const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+    const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Doppelte XP');
+    if (inventar.items[itemId].quantity > 1) {
+        inventar.items[itemId].quantity -= 1;
+    } else if (inventar.items[itemId].quantity === 1) {
+        inventar.items.splice(itemId, 1);
     } else {
         await interaction.update({
             content: 'Du hast kein Doppelte XP in deinem Inventar!', components: [],
@@ -663,14 +609,15 @@ async function useItemDoppelteXp(interaction) {
         });
         return;
     }
-    await user.inventar.save();
+    await inventarDAO.update(inventar);
     let alreadyActive = false;
-    const xpMultiplier = await Config.findOne({ key: 'xpMultiplier', guildId: interaction.guild.id });
+    const xpMultiplier = await configDAO.getOneByKeyAndGuild('xpMultiplier', interaction.guild.id);
     if (!xpMultiplier) {
-        await Config.create({ name: 'key', value: 2, guildId: interaction.guild.id });
+        const newConfig = new Config(undefined, interaction.guild.id, 'xpMultiplier', '2');
+        await configDAO.insert(newConfig);
     } else if (xpMultiplier.value != '2') {
         xpMultiplier.value = '2';
-        await xpMultiplier.save();
+        await configDAO.update(xpMultiplier);
     } else {
         alreadyActive = true;
     }
@@ -679,22 +626,22 @@ async function useItemDoppelteXp(interaction) {
         components: [],
         flags: MessageFlags.Ephemeral
     });
-    const activeItem = await ActiveItems.findOne({ guildId: interaction.guild.id, itemType: 'Doppelte XP' });
+    const activeItem = await activeItemsDAO.getOneByGuildAndItemType(interaction.guild.id, 'Doppelte XP');
     if (activeItem) {
         if (activeItem.endTime) {
             activeItem.endTime = new Date(activeItem.endTime.getTime() + 10800000);
-            await activeItem.save();
+            await activeItemsDAO.update(activeItem);
         } else {
             activeItem.endTime = new Date(Date.now() + 10800000);
-            await activeItem.save();
+            await activeItemsDAO.update(activeItem);
         }
         alreadyActive = true;
     } else {
-        await ActiveItems.create({
-            guildId: interaction.guild.id,
-            endTime: new Date(Date.now() + 10800000),
-            itemType: 'Doppelte XP'
-        });
+        const newActiveItem = new ActiveItems();
+        newActiveItem.setGuildId(interaction.guild.id);
+        newActiveItem.setEndTime(new Date(Date.now() + 10800000));
+        newActiveItem.setItemType('Doppelte XP');
+        await activeItemsDAO.insert(newActiveItem);
     }
     const targetChannel = interaction.guild.channels.cache.get(process.env.ALLGEMEIN_ID) || (await interaction.guild.channels.fetch(process.env.ALLGEMEIN_ID));
     if (alreadyActive) {
@@ -713,12 +660,12 @@ async function useItemObersterPlatz(interaction) {
         });
         return;
     }
-    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Oberster Platz');
-    if (user.inventar.items[itemId].quantity > 1) {
-        user.inventar.items[itemId].quantity -= 1;
-    } else if (user.inventar.items[itemId].quantity === 1) {
-        user.inventar.items.splice(itemId, 1);
+    const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+    const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Oberster Platz');
+    if (inventar.items[itemId].quantity > 1) {
+        inventar.items[itemId].quantity -= 1;
+    } else if (inventar.items[itemId].quantity === 1) {
+        inventar.items.splice(itemId, 1);
     } else {
         await interaction.update({
             content: 'Du hast kein Oberster Platz in deinem Inventar!', components: [],
@@ -726,40 +673,40 @@ async function useItemObersterPlatz(interaction) {
         });
         return;
     }
-    await user.inventar.save();
+    await inventarDAO.update(inventar);
     await interaction.member.roles.add(role);
     await interaction.update({
         content: `Du hast erfolgreich die Rolle **Oberster Platz** für 6h erhalten erhalten!`,
         components: [],
         flags: MessageFlags.Ephemeral
     });
-    const activeItem = await ActiveItems.findOne({ guildId: interaction.guild.id, itemType: 'Oberster Platz', user: interaction.user.id });
+    const activeItem = await activeItemsDAO.getOneByGuildItemTypeUser(interaction.guild.id, 'Oberster Platz', interaction.user.id);
     if (activeItem) {
         if (activeItem.endTime) {
             activeItem.endTime = new Date(activeItem.endTime.getTime() + 21600000);
-            await activeItem.save();
+            await activeItemsDAO.update(activeItem);
         } else {
             activeItem.endTime = new Date(Date.now() + 21600000);
-            await activeItem.save();
+            await activeItemsDAO.update(activeItem);
         }
     } else {
-        await ActiveItems.create({
-            guildId: interaction.guild.id,
-            endTime: new Date(Date.now() + 21600000),
-            itemType: 'Oberster Platz',
-            user: interaction.user.id
-        });
+        const newActiveItems = new ActiveItems();
+        newActiveItems.setGuildId(interaction.guild.id);
+        newActiveItems.setEndTime(new Date(Date.now() + 21600000));
+        newActiveItems.setItemType('Oberster Platz');
+        newActiveItems.setUser(interaction.user.id);
+        await activeItemsDAO.insert(newActiveItems);
     }
 }
 
-
 async function useItemBankkontoUpgrade(interaction) {
-    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } }).populate('bankkonto');
-    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Bankkonto Upgrade');
-    if (user.inventar.items[itemId].quantity > 1) {
-        user.inventar.items[itemId].quantity -= 1;
-    } else if (user.inventar.items[itemId].quantity === 1) {
-        user.inventar.items.splice(itemId, 1);
+    const bankkonto = await bankkontenDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+    const inventar = await inventarDAO.getOneByBesitzer(bankkonto.besitzerObj._id);
+    const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Bankkonto Upgrade');
+    if (inventar.items[itemId].quantity > 1) {
+        inventar.items[itemId].quantity -= 1;
+    } else if (inventar.items[itemId].quantity === 1) {
+        inventar.items.splice(itemId, 1);
     } else {
         await interaction.update({
             content: 'Du hast kein Bankkonto Upgrade in deinem Inventar!', components: [],
@@ -767,11 +714,11 @@ async function useItemBankkontoUpgrade(interaction) {
         });
         return;
     }
-    await user.inventar.save();
-    user.bankkonto.zinsProzent += 1;
-    await user.bankkonto.save();
+    await inventarDAO.update(inventar);
+    bankkonto.zinsProzent += 1;
+    await bankkontenDAO.update(bankkonto);
     await interaction.update({
-        content: `Du hast erfolgreich dein Bankkonto auf **${user.bankkonto.zinsProzent}%** Zinsen pro Tag geupgradet!`,
+        content: `Du hast erfolgreich dein Bankkonto auf **${bankkonto.zinsProzent}%** Zinsen pro Tag geupgradet!`,
         components: [],
         flags: MessageFlags.Ephemeral
     });
@@ -784,12 +731,12 @@ function getRandom(min, max) {
 }
 
 async function useItemUmarmung(interaction) {
-    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } }).populate('bankkonto');
-    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Umarmung');
-    if (user.inventar.items[itemId].quantity > 1) {
-        user.inventar.items[itemId].quantity -= 1;
-    } else if (user.inventar.items[itemId].quantity === 1) {
-        user.inventar.items.splice(itemId, 1);
+    const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+    const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Umarmung');
+    if (inventar.items[itemId].quantity > 1) {
+        inventar.items[itemId].quantity -= 1;
+    } else if (inventar.items[itemId].quantity === 1) {
+        inventar.items.splice(itemId, 1);
     } else {
         await interaction.update({
             content: 'Du hast kein Umarmung in deinem Inventar!', components: [],
@@ -797,7 +744,7 @@ async function useItemUmarmung(interaction) {
         });
         return;
     }
-    await user.inventar.save();
+    await inventarDAO.update(inventar);
     const targetUserId = interaction.values[0];
     let data = null;
     const fetch = await import('node-fetch').then(module => module.default);
@@ -821,12 +768,12 @@ async function useItemUmarmung(interaction) {
 }
 
 async function useItemKuss(interaction) {
-    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } }).populate('bankkonto');
-    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Küsse');
-    if (user.inventar.items[itemId].quantity > 1) {
-        user.inventar.items[itemId].quantity -= 1;
-    } else if (user.inventar.items[itemId].quantity === 1) {
-        user.inventar.items.splice(itemId, 1);
+    const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+    const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Küsse');
+    if (inventar.items[itemId].quantity > 1) {
+        inventar.items[itemId].quantity -= 1;
+    } else if (inventar.items[itemId].quantity === 1) {
+        inventar.items.splice(itemId, 1);
     } else {
         await interaction.update({
             content: 'Du hast kein Küsse in deinem Inventar!', components: [],
@@ -834,7 +781,7 @@ async function useItemKuss(interaction) {
         });
         return;
     }
-    await user.inventar.save();
+    await inventarDAO.update(inventar);
     const targetUserId = interaction.values[0];
     let data = null;
     const fetch = await import('node-fetch').then(module => module.default);
@@ -884,12 +831,12 @@ async function useItemBombe(interaction) {
             selectedWire = wires[getRandom(0, 4)];
         }
         const targetUserId = interaction.customId.split('_')[4];
-        const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-        const itemId = user.inventar.items.findIndex(item => item.item.name === 'Bombe');
-        if (user.inventar.items[itemId].quantity > 1) {
-            user.inventar.items[itemId].quantity -= 1;
-        } else if (user.inventar.items[itemId].quantity === 1) {
-            user.inventar.items.splice(itemId, 1);
+        const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+        const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Bombe');
+        if (inventar.items[itemId].quantity > 1) {
+            inventar.items[itemId].quantity -= 1;
+        } else if (inventar.items[itemId].quantity === 1) {
+            inventar.items.splice(itemId, 1);
         } else {
             await interaction.update({
                 content: 'Du hast keine Bombe in deinem Inventar!', components: [],
@@ -897,16 +844,16 @@ async function useItemBombe(interaction) {
             });
             return;
         }
-        await user.inventar.save();
+        await inventarDAO.update(inventar);
         const channel = interaction.channel;
-        const activeItem = await ActiveItems.create({
-            guildId: interaction.guild.id,
-            endTime: new Date(Date.now() + 43200000),
-            itemType: 'Bombe',
-            user: interaction.user.id,
-            usedOn: targetUserId,
-            extras: selectedWire
-        });
+        const activeItem = new ActiveItems();
+        activeItem.setGuildId(interaction.guild.id);
+        activeItem.setEndTime(new Date(Date.now() + 43200000));
+        activeItem.setItemType('Bombe');
+        activeItem.setUser(interaction.user.id);
+        activeItem.setUsedOn(targetUserId);
+        activeItem.setExtras(selectedWire);
+        await activeItemsDAO.insert(activeItem);
         await interaction.update({
             content: `Du hast erfolgreich eine Bombe an <@${targetUserId}> geschickt!`,
             components: [],
@@ -942,7 +889,7 @@ async function useItemBombe(interaction) {
             });
     } else if (interaction.customId.includes('bombe_defuse')) {
         const activeItemId = interaction.customId.split('_')[3];
-        const activeItem = await ActiveItems.findById(activeItemId);
+        const activeItem = await activeItemsDAO.getById(activeItemId);
         if (!activeItem || activeItem.usedOn !== interaction.user.id || activeItem.endTime < new Date()) {
             await interaction.reply({
                 content: 'Die Bombe ist entweder bereits entschärft, ist abgelaufen oder nicht für dich bestimmt!',
@@ -968,7 +915,7 @@ async function useItemBombe(interaction) {
                 components: [row]
             });
             activeItem.extras = 'defused';
-            await activeItem.save();
+            await activeItemsDAO.update(activeItem);
             return;
         } else {
             const amount = getRandom(20000, 40000);
@@ -988,12 +935,12 @@ async function useItemBombe(interaction) {
                 .catch((error) => {
                     console.error('ERROR:', error);
                 });
-            await ActiveItems.findByIdAndDelete(activeItemId);
+            await activeItemsDAO.delete(activeItemId);
             return;
         }
     } else if (interaction.customId.includes('bombe_durchsuchen')) {
         const activeItemId = interaction.customId.split('_')[3];
-        const activeItem = await ActiveItems.findById(activeItemId);
+        const activeItem = await activeItemsDAO.getById(activeItemId);
         if (!activeItem) {
             await interaction.update({
                 content: 'Die Bombe existiert nicht.',
@@ -1009,10 +956,10 @@ async function useItemBombe(interaction) {
             components: [],
             files: []
         });
-        await ActiveItems.findByIdAndDelete(activeItemId);
+        await activeItemsDAO.delete(activeItemId);
     } else if (interaction.customId.includes('bombe_beweise')) {
         const activeItemId = interaction.customId.split('_')[3];
-        const activeItem = await ActiveItems.findById(activeItemId);
+        const activeItem = await activeItemsDAO.getById(activeItemId);
         if (!activeItem) {
             await interaction.update({
                 content: 'Die Bombe existiert nicht.',
@@ -1027,7 +974,7 @@ async function useItemBombe(interaction) {
             components: [],
             files: []
         });
-        await ActiveItems.findByIdAndDelete(activeItemId);
+        await activeItemsDAO.delete(activeItemId);
     }
 }
 
@@ -1042,12 +989,12 @@ async function useItemBlattläuseKlauBanane(interaction) {
         });
         return;
     }
-    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Blattläuse-Klau-Banane');
-    if (user.inventar.items[itemId].quantity > 1) {
-        user.inventar.items[itemId].quantity -= 1;
-    } else if (user.inventar.items[itemId].quantity === 1) {
-        user.inventar.items.splice(itemId, 1);
+    const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+    const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Blattläuse-Klau-Banane');
+    if (inventar.items[itemId].quantity > 1) {
+        inventar.items[itemId].quantity -= 1;
+    } else if (inventar.items[itemId].quantity === 1) {
+        inventar.items.splice(itemId, 1);
     } else {
         await interaction.update({
             content: 'Du hast keine Blattläuse Klau Banane in deinem Inventar!', components: [],
@@ -1055,7 +1002,7 @@ async function useItemBlattläuseKlauBanane(interaction) {
         });
         return;
     }
-    await user.inventar.save();
+    await inventarDAO.update(inventar);
     const channel = interaction.channel;
     const amout = getRandom(10000, 30000);
     await removeMoney(targetMemberObject, amout);
@@ -1072,12 +1019,12 @@ async function useItemBlattläuseKlauBanane(interaction) {
 
 async function useItemSchuldschein(interaction) {
     const targetUserId = interaction.values[0];
-    const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-    const itemId = user.inventar.items.findIndex(item => item.item.name === 'Schuldschein');
-    if (user.inventar.items[itemId].quantity > 1) {
-        user.inventar.items[itemId].quantity -= 1;
-    } else if (user.inventar.items[itemId].quantity === 1) {
-        user.inventar.items.splice(itemId, 1);
+    const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+    const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Schuldschein');
+    if (inventar.items[itemId].quantity > 1) {
+        inventar.items[itemId].quantity -= 1;
+    } else if (inventar.items[itemId].quantity === 1) {
+        inventar.items.splice(itemId, 1);
     } else {
         await interaction.update({
             content: 'Du hast keinen Schuldschein in deinem Inventar!', components: [],
@@ -1085,7 +1032,7 @@ async function useItemSchuldschein(interaction) {
         });
         return;
     }
-    await user.inventar.save();
+    await inventarDAO.update(inventar);
     const channel = interaction.channel;
     await interaction.update({
         content: `Du hast erfolgreich einen Schuldschein an <@${targetUserId}> geschickt!`,
@@ -1095,24 +1042,24 @@ async function useItemSchuldschein(interaction) {
     await channel.send({
         content: `<@${targetUserId}> du hast einen Schuldschein von <@${interaction.user.id}> erhalten!`
     });
-    const schuldschein = await ActiveItems.findOne({ guildId: interaction.guild.id, itemType: 'Schuldschein', user: interaction.user.id, usedOn: targetUserId });
+    const schuldschein = await activeItemsDAO.getOneByGuildItemTypeUserUsedOn(interaction.guild.id, 'Schuldschein', interaction.user.id, targetUserId);
     if (schuldschein) {
         if (schuldschein.endTime) {
             schuldschein.endTime = new Date(schuldschein.endTime.getTime() + 604800000);
-            await schuldschein.save();
+            await activeItemsDAO.update(schuldschein);
         } else {
             schuldschein.endTime = new Date(Date.now() + 604800000);
-            await schuldschein.save();
+            await activeItemsDAO.update(schuldschein);
         }
     } else {
-        await ActiveItems.create({
-            guildId: interaction.guild.id,
-            endTime: new Date(Date.now() + 604800000),
-            itemType: 'Schuldschein',
-            user: interaction.user.id,
-            usedOn: targetUserId,
-            extras: new Date().toLocaleDateString()
-        });
+        const activeItem = new ActiveItems();
+        activeItem.setGuildId(interaction.guild.id);
+        activeItem.setEndTime(new Date(Date.now() + 604800000));
+        activeItem.setItemType('Schuldschein');
+        activeItem.setUser(interaction.user.id);
+        activeItem.setUsedOn(targetUserId);
+        activeItem.setExtras(new Date().toLocaleDateString());
+        await activeItemsDAO.insert(activeItem);
     }
 }
 
@@ -1120,9 +1067,9 @@ async function useItemKeks(interaction) {
     if (interaction.customId.includes('keks_select')) {
         const selectedAction = interaction.values[0];
         if (selectedAction == 'essen') {
-            const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-            const itemId = user.inventar.items.findIndex(item => item.item.name === 'Keks');
-            const quantity = user.inventar.items[itemId].quantity;
+            const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+            const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Keks');
+            const quantity = inventar.items[itemId].quantity;
             const options = [
                 { label: '1', value: '1' }
             ];
@@ -1168,9 +1115,9 @@ async function useItemKeks(interaction) {
         }
     } else if (interaction.customId.includes('keks_uselect')) {
         const targetUserId = interaction.values[0];
-        const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-        const itemId = user.inventar.items.findIndex(item => item.item.name === 'Keks');
-        const quantity = user.inventar.items[itemId].quantity;
+        const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+        const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Keks');
+        const quantity = inventar.items[itemId].quantity;
         const options = [
             { label: '1', value: '1' }
         ];
@@ -1213,8 +1160,8 @@ async function useItemKeks(interaction) {
             });
             return;
         }
-        const otheruser = await GameUser.findOne({ userId: targetUserId }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-        if (!otheruser || !otheruser.inventar) {
+        const otherInventar = await inventarDAO.getOneByUserAndGuild(targetUserId, interaction.guild.id);
+        if (!otherInventar) {
             await interaction.update({
                 content: 'Der Nutzer, dem du den Keks schenken möchtest, konnte nicht gefunden werden!',
                 components: [],
@@ -1222,12 +1169,12 @@ async function useItemKeks(interaction) {
             });
             return;
         }
-        const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-        const itemId = user.inventar.items.findIndex(item => item.item.name === 'Keks');
-        if (user.inventar.items[itemId].quantity > amount) {
-            user.inventar.items[itemId].quantity -= amount;
-        } else if (user.inventar.items[itemId].quantity === amount) {
-            user.inventar.items.splice(itemId, 1);
+        const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+        const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Keks');
+        if (inventar.items[itemId].quantity > amount) {
+            inventar.items[itemId].quantity -= amount;
+        } else if (inventar.items[itemId].quantity === amount) {
+            inventar.items.splice(itemId, 1);
         } else {
             await interaction.update({
                 content: 'Du hast nicht genug Kekse in deinem Inventar!',
@@ -1236,17 +1183,16 @@ async function useItemKeks(interaction) {
             });
             return;
         }
-        await user.inventar.save();
-        const item = await Items.findOne({ name: 'Keks' });
-        const itemIndex = otheruser.inventar.items.findIndex(inventarItem => inventarItem.item.equals(item._id));
+        await inventarDAO.update(inventar);
+        const item = await itemsDAO.getOneByName('Keks');
+        const itemIndex = otherInventar.items.findIndex(inventarItem => inventarItem.itemObj.equals(item._id));
         if (itemIndex !== -1) {
-            otheruser.inventar.items[itemIndex].quantity += amount;
-            await otheruser.inventar.save();
+            otherInventar.items[itemIndex].quantity += amount;
+            await inventarDAO.update(otherInventar);
         } else {
-            otheruser.inventar.items.push({ item: item._id, quantity: amount });
-            await otheruser.inventar.save();
+            otherInventar.items.push({ itemId: item._id, quantity: amount, itemObj: item });
+            await inventarDAO.update(otherInventar);
         }
-        await otheruser.inventar.save();
         await interaction.update({
             content: `Du hast ${amount} Kekse an <@${targetUserId}> geschenkt!`,
             components: [],
@@ -1258,12 +1204,12 @@ async function useItemKeks(interaction) {
         });
     } else if (interaction.customId.includes('keks_essen')) {
         const amount = parseInt(interaction.values[0]);
-        const user = await GameUser.findOne({ userId: interaction.user.id }).populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-        const itemId = user.inventar.items.findIndex(item => item.item.name === 'Keks');
-        if (user.inventar.items[itemId].quantity > amount) {
-            user.inventar.items[itemId].quantity -= amount;
-        } else if (user.inventar.items[itemId].quantity === amount) {
-            user.inventar.items.splice(itemId, 1);
+        const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+        const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Keks');
+        if (inventar.items[itemId].quantity > amount) {
+            inventar.items[itemId].quantity -= amount;
+        } else if (inventar.items[itemId].quantity === amount) {
+            inventar.items.splice(itemId, 1);
         } else {
             await interaction.update({
                 content: 'Du hast nicht genügend Kekse in deinem Inventar!', components: [],
@@ -1271,13 +1217,13 @@ async function useItemKeks(interaction) {
             });
             return;
         }
-        user.weight += (60 * amount);
-        let keksmessage = `<@${interaction.user.id}> hat ${amount} Keks(e) gemampft und wiegt nun ${user.weight / 1000}kg!`;
+        inventar.besitzerObj.weight += (60 * amount);
+        let keksmessage = `<@${interaction.user.id}> hat ${amount} Keks(e) gemampft und wiegt nun ${inventar.besitzerObj.weight / 1000}kg!`;
         if (amount == 1) {
-            keksmessage = `<@${interaction.user.id}>` + keksTexts[getRandom(0, keksTexts.length - 1)] + `\nDas Gewicht beträgt jetzt ${user.weight / 1000}kg!`;
+            keksmessage = `<@${interaction.user.id}>` + keksTexts[getRandom(0, keksTexts.length - 1)] + `\nDas Gewicht beträgt jetzt ${inventar.besitzerObj.weight / 1000}kg!`;
         }
-        await user.inventar.save();
-        await user.save();
+        await inventarDAO.update(inventar);
+        await gameUserDAO.update(inventar.besitzerObj);
         await interaction.update({
             content: `Du hast erfolgreich Keks(e) verdrückt.`,
             components: [],

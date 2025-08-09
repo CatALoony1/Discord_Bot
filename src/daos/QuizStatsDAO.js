@@ -28,5 +28,47 @@ class QuizStatsDAO extends BaseDAO {
         const rows = await super.getAll(); // Nutzt BaseDAO ohne JOIN
         return rows.map(this._mapRowToModel);
     }
+
+    async getAllByGuild(guildId) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM ${super.tableName} WHERE guildId = ?`;
+            this.db.all(sql, [guildId], (err, row) => {
+                if (err) {
+                    console.error(`Error fetching from ${this.tableName} by guildId:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(this._mapRowToModel(row));
+                }
+            });
+        });
+    }
+
+    async deleteOnyByUserAndGuild(userId, guildId) {
+        return new Promise((resolve, reject) => {
+            const sql = `DELETE FROM ${super.tableName} WHERE userId = ? AND guildId = ?`;
+            this.db.run(sql, [userId, guildId], function (err) {
+                if (err) {
+                    console.error(`Error deleting from ${this.tableName} by userId and guildId:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(this.changes); // Returns number of rows deleted
+                }
+            });
+        });
+    }
+
+    async getOneByUserAndGuild(userId, guildId) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM ${super.tableName} WHERE userId = ? AND guildId = ?`;
+            this.db.get(sql, [userId, guildId], (err, row) => {
+                if (err) {
+                    console.error(`Error fetching from ${this.tableName} by userId and guildId:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(this._mapRowToModel(row));
+                }
+            });
+        });
+    }
 }
 module.exports = QuizStatsDAO;

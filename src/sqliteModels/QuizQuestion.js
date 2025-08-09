@@ -168,7 +168,7 @@ class QuizQuestion {
     }
 
     toString() {
-        return `QuizQuestion{id=${this._id}, questionId='${this.questionId}', question='${this.question}', right='${this.right}', wrong='${this.wrong}', started=${this.started}, participants=[${this.participants.join(', ')}], asked='${this.asked}', rightChar='${this.rightChar}', answerA=${this.answerA}, answerB=${this.answerB}, answerC=${this.answerC}, answerD=${this.answerD}, guildId='${this.guildId}'}`;
+        return `QuizQuestion{id=${this._id}, question='${this.question}', right='${this.right}', wrong='${this.wrong}', started=${this.started}, participants=[${this.participants.join(', ')}], asked='${this.asked}', rightChar='${this.rightChar}', answerA=${this.answerA}, answerB=${this.answerB}, answerC=${this.answerC}, answerD=${this.answerD}, guildId='${this.guildId}'}`;
     }
 }
 

@@ -1,7 +1,7 @@
 const { MessageFlags } = require('discord.js');
-const Questions = require('../../models/QuizQuestion');
-const QuizStats = require('../../models/QuizStats');
+const QuizStats = require('../../sqliteModels/QuizStats');
 const giveMoney = require('../../utils/giveMoney');
+const { quizQuestionDAO, quizStatsDAO } = require('../../utils/initializeDB');
 
 function isYesterday(date) {
     const today = new Date();
@@ -18,9 +18,7 @@ module.exports = async (interaction) => {
     try {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         const [, rw, answer, id] = interaction.customId.split('_');
-        const fetchedQuestion = await Questions.findOne({
-            questionId: id,
-        });
+        const fetchedQuestion = await quizQuestionDAO.getById(id);
         if (fetchedQuestion) {
             const rightAnswerChar = fetchedQuestion.rightChar;
             if (fetchedQuestion.participants.includes(interaction.user.id)) {
@@ -39,11 +37,8 @@ module.exports = async (interaction) => {
             } else {
                 fetchedQuestion.answerD += 1;
             }
-            await fetchedQuestion.save();
-            const fetchedStats = await QuizStats.findOne({
-                userId: interaction.user.id,
-                guildId: interaction.guild.id,
-            });
+            await quizQuestionDAO.update(fetchedQuestion);
+            const fetchedStats = await quizStatsDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
             if (rw === 'right') {
                 if (fetchedStats) {
                     fetchedStats.right += 1;
@@ -56,19 +51,13 @@ module.exports = async (interaction) => {
                         fetchedStats.series = 1;
                     }
                     fetchedStats.lastParticipation = Date.now();
-                    await fetchedStats.save();
+                    await quizStatsDAO.update(fetchedStats);
                 } else {
-                    const newStats = new QuizStats({
-                        guildId: interaction.guild.id,
-                        userId: interaction.user.id,
-                        right: 1,
-                        series: 1,
-                        lastParticipation: Date.now()
-                    });
+                    const newStats = new QuizStats(undefined, interaction.guild.id, interaction.user.id, 1, 0, Date.now(), 1);
                     let xpToGive = 2000;
                     xpToGive = Math.ceil(xpToGive * 1.1);
                     await giveMoney(interaction.member, xpToGive);
-                    await newStats.save();
+                    await quizStatsDAO.insert(newStats);
                 }
                 await interaction.editReply(`Glückwunsch, Antwort ${answer} ist richtig!🥳`);
             } else if (rw === 'wrong') {
@@ -76,16 +65,10 @@ module.exports = async (interaction) => {
                     fetchedStats.wrong += 1;
                     fetchedStats.series = 0;
                     fetchedStats.lastParticipation = Date.now();
-                    await fetchedStats.save();
+                    await quizStatsDAO.update(fetchedStats);
                 } else {
-                    const newStats = new QuizStats({
-                        guildId: interaction.guild.id,
-                        userId: interaction.user.id,
-                        wrong: 1,
-                        series: 0,
-                        lastParticipation: Date.now()
-                    });
-                    await newStats.save();
+                    const newStats = new QuizStats(undefined, interaction.guild.id, interaction.user.id, 0, 1, Date.now(), 1);
+                    await quizStatsDAO.insert(newStats);
                 }
                 await interaction.editReply(`Antwort ${answer} ist leider nicht richtig! Die richtige Antwort ist ${rightAnswerChar}`);
             }

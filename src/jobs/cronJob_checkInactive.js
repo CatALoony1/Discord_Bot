@@ -1,10 +1,7 @@
 const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
-const Level = require('../models/Level');
-const Config = require('../models/Config');
-const QuizStats = require('../models/QuizStats');
-const GameUser = require('../models/GameUser.js');
+const { levelDAO, configDAO, quizStatsDAO, gameUserDAO } = require('../utils/initializeDB.js');
 
 let checkInactiveJob = null;
 
@@ -18,18 +15,15 @@ function startJob(client) {
         try {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
             let members = await guild.members.fetch();
-            const fetchedLevel = await Level.find({
-                guildId: process.env.GUILD_ID,
-            });
+            const fetchedLevel = await levelDAO.getAllByGuild(process.env.GUILD_ID);
             if (fetchedLevel.length === 0) {
                 console.log('ERROR: Niemand auf dem Server hat Level');
                 return;
             }
             var away = [];
-            for await (const doc of Config.find({guildId: process.env.GUILD_ID})) {
-                if (doc.key == "away") {
-                    away = doc.value.split(',');
-                }
+            const awayConfig = await configDAO.getOneByKeyAndGuild('away', process.env.GUILD_ID);
+            if (awayConfig) {
+                away = awayConfig.value.split(',');
             }
             var playerTags = new Map();
             for (let i = 0; i < fetchedLevel.length; i++) {
@@ -98,28 +92,26 @@ function startJob(client) {
             for (const key of playerTagsGood) {
                 playerTags.delete(key);
             }
-            const fetchedQuizstats = await QuizStats.find({
-                guildId: process.env.GUILD_ID,
-            });
+            const fetchedQuizstats = await quizStatsDAO.getAllByGuild(process.env.GUILD_ID);
             var quizUserIds = [];
             for (let stat of fetchedQuizstats) {
                 quizUserIds[quizUserIds.length] = stat.userId;
             }
             for (const key of playerTags.keys()) {
                 console.log(`User ${key} hasn't send a message in at least 30 Days.`);
-                await Level.deleteOne({ guildId: process.env.GUILD_ID, userName: key, });
-                await GameUser.deleteOne({ guildId: process.env.GUILD_ID, userId: playerTags.get(key), });
+                await levelDAO.delete(playerTags.get(key)._id);
+                await gameUserDAO.deleteOnyByUserAndGuild(playerTags.get(key).userId, process.env.GUILD_ID);
                 if (quizUserIds.includes(playerTags.get(key).userId)) {
-                    await QuizStats.deleteOne({ guildId: process.env.GUILD_ID, userId: playerTags.get(key), });
+                    await quizStatsDAO.deleteOnyByUserAndGuild(playerTags.get(key).userId, process.env.GUILD_ID);
                 }
             }
             var playerLurkArray = [];
             for (const key of playerTagsLurk.keys()) {
                 playerLurkArray[playerLurkArray.length] = key;
                 console.log(`User ${key} hasn't send a message in at least 15 Days.`);
-                await GameUser.deleteOne({ guildId: process.env.GUILD_ID, userId: playerTags.get(key), });
+                await gameUserDAO.deleteOnyByUserAndGuild(playerTags.get(key).userId, process.env.GUILD_ID);
                 if (quizUserIds.includes(playerTagsLurk.get(key))) {
-                    await QuizStats.deleteOne({ guildId: process.env.GUILD_ID, userId: playerTagsLurk.get(key), });
+                    await quizStatsDAO.deleteOnyByUserAndGuild(playerTags.get(key).userId, process.env.GUILD_ID);
                 }
             }
 

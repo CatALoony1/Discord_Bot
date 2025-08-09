@@ -1,15 +1,13 @@
-const GameUser = require('../models/GameUser.js');
-const Bankkonten = require('../models/Bankkonten.js');
-const Inventar = require('../models/Inventar.js');
+const GameUser = require('../sqliteModels/GameUser.js');
+const Bankkonten = require('../sqliteModels/Bankkonten.js');
+const Inventar = require('../sqliteModels/Inventar.js');
+const { gameUserDAO, bankkontenDAO, inventarDAO } = require('./initializeDB.js');
 
 async function giveMoney(member, money, quizadded = false, daily = false) {
-    const query = {
-        userId: member.user.id,
-        guildId: member.guild.id,
-    };
     try {
-        const user = await GameUser.findOne(query).populate('bankkonto');
-        if (user) {
+        const bankkonto = await bankkontenDAO.getOneByUserAndGuild(member.user.id, member.guild.id);
+        if (bankkonto) {
+            const user = bankkonto.besitzerObj;
             if (quizadded) {
                 if (user.quizadded > 0 && user.quizadded <= 10) {
                     money = (money + (user.quizadded * 100));
@@ -34,39 +32,33 @@ async function giveMoney(member, money, quizadded = false, daily = false) {
                 user.quizadded += 1;
             }
             console.log(`user ${member.user.tag} received ${money} Geld`);
-            user.bankkonto.currentMoney += money;
-            user.bankkonto.moneyGain += money;
-            await user.bankkonto.save().catch((e) => {
-                console.log(`Error saving updated bankkonto ${e}`);
-                return;
-            });
+            bankkonto.currentMoney += money;
+            bankkonto.moneyGain += money;
+            await bankkontenDAO.update(bankkonto);
             if (quizadded || daily) {
-                await user.save().catch((e) => {
-                    console.log(`Error saving updated quizadded ${e}`);
-                    return;
-                });
+                await gameUserDAO.update(user);
             }
         } else {
             console.log(`user ${member.user.tag} received ${money} Geld`);
             console.log(`new user ${member.user.tag} added to database`);
-            const newUser = new GameUser({
-                userId: member.user.id,
-                guildId: member.guild.id,
-            });
+            const newUser = new GameUser();
+            newUser.setUserId(member.user.id);
+            newUser.setGuildId(member.guild.id);
             if (daily) {
-                newUser.daily = new Date();
+                newUser.setDaily(new Date());
             }
-            const newBankkonto = new Bankkonten({
-                besitzer: newUser._id,
-                currentMoney: money,
-                moneyGain: money,
-            });
-            const newInventar = new Inventar({
-                besitzer: newUser._id,
-            });
-            await newBankkonto.save();
-            await newInventar.save();
-            await newUser.save();
+            if (quizadded) {
+                newUser.setQuizadded(1);
+            }
+            const newUserId = await gameUserDAO.insert(newUser);
+            const newBankkonto = new Bankkonten();
+            newBankkonto.setBesitzer(newUserId);
+            newBankkonto.setCurrentMoney(money);
+            newBankkonto.setMoneyGain(money);
+            await bankkontenDAO.insert(newBankkonto);
+            const newInventar = new Inventar();
+            newInventar.setBesitzer(newUserId);
+            await inventarDAO.insert(newInventar);
         }
         return money;
     } catch (error) {
