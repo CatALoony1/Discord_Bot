@@ -16,11 +16,11 @@ module.exports = async (message) => {
       const channel = message.channel;
       const level = await levelDAO.getOneByUserAndGuild(userid, guildId);
       var newMessage = undefined;
+      const member = await message.guild.members.fetch(userid);
       if (level) {
         level.lastBump = new Date();
         level.bumps += 1;
         await levelDAO.update(level);
-        const member = await message.guild.members.fetch(userid);
         if (!member.roles.cache.some(role => role.name === 'Bumper')) {
           const role = message.guild.roles.cache.find(role => role.name === 'Bumper');
           await member.roles.add(role);

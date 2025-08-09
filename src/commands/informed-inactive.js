@@ -42,7 +42,7 @@ module.exports = {
             return;
         }
         const targetUserObj = await interaction.guild.members.fetch(targetUserId);
-        const config = await configDAO.getOneByKeyAndGuild(key, interaction.guild.id);
+        const config = await configDAO.getOneByKeyAndGuild('away', interaction.guild.id);
         if (subcommand == 'add') {
             if (config.value.includes(targetUserObj.user.tag)) {
                 await interaction.editReply(`Der User ${targetUserObj.user.tag} ist bereits einetragen.`);

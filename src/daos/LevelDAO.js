@@ -58,7 +58,6 @@ class LevelDAO extends BaseDAO {
 
     async getAllBirthdayTodayByGuild(guildId) {
         return new Promise((resolve, reject) => {
-            const today = new Date();
             const sql = `SELECT * FROM ${super.tableName} WHERE guildId = ? AND geburtstag IS NOT NULL AND strftime('%m-%d', geburtstag) = strftime('%m-%d', 'now')`;
             this.db.all(sql, [guildId], (err, rows) => {
                 if (err) {

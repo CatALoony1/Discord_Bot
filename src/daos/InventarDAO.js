@@ -12,7 +12,7 @@ class InventarDAO extends BaseDAO {
 
     _mapRowToModel(row) {
         if (!row) return null;
-        return new Inventar(row._id, row.besitzer, JSON.parse(row.items || '[]'))
+        return new Inventar(row._id, row.besitzer, JSON.parse(row.items || '[]'));
     }
 
     _mapJoinedRowToModel(row) {

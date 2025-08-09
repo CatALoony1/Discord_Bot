@@ -116,7 +116,6 @@ class QuizQuestionDAO extends BaseDAO {
 
     async getAllUnasked(guildId) {
         return new Promise((resolve, reject) => {
-            const today = new Date();
             const sql = `SELECT * FROM ${super.tableName} WHERE guildId = ? AND asked = 'N'`;
             this.db.all(sql, [guildId], (err, rows) => {
                 if (err) {
@@ -131,7 +130,6 @@ class QuizQuestionDAO extends BaseDAO {
 
     async getAllAsked(guildId) {
         return new Promise((resolve, reject) => {
-            const today = new Date();
             const sql = `SELECT * FROM ${super.tableName} WHERE guildId = ? AND asked = 'J'`;
             this.db.all(sql, [guildId], (err, rows) => {
                 if (err) {

@@ -715,10 +715,10 @@ async function useItemBankkontoUpgrade(interaction) {
         return;
     }
     await inventarDAO.update(inventar);
-    user.bankkonto.zinsProzent += 1;
+    bankkonto.zinsProzent += 1;
     await bankkontenDAO.update(bankkonto);
     await interaction.update({
-        content: `Du hast erfolgreich dein Bankkonto auf **${user.bankkonto.zinsProzent}%** Zinsen pro Tag geupgradet!`,
+        content: `Du hast erfolgreich dein Bankkonto auf **${bankkonto.zinsProzent}%** Zinsen pro Tag geupgradet!`,
         components: [],
         flags: MessageFlags.Ephemeral
     });
@@ -846,7 +846,7 @@ async function useItemBombe(interaction) {
         }
         await inventarDAO.update(inventar);
         const channel = interaction.channel;
-        const activeItem = await ActiveItems();
+        const activeItem = new ActiveItems();
         activeItem.setGuildId(interaction.guild.id);
         activeItem.setEndTime(new Date(Date.now() + 43200000));
         activeItem.setItemType('Bombe');

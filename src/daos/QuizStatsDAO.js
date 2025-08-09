@@ -32,7 +32,7 @@ class QuizStatsDAO extends BaseDAO {
     async getAllByGuild(guildId) {
         return new Promise((resolve, reject) => {
             const sql = `SELECT * FROM ${super.tableName} WHERE guildId = ?`;
-            this.db.all(sql, [userId, guildId], (err, row) => {
+            this.db.all(sql, [guildId], (err, row) => {
                 if (err) {
                     console.error(`Error fetching from ${this.tableName} by guildId:`, err.message);
                     reject(err);

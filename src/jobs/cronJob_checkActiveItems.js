@@ -1,6 +1,5 @@
 require('dotenv').config();
 const cron = require('node-cron');
-const ActiveItems = require('../sqliteModels/ActiveItems.js');
 const Config = require('../sqliteModels/Config.js');
 const { activeItemsDAO, configDAO } = require('../utils/initializeDB.js');
 const removeMoney = require('../utils/removeMoney.js');
