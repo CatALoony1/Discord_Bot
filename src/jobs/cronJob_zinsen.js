@@ -1,6 +1,5 @@
 const cron = require('node-cron');
-const GameUser = require('../models/GameUser.js');
-const { bankkontenDAO } = require('../utils/initializeDB.js');
+const { bankkontenDAO, gameUserDAO } = require('../utils/initializeDB.js');
 
 let checkInactiveJob = null;
 
@@ -16,7 +15,7 @@ function startJob(client) {
             const bankkontenToSave = [];
             if (bankkontenZinsen && bankkontenZinsen.length > 0) {
                 for (const bankkonto of bankkontenZinsen) {
-                    const user = await GameUser.findById(bankkonto.besitzer);
+                    const user = bankkonto.besitzerObj;
                     if (!user) continue;
                     const member = await client.guilds.cache.get(user.guildId)?.members.fetch(user.userId).catch(() => null);
                     if (!member) continue;

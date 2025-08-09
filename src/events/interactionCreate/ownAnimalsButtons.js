@@ -1,6 +1,6 @@
 const { MessageFlags, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
 const createAnimalsEmbeds = require("../../utils/createAnimalsEmbeds");
-const Tiere = require('../../models/Tiere');
+const { tiereDAO } = require('../../utils/initializeDB');
 
 module.exports = async (interaction) => {
     if ((!interaction.isButton() && !interaction.isModalSubmit()) || !interaction.customId || !interaction.customId.includes('ownAnimals')) return;
@@ -71,13 +71,13 @@ module.exports = async (interaction) => {
             const oldName = interaction.customId.split('-')[1];
             const newName = interaction.fields.getTextInputValue('rename-input');
             console.log(`Umbenennen von ${oldName} in ${newName}`);
-            const animal = await Tiere.findOne({ pfad: oldName });
+            const animal = await tiereDAO.getOneByPfad(oldName);
             if (!animal) {
                 await interaction.reply({ content: `Das Tier existiert nicht.`, flags: MessageFlags.Ephemeral });
                 return;
             }
             animal.customName = newName;
-            await animal.save();
+            await tiereDAO.update(animal);
             await interaction.reply({ content: `${oldName} wurde erfolgreich in ${newName} umbenannt!`, flags: MessageFlags.Ephemeral });
         } catch (error) {
             console.log(error);

@@ -21,8 +21,7 @@ async function jobFunction(client) {
         const allLocalFiles = await fs.readdir(animalFoler);
         localAnimals = allLocalFiles.filter(file => path.extname(file).toLowerCase() === '.webp');
         console.log(`Gefundene Tierbilder: ${localAnimals.length}`);
-        const existingTierDokumente = await Tiere.find({}, 'pfad -_id').lean();
-        const existingPfade = new Set(existingTierDokumente.map(doc => doc.pfad));
+        const existingPfade = await tiereDAO.getAllPfade();
         const newTiereToAdd = [];
         for (const filename of localAnimals) {
             const filenameWithoutExtension = path.basename(filename, '.webp');

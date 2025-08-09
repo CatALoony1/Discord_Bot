@@ -49,5 +49,19 @@ class HangmanDAO extends BaseDAO {
             });
         });
     }
+
+    async getOneByMessageId(messageId) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM ${this.tableName} WHERE messageId = ?`;
+            this.db.get(sql, [messageId], (err, row) => {
+                if (err) {
+                    console.error(`Error fetching hangman by messageId:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(this._mapRowToModel(row));
+                }
+            });
+        });
+    }
 }
 module.exports = HangmanDAO;

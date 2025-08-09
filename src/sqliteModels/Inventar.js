@@ -4,7 +4,7 @@ class Inventar {
             // Full constructor
             this._id = id;
             // Stelle sicher, dass items ein Array ist und die enthaltenen items
-            this.items = items; //`items` wird ein Array von Objekten sein, z.B. [{ itemId: 'item_id', amount: 3, itemObj: null }]
+            this.items = items; //`items` wird ein Array von Objekten sein, z.B. [{ itemId: 'item_id', quantity: 3, itemObj: null }]
             this.besitzer = besitzer; // Foreign key as String
             this.besitzerObj = null;
         } else if (besitzer) {
@@ -37,9 +37,10 @@ class Inventar {
     }
 
     setItems(items) {
-        this.items = Array.isArray(items) ? items.map(i => ({
-            item: String(i.item),
-            quantity: i.quantity !== undefined ? i.quantity : 1
+         this.items = Array.isArray(items) ? items.map(i => ({
+            itemId: String(i.itemId), // Assuming itemId is a string
+            quantity: i.quantity !== undefined ? i.quantity : 1,
+            itemObj: i.itemObj || null // Optional item object
         })) : [];
     }
 

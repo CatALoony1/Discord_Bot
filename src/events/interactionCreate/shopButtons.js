@@ -1,11 +1,8 @@
 const { MessageFlags, ButtonBuilder, ActionRowBuilder } = require('discord.js');
 const createShopEmbeds = require("../../utils/createShopEmbeds");
-const GameUser = require('../../models/GameUser');
-require('../../models/Bankkonten');
-require('../../models/Inventar');
-const Items = require('../../models/Items');
 const removeMoney = require('../../utils/removeMoney');
 require('dotenv').config();
+const { bankkontenDAO, inventarDAO, itemsDAO } = require('../../utils/initializeDB');
 
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('shop')) return;
@@ -53,29 +50,30 @@ module.exports = async (interaction) => {
             const itemName = description.substring(description.indexOf('Name:') + 6, description.indexOf('\n'));
             const price = parseInt(description.substring(description.indexOf('Preis:') + 7, description.indexOf('Blattläuse') - 1).replaceAll('.', ''));
             console.log(`Item: ${itemName}, Price: ${price}`);
-            const user = await GameUser.findOne({ userId: interaction.user.id }).populate('bankkonto').populate({ path: 'inventar', populate: { path: 'items.item', model: 'Items' } });
-            if (!user || !user.bankkonto || !user.inventar) {
+            const bankkonto = await bankkontenDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
+            if (!bankkonto || !bankkonto.besitzerObj) {
                 await interaction.reply({ content: 'Du hast kein Bankkonto!', flags: MessageFlags.Ephemeral });
                 return;
             }
-            if (user.bankkonto.currentMoney < price) {
+            if (bankkonto.currentMoney < price) {
                 await interaction.reply({ content: 'Du hast nicht genug Blattläuse auf deinem Bankkonto!', flags: MessageFlags.Ephemeral });
                 return;
             }
+            const inventar = await inventarDAO.getOneByBesitzer(bankkonto.besitzerObj._id);
             if (!itemName.includes('Keks')) {
-                const item = await Items.findOne({ name: itemName });
+                const item = await itemsDAO.getOneByName(itemName);
                 if (!item) {
                     await interaction.reply({ content: `Das Item ${itemName} existiert nicht!`, flags: MessageFlags.Ephemeral });
                     return;
                 }
-                const itemIndex = user.inventar.items.findIndex(inventarItem => inventarItem.item.equals(item._id));
+                const itemIndex = inventar.items.findIndex(inventarItem => inventarItem.itemObj._id.equals(item._id));
                 if (itemIndex !== -1) {
-                    user.inventar.items[itemIndex].quantity += 1;
-                    await user.inventar.save();
+                    inventar.items[itemIndex].quantity += 1;
+                    await inventarDAO.update(inventar);
                     await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
                 } else {
-                    user.inventar.items.push({ item: item._id, quantity: 1 });
-                    await user.inventar.save();
+                    inventar.items.push({ itemId: item._id, quantity: 1, itemObj: item });
+                    await inventarDAO.update(inventar);
                     await interaction.reply({ content: `Du hast ein ${itemName} gekauft!`, flags: MessageFlags.Ephemeral });
                 }
             } else {
@@ -84,18 +82,18 @@ module.exports = async (interaction) => {
                 if (booster) {
                     amount = Math.floor(amount * 100 / 90);
                 }
-                const item = await Items.findOne({ name: 'Keks' });
+                const item = await itemsDAO.getOneByName('Keks');
                 if (!item) {
                     await interaction.reply({ content: `Das Item Keks existiert nicht!`, flags: MessageFlags.Ephemeral });
                     return;
                 }
-                const itemIndex = user.inventar.items.findIndex(inventarItem => inventarItem.item.equals(item._id));
+                const itemIndex = inventar.items.findIndex(inventarItem => inventarItem.itemObj._id.equals(item._id));
                 if (itemIndex !== -1) {
-                    user.inventar.items[itemIndex].quantity += amount;
+                    inventar.items[itemIndex].quantity += amount;
                 } else {
-                    user.inventar.items.push({ item: item._id, quantity: amount });
+                    inventar.items.push({ itemId: item._id, quantity: amount, itemObj: item });
                 }
-                await user.inventar.save();
+                await inventarDAO.update(inventar);
                 const useButton = new ButtonBuilder()
                     .setCustomId(`useItem_selectMenu_${itemName}`)
                     .setLabel('Item benutzen')

@@ -102,7 +102,7 @@ async function handleGamestats(interaction) {
         lottospiele = lotto.length;
     }
     const itemNamesAndQuantity = inventar.items.map((item, index) => {
-        return `ID:${index} -> ${item.itemObj.name} (x${item.amount})`;
+        return `ID:${index} -> ${item.itemObj.name} (x${item.quantity})`;
     }).join('\n');
     const tierpfade = tiere.map((tier) => {
         return `${tier.customName}`;
@@ -159,19 +159,19 @@ async function handleOwnAnimals(interaction) {
 async function handleKeksEssen(interaction) {
     const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
     const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Keks');
-    const amount = inventar.items[itemId].amount;
+    const quantity = inventar.items[itemId].quantity;
     const options = [
         { label: '1', value: '1' },
     ];
-    if (amount > 1) {
-        options.push({ label: 'alle', value: `${amount}` });
-        if (amount > 10) {
+    if (quantity > 1) {
+        options.push({ label: 'alle', value: `${quantity}` });
+        if (quantity > 10) {
             options.push({ label: '10', value: '10' });
-            if (amount > 100) {
+            if (quantity > 100) {
                 options.push({ label: '100', value: '100' });
-                if (amount > 1000) {
+                if (quantity > 1000) {
                     options.push({ label: '1000', value: '1000' });
-                    if (amount > 10000) {
+                    if (quantity > 10000) {
                         options.push({ label: '10000', value: '10000' });
                     }
                 }

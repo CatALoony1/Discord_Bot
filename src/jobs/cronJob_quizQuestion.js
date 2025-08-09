@@ -106,37 +106,37 @@ async function jobFunction(client) {
                 .setLabel('A')
                 .setStyle(Discord.ButtonStyle.Primary);
             if (rightAnswerPosition === 0) {
-                aButton.setCustomId(`quiz_right_A_${fetchedQuestions[questionIndex].questionId}`);
+                aButton.setCustomId(`quiz_right_A_${fetchedQuestions[questionIndex]._id}`);
                 rightChar = 'A';
             } else {
-                aButton.setCustomId(`quiz_wrong_A_${fetchedQuestions[questionIndex].questionId}`);
+                aButton.setCustomId(`quiz_wrong_A_${fetchedQuestions[questionIndex]._id}`);
             }
             const bButton = new Discord.ButtonBuilder()
                 .setLabel('B')
                 .setStyle(Discord.ButtonStyle.Primary);
             if (rightAnswerPosition === 1) {
-                bButton.setCustomId(`quiz_right_B_${fetchedQuestions[questionIndex].questionId}`);
+                bButton.setCustomId(`quiz_right_B_${fetchedQuestions[questionIndex]._id}`);
                 rightChar = 'B';
             } else {
-                bButton.setCustomId(`quiz_wrong_B_${fetchedQuestions[questionIndex].questionId}`);
+                bButton.setCustomId(`quiz_wrong_B_${fetchedQuestions[questionIndex]._id}`);
             }
             const cButton = new Discord.ButtonBuilder()
                 .setLabel('C')
                 .setStyle(Discord.ButtonStyle.Primary);
             if (rightAnswerPosition === 2) {
-                cButton.setCustomId(`quiz_right_C_${fetchedQuestions[questionIndex].questionId}`);
+                cButton.setCustomId(`quiz_right_C_${fetchedQuestions[questionIndex]._id}`);
                 rightChar = 'C';
             } else {
-                cButton.setCustomId(`quiz_wrong_C_${fetchedQuestions[questionIndex].questionId}`);
+                cButton.setCustomId(`quiz_wrong_C_${fetchedQuestions[questionIndex]._id}`);
             }
             const dButton = new Discord.ButtonBuilder()
                 .setLabel('D')
                 .setStyle(Discord.ButtonStyle.Primary);
             if (rightAnswerPosition === 3) {
-                dButton.setCustomId(`quiz_right_D_${fetchedQuestions[questionIndex].questionId}`);
+                dButton.setCustomId(`quiz_right_D_${fetchedQuestions[questionIndex]._id}`);
                 rightChar = 'D';
             } else {
-                dButton.setCustomId(`quiz_wrong_D_${fetchedQuestions[questionIndex].questionId}`);
+                dButton.setCustomId(`quiz_wrong_D_${fetchedQuestions[questionIndex]._id}`);
             }
             const firstRow = new Discord.ActionRowBuilder().addComponents(aButton, bButton, cButton, dButton);
             targetChannel.send({

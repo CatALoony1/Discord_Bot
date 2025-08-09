@@ -1,7 +1,7 @@
 // daos/InventarDAO.js
 const BaseDAO = require('./BaseDAO');
-const Inventar = require('../models/Inventar');
-const GameUser = require('../models/GameUser');
+const Inventar = require('../sqliteModels/Inventar');
+const GameUser = require('../sqliteModels/GameUser');
 const { itemsDAO } = require('../utils/initializeDB.js');
 
 class InventarDAO extends BaseDAO {
@@ -51,7 +51,8 @@ class InventarDAO extends BaseDAO {
                 const fullItem = await itemsDAO.getById(itemId);
                 if (fullItem) {
                     populatedItems.push({
-                        amount: itemEntry.amount,
+                        itemId: itemId,
+                        quantity: itemEntry.quantity,
                         itemObj: fullItem
                     });
                 } else {
@@ -131,16 +132,16 @@ class InventarDAO extends BaseDAO {
         // Sicherstellen, dass inventar.items ein Array ist, auch wenn null/undefined
         const itemsToProcess = Array.isArray(inventar.items) ? inventar.items : [];
 
-        // Beim Speichern nur die itemId und amount speichern, nicht das ganze Item-Objekt
+        // Beim Speichern nur die itemId und quantity speichern, nicht das ganze Item-Objekt
         const itemsToStore = itemsToProcess.map(entry => ({
             itemId: entry.itemObj ? entry.itemObj._id : entry.itemId,
-            amount: entry.amount
+            quantity: entry.quantity
         }));
 
         const dataToSave = {
             _id: inventar._id,
             besitzer: inventar.besitzer,
-            items: JSON.stringify(itemsToStore) // JSON.stringify das Array von { itemId, amount }
+            items: JSON.stringify(itemsToStore) // JSON.stringify das Array von { itemId, quantity }
         };
         return await super.insert(dataToSave);
     }
@@ -156,7 +157,7 @@ class InventarDAO extends BaseDAO {
             const itemsToProcess = Array.isArray(inv.items) ? inv.items : [];
             const itemsToStore = itemsToProcess.map(entry => ({
                 itemId: entry.itemObj ? entry.itemObj._id : entry.itemId,
-                amount: entry.amount
+                quantity: entry.quantity
             }));
             return {
                 _id: inv._id,
@@ -171,10 +172,10 @@ class InventarDAO extends BaseDAO {
         // Sicherstellen, dass inventar.items ein Array ist, auch wenn null/undefined
         const itemsToProcess = Array.isArray(inventar.items) ? inventar.items : [];
 
-        // Beim Speichern nur die itemId und amount speichern, nicht das ganze Item-Objekt
+        // Beim Speichern nur die itemId und quantity speichern, nicht das ganze Item-Objekt
         const itemsToStore = itemsToProcess.map(entry => ({
             itemId: entry.itemObj ? entry.itemObj._id : entry.itemId,
-            amount: entry.amount
+            quantity: entry.quantity
         }));
 
         const dataToSave = {
@@ -196,7 +197,7 @@ class InventarDAO extends BaseDAO {
             const itemsToProcess = Array.isArray(inv.items) ? inv.items : [];
             const itemsToStore = itemsToProcess.map(entry => ({
                 itemId: entry.itemObj ? entry.itemObj._id : entry.itemId,
-                amount: entry.amount
+                quantity: entry.quantity
             }));
             return {
                 _id: inv._id,

@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
-const Question = require('../../models/QuizQuestion');
+const Question = require('../../sqliteModels/QuizQuestion');
 const giveMoney = require('../../utils/giveMoney');
+const { quizQuestionDAO } = require('../../utils/initializeDB');
 
 module.exports = async (interaction) => {
     if (!interaction.isModalSubmit()) return;
@@ -15,14 +16,13 @@ module.exports = async (interaction) => {
         const wrong = `${falsch1}/${falsch2}/${falsch3}`;
         const participants = [];
         participants[0] = mentionedUserId;
-        const newQuestion = new Question({
-            question: frage,
-            right: richtig,
-            wrong: wrong,
-            participants: participants,
-            guildId: process.env.GUILD_ID,
-        });
-        await newQuestion.save();
+        const newQuestion = new Question();
+        newQuestion.setQuestion(frage);
+        newQuestion.setRight(richtig);
+        newQuestion.setWrong(wrong);
+        newQuestion.setParticipants(participants);
+        newQuestion.setGuildId(process.env.GUILD_ID);
+        await quizQuestionDAO.insert(newQuestion);
         const targetUserObj = await interaction.guild.members.fetch(mentionedUserId);
         var moneyToGive = 2000;
         await giveMoney(targetUserObj, moneyToGive, true);

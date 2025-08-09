@@ -70,7 +70,7 @@ function startJob(client) {
                     } else if (activeItem.itemType == 'Schuldschein') {
                         if (activeItem.extras != new Date().toLocaleDateString()) {
                             activeItem.extras = new Date().toLocaleDateString();
-                            activeItem.save();
+                            await activeItemsDAO.update(activeItem);
                             const userObj = await guild.members.cache.get(activeItem.user) || (await guild.members.fetch(activeItem.user));
                             const usedOnObj = await guild.members.cache.get(activeItem.usedOn) || (await guild.members.fetch(activeItem.usedOn));
                             if (userObj && usedOnObj) {

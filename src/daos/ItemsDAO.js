@@ -35,5 +35,19 @@ class ItemsDAO extends BaseDAO {
             });
         });
     }
+
+    async getOneByName(name) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM ${this.tableName} WHERE name = ?`;
+            this.db.get(sql, [name], (err, row) => {
+                if (err) {
+                    console.error(`Error fetching from ${this.tableName} where name = ${name}:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(this._mapRowToModel(row));
+                }
+            });
+        });
+    }
 }
 module.exports = ItemsDAO;

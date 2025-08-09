@@ -143,5 +143,81 @@ class TiereDAO extends BaseDAO {
             });
         });
     }
+
+    async getOneByPfad(pfad) {
+        const sql = `
+            SELECT
+                t._id, t.pfad, t.tierart, t.customName, t.besitzer,
+                gu._id AS besitzer_user_id,
+                gu.userId AS besitzer_user_userId,
+                gu.guildId AS besitzer_user_guildId,
+                gu.quizadded AS besitzer_user_quizadded,
+                gu.daily AS besitzer_user_daily,
+                gu.weight AS besitzer_user_weight
+            FROM tiere t
+            LEFT JOIN game_users gu ON t.besitzer = gu._id
+            WHERE t.pfad = ?;
+        `;
+        return new Promise((resolve, reject) => {
+            this.db.get(sql, [pfad], (err, row) => {
+                if (err) {
+                    console.error('Error fetching tier by pfad with JOIN:', err.message);
+                    reject(err);
+                } else {
+                    resolve(this._mapJoinedRowToModel(row));
+                }
+            });
+        });
+    }
+
+    async getTierartenOhneBesitzer() {
+        const sql = `
+            SELECT DISTINCT tierart FROM tiere WHERE besitzer IS NULL;
+        `;
+        return new Promise((resolve, reject) => {
+            this.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    console.error('Error fetching tierarten without owner:', err.message);
+                    reject(err);
+                } else {
+                    resolve(rows.map(row => row.tierart));
+                }
+            });
+        });
+    }
+
+    async getRandomTierOhneBesitzerByTierart(tierart) {
+        const sql = `
+            SELECT * FROM tiere 
+            WHERE tierart = ? AND besitzer IS NULL 
+            ORDER BY RANDOM() LIMIT 1;
+        `;
+        return new Promise((resolve, reject) => {
+            this.db.get(sql, [tierart], (err, row) => {
+                if (err) {
+                    console.error('Error fetching random tier without owner by tierart:', err.message);
+                    reject(err);
+                } else {
+                    resolve(this._mapRowToModel(row));
+                }
+            });
+        });
+    }
+
+    async getAllPfade() {
+        const sql = `
+            SELECT pfad FROM tiere;
+        `;
+        return new Promise((resolve, reject) => {
+            this.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    console.error('Error fetching all paths of tiere:', err.message);
+                    reject(err);
+                } else {
+                    resolve(rows.map(row => row.pfad));
+                }
+            });
+        });
+    }
 }
 module.exports = TiereDAO;
