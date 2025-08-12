@@ -28,14 +28,14 @@ class LottozahlenDAO extends BaseDAO {
     async getAllByUserAndGuild(userId, guildId) {
         return new Promise((resolve, reject) => {
             const sql = `SELECT * FROM ${this.tableName} WHERE userId = ? AND guildId = ?`;
-            this.db.all(sql, [userId, guildId], (err, row) => {
+            this.db.all(sql, [userId, guildId], (err, rows) => {
                 if (err) {
                     console.error(`Error fetching from ${this.tableName} by user and guildId:`, err.message);
                     reject(err);
                 } else {
                     // Hier wird nur eine einzelne Zeile gemappt, obwohl 'all' mehrere zurückgeben könnte.
                     // Wenn Sie alle Ergebnisse wünschen, müssten Sie 'rows.map(this._mapRowToModel)' verwenden.
-                    resolve(this._mapRowToModel(row));
+                    resolve(rows.map(this._mapRowToModel));
                 }
             });
         });

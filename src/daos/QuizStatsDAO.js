@@ -32,12 +32,12 @@ class QuizStatsDAO extends BaseDAO {
     async getAllByGuild(guildId) {
         return new Promise((resolve, reject) => {
             const sql = `SELECT * FROM ${this.tableName} WHERE guildId = ?`;
-            this.db.all(sql, [guildId], (err, row) => {
+            this.db.all(sql, [guildId], (err, rows) => {
                 if (err) {
                     console.error(`Error fetching from ${this.tableName} by guildId:`, err.message);
                     reject(err);
                 } else {
-                    resolve(this._mapRowToModel(row));
+                    resolve(rows.map(this._mapRowToModel));
                 }
             });
         });
