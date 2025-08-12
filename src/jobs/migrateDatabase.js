@@ -35,52 +35,13 @@ async function jobFunction(client) {
         const { activeItemsDAO, bankkontenDAO, bumpDAO, configDAO, gameUserDAO, gluecksradDAO, hangmanDAO, inventarDAO, itemsDAO, levelDAO, lottozahlenDAO, quizQuestionDAO, quizStatsDAO, tiereDAO } = getDaos();
         const backupDone = await Config.findOne({ key: 'BackupDone' });
         if (backupDone.value == 'N') {
-            console.log('Start Migrating Bankkonten');
-            const allBankkonten = await Bankkonten.find({});
-            if (allBankkonten && allBankkonten.length > 0) {
-                let itemsToSave = [];
-                for (let item of allBankkonten) {
-                    itemsToSave.push(new SQLBankkonten(item._id.toString(), item.currentMoney, item.moneyGain, item.moneyLost, item.zinsProzent, item.besitzer.toString()));
-                }
-                console.log(`Saving ${itemsToSave.length} of ${allBankkonten.length} Bankkonten.`);
-                let amount = await bankkontenDAO.insertMany(itemsToSave);
-                console.log(`${amount} of ${itemsToSave.length} Bankkonten saved.`);
-            }
-            console.log('Finished Migrating Bankkonten');
-
-            console.log('Start Migrating Gluecksrad');
-            const allGluecksrad = await Gluecksrad.find({});
-            if (allGluecksrad && allGluecksrad.length > 0) {
-                let itemsToSave = [];
-                for (let item of allGluecksrad) {
-                    itemsToSave.push(new SQLGluecksrad(item._id.toString(), item.guildId, item.pool, item.sonderpool));
-                }
-                console.log(`Saving ${itemsToSave.length} of ${allGluecksrad.length} Gluecksrad.`);
-                let amount = await gluecksradDAO.insertMany(itemsToSave);
-                console.log(`${amount} of ${itemsToSave.length} Gluecksrad saved.`);
-            }
-            console.log('Finished Migrating Gluecksrad');
-
-            console.log('Start Migrating Hangman');
-            const allHangman = await Hangman.find({});
-            if (allHangman && allHangman.length > 0) {
-                let itemsToSave = [];
-                for (let item of allHangman) {
-                    itemsToSave.push(new SQLHangman(item._id.toString(), item.authorId, item.guildId, item.messageId, item.word, item.status, item.buchstaben, item.fehler, item.participants));
-                }
-                console.log(`Saving ${itemsToSave.length} of ${allHangman.length} Hangman.`);
-                let amount = await hangmanDAO.insertMany(itemsToSave);
-                console.log(`${amount} of ${itemsToSave.length} Hangman saved.`);
-            }
-            console.log('Finished Migrating Hangman');
-
             console.log('Start Migrating Inventar');
             const allInventar = await Inventar.find({}).populate({ path: 'items.item', model: 'Items' });
             if (allInventar && allInventar.length > 0) {
                 let itemsToSave = [];
                 for (let item of allInventar) {
                     const allItems = [];
-                    for (let itemObj of Inventar.items) {
+                    for (let itemObj of item.items) {
                         allItems.push({ quantity: itemObj.amount, itemId: itemObj.item._id.toString() });
                     }
                     itemsToSave.push(new SQLInventar(item._id.toString(), allItems, item.besitzer.toString()));
