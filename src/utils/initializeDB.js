@@ -275,7 +275,7 @@ async function initializeDatabase(dbPath) {
                     const totalStatements = createTableStatements.length;
 
                     createTableStatements.forEach((statement, index) => {
-                        db.run(statement, function(runErr) { // Use 'function' to get 'this' context if needed for lastID/changes
+                        db.run(statement, async function(runErr) { // Use 'function' to get 'this' context if needed for lastID/changes
                             completedStatements++;
                             if (runErr) {
                                 console.error(`Error creating table with statement ${index + 1}:`, runErr.message);
