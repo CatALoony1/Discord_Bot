@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const cron = require('node-cron');
 require('dotenv').config();
-const { bumpDAO } = require('../events/ready/02_database');
+const { bumpDAO } = require('../utils/daos');
 const getTenorGifById = require("../utils/getTenorGifById");
 
 let bumpReminderJob = null;

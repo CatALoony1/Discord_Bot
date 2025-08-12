@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits, InteractionContextType, MessageFlags } = require('discord.js');
 const Bump = require("../sqliteModels/Bump");
 require('dotenv').config();
-const { bumpDAO } = require('../events/ready/02_database');
+const { bumpDAO } = require('../utils/daos');
 
 module.exports = {
     data: new SlashCommandBuilder()

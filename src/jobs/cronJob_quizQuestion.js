@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
-const { quizQuestionDAO, quizStatsDAO } = require('../events/ready/02_database');
+const { quizQuestionDAO, quizStatsDAO } = require('../utils/daos');
 
 function getRandom(min, max) {
     min = Math.ceil(min);

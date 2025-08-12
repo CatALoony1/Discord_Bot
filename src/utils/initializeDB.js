@@ -20,6 +20,8 @@ const TTTDamageDAO = require('../daos/TTTDamageDAO');
 const TTTKillDAO = require('../daos/TTTKillDAO');
 const TTTShopPurchaseDAO = require('../daos/TTTShopPurchaseDAO');
 
+const daos = require('./daos');
+
 async function initializeDatabase(dbPath) {
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database(dbPath, (err) => {
@@ -304,26 +306,26 @@ async function initializeDatabase(dbPath) {
 
 async function setDatabaseToDAOs(database) {
     // Instanziieren Sie alle DAOs
-    const activeItemsDAO = new ActiveItemsDAO(database);
-    const bankkontenDAO = new BankkontenDAO(database);
-    const bumpDAO = new BumpDAO(database);
-    const configDAO = new ConfigDAO(database);
-    const gameUserDAO = new GameUserDAO(database);
-    const gluecksradDAO = new GluecksradDAO(database);
-    const hangmanDAO = new HangmanDAO(database);
-    const itemsDAO = new ItemsDAO(database);
-    const inventarDAO = new InventarDAO(database, itemsDAO);
-    const levelDAO = new LevelDAO(database);
-    const lottozahlenDAO = new LottozahlenDAO(database);
-    const quizQuestionDAO = new QuizQuestionDAO(database);
-    const quizStatsDAO = new QuizStatsDAO(database);
-    const tiereDAO = new TiereDAO(database);
-    const tttPlayerDAO = new TTTPlayerDAO(database);
-    const tttRoundDAO = new TTTRoundDAO(database);
-    const tttRoundParticipantDAO = new TTTRoundParticipantDAO(database);
-    const tttDamageDAO = new TTTDamageDAO(database);
-    const tttKillDAO = new TTTKillDAO(database);
-    const tttShopPurchaseDAO = new TTTShopPurchaseDAO(database);
+    daos.activeItemsDAO = new ActiveItemsDAO(database);
+    daos.bankkontenDAO = new BankkontenDAO(database);
+    daos.bumpDAO = new BumpDAO(database);
+    daos.configDAO = new ConfigDAO(database);
+    daos.gameUserDAO = new GameUserDAO(database);
+    daos.gluecksradDAO = new GluecksradDAO(database);
+    daos.hangmanDAO = new HangmanDAO(database);
+    daos.itemsDAO = new ItemsDAO(database);
+    daos.inventarDAO = new InventarDAO(database, itemsDAO);
+    daos.levelDAO = new LevelDAO(database);
+    daos.lottozahlenDAO = new LottozahlenDAO(database);
+    daos.quizQuestionDAO = new QuizQuestionDAO(database);
+    daos.quizStatsDAO = new QuizStatsDAO(database);
+    daos.tiereDAO = new TiereDAO(database);
+    daos.tttPlayerDAO = new TTTPlayerDAO(database);
+    daos.tttRoundDAO = new TTTRoundDAO(database);
+    daos.tttRoundParticipantDAO = new TTTRoundParticipantDAO(database);
+    daos.tttDamageDAO = new TTTDamageDAO(database);
+    daos.tttKillDAO = new TTTKillDAO(database);
+    daos.tttShopPurchaseDAO = new TTTShopPurchaseDAO(database);
 
     // Setzen Sie die statischen Abhängigkeiten für DAOs mit Fremdschlüsseln
     // GameUser ist eine häufige Referenz (basierend auf FKs in initializeDB.js)
@@ -344,28 +346,6 @@ async function setDatabaseToDAOs(database) {
 
     TTTShopPurchaseDAO.tttRoundDAO = tttRoundDAO;
     TTTShopPurchaseDAO.tttRoundParticipantDAO = tttRoundParticipantDAO;
-
-    // Exportieren Sie die instanziierten DAOs für die Nutzung in Ihrer Anwendung
-    module.exports.activeItemsDAO = activeItemsDAO;
-    module.exports.bankkontenDAO = bankkontenDAO;
-    module.exports.bumpDAO = bumpDAO;
-    module.exports.configDAO = configDAO;
-    module.exports.gameUserDAO = gameUserDAO;
-    module.exports.gluecksradDAO = gluecksradDAO;
-    module.exports.hangmanDAO = hangmanDAO;
-    module.exports.inventarDAO = inventarDAO;
-    module.exports.itemsDAO = itemsDAO;
-    module.exports.levelDAO = levelDAO;
-    module.exports.lottozahlenDAO = lottozahlenDAO;
-    module.exports.quizQuestionDAO = quizQuestionDAO;
-    module.exports.quizStatsDAO = quizStatsDAO;
-    module.exports.tiereDAO = tiereDAO;
-    module.exports.tttPlayerDAO = tttPlayerDAO;
-    module.exports.tttRoundDAO = tttRoundDAO;
-    module.exports.tttRoundParticipantDAO = tttRoundParticipantDAO;
-    module.exports.tttDamageDAO = tttDamageDAO;
-    module.exports.tttKillDAO = tttKillDAO;
-    module.exports.tttShopPurchaseDAO = tttShopPurchaseDAO;
     console.log(database);
 }
 

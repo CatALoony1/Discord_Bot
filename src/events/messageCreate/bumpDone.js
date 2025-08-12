@@ -1,7 +1,7 @@
 const Bump = require("../../sqliteModels/Bump");
 require('dotenv').config();
 const { Message, EmbedBuilder } = require('discord.js');
-const { bumpDAO, levelDAO } = require('../../events/ready/02_database');
+const { bumpDAO, levelDAO } = require('../../utils/daos');
 
 /**
  * 

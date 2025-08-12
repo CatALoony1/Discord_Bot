@@ -2,7 +2,7 @@ const { MessageFlags, ButtonBuilder, ActionRowBuilder } = require('discord.js');
 const createShopEmbeds = require("../../utils/createShopEmbeds");
 const removeMoney = require('../../utils/removeMoney');
 require('dotenv').config();
-const { bankkontenDAO, inventarDAO, itemsDAO } = require('../../events/ready/02_database');
+const { bankkontenDAO, inventarDAO, itemsDAO } = require('../../utils/daos');
 
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('shop')) return;

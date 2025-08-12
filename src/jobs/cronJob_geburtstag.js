@@ -1,7 +1,7 @@
 require('dotenv').config();
 const cron = require('node-cron');
 const giveMoney = require('../utils/giveMoney');
-const { levelDAO } = require('../events/ready/02_database');
+const { levelDAO } = require('../utils/daos');
 
 let geburtstagJob = null;
 

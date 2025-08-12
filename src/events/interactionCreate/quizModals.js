@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const Question = require('../../sqliteModels/QuizQuestion');
 const giveMoney = require('../../utils/giveMoney');
-const { quizQuestionDAO } = require('../../events/ready/02_database');
+const { quizQuestionDAO } = require('../../utils/daos');
 
 module.exports = async (interaction) => {
     if (!interaction.isModalSubmit()) return;

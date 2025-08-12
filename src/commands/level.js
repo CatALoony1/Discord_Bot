@@ -2,7 +2,7 @@ const { SlashCommandBuilder, AttachmentBuilder, InteractionContextType } = requi
 const canvacord = require('canvacord');
 const calculateLevelXp = require('../utils/calculateLevelXp');
 const gifToPngDataUri = require('../utils/gifToPngDataUri');
-const { levelDAO } = require('../events/ready/02_database');
+const { levelDAO } = require('../utils/daos');
 
 module.exports = {
   data: new SlashCommandBuilder()

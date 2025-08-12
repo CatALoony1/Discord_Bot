@@ -3,7 +3,7 @@ const removeMoney = require('../utils/removeMoney');
 const giveMoney = require('../utils/giveMoney');
 const Gluecksrad = require('../sqliteModels/Gluecksrad');
 require('dotenv').config();
-const { bankkontenDAO, gluecksradDAO } = require('../events/ready/02_database');
+const { bankkontenDAO, gluecksradDAO } = require('../utils/daos');
 
 function getRandom(min, max) {
     min = Math.ceil(min);

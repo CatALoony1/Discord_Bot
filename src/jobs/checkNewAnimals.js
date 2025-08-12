@@ -2,7 +2,7 @@ require('dotenv').config();
 const Tiere = require('../sqliteModels/Tiere');
 const fs = require('fs').promises;
 const path = require('path');
-const { tiereDAO } = require('../events/ready/02_database');
+const { tiereDAO } = require('../utils/daos');
 
 const animalFoler = './animals';
 
