@@ -14,6 +14,7 @@ function startJob(client) {
             const { levelDAO } = getDaos();
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
             const allLevels = await levelDAO.getAllByGuild(process.env.GUILD_ID);
+            console.log(allLevels);
             if (allLevels && allLevels.length > 0) {
                 for (const level of allLevels) {
                     if (level.lastBump) {
