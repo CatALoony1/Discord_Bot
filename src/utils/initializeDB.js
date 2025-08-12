@@ -22,7 +22,7 @@ const TTTShopPurchaseDAO = require('../daos/TTTShopPurchaseDAO');
 
 async function initializeDatabase(dbPath) {
     return new Promise(async (resolve, reject) => {
-        const db = await new sqlite3.Database(dbPath, (err) => {
+        const db = new sqlite3.Database(dbPath, (err) => {
             if (err) {
                 console.error('Error opening database:', err.message);
                 return reject(err);
@@ -32,7 +32,7 @@ async function initializeDatabase(dbPath) {
 
         });
         console.log(db);
-        db.run('PRAGMA foreign_keys = ON;', (pragmaErr) => {
+        db.run('PRAGMA foreign_keys = ON;', async (pragmaErr) => {
             if (pragmaErr) {
                 console.error('Error enabling foreign keys:', pragmaErr.message);
                 return reject(pragmaErr);
@@ -295,7 +295,7 @@ async function initializeDatabase(dbPath) {
                                 console.log('All tables created or already exist.');
                                 console.log(db);
                                 await setDatabaseToDAOs(db);
-                                //resolve(db); // Löse mit dem Datenbankobjekt auf
+                                resolve(db); // Löse mit dem Datenbankobjekt auf
                             }
                         }
                     });
@@ -311,8 +311,6 @@ async function initializeDatabase(dbPath) {
                 }
             });
             console.log(db);
-            resolve(db); // Löse mit dem Datenbankobjekt auf
-
         });
     });
 }
