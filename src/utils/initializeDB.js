@@ -366,7 +366,7 @@ async function setDatabaseToDAOs(database) {
         module.exports.tttDamageDAO = tttDamageDAO;
         module.exports.tttKillDAO = tttKillDAO;
         module.exports.tttShopPurchaseDAO = tttShopPurchaseDAO;
-        module.exports.database = database;
+        console.log(itemsDAO);
 }
 
 module.exports = {
