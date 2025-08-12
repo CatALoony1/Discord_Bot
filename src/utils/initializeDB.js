@@ -314,7 +314,7 @@ async function setDatabaseToDAOs(database) {
     daos.gluecksradDAO = new GluecksradDAO(database);
     daos.hangmanDAO = new HangmanDAO(database);
     daos.itemsDAO = new ItemsDAO(database);
-    daos.inventarDAO = new InventarDAO(database, itemsDAO);
+    daos.inventarDAO = new InventarDAO(database, daos.itemsDAO);
     daos.levelDAO = new LevelDAO(database);
     daos.lottozahlenDAO = new LottozahlenDAO(database);
     daos.quizQuestionDAO = new QuizQuestionDAO(database);
@@ -329,23 +329,23 @@ async function setDatabaseToDAOs(database) {
 
     // Setzen Sie die statischen Abhängigkeiten für DAOs mit Fremdschlüsseln
     // GameUser ist eine häufige Referenz (basierend auf FKs in initializeDB.js)
-    BankkontenDAO.gameUserDAO = gameUserDAO;
-    InventarDAO.gameUserDAO = gameUserDAO;
-    InventarDAO.itemsDAO = itemsDAO;
-    TiereDAO.gameUserDAO = gameUserDAO;
+    BankkontenDAO.gameUserDAO = daos.gameUserDAO;
+    InventarDAO.gameUserDAO = daos.gameUserDAO;
+    InventarDAO.itemsDAO = daos.itemsDAO;
+    TiereDAO.gameUserDAO = daos.gameUserDAO;
 
     // TTT-Beziehungen (basierend auf FKs in initializeDB.js)
-    TTTRoundParticipantDAO.tttRoundDAO = tttRoundDAO;
-    TTTRoundParticipantDAO.tttPlayerDAO = tttPlayerDAO;
+    TTTRoundParticipantDAO.tttRoundDAO = daos.tttRoundDAO;
+    TTTRoundParticipantDAO.tttPlayerDAO = daos.tttPlayerDAO;
 
-    TTTDamageDAO.tttRoundDAO = tttRoundDAO;
-    TTTDamageDAO.tttRoundParticipantDAO = tttRoundParticipantDAO;
+    TTTDamageDAO.tttRoundDAO = daos.tttRoundDAO;
+    TTTDamageDAO.tttRoundParticipantDAO = daos.tttRoundParticipantDAO;
 
-    TTTKillDAO.tttRoundDAO = tttRoundDAO;
-    TTTKillDAO.tttRoundParticipantDAO = tttRoundParticipantDAO;
+    TTTKillDAO.tttRoundDAO = daos.tttRoundDAO;
+    TTTKillDAO.tttRoundParticipantDAO = daos.tttRoundParticipantDAO;
 
-    TTTShopPurchaseDAO.tttRoundDAO = tttRoundDAO;
-    TTTShopPurchaseDAO.tttRoundParticipantDAO = tttRoundParticipantDAO;
+    TTTShopPurchaseDAO.tttRoundDAO = daos.tttRoundDAO;
+    TTTShopPurchaseDAO.tttRoundParticipantDAO = daos.tttRoundParticipantDAO;
     console.log(database);
 }
 
