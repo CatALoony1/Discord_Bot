@@ -13,7 +13,6 @@ const missingXpJob = require('../jobs/cronJob_checkMissingXP');
 const checkNewAnimalsJob = require('../jobs/checkNewAnimals');
 const zinsenJob = require('../jobs/cronJob_zinsen');
 const checkActiveItemsJob = require('../jobs/cronJob_checkActiveItems');
-const migrateDatabase = require('../jobs/migrateDatabase');
 
 
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
@@ -85,8 +84,7 @@ module.exports = {
                             { name: 'quizQuestion', value: 'quizQuestion' },
                             { name: 'quizStats', value: 'quizStats' },
                             { name: 'geburtstag', value: 'geburtstag' },
-                            { name: 'checkNewAnimals', value: 'checkNewAnimals' },
-                            { name: 'migrateDatabase', value: 'migrateDatabase' }
+                            { name: 'checkNewAnimals', value: 'checkNewAnimals' }
                         )
                 )
         )
@@ -144,9 +142,6 @@ module.exports = {
                     break;
                 case 'checkActiveItems':
                     jobClass = checkActiveItemsJob;
-                    break;
-                case 'migrateDatabase':
-                    jobClass = migrateDatabase;
                     break;
                 default:
                     throw new Error(`Unbekannter Job: ${job}`);
