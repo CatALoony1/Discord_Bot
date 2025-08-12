@@ -28,7 +28,9 @@ const SQLQuizQuestion = require('../sqliteModels/QuizQuestion.js');
 const SQLQuizStats = require('../sqliteModels/QuizStats.js');
 const SQLTiere = require('../sqliteModels/Tiere.js');
 
-const { activeItemsDAO, bankkontenDAO, bumpDAO, configDAO, gameUserDAO, gluecksradDAO, hangmanDAO, inventarDAO, itemsDAO, levelDAO, lottozahlenDAO, quizQuestionDAO, quizStatsDAO, tiereDAO } = require('../utils/initializeDB.js');
+const ItemsDAO = require('../daos/ItemsDAO.js');
+
+const { database, activeItemsDAO, bankkontenDAO, bumpDAO, configDAO, gameUserDAO, gluecksradDAO, hangmanDAO, inventarDAO, itemsDAO, levelDAO, lottozahlenDAO, quizQuestionDAO, quizStatsDAO, tiereDAO } = require('../utils/initializeDB.js');
 
 async function jobFunction(client) {
     try {
@@ -45,7 +47,7 @@ async function jobFunction(client) {
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allItems.length} Items.`);
                 console.log(itemsToSave);
-                let amount = await itemsDAO.insertMany(itemsToSave);
+                let amount = await new ItemsDAO(database).insertMany(itemsToSave);
                 console.log(`${amount} of ${itemsToSave.length} Items saved.`);
             }
             console.log('Finished Migrating Items');
