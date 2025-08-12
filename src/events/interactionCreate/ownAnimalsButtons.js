@@ -1,9 +1,10 @@
 const { MessageFlags, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
 const createAnimalsEmbeds = require("../../utils/createAnimalsEmbeds");
-const { tiereDAO } = require('../../utils/daos');
+const { getDaos } = require('../../utils/daos');
 
 module.exports = async (interaction) => {
     if ((!interaction.isButton() && !interaction.isModalSubmit()) || !interaction.customId || !interaction.customId.includes('ownAnimals')) return;
+    const { tiereDAO } = getDaos();
     let targetMessage = await interaction.channel.messages.fetch(interaction.message.id);
     let targetMessageEmbed = targetMessage.embeds[0];
     let [, pageSlash] = targetMessageEmbed.title.split(" - ");

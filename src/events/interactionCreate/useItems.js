@@ -4,7 +4,7 @@ const ActiveItems = require('../../sqliteModels/ActiveItems');
 const removeMoney = require('../../utils/removeMoney.js');
 const giveMoney = require('../../utils/giveMoney.js');
 const getTenorGifById = require('../../utils/getTenorGifById.js');
-const { bankkontenDAO, inventarDAO, itemsDAO, tiereDAO, configDAO, activeItemsDAO, gameUserDAO } = require('../../utils/daos.js');
+const { getDaos } = require('../../utils/daos.js');
 
 const hugTexts = [
     (author, target) => `${author} umarmt ${target} ganz fest! Awwww! ❤️`,
@@ -352,6 +352,7 @@ module.exports = async (interaction) => {
 };
 
 async function useItemTier(interaction) {
+    const { inventarDAO, tiereDAO, gameUserDAO } = getDaos();
     if (interaction.customId.includes('self_select')) {
         const tierart = interaction.values[0];
         const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
@@ -512,14 +513,17 @@ async function useItemTier(interaction) {
 }
 
 async function getTierarten() {
+    const { tiereDAO } = getDaos();
     return await tiereDAO.getTierartenOhneBesitzer();
 }
 
 async function getRandomTier(tierart) {
+    const { tiereDAO } = getDaos();
     return await tiereDAO.getRandomTierOhneBesitzerByTierart(tierart);
 }
 
 async function useItemFarbrolle(interaction) {
+    const { inventarDAO } = getDaos();
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
     const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Farbrolle');
@@ -546,6 +550,7 @@ async function useItemFarbrolle(interaction) {
 }
 
 async function useItemVoiceChannel(interaction) {
+    const { inventarDAO } = getDaos();
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
     const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Voicechannel');
@@ -571,6 +576,7 @@ async function useItemVoiceChannel(interaction) {
 }
 
 async function useItemRolleNamensliste(interaction) {
+    const { inventarDAO } = getDaos();
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
     const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Rolle (Namensliste)');
@@ -596,6 +602,7 @@ async function useItemRolleNamensliste(interaction) {
 }
 
 async function useItemDoppelteXp(interaction) {
+    const { inventarDAO, configDAO, activeItemsDAO } = getDaos();
     const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
     const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Doppelte XP');
     if (inventar.items[itemId].quantity > 1) {
@@ -652,6 +659,7 @@ async function useItemDoppelteXp(interaction) {
 }
 
 async function useItemObersterPlatz(interaction) {
+    const { inventarDAO, activeItemsDAO } = getDaos();
     const role = interaction.guild.roles.cache.get('1387041004179296439') || (await interaction.guild.roles.fetch('1387041004179296439'));
     if (!role) {
         await interaction.update({
@@ -700,6 +708,7 @@ async function useItemObersterPlatz(interaction) {
 }
 
 async function useItemBankkontoUpgrade(interaction) {
+    const { bankkontenDAO, inventarDAO } = getDaos();
     const bankkonto = await bankkontenDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
     const inventar = await inventarDAO.getOneByBesitzer(bankkonto.besitzerObj._id);
     const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Bankkonto Upgrade');
@@ -731,6 +740,7 @@ function getRandom(min, max) {
 }
 
 async function useItemUmarmung(interaction) {
+    const { inventarDAO } = getDaos();
     const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
     const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Umarmung');
     if (inventar.items[itemId].quantity > 1) {
@@ -768,6 +778,7 @@ async function useItemUmarmung(interaction) {
 }
 
 async function useItemKuss(interaction) {
+    const { inventarDAO } = getDaos();
     const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
     const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Küsse');
     if (inventar.items[itemId].quantity > 1) {
@@ -805,6 +816,7 @@ async function useItemKuss(interaction) {
 }
 
 async function useItemBombe(interaction) {
+    const { inventarDAO, activeItemsDAO } = getDaos();
     if (interaction.customId.includes('bombe_uselect')) {
         const targetUserId = interaction.values[0];
         const selectMenu = new StringSelectMenuBuilder()
@@ -979,6 +991,7 @@ async function useItemBombe(interaction) {
 }
 
 async function useItemBlattläuseKlauBanane(interaction) {
+    const { inventarDAO } = getDaos();
     const targetUserId = interaction.values[0];
     const targetMemberObject = await interaction.guild.members.fetch(targetUserId).catch(() => null);
     if (!targetMemberObject) {
@@ -1018,6 +1031,7 @@ async function useItemBlattläuseKlauBanane(interaction) {
 }
 
 async function useItemSchuldschein(interaction) {
+    const { inventarDAO, activeItemsDAO } = getDaos();
     const targetUserId = interaction.values[0];
     const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
     const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Schuldschein');
@@ -1064,6 +1078,7 @@ async function useItemSchuldschein(interaction) {
 }
 
 async function useItemKeks(interaction) {
+    const { inventarDAO, itemsDAO, gameUserDAO } = getDaos();
     if (interaction.customId.includes('keks_select')) {
         const selectedAction = interaction.values[0];
         if (selectedAction == 'essen') {

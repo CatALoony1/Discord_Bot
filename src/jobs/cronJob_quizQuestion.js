@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
-const { quizQuestionDAO, quizStatsDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -42,6 +42,7 @@ async function jobFunction(client) {
     console.log('Quiz started');
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     try {
+        const { quizQuestionDAO, quizStatsDAO } = getDaos();
         var targetChannel = await client.channels.fetch(process.env.QUIZ_ID);
         const oldQuestions = await quizQuestionDAO.getAllAsked(guild.id);
         if (oldQuestions.length != 0) {

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const Hangman = require('../sqliteModels/Hangman');
 const path = require('node:path');
-const { hangmanDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 const wordList = [
     "GROSS",
@@ -1349,6 +1349,7 @@ module.exports = {
     run: async ({ interaction, client }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
+            const { hangmanDAO } = getDaos();
             await interaction.deferReply();
             let wortobj = interaction.options.get('wort');
             let wort = null;

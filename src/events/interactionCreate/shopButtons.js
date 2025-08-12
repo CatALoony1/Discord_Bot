@@ -2,10 +2,11 @@ const { MessageFlags, ButtonBuilder, ActionRowBuilder } = require('discord.js');
 const createShopEmbeds = require("../../utils/createShopEmbeds");
 const removeMoney = require('../../utils/removeMoney');
 require('dotenv').config();
-const { bankkontenDAO, inventarDAO, itemsDAO } = require('../../utils/daos');
+const { getDaos } = require('../../utils/daos');
 
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('shop')) return;
+    const { bankkontenDAO, inventarDAO, itemsDAO } = getDaos();
     let targetMessage = await interaction.channel.messages.fetch(interaction.message.id);
     let targetMessageEmbed = targetMessage.embeds[0];
     let [, pageSlash] = targetMessageEmbed.title.split(" - ");

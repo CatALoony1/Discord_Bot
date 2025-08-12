@@ -1,7 +1,7 @@
 const { MessageFlags } = require('discord.js');
 const QuizStats = require('../../sqliteModels/QuizStats');
 const giveMoney = require('../../utils/giveMoney');
-const { quizQuestionDAO, quizStatsDAO } = require('../../utils/daos');
+const { getDaos } = require('../../utils/daos');
 
 function isYesterday(date) {
     const today = new Date();
@@ -15,6 +15,7 @@ function isYesterday(date) {
 
 module.exports = async (interaction) => {
     if (!interaction.isButton() || !interaction.customId || !interaction.customId.includes('quiz')) return;
+    const { quizQuestionDAO, quizStatsDAO } = getDaos();
     try {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         const [, rw, answer, id] = interaction.customId.split('_');

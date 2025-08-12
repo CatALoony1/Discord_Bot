@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
-const { levelDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -20,6 +20,7 @@ module.exports = {
    */
   run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+    const { levelDAO } = getDaos();
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     const farbe = interaction.options.get('farbe').value;
     const hexregex = /^#(?:[0-9a-fA-F]{3}){1,2}$/;

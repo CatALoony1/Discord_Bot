@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits, InteractionContextType, MessageFlags } = require('discord.js');
 const Bump = require("../sqliteModels/Bump");
 require('dotenv').config();
-const { bumpDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,6 +14,7 @@ module.exports = {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         try {
+            const { bumpDAO } = getDaos();
             const bumpEntry = await bumpDAO.getOneByGuild(interaction.guild.id);
             if (bumpEntry) {
                 bumpEntry.endTime = Date.now() + 7200000;

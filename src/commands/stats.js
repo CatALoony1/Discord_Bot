@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('../utils/calculateLevelXp');
-const { levelDAO, lottozahlenDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -10,6 +10,7 @@ module.exports = {
 
   run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+    const { levelDAO, lottozahlenDAO } = getDaos();
     if (!interaction.inGuild()) {
       interaction.reply('Hier ist doch kein Server!');
       return;

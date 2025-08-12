@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const Lottozahlen = require('../sqliteModels/Lottozahlen');
 const giveMoney = require('../utils/giveMoney');
-const { lottozahlenDAO, gameUserDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -21,6 +21,7 @@ module.exports = {
 
     run: async ({ interaction }) => {
         await interaction.deferReply();
+        const { lottozahlenDAO, gameUserDAO } = getDaos();
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         const subcommand = interaction.options.getSubcommand();
         const targetUserId = interaction.member.id;

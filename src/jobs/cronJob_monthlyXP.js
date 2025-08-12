@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 require('dotenv').config();
-const { levelDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 let monthlyXpJob = null;
 
@@ -12,6 +12,7 @@ function startJob(client) {
   monthlyXpJob = cron.schedule('0 0 1 * *', async function () {
     console.log('Started deleting monthly XP');
     try {
+      const { levelDAO } = getDaos();
       const fetchedLevel = await levelDAO.getAllByGuild(process.env.GUILD_ID);
       fetchedLevel.forEach(async level => {
         level.lastmonth = level.thismonth;

@@ -1,11 +1,12 @@
 const Discord = require("discord.js");
 const Question = require('../../sqliteModels/QuizQuestion');
 const giveMoney = require('../../utils/giveMoney');
-const { quizQuestionDAO } = require('../../utils/daos');
+const { getDaos } = require('../../utils/daos');
 
 module.exports = async (interaction) => {
     if (!interaction.isModalSubmit()) return;
     if (interaction.customId.includes(`quizadd-${interaction.user.id}`)) {
+        const { quizQuestionDAO } = getDaos();
         await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
         const frage = interaction.fields.getTextInputValue('quizadd-frage');
         const richtig = interaction.fields.getTextInputValue('quizadd-richtig');

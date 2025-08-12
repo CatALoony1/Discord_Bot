@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const cron = require('node-cron');
 require('dotenv').config();
-const { bumpDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 const getTenorGifById = require("../utils/getTenorGifById");
 
 let bumpReminderJob = null;
@@ -13,6 +13,7 @@ function startJob(client) {
   }
   bumpReminderJob = cron.schedule('* * * * *', async function () {
     try {
+      const { bumpDAO } = getDaos();
       const bumpEntry = await bumpDAO.getOneByGuild(process.env.GUILD_ID);
       if (bumpEntry) {
         if (bumpEntry.endTime < Date.now() && bumpEntry.reminded === 'N') {

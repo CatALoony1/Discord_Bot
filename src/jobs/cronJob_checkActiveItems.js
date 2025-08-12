@@ -1,7 +1,7 @@
 require('dotenv').config();
 const cron = require('node-cron');
 const Config = require('../sqliteModels/Config.js');
-const { activeItemsDAO, configDAO } = require('../utils/daos.js');
+const { getDaos } = require('../utils/daos.js');
 const removeMoney = require('../utils/removeMoney.js');
 const giveMoney = require('../utils/giveMoney.js');
 const getTenorGifById = require('../utils/getTenorGifById.js');
@@ -16,6 +16,7 @@ function startJob(client) {
     }
     checkActiveItemsJob = cron.schedule('*/5 * * * *', async function () {
         try {
+            const { activeItemsDAO, configDAO } = getDaos();
             const guild = await client.guilds.cache.get(process.env.GUILD_ID);
             const activeItems = await activeItemsDAO.getAll();
             const targetChannel = guild.channels.cache.get(process.env.SPIELE_ID) || (await guild.channels.fetch(process.env.SPIELE_ID));

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const cron = require('node-cron');
 const giveMoney = require('../utils/giveMoney');
-const { levelDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 let geburtstagJob = null;
 
@@ -33,6 +33,7 @@ function isRunning() {
 }
 
 async function jobFunction(client) {
+    const { levelDAO } = getDaos();
     var targetChannel = await client.channels.fetch(process.env.ALLGEMEIN_ID);
     const guild = await client.guilds.cache.get(process.env.GUILD_ID);
     const allLevels = await levelDAO.getAllBirthdayTodayByGuild(process.env.GUILD_ID);

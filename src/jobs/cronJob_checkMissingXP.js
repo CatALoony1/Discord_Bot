@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 require('dotenv').config();
-const { levelDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 let missingXpJob = null;
 
@@ -12,6 +12,7 @@ function startJob(client) {
     missingXpJob = cron.schedule('*/6 * * * *', async function () {
         console.log('Started checking for missing XP');
         try {
+            const { levelDAO } = getDaos();
             const fetchedLevel = await levelDAO.getAllByGuild(process.env.GUILD_ID);
             let missingXPUsers = [];
             const levelToUpdate = [];

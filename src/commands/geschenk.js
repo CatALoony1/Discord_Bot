@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const removeMoney = require('../utils/removeMoney');
 const giveMoney = require('../utils/giveMoney');
-const { bankkontenDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -29,6 +29,7 @@ module.exports = {
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
+            const { bankkontenDAO } = getDaos();
             if (!interaction.inGuild()) {
                 interaction.reply('Hier ist doch kein Server!');
                 return;

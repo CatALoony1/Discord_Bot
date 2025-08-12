@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
-const { levelDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -41,6 +41,7 @@ module.exports = {
         if (tag >= 1 && tag <= 31 && monat >= 1 && monat <= 12 && jahr >= 1900 && jahr <= new Date().getFullYear()) {
             const geburtstag = new Date(jahr, monat - 1, tag);
             try {
+                const { levelDAO } = getDaos();
                 const level = await levelDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
                 if (level) {
                     level.geburtstag = geburtstag;

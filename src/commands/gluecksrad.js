@@ -3,7 +3,7 @@ const removeMoney = require('../utils/removeMoney');
 const giveMoney = require('../utils/giveMoney');
 const Gluecksrad = require('../sqliteModels/Gluecksrad');
 require('dotenv').config();
-const { bankkontenDAO, gluecksradDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 function getRandom(min, max) {
     min = Math.ceil(min);
@@ -33,6 +33,7 @@ module.exports = {
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
         try {
+            const { bankkontenDAO, gluecksradDAO } = getDaos();
             if (!interaction.inGuild()) {
                 interaction.reply('Hier ist doch kein Server!');
                 return;

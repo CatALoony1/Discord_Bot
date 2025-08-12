@@ -2,7 +2,7 @@ const { SlashCommandBuilder, AttachmentBuilder, InteractionContextType } = requi
 const canvacord = require('canvacord');
 const calculateLevelXp = require('../utils/calculateLevelXp');
 const gifToPngDataUri = require('../utils/gifToPngDataUri');
-const { levelDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -16,6 +16,7 @@ module.exports = {
 
   run: async ({ interaction }) => {
     console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+    const { levelDAO } = getDaos();
     if (!interaction.inGuild()) {
       interaction.reply('Hier ist doch kein Server!');
       return;

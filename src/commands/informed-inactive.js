@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, PermissionFlagsBits, MessageFlags } = require('discord.js');
-const { configDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -30,6 +30,7 @@ module.exports = {
 
     run: async ({ interaction }) => {
         console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+        const { configDAO } = getDaos();
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         if (!interaction.inGuild()) {
             interaction.editReply('Hier ist doch kein Server!');

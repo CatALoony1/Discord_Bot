@@ -2,7 +2,7 @@ require('dotenv').config();
 const Tiere = require('../sqliteModels/Tiere');
 const fs = require('fs').promises;
 const path = require('path');
-const { tiereDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 const animalFoler = './animals';
 
@@ -18,6 +18,7 @@ function getTierart(filename) {
 async function jobFunction(client) {
     let localAnimals = [];
     try {
+        const { tiereDAO } = getDaos();
         const allLocalFiles = await fs.readdir(animalFoler);
         localAnimals = allLocalFiles.filter(file => path.extname(file).toLowerCase() === '.webp');
         console.log(`Gefundene Tierbilder: ${localAnimals.length}`);

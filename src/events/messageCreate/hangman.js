@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Message, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const path = require('node:path');
 const giveMoney = require("../../utils/giveMoney");
-const { hangmanDAO } = require('../../utils/daos');
+const { getDaos } = require('../../utils/daos');
 
 function maskiereWort(wort, gerateneBuchstaben) {
     const woerter = wort.split(' ');
@@ -26,6 +26,7 @@ function maskiereWort(wort, gerateneBuchstaben) {
 module.exports = async (message) => {
     if (!message.inGuild() || message.author.bot || message.channel.id !== process.env.SPIELE_ID || message.webhookId || !message.reference) return;
     try {
+        const { hangmanDAO } = getDaos();
         const referencedMessage = await message.channel.messages.fetch(message.reference.messageId);
         const hangman = await hangmanDAO.getOneByMessageId(referencedMessage.id);
         if (!hangman) return;

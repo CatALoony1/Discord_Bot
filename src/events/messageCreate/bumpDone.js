@@ -1,7 +1,7 @@
 const Bump = require("../../sqliteModels/Bump");
 require('dotenv').config();
 const { Message, EmbedBuilder } = require('discord.js');
-const { bumpDAO, levelDAO } = require('../../utils/daos');
+const { getDaos } = require('../../utils/daos');
 
 /**
  * 
@@ -10,6 +10,7 @@ const { bumpDAO, levelDAO } = require('../../utils/daos');
  */
 module.exports = async (message) => {
   if (message.author.id === process.env.DISBOARD_ID) {
+    const { bumpDAO, levelDAO } = getDaos();
     if (message.embeds[0] != null && message.embeds[0].description.includes("Bump erfolgreich")) {
       const userid = message.interactionMetadata.user.id;
       const guildId = message.guild.id;

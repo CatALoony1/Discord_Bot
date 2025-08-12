@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
-const { levelDAO, configDAO, quizStatsDAO, gameUserDAO } = require('../utils/daos.js');
+const { getDaos } = require('../utils/daos.js');
 
 let checkInactiveJob = null;
 
@@ -13,6 +13,7 @@ function startJob(client) {
     checkInactiveJob = cron.schedule('0 1 * * *', async function () { // 1 Uhr
         console.log(`CheckInactive-Job started...`);
         try {
+            const { levelDAO, configDAO, quizStatsDAO, gameUserDAO } = getDaos();
             const guild = client.guilds.cache.get(process.env.GUILD_ID);
             let members = await guild.members.fetch();
             const fetchedLevel = await levelDAO.getAllByGuild(process.env.GUILD_ID);

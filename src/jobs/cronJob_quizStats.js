@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonStyle, ButtonBuilder, EmbedBuilder } = require('discord.js');
 const createQuizLeaderboardEmbeds = require("../utils/createQuizLeaderboardEmbeds");
 const cron = require('node-cron');
-const { quizQuestionDAO } = require('../utils/daos');
+const { getDaos } = require('../utils/daos');
 
 let quizStatsJob = null;
 
@@ -34,6 +34,7 @@ function isRunning() {
 
 async function jobFunction(client) {
     try {
+        const { quizQuestionDAO } = getDaos();
         var targetChannel = await client.channels.fetch(process.env.QUIZ_ID);
         const embed = await createQuizLeaderboardEmbeds(0, client);
         const pageDownButton = new ButtonBuilder()

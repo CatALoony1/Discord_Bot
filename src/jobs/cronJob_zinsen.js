@@ -1,5 +1,5 @@
 const cron = require('node-cron');
-const { bankkontenDAO } = require('../utils/daos.js');
+const { getDaos } = require('../utils/daos.js');
 
 let checkInactiveJob = null;
 
@@ -11,6 +11,7 @@ function startJob(client) {
     checkInactiveJob = cron.schedule('10 0 * * *', async function () { // 0:10 Uhr
         console.log(`CheckInactive-Job started...`);
         try {
+            const { bankkontenDAO } = getDaos();
             const bankkontenZinsen = await bankkontenDAO.getAllWithZinsen();
             const bankkontenToSave = [];
             if (bankkontenZinsen && bankkontenZinsen.length > 0) {
