@@ -17,14 +17,14 @@ module.exports = {
             const { bumpDAO } = getDaos();
             const bumpEntry = await bumpDAO.getOneByGuild(interaction.guild.id);
             if (bumpEntry) {
-                bumpEntry.endTime = Date.now() + 7200000;
+                bumpEntry.endTime = new Date(Date.now() + 7200000);
                 bumpEntry.reminded = 'N';
                 await bumpDAO.update(bumpEntry);
                 await interaction.editReply(`Bump Reminder erstellt!`);
             } else {
                 const newBump = new Bump();
                 newBump.guildId = interaction.guild.id;
-                newBump.endTime = Date.now() + 7200000;
+                newBump.endTime = new Date(Date.now() + 7200000);
                 await bumpDAO.insert(newBump);
                 await interaction.editReply(`Bump Reminder erstellt!`);
             }

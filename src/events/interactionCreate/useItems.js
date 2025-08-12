@@ -636,7 +636,7 @@ async function useItemDoppelteXp(interaction) {
     const activeItem = await activeItemsDAO.getOneByGuildAndItemType(interaction.guild.id, 'Doppelte XP');
     if (activeItem) {
         if (activeItem.endTime) {
-            activeItem.endTime = new Date(activeItem.endTime.getTime() + 10800000);
+            activeItem.endTime = new Date(activeItem.endTime).getTime() + 10800000;
             await activeItemsDAO.update(activeItem);
         } else {
             activeItem.endTime = new Date(Date.now() + 10800000);
@@ -691,7 +691,7 @@ async function useItemObersterPlatz(interaction) {
     const activeItem = await activeItemsDAO.getOneByGuildItemTypeUser(interaction.guild.id, 'Oberster Platz', interaction.user.id);
     if (activeItem) {
         if (activeItem.endTime) {
-            activeItem.endTime = new Date(activeItem.endTime.getTime() + 21600000);
+            activeItem.endTime = new Date(activeItem.endTime).getTime() + 21600000;
             await activeItemsDAO.update(activeItem);
         } else {
             activeItem.endTime = new Date(Date.now() + 21600000);
@@ -902,7 +902,9 @@ async function useItemBombe(interaction) {
     } else if (interaction.customId.includes('bombe_defuse')) {
         const activeItemId = interaction.customId.split('_')[3];
         const activeItem = await activeItemsDAO.getById(activeItemId);
-        if (!activeItem || activeItem.usedOn !== interaction.user.id || activeItem.endTime < new Date()) {
+        const endTimeInMillis = new Date(activeItem.endTime).getTime();
+        const currentTimeInMillis = Date.now();
+        if (!activeItem || activeItem.usedOn !== interaction.user.id || endTimeInMillis < currentTimeInMillis) {
             await interaction.reply({
                 content: 'Die Bombe ist entweder bereits entschärft, ist abgelaufen oder nicht für dich bestimmt!',
                 components: [],
@@ -1059,7 +1061,7 @@ async function useItemSchuldschein(interaction) {
     const schuldschein = await activeItemsDAO.getOneByGuildItemTypeUserUsedOn(interaction.guild.id, 'Schuldschein', interaction.user.id, targetUserId);
     if (schuldschein) {
         if (schuldschein.endTime) {
-            schuldschein.endTime = new Date(schuldschein.endTime.getTime() + 604800000);
+            schuldschein.endTime = new Date(schuldschein.endTime).getTime() + 604800000;
             await activeItemsDAO.update(schuldschein);
         } else {
             schuldschein.endTime = new Date(Date.now() + 604800000);

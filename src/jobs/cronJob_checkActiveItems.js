@@ -24,7 +24,9 @@ function startJob(client) {
             const toBeDeleted = [];
             if (activeItems.length > 0) {
                 for (const activeItem of activeItems) {
-                    if (activeItem.endTime < new Date()) {
+                    const endTimeInMillis = new Date(activeItem.endTime).getTime();
+                    const currentTimeInMillis = Date.now();
+                    if (endTimeInMillis < currentTimeInMillis) {
                         console.log(`Deleting expired active item: ${activeItem.itemType} for user ${activeItem.user}`);
                         toBeDeleted.push(activeItem._id);
                         if (activeItem.itemType == 'Bombe') {

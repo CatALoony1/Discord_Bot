@@ -27,7 +27,7 @@ module.exports = async (oldMessage, newMessage) => {
         const messageEdited = new EmbedBuilder();
         messageEdited.setColor(0x0033cc);
         messageEdited.setAuthor({ name: newMessage.author.username, iconURL: newMessage.author.displayAvatarURL({ size: 256 }) });
-        messageEdited.setTimestamp(Date.now());
+        messageEdited.setTimestamp(new Date());
         messageEdited.setTitle(`Nachricht bearbeitet in ${newMessage.channel}`);
         messageEdited.setURL(newMessage.url);
         messageEdited.addFields({ name: 'vorher', value: `${oldMessageContent}` });

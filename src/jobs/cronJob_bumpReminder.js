@@ -14,39 +14,30 @@ function startJob(client) {
   bumpReminderJob = cron.schedule('* * * * *', async function () {
     try {
       const { bumpDAO } = getDaos();
-      const bumpEntry = await bumpDAO.getOneByGuild(process.env.GUILD_ID);
-      console.log(bumpEntry);
+      const bumpEntry = await bumpDAO.getOneToBeRemindedByGuild(process.env.GUILD_ID);
       if (bumpEntry) {
-        console.log(bumpEntry.endTime);
-        console.log(bumpEntry.endtime < Date.now());
-        console.log(bumpEntry.reminded);
-        console.log(bumpEntry.reminded === 'N');
-        const rightEntry = await bumpDAO.getOneToBeRemindedByGuild(process.env.GUILD_ID);
-        console.log(rightEntry);
-        if (bumpEntry.endTime < Date.now() && bumpEntry.reminded === 'N') {
-          let guild = client.guilds.cache.get(process.env.GUILD_ID);
-          let role = guild.roles.cache.find(role => role.name === 'Bump-Ping');
-          await getTenorGifById("8978495178385937973")
-            .then(async (gifUrl) => {
-              if (!gifUrl.includes("http")) {
-                console.log("ERROR Bump gif");
-                return;
-              }
-              var bump = new Discord.EmbedBuilder()
-                .setColor(0x0033cc)
-                .setTitle("Es ist Zeit zu bumpen!")
-                .setImage(gifUrl);
-              var targetChannel = await client.channels.fetch(process.env.BUMP_ID);
-              var message = await targetChannel.send({ content: `${role}`, embeds: [bump] });
-              console.log('Bump reminded');
-              bumpEntry.remindedId = message.id;
-              bumpEntry.reminded = 'J';
-              bumpDAO.update(bumpEntry);
-            })
-            .catch((error) => {
-              console.error('ERROR:', error);
-            });
-        }
+        let guild = client.guilds.cache.get(process.env.GUILD_ID);
+        let role = guild.roles.cache.find(role => role.name === 'Bump-Ping');
+        await getTenorGifById("8978495178385937973")
+          .then(async (gifUrl) => {
+            if (!gifUrl.includes("http")) {
+              console.log("ERROR Bump gif");
+              return;
+            }
+            var bump = new Discord.EmbedBuilder()
+              .setColor(0x0033cc)
+              .setTitle("Es ist Zeit zu bumpen!")
+              .setImage(gifUrl);
+            var targetChannel = await client.channels.fetch(process.env.BUMP_ID);
+            var message = await targetChannel.send({ content: `${role}`, embeds: [bump] });
+            console.log('Bump reminded');
+            bumpEntry.remindedId = message.id;
+            bumpEntry.reminded = 'J';
+            bumpDAO.update(bumpEntry);
+          })
+          .catch((error) => {
+            console.error('ERROR:', error);
+          });
       }
     } catch (error) {
       console.log(error);

@@ -9,7 +9,7 @@ module.exports = async (interaction) => {
         const feedback = new Discord.EmbedBuilder();
         feedback.setColor(0x0033cc);
         feedback.setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ size: 256 }) });
-        feedback.setTimestamp(Date.now());
+        feedback.setTimestamp(new Date());
         feedback.setTitle(`Neue Kummerkasten Nachricht`);
         feedback.setDescription(feedbackText);
         await targetChannel.send({ embeds: [feedback] });

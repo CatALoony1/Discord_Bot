@@ -46,7 +46,7 @@ async function giveXP(member, xpToGive, channel, message) {
             level.xp += xpAmount;
             level.allxp += xpAmount;
             level.thismonth += xpAmount;
-            level.setLastMessage(Date.now());
+            level.setLastMessage(new Date());
             let money = 0;
             if (level.xp >= calculateLevelXp(level.level)) {
                 do {
@@ -101,7 +101,7 @@ async function giveXP(member, xpToGive, channel, message) {
                 xp: xpAmount,
                 allxp: xpAmount,
                 messages: 0,
-                lastMessage: Date.now(),
+                lastMessage: new Date(),
                 userName: member.user.tag,
                 messagexp: 0,
                 voicexp: 0,
@@ -113,7 +113,7 @@ async function giveXP(member, xpToGive, channel, message) {
             newLevel.setGuildId(member.guild.id);
             newLevel.setXp(xpAmount);
             newLevel.setAllxp(xpAmount);
-            newLevel.setLastMessage(Date.now());
+            newLevel.setLastMessage(new Date());
             newLevel.setUserName(member.user.tag);
             newLevel.setThismonth(xpAmount);
 

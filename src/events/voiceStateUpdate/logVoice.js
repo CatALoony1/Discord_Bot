@@ -38,7 +38,7 @@ module.exports = async (oldState, newState, client) => {
     if (oldState.channel === newState.channel) return;
     const voiceUpdate = new EmbedBuilder();
     voiceUpdate.setAuthor({ name: newState.member.user.username, iconURL: newState.member.user.displayAvatarURL({ size: 256 }) });
-    voiceUpdate.setTimestamp(Date.now());
+    voiceUpdate.setTimestamp(new Date());
     if (newState.channel === null) {
       console.log(`user ${newState.member.user.tag} left voicechannel ${oldState.channel}`);
       voiceUpdate.setColor(0xff0000);

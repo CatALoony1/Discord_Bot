@@ -40,7 +40,7 @@ module.exports = async (message, client) => {
     const messageDeleted = new EmbedBuilder();
     messageDeleted.setColor(0xff0000);
     messageDeleted.setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 256 }) });
-    messageDeleted.setTimestamp(Date.now());
+    messageDeleted.setTimestamp(new Date());
     messageDeleted.setTitle(`Nachricht gelöscht in ${message.channel}`);
     messageDeleted.setDescription(description);
     targetChannel.send({ embeds: [messageDeleted] });

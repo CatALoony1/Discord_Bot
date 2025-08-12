@@ -50,7 +50,7 @@ module.exports = async (message) => {
       try {
         const bumpEntry = await bumpDAO.getOneByGuild(guildId);
         if (bumpEntry) {
-          bumpEntry.endTime = Date.now() + 7200000;
+          bumpEntry.endTime = new Date(Date.now() + 7200000);
           bumpEntry.reminded = 'N';
           if (bumpEntry.remindedId) {
             const remindedmessage = await channel.messages.fetch(bumpEntry.remindedId);
@@ -63,7 +63,7 @@ module.exports = async (message) => {
         } else {
           const newBump = new Bump();
           newBump.setGuildId(guildId);
-          newBump.setEndTime(Date.now() + 7200000);
+          newBump.setEndTime(new Date(Date.now() + 7200000));
           await bumpDAO.insert(newBump);
           console.log('Bump entry created');
           messageToReact.react("⏰");

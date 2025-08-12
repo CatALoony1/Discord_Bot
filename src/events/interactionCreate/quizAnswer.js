@@ -46,15 +46,15 @@ module.exports = async (interaction) => {
                     let xpToGive = 2000;
                     xpToGive = Math.ceil(xpToGive * (1 + ((fetchedStats.series * 10) / 100)));
                     await giveMoney(interaction.member, xpToGive);
-                    if (isYesterday(fetchedStats.lastParticipation)) {
+                    if (isYesterday(new Date(fetchedStats.lastParticipation))) {
                         fetchedStats.series += 1;
                     } else {
                         fetchedStats.series = 1;
                     }
-                    fetchedStats.lastParticipation = Date.now();
+                    fetchedStats.lastParticipation = new Date();
                     await quizStatsDAO.update(fetchedStats);
                 } else {
-                    const newStats = new QuizStats(undefined, interaction.guild.id, interaction.user.id, 1, 0, Date.now(), 1);
+                    const newStats = new QuizStats(undefined, interaction.guild.id, interaction.user.id, 1, 0, new Date(), 1);
                     let xpToGive = 2000;
                     xpToGive = Math.ceil(xpToGive * 1.1);
                     await giveMoney(interaction.member, xpToGive);
@@ -65,10 +65,10 @@ module.exports = async (interaction) => {
                 if (fetchedStats) {
                     fetchedStats.wrong += 1;
                     fetchedStats.series = 0;
-                    fetchedStats.lastParticipation = Date.now();
+                    fetchedStats.lastParticipation = new Date();
                     await quizStatsDAO.update(fetchedStats);
                 } else {
-                    const newStats = new QuizStats(undefined, interaction.guild.id, interaction.user.id, 0, 1, Date.now(), 1);
+                    const newStats = new QuizStats(undefined, interaction.guild.id, interaction.user.id, 0, 1, new Date(), 1);
                     await quizStatsDAO.insert(newStats);
                 }
                 await interaction.editReply(`Antwort ${answer} ist leider nicht richtig! Die richtige Antwort ist ${rightAnswerChar}`);

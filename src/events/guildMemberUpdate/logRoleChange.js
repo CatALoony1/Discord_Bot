@@ -11,7 +11,7 @@ module.exports = async (oldMember, newMember) => {
             const roleRemoved = new EmbedBuilder();
             roleRemoved.setColor(0xff0000);
             roleRemoved.setAuthor({ name: newMember.user.username, iconURL: newMember.user.displayAvatarURL({ size: 256 }) });
-            roleRemoved.setTimestamp(Date.now());
+            roleRemoved.setTimestamp(new Date());
             oldMember.roles.cache.forEach(role => {
                 if (!newMember.roles.cache.has(role.id)) {
                     roleRemoved.setTitle('Role Removed');
@@ -24,7 +24,7 @@ module.exports = async (oldMember, newMember) => {
             const roleAdded = new EmbedBuilder();
             roleAdded.setColor(0x008000);
             roleAdded.setAuthor({ name: newMember.user.username, iconURL: newMember.user.displayAvatarURL({ size: 256 }) });
-            roleAdded.setTimestamp(Date.now());
+            roleAdded.setTimestamp(new Date());
             newMember.roles.cache.forEach(role => {
                 if (!oldMember.roles.cache.has(role.id)) {
                     roleAdded.setTitle('Role Added');

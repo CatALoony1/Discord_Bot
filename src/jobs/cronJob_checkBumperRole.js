@@ -17,8 +17,8 @@ function startJob(client) {
             if (allLevels && allLevels.length > 0) {
                 for (const level of allLevels) {
                     if (level.lastBump) {
-                        let now = new Date();
-                        let lastbump = level.lastBump;
+                        let now = new Date().getTime();
+                        let lastbump = new Date(level.lastBump).getTime();
                         let diffTime = Math.abs(now - lastbump);
                         let diffHour = Math.floor(diffTime / (1000 * 60 * 60));
                         if (diffHour == 24) {

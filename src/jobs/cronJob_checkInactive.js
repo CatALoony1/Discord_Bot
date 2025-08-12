@@ -38,8 +38,8 @@ function startJob(client) {
                     let vorhanden = 0;
                     for (const key of playerTags.keys()) {
                         if (key == member.user.tag) {
-                            let now = new Date();
-                            var lastMessage = playerTags.get(key).lastMessage;
+                            let now = new Date().getTime();
+                            var lastMessage = new Date(playerTags.get(key).lastMessage).getTime();
                             let diffTime = Math.abs(now - lastMessage);
                             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                             console.log(`DB and Server: ${member.user.tag}: ${diffDays}`);
@@ -78,8 +78,8 @@ function startJob(client) {
                 if (!playerTagsGood.includes(key)) {
                     for (let j = 0; j < fetchedLevel.length; j++) {
                         if (key === fetchedLevel[j].userName) {
-                            let now = new Date();
-                            let diffTime = Math.abs(now - fetchedLevel[j].lastMessage);
+                            let now = new Date().getTime();
+                            let diffTime = Math.abs(now - new Date(fetchedLevel[j].lastMessage).getTime());
                             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                             console.log(`DB not Server: ${key}: ${diffDays}`);
                             if (diffDays < 30) { //User not on Server
@@ -124,7 +124,7 @@ function startJob(client) {
                 }
                 const messageUserInactive = new Discord.EmbedBuilder();
                 messageUserInactive.setColor(0xff0000);
-                messageUserInactive.setTimestamp(Date.now());
+                messageUserInactive.setTimestamp(new Date());
                 messageUserInactive.setTitle(`Folgende User haben seit 30 Tagen nichts geschrieben:`);
                 messageUserInactive.setDescription(`${playerTagsOnServer.toString().replaceAll(',', '\n')}`);
                 await targetChannel.send({ embeds: [messageUserInactive] });
@@ -137,7 +137,7 @@ function startJob(client) {
                 }
                 const messageUserInactiveLurk = new Discord.EmbedBuilder();
                 messageUserInactiveLurk.setColor(0xff0000);
-                messageUserInactiveLurk.setTimestamp(Date.now());
+                messageUserInactiveLurk.setTimestamp(new Date());
                 messageUserInactiveLurk.setTitle(`Seit 15 Tagen auf dem Server, nur am lurken`);
                 messageUserInactiveLurk.setDescription(`${playerLurkArray.toString().replaceAll(',', '\n')}`);
                 await targetChannel.send({ embeds: [messageUserInactiveLurk] });

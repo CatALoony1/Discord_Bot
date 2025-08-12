@@ -47,8 +47,8 @@ async function jobFunction(client) {
         const oldQuestions = await quizQuestionDAO.getAllAsked(guild.id);
         if (oldQuestions.length != 0) {
             for (let i = 0; i < oldQuestions.length; i++) {
-                let now = new Date();
-                let diffTime = Math.abs(now - oldQuestions[i].started);
+                let now = new Date().getTime();
+                let diffTime = Math.abs(now - new Date(oldQuestions[i].started).getTime);
                 let diffHours = Math.floor(diffTime / (1000 * 60 * 60));
                 if (diffHours < 25) {
                     const oldQuestionEmbed = new Discord.EmbedBuilder();
@@ -84,7 +84,7 @@ async function jobFunction(client) {
             let questionUser = fetchedQuestions[questionIndex].participants[0];
             const stats = await quizStatsDAO.getOneByUserAndGuild(questionUser, guild.id);
             if (stats) {
-                stats.lastParticipation = Date.now();
+                stats.lastParticipation = new Date();
                 await quizStatsDAO.update(stats);
             }
             var rightChar = 'A';
@@ -146,7 +146,7 @@ async function jobFunction(client) {
             });
 
             fetchedQuestions[questionIndex].asked = 'J';
-            fetchedQuestions[questionIndex].started = Date.now();
+            fetchedQuestions[questionIndex].started = new Date();
             fetchedQuestions[questionIndex].rightChar = rightChar;
             await quizQuestionDAO.update(fetchedQuestions[questionIndex]);
         } else {

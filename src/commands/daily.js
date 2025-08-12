@@ -86,7 +86,7 @@ module.exports = {
             await giveMoney(targetUserObj, moneyToGive);
         } else if (subcommand == 'bonus') {
             const user = await gameUserDAO.getOneByUserAndGuild(targetUserId, interaction.guild.id);
-            if ((user && ((user.daily && user.daily.toDateString() !== new Date().toDateString()) || !user.daily)) || !user) {
+            if ((user && ((user.daily && new Date(user.daily).toDateString() !== new Date().toDateString()) || !user.daily)) || !user) {
                 let bonusAmount = 1500;
                 bonusAmount = await giveMoney(targetUserObj, bonusAmount, false, true);
                 interaction.editReply(`Du hast deinen täglichen Bonus von ${bonusAmount} Blattläuse erhalten!`);
