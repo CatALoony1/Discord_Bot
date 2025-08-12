@@ -1,6 +1,6 @@
 // 02_database.js
 const path = require('path');
-const { initializeDatabase } = require('../../events/ready/02_database'); // Ihre initializeDB.js
+const { initializeDatabase } = require('../../utils/initializeDB'); // Ihre initializeDB.js
 
 
 const DB_PATH = path.join(__dirname, '..', '..', '..', 'bot_database.db');
