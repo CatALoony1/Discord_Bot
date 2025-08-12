@@ -21,8 +21,8 @@ const TTTKillDAO = require('../daos/TTTKillDAO');
 const TTTShopPurchaseDAO = require('../daos/TTTShopPurchaseDAO');
 
 async function initializeDatabase(dbPath) {
-    return new Promise((resolve, reject) => {
-        const db = new sqlite3.Database(dbPath, (err) => {
+    return new Promise(async (resolve, reject) => {
+        const db = await new sqlite3.Database(dbPath, (err) => {
             if (err) {
                 console.error('Error opening database:', err.message);
                 return reject(err);
