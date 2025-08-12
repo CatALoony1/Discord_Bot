@@ -42,7 +42,7 @@ async function jobFunction(client) {
                 let itemsToSave = [];
                 for (let item of allItems) {
                     console.log(item);
-                    itemsToSave.push(new SQLItems(item._id, item.name, item.beschreibung, item.preis, item.boostOnly, item.available));
+                    itemsToSave.push(new SQLItems(item._id.toString(), item.name, item.beschreibung, item.preis, item.boostOnly, item.available));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allItems.length} Items.`);
                 console.log(itemsToSave);
@@ -56,7 +56,7 @@ async function jobFunction(client) {
             if (allGameUser && allGameUser.length > 0) {
                 let itemsToSave = [];
                 for (let item of allGameUser) {
-                    itemsToSave.push(new SQLGameUser(item._id, item.userId, item.guildId, item.quizadded, item.daily, item.weight));
+                    itemsToSave.push(new SQLGameUser(item._id.toString(), item.userId, item.guildId, item.quizadded, item.daily, item.weight));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allGameUser.length} GameUser.`);
                 let amount = await gameUserDAO.insertMany(itemsToSave);
@@ -69,7 +69,7 @@ async function jobFunction(client) {
             if (allActiveItems && allActiveItems.length > 0) {
                 let itemsToSave = [];
                 for (let item of allActiveItems) {
-                    itemsToSave.push(new SQLActiveItems(item._id, item.guildId, item.endTime, item.itemType, item.user, item.usedOn, item.extras));
+                    itemsToSave.push(new SQLActiveItems(item._id.toString(), item.guildId, item.endTime, item.itemType, item.user, item.usedOn, item.extras));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allActiveItems.length} ActiveItems.`);
                 let amount = await activeItemsDAO.insertMany(itemsToSave);
@@ -82,7 +82,7 @@ async function jobFunction(client) {
             if (allBump && allBump.length > 0) {
                 let itemsToSave = [];
                 for (let item of allBump) {
-                    itemsToSave.push(new SQLBump(item._id, item.guildId, item.endTime, item.reminded, item.remindedId));
+                    itemsToSave.push(new SQLBump(item._id.toString(), item.guildId, item.endTime, item.reminded, item.remindedId));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allBump.length} Bump.`);
                 let amount = await bumpDAO.insertMany(itemsToSave);
@@ -95,7 +95,7 @@ async function jobFunction(client) {
             if (allConfigs && allConfigs.length > 0) {
                 let itemsToSave = [];
                 for (let item of allConfigs) {
-                    itemsToSave.push(new SQLConfig(item._id, item.guildId, item.key, item.value));
+                    itemsToSave.push(new SQLConfig(item._id.toString(), item.guildId, item.key, item.value));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allConfigs.length} Config.`);
                 let amount = await configDAO.insertMany(itemsToSave);
@@ -108,7 +108,7 @@ async function jobFunction(client) {
             if (allBankkonten && allBankkonten.length > 0) {
                 let itemsToSave = [];
                 for (let item of allBankkonten) {
-                    itemsToSave.push(new SQLBankkonten(item._id, item.currentMoney, item.moneyGain, item.moneyLost, item.zinsProzent, item.besitzer));
+                    itemsToSave.push(new SQLBankkonten(item._id.toString(), item.currentMoney, item.moneyGain, item.moneyLost, item.zinsProzent, item.besitzer));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allBankkonten.length} Bankkonten.`);
                 let amount = await bankkontenDAO.insertMany(itemsToSave);
@@ -121,7 +121,7 @@ async function jobFunction(client) {
             if (allGluecksrad && allGluecksrad.length > 0) {
                 let itemsToSave = [];
                 for (let item of allGluecksrad) {
-                    itemsToSave.push(new SQLGluecksrad(item._id, item.guildId, item.pool, item.sonderpool));
+                    itemsToSave.push(new SQLGluecksrad(item._id.toString(), item.guildId, item.pool, item.sonderpool));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allGluecksrad.length} Gluecksrad.`);
                 let amount = await gluecksradDAO.insertMany(itemsToSave);
@@ -134,7 +134,7 @@ async function jobFunction(client) {
             if (allHangman && allHangman.length > 0) {
                 let itemsToSave = [];
                 for (let item of allHangman) {
-                    itemsToSave.push(new SQLHangman(item._id, item.authorId, item.guildId, item.messageId, item.word, item.status, item.buchstaben, item.fehler, item.participants));
+                    itemsToSave.push(new SQLHangman(item._id.toString(), item.authorId, item.guildId, item.messageId, item.word, item.status, item.buchstaben, item.fehler, item.participants));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allHangman.length} Hangman.`);
                 let amount = await hangmanDAO.insertMany(itemsToSave);
@@ -149,9 +149,9 @@ async function jobFunction(client) {
                 for (let item of allInventar) {
                     const allItems = [];
                     for (let itemObj of Inventar.items) {
-                        allItems.push({ quantity: itemObj.amount, itemId: itemObj.item._id });
+                        allItems.push({ quantity: itemObj.amount, itemId: itemObj.item._id.toString() });
                     }
-                    itemsToSave.push(new SQLInventar(item._id, allItems, item.besitzer));
+                    itemsToSave.push(new SQLInventar(item._id.toString(), allItems, item.besitzer));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allInventar.length} Inventar.`);
                 let amount = await inventarDAO.insertMany(itemsToSave);
@@ -164,7 +164,7 @@ async function jobFunction(client) {
             if (allLevel && allLevel.length > 0) {
                 let itemsToSave = [];
                 for (let item of allLevel) {
-                    itemsToSave.push(new SQLLevel(item._id, item.userId, item.guildId, item.xp, item.level, item.color, item.allxp, item.messages, item.lastMessage, item.userName, item.voicexp, item.messagexp, item.voicetime, item.thismonth, item.lastmonth, item.lastBump, item.geburtstag, item.bumps));
+                    itemsToSave.push(new SQLLevel(item._id.toString(), item.userId, item.guildId, item.xp, item.level, item.color, item.allxp, item.messages, item.lastMessage, item.userName, item.voicexp, item.messagexp, item.voicetime, item.thismonth, item.lastmonth, item.lastBump, item.geburtstag, item.bumps));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allLevel.length} Level.`);
                 let amount = await levelDAO.insertMany(itemsToSave);
@@ -177,7 +177,7 @@ async function jobFunction(client) {
             if (allQuizQuestions && allQuizQuestions.length > 0) {
                 let itemsToSave = [];
                 for (let item of allQuizQuestions) {
-                    itemsToSave.push(new SQLQuizQuestion(item._id, item.question, item.right, item.wrong, item.started, item.participants, item.asked, item.rightChar, item.answerA, item.answerB, item.answerC, item.answerD, item.guildId));
+                    itemsToSave.push(new SQLQuizQuestion(item._id.toString(), item.question, item.right, item.wrong, item.started, item.participants, item.asked, item.rightChar, item.answerA, item.answerB, item.answerC, item.answerD, item.guildId));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allQuizQuestions.length} QuizQuestions.`);
                 let amount = await quizQuestionDAO.insertMany(itemsToSave);
@@ -190,7 +190,7 @@ async function jobFunction(client) {
             if (allQuizStats && allQuizStats.length > 0) {
                 let itemsToSave = [];
                 for (let item of allQuizStats) {
-                    itemsToSave.push(new SQLQuizStats(item._id, item.guildId, item.userId, item.right, item.wrong, item.lastParticipation, item.series));
+                    itemsToSave.push(new SQLQuizStats(item._id.toString(), item.guildId, item.userId, item.right, item.wrong, item.lastParticipation, item.series));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allQuizStats.length} Quizstats.`);
                 let amount = await quizStatsDAO.insertMany(itemsToSave);
@@ -203,7 +203,7 @@ async function jobFunction(client) {
             if (allLottozahlen && allLottozahlen.length > 0) {
                 let itemsToSave = [];
                 for (let item of allLottozahlen) {
-                    itemsToSave.push(new SQLLottozahlen(item._id, item.guildId, item.drawnTime, item.lottozahl, item.userId));
+                    itemsToSave.push(new SQLLottozahlen(item._id.toString(), item.guildId, item.drawnTime, item.lottozahl, item.userId));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allLottozahlen.length} Lottozahlen.`);
                 let amount = await lottozahlenDAO.insertMany(itemsToSave);
@@ -216,7 +216,7 @@ async function jobFunction(client) {
             if (alltiere && alltiere.length > 0) {
                 let itemsToSave = [];
                 for (let item of alltiere) {
-                    itemsToSave.push(new SQLTiere(item._id, item.pfad, item.tierart, item.customName, item.besitzer));
+                    itemsToSave.push(new SQLTiere(item._id.toString(), item.pfad, item.tierart, item.customName, item.besitzer));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${alltiere.length} Tiere.`);
                 let amount = await tiereDAO.insertMany(itemsToSave);

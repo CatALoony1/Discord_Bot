@@ -368,7 +368,6 @@ async function setDatabaseToDAOs(database) {
         tttRoundParticipantDAO,
         tttShopPurchaseDAO
     });
-    console.log(database);
 }
 
 module.exports = {
