@@ -290,6 +290,7 @@ async function initializeDatabase(dbPath) {
                                     reject(new Error('Database initialization completed with errors.'));
                                 } else {
                                     console.log('All tables created or already exist.');
+                                    console.log(db);
                                     await setDatabaseToDAOs(db);
                                     resolve(db); // Löse mit dem Datenbankobjekt auf
                                 }
