@@ -275,7 +275,7 @@ async function initializeDatabase(dbPath) {
                     const totalStatements = createTableStatements.length;
 
                     createTableStatements.forEach((statement, index) => {
-                        db.run(statement, async function(runErr) { // Use 'function' to get 'this' context if needed for lastID/changes
+                        db.run(statement, async function (runErr) { // Use 'function' to get 'this' context if needed for lastID/changes
                             completedStatements++;
                             if (runErr) {
                                 console.error(`Error creating table with statement ${index + 1}:`, runErr.message);
@@ -290,6 +290,15 @@ async function initializeDatabase(dbPath) {
                                     reject(new Error('Database initialization completed with errors.'));
                                 } else {
                                     console.log('All tables created or already exist.');
+                                    const sql = `SELECT * FROM bumps`;
+                                    db.get(sql, [], (err, row) => {
+                                        if (err) {
+                                            console.error(`Error fetching from ${this.tableName} by ID:`, err.message);
+                                            console.log(err);
+                                        } else {
+                                            console.log(row);
+                                        }
+                                    });
                                     console.log(db);
                                     await setDatabaseToDAOs(db);
                                     resolve(db); // Löse mit dem Datenbankobjekt auf
@@ -305,69 +314,69 @@ async function initializeDatabase(dbPath) {
 
 async function setDatabaseToDAOs(database) {
     // Instanziieren Sie alle DAOs
-        const activeItemsDAO = new ActiveItemsDAO(database);
-        const bankkontenDAO = new BankkontenDAO(database);
-        const bumpDAO = new BumpDAO(database);
-        const configDAO = new ConfigDAO(database);
-        const gameUserDAO = new GameUserDAO(database);
-        const gluecksradDAO = new GluecksradDAO(database);
-        const hangmanDAO = new HangmanDAO(database);
-        const inventarDAO = new InventarDAO(database);
-        const itemsDAO = new ItemsDAO(database);
-        const levelDAO = new LevelDAO(database);
-        const lottozahlenDAO = new LottozahlenDAO(database);
-        const quizQuestionDAO = new QuizQuestionDAO(database);
-        const quizStatsDAO = new QuizStatsDAO(database);
-        const tiereDAO = new TiereDAO(database);
-        const tttPlayerDAO = new TTTPlayerDAO(database);
-        const tttRoundDAO = new TTTRoundDAO(database);
-        const tttRoundParticipantDAO = new TTTRoundParticipantDAO(database);
-        const tttDamageDAO = new TTTDamageDAO(database);
-        const tttKillDAO = new TTTKillDAO(database);
-        const tttShopPurchaseDAO = new TTTShopPurchaseDAO(database);
+    const activeItemsDAO = new ActiveItemsDAO(database);
+    const bankkontenDAO = new BankkontenDAO(database);
+    const bumpDAO = new BumpDAO(database);
+    const configDAO = new ConfigDAO(database);
+    const gameUserDAO = new GameUserDAO(database);
+    const gluecksradDAO = new GluecksradDAO(database);
+    const hangmanDAO = new HangmanDAO(database);
+    const inventarDAO = new InventarDAO(database);
+    const itemsDAO = new ItemsDAO(database);
+    const levelDAO = new LevelDAO(database);
+    const lottozahlenDAO = new LottozahlenDAO(database);
+    const quizQuestionDAO = new QuizQuestionDAO(database);
+    const quizStatsDAO = new QuizStatsDAO(database);
+    const tiereDAO = new TiereDAO(database);
+    const tttPlayerDAO = new TTTPlayerDAO(database);
+    const tttRoundDAO = new TTTRoundDAO(database);
+    const tttRoundParticipantDAO = new TTTRoundParticipantDAO(database);
+    const tttDamageDAO = new TTTDamageDAO(database);
+    const tttKillDAO = new TTTKillDAO(database);
+    const tttShopPurchaseDAO = new TTTShopPurchaseDAO(database);
 
-        // Setzen Sie die statischen Abhängigkeiten für DAOs mit Fremdschlüsseln
-        // GameUser ist eine häufige Referenz (basierend auf FKs in initializeDB.js)
-        BankkontenDAO.gameUserDAO = gameUserDAO;
-        InventarDAO.gameUserDAO = gameUserDAO;
-        InventarDAO.itemsDAO = itemsDAO;
-        TiereDAO.gameUserDAO = gameUserDAO;
+    // Setzen Sie die statischen Abhängigkeiten für DAOs mit Fremdschlüsseln
+    // GameUser ist eine häufige Referenz (basierend auf FKs in initializeDB.js)
+    BankkontenDAO.gameUserDAO = gameUserDAO;
+    InventarDAO.gameUserDAO = gameUserDAO;
+    InventarDAO.itemsDAO = itemsDAO;
+    TiereDAO.gameUserDAO = gameUserDAO;
 
-        // TTT-Beziehungen (basierend auf FKs in initializeDB.js)
-        TTTRoundParticipantDAO.tttRoundDAO = tttRoundDAO;
-        TTTRoundParticipantDAO.tttPlayerDAO = tttPlayerDAO;
+    // TTT-Beziehungen (basierend auf FKs in initializeDB.js)
+    TTTRoundParticipantDAO.tttRoundDAO = tttRoundDAO;
+    TTTRoundParticipantDAO.tttPlayerDAO = tttPlayerDAO;
 
-        TTTDamageDAO.tttRoundDAO = tttRoundDAO;
-        TTTDamageDAO.tttRoundParticipantDAO = tttRoundParticipantDAO;
+    TTTDamageDAO.tttRoundDAO = tttRoundDAO;
+    TTTDamageDAO.tttRoundParticipantDAO = tttRoundParticipantDAO;
 
-        TTTKillDAO.tttRoundDAO = tttRoundDAO;
-        TTTKillDAO.tttRoundParticipantDAO = tttRoundParticipantDAO;
+    TTTKillDAO.tttRoundDAO = tttRoundDAO;
+    TTTKillDAO.tttRoundParticipantDAO = tttRoundParticipantDAO;
 
-        TTTShopPurchaseDAO.tttRoundDAO = tttRoundDAO;
-        TTTShopPurchaseDAO.tttRoundParticipantDAO = tttRoundParticipantDAO;
+    TTTShopPurchaseDAO.tttRoundDAO = tttRoundDAO;
+    TTTShopPurchaseDAO.tttRoundParticipantDAO = tttRoundParticipantDAO;
 
-        // Exportieren Sie die instanziierten DAOs für die Nutzung in Ihrer Anwendung
-        module.exports.activeItemsDAO = activeItemsDAO;
-        module.exports.bankkontenDAO = bankkontenDAO;
-        module.exports.bumpDAO = bumpDAO;
-        module.exports.configDAO = configDAO;
-        module.exports.gameUserDAO = gameUserDAO;
-        module.exports.gluecksradDAO = gluecksradDAO;
-        module.exports.hangmanDAO = hangmanDAO;
-        module.exports.inventarDAO = inventarDAO;
-        module.exports.itemsDAO = itemsDAO;
-        module.exports.levelDAO = levelDAO;
-        module.exports.lottozahlenDAO = lottozahlenDAO;
-        module.exports.quizQuestionDAO = quizQuestionDAO;
-        module.exports.quizStatsDAO = quizStatsDAO;
-        module.exports.tiereDAO = tiereDAO;
-        module.exports.tttPlayerDAO = tttPlayerDAO;
-        module.exports.tttRoundDAO = tttRoundDAO;
-        module.exports.tttRoundParticipantDAO = tttRoundParticipantDAO;
-        module.exports.tttDamageDAO = tttDamageDAO;
-        module.exports.tttKillDAO = tttKillDAO;
-        module.exports.tttShopPurchaseDAO = tttShopPurchaseDAO;
-        console.log(database);
+    // Exportieren Sie die instanziierten DAOs für die Nutzung in Ihrer Anwendung
+    module.exports.activeItemsDAO = activeItemsDAO;
+    module.exports.bankkontenDAO = bankkontenDAO;
+    module.exports.bumpDAO = bumpDAO;
+    module.exports.configDAO = configDAO;
+    module.exports.gameUserDAO = gameUserDAO;
+    module.exports.gluecksradDAO = gluecksradDAO;
+    module.exports.hangmanDAO = hangmanDAO;
+    module.exports.inventarDAO = inventarDAO;
+    module.exports.itemsDAO = itemsDAO;
+    module.exports.levelDAO = levelDAO;
+    module.exports.lottozahlenDAO = lottozahlenDAO;
+    module.exports.quizQuestionDAO = quizQuestionDAO;
+    module.exports.quizStatsDAO = quizStatsDAO;
+    module.exports.tiereDAO = tiereDAO;
+    module.exports.tttPlayerDAO = tttPlayerDAO;
+    module.exports.tttRoundDAO = tttRoundDAO;
+    module.exports.tttRoundParticipantDAO = tttRoundParticipantDAO;
+    module.exports.tttDamageDAO = tttDamageDAO;
+    module.exports.tttKillDAO = tttKillDAO;
+    module.exports.tttShopPurchaseDAO = tttShopPurchaseDAO;
+    console.log(database);
 }
 
 module.exports = {
