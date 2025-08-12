@@ -1,42 +1,42 @@
-const ActiveItems = require('../../models/ActiveItems.js');
-const Bankkonten = require('../../models/Bankkonten.js');
-const Bump = require('../../models/Bump.js');
-const Config = require('../../models/Config.js');
-const GameUser = require('../../models/GameUser.js');
-const Gluecksrad = require('../../models/Gluecksrad.js');
-const Hangman = require('../../models/Hangman.js');
-const Inventar = require('../../models/Inventar.js');
-const Items = require('../../models/Items.js');
-const Level = require('../../models/Level.js');
-const Lottozahlen = require('../../models/Lottozahlen.js');
-const QuizQuestion = require('../../models/QuizQuestion.js');
-const QuizStats = require('../../models/QuizStats.js');
-const Tiere = require('../../models/Tiere.js');
+const ActiveItems = require('../models/ActiveItems.js');
+const Bankkonten = require('../models/Bankkonten.js');
+const Bump = require('../models/Bump.js');
+const Config = require('../models/Config.js');
+const GameUser = require('../models/GameUser.js');
+const Gluecksrad = require('../models/Gluecksrad.js');
+const Hangman = require('../models/Hangman.js');
+const Inventar = require('../models/Inventar.js');
+const Items = require('../models/Items.js');
+const Level = require('../models/Level.js');
+const Lottozahlen = require('../models/Lottozahlen.js');
+const QuizQuestion = require('../models/QuizQuestion.js');
+const QuizStats = require('../models/QuizStats.js');
+const Tiere = require('../models/Tiere.js');
 
-const SQLActiveItems = require('../../sqliteModels/ActiveItems.js');
-const SQLBankkonten = require('../../sqliteModels/Bankkonten.js');
-const SQLBump = require('../../sqliteModels/Bump.js');
-const SQLConfig = require('../../sqliteModels/Config.js');
-const SQLGameUser = require('../../sqliteModels/GameUser.js');
-const SQLGluecksrad = require('../../sqliteModels/Gluecksrad.js');
-const SQLHangman = require('../../sqliteModels/Hangman.js');
-const SQLInventar = require('../../sqliteModels/Inventar.js');
-const SQLItems = require('../../sqliteModels/Items.js');
-const SQLLevel = require('../../sqliteModels/Level.js');
-const SQLLottozahlen = require('../../sqliteModels/Lottozahlen.js');
-const SQLQuizQuestion = require('../../sqliteModels/QuizQuestion.js');
-const SQLQuizStats = require('../../sqliteModels/QuizStats.js');
-const SQLTiere = require('../../sqliteModels/Tiere.js');
+const SQLActiveItems = require('../sqliteModels/ActiveItems.js');
+const SQLBankkonten = require('../sqliteModels/Bankkonten.js');
+const SQLBump = require('../sqliteModels/Bump.js');
+const SQLConfig = require('../sqliteModels/Config.js');
+const SQLGameUser = require('../sqliteModels/GameUser.js');
+const SQLGluecksrad = require('../sqliteModels/Gluecksrad.js');
+const SQLHangman = require('../sqliteModels/Hangman.js');
+const SQLInventar = require('../sqliteModels/Inventar.js');
+const SQLItems = require('../sqliteModels/Items.js');
+const SQLLevel = require('../sqliteModels/Level.js');
+const SQLLottozahlen = require('../sqliteModels/Lottozahlen.js');
+const SQLQuizQuestion = require('../sqliteModels/QuizQuestion.js');
+const SQLQuizStats = require('../sqliteModels/QuizStats.js');
+const SQLTiere = require('../sqliteModels/Tiere.js');
 
-const { activeItemsDAO, bankkontenDAO, bumpDAO, configDAO, gameUserDAO, gluecksradDAO, hangmanDAO, inventarDAO, itemsDAO, levelDAO, lottozahlenDAO, quizQuestionDAO, quizStatsDAO, tiereDAO } = require('../../utils/initializeDB.js');
+const { activeItemsDAO, bankkontenDAO, bumpDAO, configDAO, gameUserDAO, gluecksradDAO, hangmanDAO, inventarDAO, itemsDAO, levelDAO, lottozahlenDAO, quizQuestionDAO, quizStatsDAO, tiereDAO } = require('../utils/initializeDB.js');
 
-
-module.exports = async (client) => {
+async function jobFunction(client) {
     try {
         const backupDone = await Config.findOne({ key: 'BackupDone' });
         if (backupDone.value == 'N') {
             console.log('Start Migrating Items');
             const allItems = await Items.find({});
+            console.log(allItems);
             if (allItems && allItems.length > 0) {
                 let itemsToSave = [];
                 for (let item of allItems) {
@@ -230,4 +230,8 @@ module.exports = async (client) => {
     } catch (error) {
         console.log(error);
     }
+}
+
+module.exports = {
+    jobFunction
 };
