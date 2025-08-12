@@ -2,12 +2,12 @@
 const BaseDAO = require('./BaseDAO');
 const Inventar = require('../sqliteModels/Inventar');
 const GameUser = require('../sqliteModels/GameUser');
-const { itemsDAO } = require('../utils/initializeDB.js');
 
 class InventarDAO extends BaseDAO {
 
-    constructor(db) {
+    constructor(db, itemsDAO) {
         super(db, 'inventare');
+        this.itemsDAO = itemsDAO;
     }
 
     _mapRowToModel(row) {

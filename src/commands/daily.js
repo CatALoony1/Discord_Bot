@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const Lottozahlen = require('../sqliteModels/Lottozahlen');
 const giveMoney = require('../utils/giveMoney');
-const { lottozahlenDAO, gameUserDAO } = require('../utils/initializeDB');
+const { lottozahlenDAO, gameUserDAO } = require('../events/ready/02_database');
 
 module.exports = {
     data: new SlashCommandBuilder()

@@ -1,6 +1,6 @@
 const { MessageFlags, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
 const createAnimalsEmbeds = require("../../utils/createAnimalsEmbeds");
-const { tiereDAO } = require('../../utils/initializeDB');
+const { tiereDAO } = require('../../events/ready/02_database');
 
 module.exports = async (interaction) => {
     if ((!interaction.isButton() && !interaction.isModalSubmit()) || !interaction.customId || !interaction.customId.includes('ownAnimals')) return;

@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 require('dotenv').config();
-const { levelDAO } = require('../utils/initializeDB');
+const { levelDAO } = require('../events/ready/02_database');
 
 let missingXpJob = null;
 

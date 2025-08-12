@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const removeMoney = require('../utils/removeMoney');
 const giveMoney = require('../utils/giveMoney');
-const { bankkontenDAO } = require('../utils/initializeDB');
+const { bankkontenDAO } = require('../events/ready/02_database');
 
 module.exports = {
     data: new SlashCommandBuilder()

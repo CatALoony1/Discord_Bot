@@ -1,6 +1,6 @@
 require('dotenv').config();
 const cron = require('node-cron');
-const { levelDAO } = require('../utils/initializeDB');
+const { levelDAO } = require('../events/ready/02_database');
 
 let checkBumperRoleJob = null;
 

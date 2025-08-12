@@ -21,7 +21,7 @@ const TTTKillDAO = require('../daos/TTTKillDAO');
 const TTTShopPurchaseDAO = require('../daos/TTTShopPurchaseDAO');
 
 async function initializeDatabase(dbPath) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         const db = new sqlite3.Database(dbPath, (err) => {
             if (err) {
                 console.error('Error opening database:', err.message);
@@ -29,19 +29,16 @@ async function initializeDatabase(dbPath) {
             }
             console.log('Connected to the SQLite database.');
 
+            db.run('PRAGMA foreign_keys = ON;', (pragmaErr) => {
+                if (pragmaErr) {
+                    console.error('Error enabling foreign keys:', pragmaErr.message);
+                    return reject(pragmaErr);
+                }
+                console.log('Foreign key constraints enabled.');
 
-        });
-        console.log(db);
-        db.run('PRAGMA foreign_keys = ON;', async (pragmaErr) => {
-            if (pragmaErr) {
-                console.error('Error enabling foreign keys:', pragmaErr.message);
-                return reject(pragmaErr);
-            }
-            console.log('Foreign key constraints enabled.');
-
-            const createTableStatements = [
-                // Tabellen ohne Fremdschlüssel oder mit Fremdschlüsseln zu sich selbst (nicht in diesem Schema)
-                `
+                const createTableStatements = [
+                    // Tabellen ohne Fremdschlüssel oder mit Fremdschlüsseln zu sich selbst (nicht in diesem Schema)
+                    `
                     CREATE TABLE IF NOT EXISTS active_items (
                         _id TEXT PRIMARY KEY,
                         guildId TEXT NOT NULL,
@@ -52,7 +49,7 @@ async function initializeDatabase(dbPath) {
                         extras TEXT
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS bumps (
                         _id TEXT PRIMARY KEY,
                         guildId TEXT NOT NULL,
@@ -61,7 +58,7 @@ async function initializeDatabase(dbPath) {
                         remindedId TEXT
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS configs (
                         _id TEXT PRIMARY KEY,
                         guildId TEXT NOT NULL,
@@ -70,7 +67,7 @@ async function initializeDatabase(dbPath) {
                         UNIQUE(guildId, key)
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS gluecksraeder (
                         _id TEXT PRIMARY KEY,
                         guildId TEXT NOT NULL UNIQUE,
@@ -78,7 +75,7 @@ async function initializeDatabase(dbPath) {
                         sonderpool INTEGER DEFAULT 0
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS hangmans (
                         _id TEXT PRIMARY KEY,
                         authorId TEXT NOT NULL,
@@ -91,7 +88,7 @@ async function initializeDatabase(dbPath) {
                         participants TEXT DEFAULT '[]'
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS items (
                         _id TEXT PRIMARY KEY,
                         name TEXT NOT NULL UNIQUE,
@@ -101,7 +98,7 @@ async function initializeDatabase(dbPath) {
                         available INTEGER DEFAULT 1
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS levels (
                         _id TEXT PRIMARY KEY,
                         userId TEXT NOT NULL UNIQUE,
@@ -123,7 +120,7 @@ async function initializeDatabase(dbPath) {
                         bumps INTEGER DEFAULT 0
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS lottozahlen (
                         _id TEXT PRIMARY KEY,
                         guildId TEXT NOT NULL,
@@ -132,7 +129,7 @@ async function initializeDatabase(dbPath) {
                         userId TEXT NOT NULL
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS quiz_questions (
                         _id TEXT PRIMARY KEY,
                         question TEXT NOT NULL,
@@ -149,7 +146,7 @@ async function initializeDatabase(dbPath) {
                         guildId TEXT NOT NULL
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS quiz_stats (
                         _id TEXT PRIMARY KEY,
                         guildId TEXT NOT NULL,
@@ -160,8 +157,8 @@ async function initializeDatabase(dbPath) {
                         series INTEGER DEFAULT 0
                     );
                     `,
-                // game_users muss vor bankkonten, inventare und tiere erstellt werden
-                `
+                    // game_users muss vor bankkonten, inventare und tiere erstellt werden
+                    `
                     CREATE TABLE IF NOT EXISTS game_users (
                         _id TEXT PRIMARY KEY,
                         userId TEXT NOT NULL UNIQUE,
@@ -171,15 +168,15 @@ async function initializeDatabase(dbPath) {
                         weight INTEGER DEFAULT 0
                     );
                     `,
-                // ttt_players und ttt_rounds müssen vor ttt_round_participants erstellt werden
-                `
+                    // ttt_players und ttt_rounds müssen vor ttt_round_participants erstellt werden
+                    `
                     CREATE TABLE IF NOT EXISTS ttt_players (
                         _id TEXT PRIMARY KEY,
                         steamId TEXT NOT NULL UNIQUE,
                         currentNickname TEXT
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS ttt_rounds (
                         _id TEXT PRIMARY KEY,
                         mapName TEXT,
@@ -188,8 +185,8 @@ async function initializeDatabase(dbPath) {
                         winningTeam TEXT
                     );
                     `,
-                // Tabellen mit Fremdschlüsseln, die jetzt aufgelöst werden können
-                `
+                    // Tabellen mit Fremdschlüsseln, die jetzt aufgelöst werden können
+                    `
                     CREATE TABLE IF NOT EXISTS bankkonten (
                         _id TEXT PRIMARY KEY,
                         currentMoney INTEGER DEFAULT 0,
@@ -200,7 +197,7 @@ async function initializeDatabase(dbPath) {
                         FOREIGN KEY (besitzer) REFERENCES game_users(_id) ON DELETE CASCADE
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS inventare (
                         _id TEXT PRIMARY KEY,
                         besitzer TEXT NOT NULL UNIQUE,
@@ -208,7 +205,7 @@ async function initializeDatabase(dbPath) {
                         FOREIGN KEY (besitzer) REFERENCES game_users(_id) ON DELETE CASCADE
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS tiere (
                         _id TEXT PRIMARY KEY,
                         pfad TEXT NOT NULL,
@@ -218,8 +215,8 @@ async function initializeDatabase(dbPath) {
                         FOREIGN KEY (besitzer) REFERENCES game_users(_id) ON DELETE SET NULL
                     );
                     `,
-                // ttt_round_participants muss vor ttt_damage_logs, ttt_kills und ttt_shop_purchases erstellt werden
-                `
+                    // ttt_round_participants muss vor ttt_damage_logs, ttt_kills und ttt_shop_purchases erstellt werden
+                    `
                     CREATE TABLE IF NOT EXISTS ttt_round_participants (
                         _id TEXT PRIMARY KEY,
                         roundId TEXT NOT NULL,
@@ -230,8 +227,8 @@ async function initializeDatabase(dbPath) {
                         FOREIGN KEY (playerId) REFERENCES ttt_players(_id) ON DELETE CASCADE
                     );
                     `,
-                // Tabellen mit Fremdschlüsseln, die jetzt aufgelöst werden können
-                `
+                    // Tabellen mit Fremdschlüsseln, die jetzt aufgelöst werden können
+                    `
                     CREATE TABLE IF NOT EXISTS ttt_damage_logs (
                         _id TEXT PRIMARY KEY,
                         roundId TEXT NOT NULL,
@@ -245,7 +242,7 @@ async function initializeDatabase(dbPath) {
                         FOREIGN KEY (attackerPlayerId) REFERENCES ttt_round_participants(_id) ON DELETE CASCADE
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS ttt_kills (
                         _id TEXT PRIMARY KEY,
                         roundId TEXT NOT NULL,
@@ -258,7 +255,7 @@ async function initializeDatabase(dbPath) {
                         FOREIGN KEY (attackerPlayerId) REFERENCES ttt_round_participants(_id) ON DELETE CASCADE
                     );
                     `,
-                `
+                    `
                     CREATE TABLE IF NOT EXISTS ttt_shop_purchases (
                         _id TEXT PRIMARY KEY,
                         roundId TEXT NOT NULL,
@@ -269,48 +266,38 @@ async function initializeDatabase(dbPath) {
                         FOREIGN KEY (buyerId) REFERENCES ttt_round_participants(_id) ON DELETE CASCADE
                     );
                     `
-            ];
+                ];
 
-            // Führe jede CREATE TABLE Anweisung sequentiell aus
-            db.serialize(() => {
-                let errors = [];
-                let completedStatements = 0;
-                const totalStatements = createTableStatements.length;
+                // Führe jede CREATE TABLE Anweisung sequentiell aus
+                db.serialize(() => {
+                    let errors = [];
+                    let completedStatements = 0;
+                    const totalStatements = createTableStatements.length;
 
-                createTableStatements.forEach((statement, index) => {
-                    db.run(statement, async function (runErr) { // Use 'function' to get 'this' context if needed for lastID/changes
-                        completedStatements++;
-                        if (runErr) {
-                            console.error(`Error creating table with statement ${index + 1}:`, runErr.message);
-                            errors.push(runErr);
-                        } else {
-                            console.log(`Table created successfully with statement ${index + 1}.`);
-                        }
-
-                        // Check if all statements have completed
-                        if (completedStatements === totalStatements) {
-                            if (errors.length > 0) {
-                                reject(new Error('Database initialization completed with errors.'));
+                    createTableStatements.forEach((statement, index) => {
+                        db.run(statement, async function (runErr) { // Use 'function' to get 'this' context if needed for lastID/changes
+                            completedStatements++;
+                            if (runErr) {
+                                console.error(`Error creating table with statement ${index + 1}:`, runErr.message);
+                                errors.push(runErr);
                             } else {
-                                console.log('All tables created or already exist.');
-                                console.log(db);
-                                await setDatabaseToDAOs(db);
-                                resolve(db); // Löse mit dem Datenbankobjekt auf
+                                console.log(`Table created successfully with statement ${index + 1}.`);
                             }
-                        }
+
+                            // Check if all statements have completed
+                            if (completedStatements === totalStatements) {
+                                if (errors.length > 0) {
+                                    reject(new Error('Database initialization completed with errors.'));
+                                } else {
+                                    console.log('All tables created or already exist.');
+                                    await setDatabaseToDAOs(db);
+                                    resolve(db); // Löse mit dem Datenbankobjekt auf
+                                }
+                            }
+                        });
                     });
                 });
             });
-            const sql = `SELECT * FROM bumps`;
-            db.get(sql, [], (err, row) => {
-                if (err) {
-                    console.error(`Error fetching from ${this.tableName} by ID:`, err.message);
-                    console.log(err);
-                } else {
-                    console.log(row);
-                }
-            });
-            console.log(db);
         });
     });
 }
@@ -324,8 +311,8 @@ async function setDatabaseToDAOs(database) {
     const gameUserDAO = new GameUserDAO(database);
     const gluecksradDAO = new GluecksradDAO(database);
     const hangmanDAO = new HangmanDAO(database);
-    const inventarDAO = new InventarDAO(database);
     const itemsDAO = new ItemsDAO(database);
+    const inventarDAO = new InventarDAO(database, itemsDAO);
     const levelDAO = new LevelDAO(database);
     const lottozahlenDAO = new LottozahlenDAO(database);
     const quizQuestionDAO = new QuizQuestionDAO(database);

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
-const { levelDAO } = require('../utils/initializeDB');
+const { levelDAO } = require('../events/ready/02_database');
 
 module.exports = {
   data: new SlashCommandBuilder()

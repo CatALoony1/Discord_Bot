@@ -28,7 +28,7 @@ const SQLQuizQuestion = require('../sqliteModels/QuizQuestion.js');
 const SQLQuizStats = require('../sqliteModels/QuizStats.js');
 const SQLTiere = require('../sqliteModels/Tiere.js');
 
-const { activeItemsDAO, bankkontenDAO, bumpDAO, configDAO, gameUserDAO, gluecksradDAO, hangmanDAO, inventarDAO, itemsDAO, levelDAO, lottozahlenDAO, quizQuestionDAO, quizStatsDAO, tiereDAO } = require('../utils/initializeDB.js');
+const { activeItemsDAO, bankkontenDAO, bumpDAO, configDAO, gameUserDAO, gluecksradDAO, hangmanDAO, inventarDAO, itemsDAO, levelDAO, lottozahlenDAO, quizQuestionDAO, quizStatsDAO, tiereDAO } = require('../events/ready/02_database.js');
 
 async function jobFunction(client) {
     try {

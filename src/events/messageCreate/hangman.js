@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Message, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const path = require('node:path');
 const giveMoney = require("../../utils/giveMoney");
-const { hangmanDAO } = require('../../utils/initializeDB');
+const { hangmanDAO } = require('../../events/ready/02_database');
 
 function maskiereWort(wort, gerateneBuchstaben) {
     const woerter = wort.split(' ');

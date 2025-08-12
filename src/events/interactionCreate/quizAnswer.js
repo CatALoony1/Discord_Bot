@@ -1,7 +1,7 @@
 const { MessageFlags } = require('discord.js');
 const QuizStats = require('../../sqliteModels/QuizStats');
 const giveMoney = require('../../utils/giveMoney');
-const { quizQuestionDAO, quizStatsDAO } = require('../../utils/initializeDB');
+const { quizQuestionDAO, quizStatsDAO } = require('../../events/ready/02_database');
 
 function isYesterday(date) {
     const today = new Date();

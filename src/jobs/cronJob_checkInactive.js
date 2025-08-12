@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 require('dotenv').config();
 const cron = require('node-cron');
-const { levelDAO, configDAO, quizStatsDAO, gameUserDAO } = require('../utils/initializeDB.js');
+const { levelDAO, configDAO, quizStatsDAO, gameUserDAO } = require('../events/ready/02_database.js');
 
 let checkInactiveJob = null;
 

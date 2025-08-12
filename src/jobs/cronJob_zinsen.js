@@ -1,5 +1,5 @@
 const cron = require('node-cron');
-const { bankkontenDAO } = require('../utils/initializeDB.js');
+const { bankkontenDAO } = require('../events/ready/02_database.js');
 
 let checkInactiveJob = null;
 

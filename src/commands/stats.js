@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('../utils/calculateLevelXp');
-const { levelDAO, lottozahlenDAO } = require('../utils/initializeDB');
+const { levelDAO, lottozahlenDAO } = require('../events/ready/02_database');
 
 module.exports = {
   data: new SlashCommandBuilder()

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const Hangman = require('../sqliteModels/Hangman');
 const path = require('node:path');
-const { hangmanDAO } = require('../utils/initializeDB');
+const { hangmanDAO } = require('../events/ready/02_database');
 
 const wordList = [
     "GROSS",

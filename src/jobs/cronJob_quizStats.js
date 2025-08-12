@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonStyle, ButtonBuilder, EmbedBuilder } = require('discord.js');
 const createQuizLeaderboardEmbeds = require("../utils/createQuizLeaderboardEmbeds");
 const cron = require('node-cron');
-const { quizQuestionDAO } = require('../utils/initializeDB');
+const { quizQuestionDAO } = require('../events/ready/02_database');
 
 let quizStatsJob = null;
 

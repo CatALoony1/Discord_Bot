@@ -4,7 +4,7 @@ const ActiveItems = require('../../sqliteModels/ActiveItems');
 const removeMoney = require('../../utils/removeMoney.js');
 const giveMoney = require('../../utils/giveMoney.js');
 const getTenorGifById = require('../../utils/getTenorGifById.js');
-const { bankkontenDAO, inventarDAO, itemsDAO, tiereDAO, configDAO, activeItemsDAO, gameUserDAO } = require('../../utils/initializeDB.js');
+const { bankkontenDAO, inventarDAO, itemsDAO, tiereDAO, configDAO, activeItemsDAO, gameUserDAO } = require('../../events/ready/02_database.js');
 
 const hugTexts = [
     (author, target) => `${author} umarmt ${target} ganz fest! Awwww! ❤️`,
