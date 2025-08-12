@@ -24,7 +24,7 @@ class BumpDAO extends BaseDAO {
 
     async getOneByGuild(guildId) {
         return new Promise((resolve, reject) => {
-            const sql = `SELECT * FROM ${super.tableName} WHERE guildId = ?`;
+            const sql = `SELECT * FROM ${this.tableName} WHERE guildId = ?`;
             this.db.get(sql, [guildId], (err, row) => {
                 if (err) {
                     console.error(`Error fetching from ${this.tableName} by guildId:`, err.message);
