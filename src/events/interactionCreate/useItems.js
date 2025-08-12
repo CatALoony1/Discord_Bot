@@ -902,9 +902,10 @@ async function useItemBombe(interaction) {
     } else if (interaction.customId.includes('bombe_defuse')) {
         const activeItemId = interaction.customId.split('_')[3];
         const activeItem = await activeItemsDAO.getById(activeItemId);
+        if(!activeItem) return;
         const endTimeInMillis = new Date(activeItem.endTime).getTime();
         const currentTimeInMillis = Date.now();
-        if (!activeItem || activeItem.usedOn !== interaction.user.id || endTimeInMillis < currentTimeInMillis) {
+        if (activeItem.usedOn !== interaction.user.id || endTimeInMillis < currentTimeInMillis) {
             await interaction.reply({
                 content: 'Die Bombe ist entweder bereits entschärft, ist abgelaufen oder nicht für dich bestimmt!',
                 components: [],
