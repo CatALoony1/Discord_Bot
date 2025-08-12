@@ -135,8 +135,8 @@ async function initializeDatabase(dbPath) {
                     CREATE TABLE IF NOT EXISTS quiz_questions (
                         _id TEXT PRIMARY KEY,
                         question TEXT NOT NULL,
-                        rightAnswer TEXT NOT NULL,
-                        wrongAnswers TEXT NOT NULL,
+                        right TEXT NOT NULL,
+                        wrong TEXT NOT NULL,
                         started TEXT,
                         participants TEXT DEFAULT '',
                         asked TEXT DEFAULT 'N',
@@ -153,8 +153,8 @@ async function initializeDatabase(dbPath) {
                         _id TEXT PRIMARY KEY,
                         guildId TEXT NOT NULL,
                         userId TEXT NOT NULL UNIQUE,
-                        rightCount INTEGER DEFAULT 0,
-                        wrongCount INTEGER DEFAULT 0,
+                        right INTEGER DEFAULT 0,
+                        wrong INTEGER DEFAULT 0,
                         lastParticipation TEXT,
                         series INTEGER DEFAULT 0
                     );

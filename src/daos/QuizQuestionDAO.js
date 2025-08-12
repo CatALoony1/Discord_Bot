@@ -10,7 +10,7 @@ class QuizQuestionDAO extends BaseDAO {
     _mapRowToModel(row) {
         if (!row) return null;
         return new QuizQuestion(
-            row._id, row.question, row.rightAnswer, JSON.parse(row.wrongAnswers || '[]'),
+            row._id, row.question, row.right, JSON.parse(row.wrong || '[]'),
             row.started, JSON.parse(row.participants || '[]'), row.asked,
             row.rightChar, row.answerA, row.answerB, row.answerC, row.answerD, row.guildId
         );
@@ -30,8 +30,8 @@ class QuizQuestionDAO extends BaseDAO {
         const dataToSave = {
             _id: quizQuestion._id,
             question: quizQuestion.question,
-            rightAnswer: quizQuestion.rightAnswer,
-            wrongAnswers: JSON.stringify(quizQuestion.wrongAnswers),
+            right: quizQuestion.right,
+            wrong: JSON.stringify(quizQuestion.wrong),
             started: quizQuestion.started,
             participants: JSON.stringify(quizQuestion.participants),
             asked: quizQuestion.asked,
@@ -55,8 +55,8 @@ class QuizQuestionDAO extends BaseDAO {
         const dataToSave = quizQuestions.map(qq => ({
             _id: qq._id,
             question: qq.question,
-            rightAnswer: qq.rightAnswer,
-            wrongAnswers: JSON.stringify(qq.wrongAnswers),
+            right: qq.right,
+            wrong: JSON.stringify(qq.wrong),
             started: qq.started,
             participants: JSON.stringify(qq.participants),
             asked: qq.asked,
@@ -74,8 +74,8 @@ class QuizQuestionDAO extends BaseDAO {
         const dataToSave = {
             _id: quizQuestion._id,
             question: quizQuestion.question,
-            rightAnswer: quizQuestion.rightAnswer,
-            wrongAnswers: JSON.stringify(quizQuestion.wrongAnswers),
+            right: quizQuestion.right,
+            wrong: JSON.stringify(quizQuestion.wrong),
             started: quizQuestion.started,
             participants: JSON.stringify(quizQuestion.participants),
             asked: quizQuestion.asked,
@@ -99,8 +99,8 @@ class QuizQuestionDAO extends BaseDAO {
         const dataToSave = quizQuestions.map(qq => ({
             _id: qq._id,
             question: qq.question,
-            rightAnswer: qq.rightAnswer,
-            wrongAnswers: JSON.stringify(qq.wrongAnswers),
+            right: qq.right,
+            wrong: JSON.stringify(qq.wrong),
             started: qq.started,
             participants: JSON.stringify(qq.participants),
             asked: qq.asked,

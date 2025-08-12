@@ -35,35 +35,6 @@ async function jobFunction(client) {
         const { activeItemsDAO, bankkontenDAO, bumpDAO, configDAO, gameUserDAO, gluecksradDAO, hangmanDAO, inventarDAO, itemsDAO, levelDAO, lottozahlenDAO, quizQuestionDAO, quizStatsDAO, tiereDAO } = getDaos();
         const backupDone = await Config.findOne({ key: 'BackupDone' });
         if (backupDone.value == 'N') {
-            console.log('Start Migrating Inventar');
-            const allInventar = await Inventar.find({}).populate({ path: 'items.item', model: 'Items' });
-            if (allInventar && allInventar.length > 0) {
-                let itemsToSave = [];
-                for (let item of allInventar) {
-                    const allItems = [];
-                    for (let itemObj of item.items) {
-                        allItems.push({ quantity: itemObj.amount, itemId: itemObj.item._id.toString() });
-                    }
-                    itemsToSave.push(new SQLInventar(item._id.toString(), allItems, item.besitzer.toString()));
-                }
-                console.log(`Saving ${itemsToSave.length} of ${allInventar.length} Inventar.`);
-                let amount = await inventarDAO.insertMany(itemsToSave);
-                console.log(`${amount} of ${itemsToSave.length} Inventar saved.`);
-            }
-            console.log('Finished Migrating Inventar');
-
-            console.log('Start Migrating Level');
-            const allLevel = await Level.find({});
-            if (allLevel && allLevel.length > 0) {
-                let itemsToSave = [];
-                for (let item of allLevel) {
-                    itemsToSave.push(new SQLLevel(item._id.toString(), item.userId, item.guildId, item.xp, item.level, item.color, item.allxp, item.messages, item.lastMessage, item.userName, item.voicexp, item.messagexp, item.voicetime, item.thismonth, item.lastmonth, item.lastBump, item.geburtstag, item.bumps));
-                }
-                console.log(`Saving ${itemsToSave.length} of ${allLevel.length} Level.`);
-                let amount = await levelDAO.insertMany(itemsToSave);
-                console.log(`${amount} of ${itemsToSave.length} Level saved.`);
-            }
-            console.log('Finished Migrating Level');
 
             console.log('Start Migrating QuizQuestions');
             const allQuizQuestions = await QuizQuestion.find({});

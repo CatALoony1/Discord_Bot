@@ -12,7 +12,7 @@ class QuizStatsDAO extends BaseDAO {
         if (!row) return null;
 
         const quizStats = new QuizStats(
-            row._id, row.guildId, row.userId, row.rightCount, row.wrongCount,
+            row._id, row.guildId, row.userId, row.right, row.wrong,
             row.lastParticipation, row.series
         );
         // KEIN quizStats.userIdObj = ...; hier
