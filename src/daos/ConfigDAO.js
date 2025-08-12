@@ -24,7 +24,7 @@ class ConfigDAO extends BaseDAO {
 
     async getOneByKeyAndGuild(key, guildId){
         return new Promise((resolve, reject) => {
-            const sql = `SELECT * FROM ${super.tableName} WHERE key = ? AND guildId = ?`;
+            const sql = `SELECT * FROM ${this.tableName} WHERE key = ? AND guildId = ?`;
             this.db.get(sql, [key, guildId], (err, row) => {
                 if (err) {
                     console.error(`Error fetching from ${this.tableName} by key and guildId:`, err.message);

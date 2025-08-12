@@ -24,7 +24,7 @@ class GameUserDAO extends BaseDAO {
 
     async getOneByUserAndGuild(userId, guildId) {
         return new Promise((resolve, reject) => {
-            const sql = `SELECT * FROM ${super.tableName} WHERE userId = ? AND guildId = ?`;
+            const sql = `SELECT * FROM ${this.tableName} WHERE userId = ? AND guildId = ?`;
             this.db.get(sql, [userId, guildId], (err, row) => {
                 if (err) {
                     console.error(`Error fetching from ${this.tableName} by userId and guildId:`, err.message);
@@ -38,7 +38,7 @@ class GameUserDAO extends BaseDAO {
 
     async deleteOnyByUserAndGuild(userId, guildId) {
         return new Promise((resolve, reject) => {
-            const sql = `DELETE FROM ${super.tableName} WHERE userId = ? AND guildId = ?`;
+            const sql = `DELETE FROM ${this.tableName} WHERE userId = ? AND guildId = ?`;
             this.db.run(sql, [userId, guildId], function (err) {
                 if (err) {
                     console.error(`Error deleting from ${this.tableName} by userId and guildId:`, err.message);

@@ -27,7 +27,7 @@ class LottozahlenDAO extends BaseDAO {
 
     async getAllByUserAndGuild(userId, guildId) {
         return new Promise((resolve, reject) => {
-            const sql = `SELECT * FROM ${super.tableName} WHERE userId = ? AND guildId = ?`;
+            const sql = `SELECT * FROM ${this.tableName} WHERE userId = ? AND guildId = ?`;
             this.db.all(sql, [userId, guildId], (err, row) => {
                 if (err) {
                     console.error(`Error fetching from ${this.tableName} by user and guildId:`, err.message);
@@ -48,7 +48,7 @@ class LottozahlenDAO extends BaseDAO {
      */
     async checkUserPlayedToday(userId, guildId) {
         return new Promise((resolve, reject) => {
-            const sql = `SELECT COUNT(*) AS count FROM ${super.tableName} WHERE userId = ? AND guildId = ? AND drawnTime LIKE DATE('now') || '%'`;
+            const sql = `SELECT COUNT(*) AS count FROM ${this.tableName} WHERE userId = ? AND guildId = ? AND drawnTime LIKE DATE('now') || '%'`;
             this.db.get(sql, [userId, guildId], (err, row) => {
                 if (err) {
                     console.error(`Error checking if user played today:`, err.message);
@@ -68,7 +68,7 @@ class LottozahlenDAO extends BaseDAO {
      */
     async checkLottozahlExists(lottozahl, guildId) {
         return new Promise((resolve, reject) => {
-            const sql = `SELECT EXISTS(SELECT 1 FROM ${super.tableName} WHERE lottozahl = ? AND guildId = ?) AS found`;
+            const sql = `SELECT EXISTS(SELECT 1 FROM ${this.tableName} WHERE lottozahl = ? AND guildId = ?) AS found`;
             this.db.get(sql, [lottozahl, guildId], (err, row) => {
                 if (err) {
                     console.error(`Error checking if lottozahl exists for guild:`, err.message);
