@@ -15,6 +15,7 @@ function startJob(client) {
     try {
       const { bumpDAO } = getDaos();
       const bumpEntry = await bumpDAO.getOneByGuild(process.env.GUILD_ID);
+      console.log(bumpEntry);
       if (bumpEntry) {
         if (bumpEntry.endTime < Date.now() && bumpEntry.reminded === 'N') {
           let guild = client.guilds.cache.get(process.env.GUILD_ID);
