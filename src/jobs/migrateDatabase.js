@@ -36,51 +36,12 @@ async function jobFunction(client) {
         const backupDone = await Config.findOne({ key: 'BackupDone' });
         if (backupDone.value == 'N') {
 
-            console.log('Start Migrating QuizQuestions');
-            const allQuizQuestions = await QuizQuestion.find({});
-            if (allQuizQuestions && allQuizQuestions.length > 0) {
-                let itemsToSave = [];
-                for (let item of allQuizQuestions) {
-                    itemsToSave.push(new SQLQuizQuestion(item._id.toString(), item.question, item.right, item.wrong, item.started, item.participants, item.asked, item.rightChar, item.answerA, item.answerB, item.answerC, item.answerD, item.guildId));
-                }
-                console.log(`Saving ${itemsToSave.length} of ${allQuizQuestions.length} QuizQuestions.`);
-                let amount = await quizQuestionDAO.insertMany(itemsToSave);
-                console.log(`${amount} of ${itemsToSave.length} QuizQuestions saved.`);
-            }
-            console.log('Finished Migrating QuizQuestions');
-
-            console.log('Start Migrating Quizstats');
-            const allQuizStats = await QuizStats.find({});
-            if (allQuizStats && allQuizStats.length > 0) {
-                let itemsToSave = [];
-                for (let item of allQuizStats) {
-                    itemsToSave.push(new SQLQuizStats(item._id.toString(), item.guildId, item.userId, item.right, item.wrong, item.lastParticipation, item.series));
-                }
-                console.log(`Saving ${itemsToSave.length} of ${allQuizStats.length} Quizstats.`);
-                let amount = await quizStatsDAO.insertMany(itemsToSave);
-                console.log(`${amount} of ${itemsToSave.length} Quizstats saved.`);
-            }
-            console.log('Finished Migrating Quizstats');
-
-            console.log('Start Migrating Lottozahlen');
-            const allLottozahlen = await Lottozahlen.find({});
-            if (allLottozahlen && allLottozahlen.length > 0) {
-                let itemsToSave = [];
-                for (let item of allLottozahlen) {
-                    itemsToSave.push(new SQLLottozahlen(item._id.toString(), item.guildId, item.drawnTime, item.lottozahl, item.userId));
-                }
-                console.log(`Saving ${itemsToSave.length} of ${allLottozahlen.length} Lottozahlen.`);
-                let amount = await lottozahlenDAO.insertMany(itemsToSave);
-                console.log(`${amount} of ${itemsToSave.length} Lottozahlen saved.`);
-            }
-            console.log('Finished Migrating Lottozahlen');
-
             console.log('Start Migrating Tiere');
             const alltiere = await Tiere.find({});
             if (alltiere && alltiere.length > 0) {
                 let itemsToSave = [];
                 for (let item of alltiere) {
-                    itemsToSave.push(new SQLTiere(item._id.toString(), item.pfad, item.tierart, item.customName, item.besitzer.toString()));
+                    itemsToSave.push(new SQLTiere(item._id.toString(), item.pfad, item.tierart, item.customName, item.besitzer ? item.besitzer.toString() : item.besitzer));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${alltiere.length} Tiere.`);
                 let amount = await tiereDAO.insertMany(itemsToSave);
