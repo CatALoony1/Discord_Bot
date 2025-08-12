@@ -367,7 +367,7 @@ async function setDatabaseToDAOs(database) {
         tttRoundDAO,
         tttRoundParticipantDAO,
         tttShopPurchaseDAO
-    })
+    });
     console.log(database);
 }
 
