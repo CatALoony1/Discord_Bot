@@ -47,8 +47,8 @@ class InventarDAO extends BaseDAO {
         const populatedItems = [];
         for (const itemEntry of inventar.items) {
             const itemId = itemEntry.itemId || itemEntry.item;
-            if (itemId && itemsDAO) { // Prüfen, ob itemsDAO gesetzt ist
-                const fullItem = await itemsDAO.getById(itemId);
+            if (itemId && this.itemsDAO) { // Prüfen, ob itemsDAO gesetzt ist
+                const fullItem = await this.itemsDAO.getById(itemId);
                 if (fullItem) {
                     populatedItems.push({
                         itemId: itemId,
