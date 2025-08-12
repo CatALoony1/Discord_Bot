@@ -20,7 +20,7 @@ const TTTDamageDAO = require('../daos/TTTDamageDAO');
 const TTTKillDAO = require('../daos/TTTKillDAO');
 const TTTShopPurchaseDAO = require('../daos/TTTShopPurchaseDAO');
 
-function initializeDatabase(dbPath) {
+async function initializeDatabase(dbPath) {
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database(dbPath, (err) => {
             if (err) {
@@ -290,7 +290,7 @@ function initializeDatabase(dbPath) {
                                     reject(new Error('Database initialization completed with errors.'));
                                 } else {
                                     console.log('All tables created or already exist.');
-                                    setDatabaseToDAOs(db);
+                                    await setDatabaseToDAOs(db);
                                     resolve(db); // Löse mit dem Datenbankobjekt auf
                                 }
                             }
@@ -302,7 +302,7 @@ function initializeDatabase(dbPath) {
     });
 }
 
-function setDatabaseToDAOs(database) {
+async function setDatabaseToDAOs(database) {
     // Instanziieren Sie alle DAOs
         const activeItemsDAO = new ActiveItemsDAO(database);
         const bankkontenDAO = new BankkontenDAO(database);
