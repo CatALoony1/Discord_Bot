@@ -40,9 +40,11 @@ module.exports = async (client) => {
             if (allItems && allItems.length > 0) {
                 let itemsToSave = [];
                 for (let item of allItems) {
+                    console.log(item);
                     itemsToSave.push(new SQLItems(item._id, item.name, item.beschreibung, item.preis, item.boostOnly, item.available));
                 }
                 console.log(`Saving ${itemsToSave.length} of ${allItems.length} Items.`);
+                console.log(itemsToSave);
                 let amount = await itemsDAO.insertMany(itemsToSave);
                 console.log(`${amount} of ${itemsToSave.length} Items saved.`);
             }
