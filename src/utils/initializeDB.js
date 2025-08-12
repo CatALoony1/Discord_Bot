@@ -293,23 +293,26 @@ async function initializeDatabase(dbPath) {
                                 reject(new Error('Database initialization completed with errors.'));
                             } else {
                                 console.log('All tables created or already exist.');
-                                const sql = `SELECT * FROM bumps`;
-                                db.get(sql, [], (err, row) => {
-                                    if (err) {
-                                        console.error(`Error fetching from ${this.tableName} by ID:`, err.message);
-                                        console.log(err);
-                                    } else {
-                                        console.log(row);
-                                    }
-                                });
                                 console.log(db);
                                 await setDatabaseToDAOs(db);
-                                resolve(db); // Löse mit dem Datenbankobjekt auf
+                                //resolve(db); // Löse mit dem Datenbankobjekt auf
                             }
                         }
                     });
                 });
             });
+            const sql = `SELECT * FROM bumps`;
+            db.get(sql, [], (err, row) => {
+                if (err) {
+                    console.error(`Error fetching from ${this.tableName} by ID:`, err.message);
+                    console.log(err);
+                } else {
+                    console.log(row);
+                }
+            });
+            console.log(db);
+            resolve(db); // Löse mit dem Datenbankobjekt auf
+
         });
     });
 }
