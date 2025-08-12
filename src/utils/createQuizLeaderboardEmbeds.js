@@ -1,10 +1,11 @@
 
 const { EmbedBuilder } = require('discord.js');
-const { quizStatsDAO } = require('./initializeDB.js');
+const { getDaos } = require('./daos.js');
 require('../sqliteModels/QuizStats.js');
 
 async function createQuizLeaderboardEmbeds(page, client) {
   try {
+    const { quizStatsDAO } = getDaos();
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const fetchedStats = await quizStatsDAO.getAllByGuild(guild.id);
 

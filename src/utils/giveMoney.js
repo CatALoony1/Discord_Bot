@@ -1,10 +1,11 @@
 const GameUser = require('../sqliteModels/GameUser.js');
 const Bankkonten = require('../sqliteModels/Bankkonten.js');
 const Inventar = require('../sqliteModels/Inventar.js');
-const { gameUserDAO, bankkontenDAO, inventarDAO } = require('./initializeDB.js');
+const { getDaos } = require('./daos.js');
 
 async function giveMoney(member, money, quizadded = false, daily = false) {
     try {
+        const { gameUserDAO, bankkontenDAO, inventarDAO } =  getDaos();
         const bankkonto = await bankkontenDAO.getOneByUserAndGuild(member.user.id, member.guild.id);
         if (bankkonto) {
             const user = bankkonto.besitzerObj;

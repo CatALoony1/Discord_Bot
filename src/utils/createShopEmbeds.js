@@ -1,10 +1,11 @@
 
 const { EmbedBuilder } = require('discord.js');
-const { itemsDAO } = require('./initializeDB.js');
+const { getDaos } = require('./daos.js');
 require('../sqliteModels/Items.js');
 
 async function createShopEmbeds(page, interaction) {
     try {
+        const { itemsDAO } = getDaos();
         const booster = interaction.member.roles.cache.some(role => role.name === 'Server Booster') ? true : false;
         let allItems = await itemsDAO.getAllAvailable();
         if (allItems.length === 0) {

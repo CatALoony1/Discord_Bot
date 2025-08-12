@@ -3,7 +3,7 @@ const { EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('./calculateLevelXp.js');
 const giveMoney = require('../utils/giveMoney.js');
 require('dotenv').config();
-const { levelDAO, configDAO } = require('./initializeDB.js');
+const { getDaos } = require('./daos.js');
 require('../sqliteModels/Config.js');
 
 const roles = new Map([[1, '1387045161019899914'],
@@ -21,6 +21,7 @@ const roles = new Map([[1, '1387045161019899914'],
 
 async function giveXP(member, xpToGive, channel, message) {
     try {
+        const { levelDAO, configDAO } = getDaos();
         const level = await levelDAO.getOneByUserAndGuild(member.user.id, member.guild.id);
         let conf = configDAO.getOneByKeyAndGuild(member.guild.id, "xpMultiplier");
         let multiplier = 1;

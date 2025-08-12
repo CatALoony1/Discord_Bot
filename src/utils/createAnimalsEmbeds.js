@@ -1,10 +1,11 @@
 const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
-const { tiereDAO } = require('./initializeDB.js');
+const { getDaos } = require('./daos.js');
 const path = require('node:path');
 require('../sqliteModels/Tiere.js');
 
 async function createAnimalEmbeds(page, guildId, userId) {
     try {
+        const { tiereDAO } = getDaos();
         const tiere = await tiereDAO.getAllByUserAndGuild(userId, guildId);
         if (!tiere || tiere.length <= 0 || !tiere[page]) {
             return undefined;

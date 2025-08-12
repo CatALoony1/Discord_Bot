@@ -1,18 +1,19 @@
 
 const { EmbedBuilder } = require('discord.js');
-const { levelDAO } = require('./initializeDB.js');
+const { getDaos } = require('./daos.js');
 require('../sqliteModels/Level.js');
 
 async function createLeaderboardEmbeds(page, interaction) {
   try {
+    const { levelDAO } = getDaos();
     const fetchedLevel = await levelDAO.getAllByGuild(interaction.guild.id);
 
     if (fetchedLevel.length === 0) {
       console.log('ERROR: Niemand auf dem Server hat Level');
       return new EmbedBuilder()
-            .setTitle('Fehler')
-            .setDescription('Es gab einen Fehler beim Erstellen des Shops. Bitte versuche es später erneut.')
-            .setColor(0xff0000);
+        .setTitle('Fehler')
+        .setDescription('Es gab einen Fehler beim Erstellen des Shops. Bitte versuche es später erneut.')
+        .setColor(0xff0000);
     }
     var oldUsers = [];
     for (let j = 0; j < fetchedLevel.length; j++) {

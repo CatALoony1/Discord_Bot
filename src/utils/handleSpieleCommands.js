@@ -2,7 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags, EmbedBuilder
 const createShopEmbeds = require('./createShopEmbeds.js');
 const createAnimalsEmbeds = require('./createAnimalsEmbeds.js');
 const createSpieleLeaderboardEmbeds = require('./createSpieleLeaderboardEmbeds.js');
-const { inventarDAO, bankkontenDAO, tiereDAO, lottozahlenDAO } = require('./initializeDB.js');
+const { getDaos } = require('./daos.js');
 
 
 async function handleShop(interaction) {
@@ -35,6 +35,7 @@ async function handleShop(interaction) {
 }
 
 async function handleUseItem(interaction) {
+    const { inventarDAO } = getDaos();
     const targetUserObj = interaction.member;
     const inventar = await inventarDAO.getOneByUserAndGuild(targetUserObj.id, interaction.guild.id);
     if (!inventar || !inventar.besitzerObj) {
@@ -69,6 +70,7 @@ async function handleUseItem(interaction) {
 }
 
 async function handleGamestats(interaction) {
+    const { tiereDAO, inventarDAO, bankkontenDAO, lottozahlenDAO } = getDaos();
     await interaction.deferReply();
     const targetUserId = interaction.member.id;
     const bankkonto = await bankkontenDAO.getOneByUserAndGuild(targetUserId, interaction.guild.id);
@@ -157,6 +159,7 @@ async function handleOwnAnimals(interaction) {
 }
 
 async function handleKeksEssen(interaction) {
+    const { inventarDAO } = getDaos();
     const inventar = await inventarDAO.getOneByUserAndGuild(interaction.user.id, interaction.guild.id);
     const itemId = inventar.items.findIndex(item => item.itemObj.name === 'Keks');
     const quantity = inventar.items[itemId].quantity;

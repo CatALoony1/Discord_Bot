@@ -1,10 +1,11 @@
 
 const { EmbedBuilder } = require('discord.js');
-const { bankkontenDAO } = require('./initializeDB.js');
+const { getDaos } = require('./daos.js');
 require('../sqliteModels/Bankkonten.js');
 
 async function createSpieleLeaderboardEmbeds(page, interaction) {
     try {
+        const { bankkontenDAO } = getDaos();
         const fetchedBankkonten = await bankkontenDAO.getAllByGuild(interaction.guild.id);
         if (fetchedBankkonten.length === 0) {
             console.log('ERROR: Niemand auf dem Server hat Blattläuse!');
