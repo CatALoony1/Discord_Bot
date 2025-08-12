@@ -17,6 +17,12 @@ function startJob(client) {
       const bumpEntry = await bumpDAO.getOneByGuild(process.env.GUILD_ID);
       console.log(bumpEntry);
       if (bumpEntry) {
+        console.log(bumpEntry.endTime);
+        console.log(bumpEntry.endtime < Date.now());
+        console.log(bumpEntry.reminded);
+        console.log(bumpEntry.reminded === 'N');
+        const rightEntry = await bumpDAO.getOneToBeRemindedByGuild(process.env.GUILD_ID);
+        console.log(rightEntry);
         if (bumpEntry.endTime < Date.now() && bumpEntry.reminded === 'N') {
           let guild = client.guilds.cache.get(process.env.GUILD_ID);
           let role = guild.roles.cache.find(role => role.name === 'Bump-Ping');

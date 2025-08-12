@@ -35,5 +35,19 @@ class BumpDAO extends BaseDAO {
             });
         });
     }
+
+    async getOneToBeRemindedByGuild(guildId) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM ${this.tableName} WHERE guildId = ? and reminded = 'N' and endTime < datetime('now')`;
+            this.db.get(sql, [guildId], (err, row) => {
+                if (err) {
+                    console.error(`Error fetching from ${this.tableName} by guildId:`, err.message);
+                    reject(err);
+                } else {
+                    resolve(this._mapRowToModel(row));
+                }
+            });
+        });
+    }
 }
 module.exports = BumpDAO;
