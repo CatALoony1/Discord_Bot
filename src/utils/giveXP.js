@@ -1,7 +1,7 @@
 const Level = require('../sqliteModels/Level.js');
 const { EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('./calculateLevelXp.js');
-const giveMoney = require('../utilsSSQLite/giveMoney');
+const giveMoney = require('../utils/giveMoney.js');
 require('dotenv').config();
 const { levelDAO, configDAO } = require('./initializeDB.js');
 require('../sqliteModels/Config.js');
