@@ -68,17 +68,11 @@ module.exports = async (interaction) => {
         }
         if (variant == 1) {
             if (interaction.values[0] === '<18') {
-                try {
-                    const usertag = interaction.member.user.tag;
-                    await interaction.member.user.send('Du wurdest gebannt, da der Server ab 18 ist.');
-                    await interaction.editReply('Gebannt');
-                    await interaction.member.ban({ reason: 'Server ist ab 18' });
-                    const targetChannel = interaction.guild.channels.cache.get(process.env.LOG_ID) || (await interaction.guild.channels.fetch(process.env.LOG_ID));
-                    await targetChannel.send(`${usertag} gebannt, da der Server ab 18 ist.`);
-                    return;
-                } catch (error) {
-                    console.log(error);
-                }
+                const usertag = interaction.member.user.tag;
+                await interaction.editReply('Der Server ist ab 18, solltest du dich nicht verklickt haben und unter 18 sein würden wir dich bitten den Server zu verlassen.');
+                const targetChannel = interaction.guild.channels.cache.get(process.env.LOG_ID) || (await interaction.guild.channels.fetch(process.env.LOG_ID));
+                await targetChannel.send(`${usertag} ist unter 18.<@${process.env.ADMIN_ROLE_ID}>`);
+                return;
             } else {
                 if (interaction.member.roles.cache.some(role => role.name === interaction.values[0])) {
                     await interaction.editReply(`Du besitzt das Alter ${interaction.values[0]} bereits.`);
