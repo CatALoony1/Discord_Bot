@@ -1,0 +1,45 @@
+var usersToDelete = db.gameusers.aggregate([
+  {
+    $lookup: {
+      from: "levels",
+      localField: "userId",
+      foreignField: "userId",
+      as: "_levels_"
+    }
+  },
+  {
+    $match: {
+      "_levels_": { $eq: [] }
+    }
+  },
+  {
+    $project: {
+      "_id": 1
+    }
+  }
+]).toArray().map(doc => doc._id);
+
+// Check if the IDs are now correctly stored in the variable
+print("IDs der Benutzer, die gelöscht werden sollen:");
+printjson(usersToDelete);
+
+// Überprüfe, ob die 17 IDs korrekt in der Variable gespeichert sind
+print("IDs der Benutzer, die gelöscht werden sollen:");
+printjson(usersToDelete);
+
+var deleteUsersResult = db.gameusers.deleteMany({ _id: { $in: usersToDelete } });
+printjson(deleteUsersResult);
+// Löscht die zugehörigen Inventar-Einträge
+var deleteInventarsResult = db.inventars.deleteMany({ besitzer: { $in: usersToDelete } });
+printjson(deleteInventarsResult);
+
+// Löscht die zugehörigen Bankkonto-Einträge
+var deleteBankkontensResult = db.bankkontens.deleteMany({ besitzer: { $in: usersToDelete } });
+printjson(deleteBankkontensResult);
+
+// Leert das 'besitzer'-Feld in der 'tieres'-Collection
+var updateTieresResult = db.tieres.updateMany(
+  { besitzer: { $in: usersToDelete } },
+  { $set: { besitzer: null } }
+);
+printjson(updateTieresResult);
