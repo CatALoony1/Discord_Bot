@@ -48,7 +48,6 @@ module.exports = {
       });
 
     try {
-      let actualNumer = amount;
       const messages = await interaction.channel.messages.fetch({
         limit: amount,
       });
@@ -56,7 +55,7 @@ module.exports = {
         messages,
         true,
       );
-      actualNumer = deletedMessages.size;
+      const actualNumer = deletedMessages.size;
       await interaction.editReply({
         content: `Ich habe mal ${actualNumer} Nachrichten gelöscht!`,
       });
