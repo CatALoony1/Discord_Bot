@@ -38,7 +38,7 @@ module.exports = {
         .setMaxLength(100);
       const richtigInputLabel = new LabelBuilder()
         .setLabel('Richtige Antwort:')
-        .setTextInputComponent(richtigerInput);
+        .setTextInputComponent(richtigInput);
       const falsch1Input = new TextInputBuilder()
         .setCustomId('quizadd-falsch1')
         .setStyle(TextInputStyle.Paragraph)
