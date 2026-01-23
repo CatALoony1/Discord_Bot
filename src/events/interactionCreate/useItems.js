@@ -950,7 +950,6 @@ async function useItemUmarmung(interaction) {
   await user.inventar.save();
   const targetUserId = interaction.values[0];
   let data = null;
-  const fetch = await import('node-fetch').then((module) => module.default);
   await fetch('https://nekos.life/api/v2/img/hug')
     .then((response) => response.json())
     .then((mydata) => {
@@ -998,7 +997,6 @@ async function useItemKuss(interaction) {
   await user.inventar.save();
   const targetUserId = interaction.values[0];
   let data = null;
-  const fetch = await import('node-fetch').then((module) => module.default);
   await fetch('https://nekos.life/api/v2/img/kiss')
     .then((response) => response.json())
     .then((mydata) => {

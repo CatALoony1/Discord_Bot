@@ -58,9 +58,6 @@ module.exports = {
           });
       } else if (subcommand === 'api') {
         const zahl = interaction.options.get('zahl')?.value || -1;
-        const fetch = await import('node-fetch').then(
-          (module) => module.default,
-        );
         let randomNumber = getRandom(1, 40);
         let data = null;
         let apiUrl = null;
