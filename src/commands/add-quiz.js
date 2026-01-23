@@ -61,7 +61,7 @@ module.exports = {
         falsch2Input,
       );
       const fifthActionRow = new ActionRowBuilder().addComponents(falsch3Input);
-      modal.addComponents(
+      modal.addLabelComponents(
         firstActionRow,
         secondActionRow,
         thirdctionRow,

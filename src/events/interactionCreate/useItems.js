@@ -261,7 +261,7 @@ module.exports = async (interaction) => {
           const secondActionRow = new ActionRowBuilder().addComponents(
             rollenName,
           );
-          modal.addComponents(firstActionRow, secondActionRow);
+          modal.addLabelComponents(firstActionRow, secondActionRow);
           break;
         }
         case 'Voicechannel': {
@@ -277,7 +277,7 @@ module.exports = async (interaction) => {
           const firstActionRow = new ActionRowBuilder().addComponents(
             channelNameInput,
           );
-          modal.addComponents(firstActionRow);
+          modal.addLabelComponents(firstActionRow);
           break;
         }
         case 'Rolle (Namensliste)': {
@@ -293,7 +293,7 @@ module.exports = async (interaction) => {
           const firstActionRow = new ActionRowBuilder().addComponents(
             rollenNameInput,
           );
-          modal.addComponents(firstActionRow);
+          modal.addLabelComponents(firstActionRow);
           break;
         }
         case 'Umarmung': {
@@ -500,7 +500,7 @@ async function useItemTier(interaction) {
       .setRequired(true)
       .setMaxLength(30);
     const actionRow = new ActionRowBuilder().addComponents(textInput);
-    modal.addComponents(actionRow);
+    modal.addLabelComponents(actionRow);
     await interaction.showModal(modal);
   } else if (
     interaction.customId.includes('other_modal') ||

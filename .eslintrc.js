@@ -13,5 +13,6 @@ module.exports = {
     semi: ['error', 'always'], // Erzwingt Semikolons am Ende von Anweisungen
     'no-unused-vars': 'warn', // Gibt eine Warnung für ungenutzte Variablen aus
     'no-console': 'off', // Deaktiviert die Regel, die console.log() verbietet.
+    'no-deprecated-declarations': 'warn',
   },
 };

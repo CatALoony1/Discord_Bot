@@ -9,11 +9,12 @@ const client = new Discord.Client({
     Discord.IntentsBitField.Flags.GuildMessages,
     Discord.IntentsBitField.Flags.GuildMessageReactions,
     Discord.IntentsBitField.Flags.MessageContent,
-    Discord.IntentsBitField.Flags.GuildEmojisAndStickers,
+    Discord.IntentsBitField.Flags.GuildExpressions,
     Discord.IntentsBitField.Flags.GuildMembers,
     Discord.IntentsBitField.Flags.GuildModeration,
     Discord.IntentsBitField.Flags.GuildPresences,
     Discord.IntentsBitField.Flags.GuildVoiceStates,
+    Discord.IntentsBitField.Flags.GuildWebhooks,
   ],
   partials: [
     Discord.Partials.Message,

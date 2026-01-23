@@ -93,7 +93,7 @@ module.exports = async (interaction) => {
         .setRequired(true)
         .setMaxLength(30);
       const actionRow = new ActionRowBuilder().addComponents(textInput);
-      modal.addComponents(actionRow);
+      modal.addLabelComponents(actionRow);
       await interaction.showModal(modal);
     } catch (error) {
       console.log(error);
