@@ -4,24 +4,28 @@ const GameUser = require('../models/GameUser');
 const path = require('node:path');
 
 async function createLeaderboardEmbeds(page, guildId, userId) {
-    const user = await GameUser.findOne({ guildId: guildId, userId: userId });
-    if (!user) {
-        return undefined;
-    }
-    const tiere = await Tiere.find({
-        besitzer: user._id
-    });
-    if (!tiere || tiere.length <= 0 || !tiere[page]) {
-        return undefined;
-    }
-    const file = new AttachmentBuilder(path.join(__dirname, `../../animals/${tiere[page].pfad}.webp`));
-    const embed = new EmbedBuilder()
-        .setTitle(`Deine Tiere - ${page + 1}/${tiere.length}`)
-        .setDescription(`Name: ${tiere[page].customName}\nTierart: ${tiere[page].tierart}`)
-        .setImage(`attachment://${tiere[page].pfad}.webp`)
-        .setColor(0x0033cc)
-        .setFooter({ text: `${userId}` });
-    return { embed, file };
+  const user = await GameUser.findOne({ guildId: guildId, userId: userId });
+  if (!user) {
+    return undefined;
+  }
+  const tiere = await Tiere.find({
+    besitzer: user._id,
+  });
+  if (!tiere || tiere.length <= 0 || !tiere[page]) {
+    return undefined;
+  }
+  const file = new AttachmentBuilder(
+    path.join(__dirname, `../../animals/${tiere[page].pfad}.webp`),
+  );
+  const embed = new EmbedBuilder()
+    .setTitle(`Deine Tiere - ${page + 1}/${tiere.length}`)
+    .setDescription(
+      `Name: ${tiere[page].customName}\nTierart: ${tiere[page].tierart}`,
+    )
+    .setImage(`attachment://${tiere[page].pfad}.webp`)
+    .setColor(0x0033cc)
+    .setFooter({ text: `${userId}` });
+  return { embed, file };
 }
 
 module.exports = createLeaderboardEmbeds;

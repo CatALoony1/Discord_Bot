@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, ActionRowBuilder, InteractionContextType, ButtonStyle, ButtonBuilder } = require('discord.js');
+const {
+  SlashCommandBuilder,
+  ActionRowBuilder,
+  InteractionContextType,
+  ButtonStyle,
+  ButtonBuilder,
+} = require('discord.js');
 
 const createLeaderboardEmbeds = require('../utils/createLeaderboardEmbeds');
 
@@ -6,10 +12,15 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('leaderboard')
     .setDescription('Zeigt das Leaderboard.')
-    .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
+    .setContexts([
+      InteractionContextType.Guild,
+      InteractionContextType.PrivateChannel,
+    ]),
 
   run: async ({ interaction }) => {
-    console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+    console.log(
+      `SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`,
+    );
     if (!interaction.inGuild()) {
       interaction.reply('Hier ist doch kein Server!');
       return;
@@ -30,11 +41,14 @@ module.exports = {
       .setStyle(ButtonStyle.Primary)
       .setCustomId(`lPageUp`);
 
-    const firstRow = new ActionRowBuilder().addComponents(pageDownButton, pageUpButton);
+    const firstRow = new ActionRowBuilder().addComponents(
+      pageDownButton,
+      pageUpButton,
+    );
 
     interaction.editReply({
       embeds: [embed],
-      components: [firstRow]
+      components: [firstRow],
     });
   },
 };

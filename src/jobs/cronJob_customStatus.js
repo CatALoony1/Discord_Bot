@@ -41,40 +41,58 @@ let status = [
     }], status: 'dnd'
   }, */
   {
-    activities: [{
-      name: 'mit deinen Gefühlen',
-      type: ActivityType.Playing
-    }], status: 'online'
+    activities: [
+      {
+        name: 'mit deinen Gefühlen',
+        type: ActivityType.Playing,
+      },
+    ],
+    status: 'online',
   },
   {
-    activities: [{
-      name: 'Erhöht die Preise',
-      type: ActivityType.Custom
-    }], status: 'dnd'
+    activities: [
+      {
+        name: 'Erhöht die Preise',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'dnd',
   },
   {
-    activities: [{
-      name: 'Wartet auf das Essen',
-      type: ActivityType.Custom
-    }], status: 'online'
+    activities: [
+      {
+        name: 'Wartet auf das Essen',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'online',
   },
   {
-    activities: [{
-      name: 'alleine',
-      type: ActivityType.Playing
-    }], status: 'online'
+    activities: [
+      {
+        name: 'alleine',
+        type: ActivityType.Playing,
+      },
+    ],
+    status: 'online',
   },
   {
-    activities: [{
-      name: 'dir',
-      type: ActivityType.Listening
-    }], status: 'idle'
+    activities: [
+      {
+        name: 'dir',
+        type: ActivityType.Listening,
+      },
+    ],
+    status: 'idle',
   },
   {
-    activities: [{
-      name: 'in die Ferne',
-      type: ActivityType.Watching
-    }], status: 'online'
+    activities: [
+      {
+        name: 'in die Ferne',
+        type: ActivityType.Watching,
+      },
+    ],
+    status: 'online',
   },
 ];
 
@@ -91,7 +109,8 @@ function startJob(client) {
     console.log('CustomStatus-Job is already running.');
     return;
   }
-  customStatusJob = cron.schedule('* * * * *', async function () { //30sec
+  customStatusJob = cron.schedule('* * * * *', async function () {
+    //30sec
     try {
       await client.user.setPresence(status[getRandom(0, status.length - 1)]);
     } catch (error) {
@@ -118,5 +137,5 @@ function isRunning() {
 module.exports = {
   startJob,
   stopJob,
-  isRunning
+  isRunning,
 };

@@ -21,7 +21,7 @@ const hangmanSchema = new Schema({
   status: {
     //laufend, beendet
     type: String,
-    default: "laufend",
+    default: 'laufend',
   },
   buchstaben: {
     type: [String],

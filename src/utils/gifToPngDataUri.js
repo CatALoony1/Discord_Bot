@@ -3,7 +3,7 @@ const axios = require('axios');
 
 async function gifToPngDataUri(gifUrl) {
   try {
-    if (!await checkImageType(gifUrl)) return gifUrl;
+    if (!(await checkImageType(gifUrl))) return gifUrl;
     const response = await axios({
       url: gifUrl,
       responseType: 'arraybuffer',
@@ -48,6 +48,5 @@ async function checkImageType(url) {
     return false;
   }
 }
-
 
 module.exports = gifToPngDataUri;

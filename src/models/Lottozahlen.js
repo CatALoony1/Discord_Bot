@@ -16,7 +16,7 @@ const lottozahlenSchema = new Schema({
   userId: {
     type: String,
     required: true,
-  }
+  },
 });
 
 module.exports = model('Lottozahlen', lottozahlenSchema);

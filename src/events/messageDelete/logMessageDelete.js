@@ -1,16 +1,24 @@
 require('dotenv').config();
 const { EmbedBuilder, Message, AuditLogEvent, Client } = require('discord.js');
 /**
- * 
- * @param {Message} message 
+ *
+ * @param {Message} message
  * @param {Client} client
- * @returns 
+ * @returns
  */
 module.exports = async (message, client) => {
   console.log(`message deleted in ${message.channel}`);
-  if ((message.author != null && (message.author.bot || message.webhookId)) || (message.channel.id === process.env.SPIELE_ID && message.reference && message.content.length == 1)) return;
+  if (
+    (message.author != null && (message.author.bot || message.webhookId)) ||
+    (message.channel.id === process.env.SPIELE_ID &&
+      message.reference &&
+      message.content.length == 1)
+  )
+    return;
   try {
-    const targetChannel = message.guild.channels.cache.get(process.env.LOG_ID) || (await message.guild.channels.fetch(process.env.LOG_ID));
+    const targetChannel =
+      message.guild.channels.cache.get(process.env.LOG_ID) ||
+      (await message.guild.channels.fetch(process.env.LOG_ID));
     if (!targetChannel) {
       console.log('Fehler, Logchannel gibts nicht');
       return;
@@ -26,7 +34,9 @@ module.exports = async (message, client) => {
       user = await client.users.fetch(executorId);
       if (user.bot || message.webhookId) return;
     } else {
-      if (message.guild.members.cache.find(m => m.id === message.author.id)?.id) {
+      if (
+        message.guild.members.cache.find((m) => m.id === message.author.id)?.id
+      ) {
         user = message.author;
       }
     }
@@ -39,7 +49,10 @@ module.exports = async (message, client) => {
     }
     const messageDeleted = new EmbedBuilder();
     messageDeleted.setColor(0xff0000);
-    messageDeleted.setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 256 }) });
+    messageDeleted.setAuthor({
+      name: user.username,
+      iconURL: user.displayAvatarURL({ size: 256 }),
+    });
     messageDeleted.setTimestamp(Date.now());
     messageDeleted.setTitle(`Nachricht gelöscht in ${message.channel}`);
     messageDeleted.setDescription(description);

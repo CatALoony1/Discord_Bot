@@ -12,7 +12,7 @@ const configSchema = new Schema({
   value: {
     type: String,
     required: true,
-  }
+  },
 });
 
 module.exports = model('Config', configSchema);

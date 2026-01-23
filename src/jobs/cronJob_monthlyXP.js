@@ -15,7 +15,7 @@ function startJob(client) {
       const fetchedLevel = await Level.find({
         guildId: process.env.GUILD_ID,
       });
-      fetchedLevel.forEach(async level => {
+      fetchedLevel.forEach(async (level) => {
         level.lastmonth = level.thismonth;
         level.thismonth = 0;
         await level.save();
@@ -45,7 +45,7 @@ function isRunning() {
 module.exports = {
   startJob,
   stopJob,
-  isRunning
+  isRunning,
 };
 
 /*

@@ -3,16 +3,25 @@ require('dotenv').config();
 const getAIResult = require('../../utils/getAIResult');
 
 /**
- * 
- * @param {Message} message 
- * @returns 
+ *
+ * @param {Message} message
+ * @returns
  */
 module.exports = async (message) => {
-    if (!message.inGuild() || message.author.bot || !message.content.includes(process.env.KI_BOT) || message.webhookId) return;
-    console.log(`KI Mentioned`);
-    try {
-        const prompt = message.content.replaceAll(`<@&${process.env.KI_BOT}>`, 'Sir Blattzelot');
-        let sysInstruction = `
+  if (
+    !message.inGuild() ||
+    message.author.bot ||
+    !message.content.includes(process.env.KI_BOT) ||
+    message.webhookId
+  )
+    return;
+  console.log(`KI Mentioned`);
+  try {
+    const prompt = message.content.replaceAll(
+      `<@&${process.env.KI_BOT}>`,
+      'Sir Blattzelot',
+    );
+    let sysInstruction = `
 Du bist **Sir Blattzelot**, ein KI-Assistent auf dem Discord-Server '**LEAFing Reality**'.
 
 **WICHTIGSTE REGEL**: Deine Antworten müssen **IMMER unter 1500 Zeichen** bleiben. Fasse dich kurz und prägnant, auch wenn das bedeutet, weniger Details zu geben.
@@ -27,9 +36,12 @@ Sei **stets freundlich, hilfsbereit und präzise** in deinen Antworten. Antworte
 
 Priorisiere stets die Einhaltung der Zeichenbegrenzung.
 `;
-        let aiText = await getAIResult(`Nachricht von ${message.author.displayName}: ${prompt}`, sysInstruction);
-        await message.reply(`${aiText}\n||KI-Generierter Text!||`);
-    } catch (error) {
-        console.log(error);
-    }
+    let aiText = await getAIResult(
+      `Nachricht von ${message.author.displayName}: ${prompt}`,
+      sysInstruction,
+    );
+    await message.reply(`${aiText}\n||KI-Generierter Text!||`);
+  } catch (error) {
+    console.log(error);
+  }
 };

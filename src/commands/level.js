@@ -1,4 +1,8 @@
-const { SlashCommandBuilder, AttachmentBuilder, InteractionContextType } = require('discord.js');
+const {
+  SlashCommandBuilder,
+  AttachmentBuilder,
+  InteractionContextType,
+} = require('discord.js');
 const canvacord = require('canvacord');
 const calculateLevelXp = require('../utils/calculateLevelXp');
 const Level = require('../models/Level');
@@ -8,14 +12,20 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('level')
     .setDescription('Zeigt das Level.')
-    .addUserOption(option =>
-      option.setName('nutzer')
-        .setDescription('Nutzer dessen Level dich interessiert')
+    .addUserOption((option) =>
+      option
+        .setName('nutzer')
+        .setDescription('Nutzer dessen Level dich interessiert'),
     )
-    .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
+    .setContexts([
+      InteractionContextType.Guild,
+      InteractionContextType.PrivateChannel,
+    ]),
 
   run: async ({ interaction }) => {
-    console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+    console.log(
+      `SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`,
+    );
     if (!interaction.inGuild()) {
       interaction.reply('Hier ist doch kein Server!');
       return;
@@ -24,8 +34,12 @@ module.exports = {
     await interaction.deferReply();
     const mentionedUserId = interaction.options.get('nutzer')?.value;
     const targetUserId = mentionedUserId || interaction.member.id;
-    if (!(interaction.guild.members.cache.find(m => m.id === targetUserId)?.id)) {
-      interaction.editReply(`Bei ${targetUserId} handelt es sich nicht um einen Nutzer.`);
+    if (
+      !interaction.guild.members.cache.find((m) => m.id === targetUserId)?.id
+    ) {
+      interaction.editReply(
+        `Bei ${targetUserId} handelt es sich nicht um einen Nutzer.`,
+      );
       return;
     }
     const targetUserObj = await interaction.guild.members.fetch(targetUserId);
@@ -39,7 +53,7 @@ module.exports = {
       interaction.editReply(
         mentionedUserId
           ? `${targetUserObj.user.tag} hat noch kein Level`
-          : "Du hast noch kein Level"
+          : 'Du hast noch kein Level',
       );
       return;
     }
@@ -47,7 +61,11 @@ module.exports = {
     let allLevels = await Level.find({ guildId: interaction.guild.id });
     var oldUsers = [];
     for (let j = 0; j < allLevels.length; j++) {
-      if (!(interaction.guild.members.cache.find(m => m.id === allLevels[j].userId)?.id)) {
+      if (
+        !interaction.guild.members.cache.find(
+          (m) => m.id === allLevels[j].userId,
+        )?.id
+      ) {
         oldUsers[oldUsers.length] = j;
       }
     }
@@ -66,8 +84,11 @@ module.exports = {
     if (targetUserObj.presence) {
       status = targetUserObj.presence.status;
     }
-    let currentRank = allLevels.findIndex((lvl) => lvl.userId === targetUserId) + 1;
-    const imgUrl = await gifToPngDataUri(targetUserObj.user.displayAvatarURL({ size: 256 }));
+    let currentRank =
+      allLevels.findIndex((lvl) => lvl.userId === targetUserId) + 1;
+    const imgUrl = await gifToPngDataUri(
+      targetUserObj.user.displayAvatarURL({ size: 256 }),
+    );
     const rank = new canvacord.RankCardBuilder()
       .setAvatar(imgUrl)
       .setRank(currentRank)
@@ -88,9 +109,7 @@ module.exports = {
             },
           },
         },
-      })
-      ;
-
+      });
     const data = await rank.build();
     const attachment = new AttachmentBuilder(data);
     interaction.editReply({ files: [attachment] });

@@ -1,4 +1,3 @@
-
 const { EmbedBuilder } = require('discord.js');
 const Level = require('../models/Level');
 async function createLeaderboardEmbeds(page, interaction) {
@@ -12,7 +11,11 @@ async function createLeaderboardEmbeds(page, interaction) {
   }
   var oldUsers = [];
   for (let j = 0; j < fetchedLevel.length; j++) {
-    if (!(interaction.guild.members.cache.find(m => m.id === fetchedLevel[j].userId)?.id)) {
+    if (
+      !interaction.guild.members.cache.find(
+        (m) => m.id === fetchedLevel[j].userId,
+      )?.id
+    ) {
       oldUsers[oldUsers.length] = j;
     }
   }
@@ -27,9 +30,8 @@ async function createLeaderboardEmbeds(page, interaction) {
     }
   });
 
-
-  var i = 0 + (page * 5);
-  var max = 5 + (page * 5);
+  var i = 0 + page * 5;
+  var max = 5 + page * 5;
   const embed = new EmbedBuilder()
     .setTitle(`Rangliste`)
     .setDescription(`${page + 1}/${Math.ceil(fetchedLevel.length / 5)}`)
@@ -63,7 +65,10 @@ async function createLeaderboardEmbeds(page, interaction) {
       value = `Level: ${fetchedLevel[i].level} XP: ${fetchedLevel[i].allxp}\n Nachrichten: ${fetchedLevel[i].messages} Voice Zeit: ${time}\n--------------------------------------`;
     }
 
-    embed.addFields({ name: `#${i + 1}  ${userObj.user.username}`, value: value });
+    embed.addFields({
+      name: `#${i + 1}  ${userObj.user.username}`,
+      value: value,
+    });
   }
   return embed;
 }

@@ -15,7 +15,7 @@ const bumpSchema = new Schema({
   },
   remindedId: {
     type: String,
-  }
+  },
 });
 
 module.exports = model('Bump', bumpSchema);

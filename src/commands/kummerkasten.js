@@ -1,12 +1,24 @@
-const { SlashCommandBuilder, InteractionContextType, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
+const {
+  SlashCommandBuilder,
+  InteractionContextType,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  ActionRowBuilder,
+} = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('kummerkasten')
     .setDescription('Schreibe Nachricht an die Admins.')
-    .setContexts([InteractionContextType.Guild, InteractionContextType.PrivateChannel]),
+    .setContexts([
+      InteractionContextType.Guild,
+      InteractionContextType.PrivateChannel,
+    ]),
   run: async ({ interaction }) => {
-    console.log(`SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`);
+    console.log(
+      `SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`,
+    );
     try {
       const modal = new ModalBuilder()
         .setTitle('Schreibe eine Nachricht.')

@@ -8,15 +8,20 @@ function getRandomXp(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
 /**
- * 
- * @param {Message} message 
- * @returns 
+ *
+ * @param {Message} message
+ * @returns
  */
 module.exports = async (message) => {
-  if (!message.inGuild() || message.author.bot || cooldowns.has(message.author.id) || message.webhookId) return;
-  var xpToGive = (getRandomXp(5, 15));
+  if (
+    !message.inGuild() ||
+    message.author.bot ||
+    cooldowns.has(message.author.id) ||
+    message.webhookId
+  )
+    return;
+  var xpToGive = getRandomXp(5, 15);
   await giveXP(message.member, xpToGive, message.channel, true);
   cooldowns.add(message.author.id);
   setTimeout(() => {

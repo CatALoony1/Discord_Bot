@@ -4,8 +4,22 @@ const { CommandKit } = require('commandkit');
 const path = require('path');
 
 const client = new Discord.Client({
-  intents: [Discord.IntentsBitField.Flags.Guilds, Discord.IntentsBitField.Flags.GuildMessages, Discord.IntentsBitField.Flags.GuildMessageReactions, Discord.IntentsBitField.Flags.MessageContent, Discord.IntentsBitField.Flags.GuildEmojisAndStickers, Discord.IntentsBitField.Flags.GuildMembers, Discord.IntentsBitField.Flags.GuildModeration, Discord.IntentsBitField.Flags.GuildPresences, Discord.IntentsBitField.Flags.GuildVoiceStates],
-  partials: [Discord.Partials.Message, Discord.Partials.Channel, Discord.Partials.Reaction],
+  intents: [
+    Discord.IntentsBitField.Flags.Guilds,
+    Discord.IntentsBitField.Flags.GuildMessages,
+    Discord.IntentsBitField.Flags.GuildMessageReactions,
+    Discord.IntentsBitField.Flags.MessageContent,
+    Discord.IntentsBitField.Flags.GuildEmojisAndStickers,
+    Discord.IntentsBitField.Flags.GuildMembers,
+    Discord.IntentsBitField.Flags.GuildModeration,
+    Discord.IntentsBitField.Flags.GuildPresences,
+    Discord.IntentsBitField.Flags.GuildVoiceStates,
+  ],
+  partials: [
+    Discord.Partials.Message,
+    Discord.Partials.Channel,
+    Discord.Partials.Reaction,
+  ],
 });
 
 new CommandKit({

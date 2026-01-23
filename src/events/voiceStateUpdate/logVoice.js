@@ -23,34 +23,45 @@ async function checkVoice(client) {
 }
 
 /**
- * 
- * @param {VoiceState} oldState 
- * @param {VoiceState} newState 
- * @returns 
+ *
+ * @param {VoiceState} oldState
+ * @param {VoiceState} newState
+ * @returns
  */
 module.exports = async (oldState, newState, client) => {
   try {
-    const targetChannel = newState.guild.channels.cache.get(process.env.LOG_ID) || (await newState.guild.channels.fetch(process.env.LOG_ID));
+    const targetChannel =
+      newState.guild.channels.cache.get(process.env.LOG_ID) ||
+      (await newState.guild.channels.fetch(process.env.LOG_ID));
     if (!targetChannel) {
       console.log('Fehler, Logchannel gibts nicht');
       return;
     }
     if (oldState.channel === newState.channel) return;
     const voiceUpdate = new EmbedBuilder();
-    voiceUpdate.setAuthor({ name: newState.member.user.username, iconURL: newState.member.user.displayAvatarURL({ size: 256 }) });
+    voiceUpdate.setAuthor({
+      name: newState.member.user.username,
+      iconURL: newState.member.user.displayAvatarURL({ size: 256 }),
+    });
     voiceUpdate.setTimestamp(Date.now());
     if (newState.channel === null) {
-      console.log(`user ${newState.member.user.tag} left voicechannel ${oldState.channel}`);
+      console.log(
+        `user ${newState.member.user.tag} left voicechannel ${oldState.channel}`,
+      );
       voiceUpdate.setColor(0xff0000);
       voiceUpdate.setTitle('Left Voicechannel');
       voiceUpdate.setDescription(`${oldState.channel}`);
     } else if (oldState.channel === null) {
-      console.log(`user ${newState.member.user.tag} joined voicechannel ${newState.channel}`);
+      console.log(
+        `user ${newState.member.user.tag} joined voicechannel ${newState.channel}`,
+      );
       voiceUpdate.setColor(0x008000);
       voiceUpdate.setTitle('Joined Voicechannel');
       voiceUpdate.setDescription(`${newState.channel}`);
     } else {
-      console.log(`user ${newState.member.user.tag} moved voicechannels ${oldState.channel} to ${newState.channel}`);
+      console.log(
+        `user ${newState.member.user.tag} moved voicechannels ${oldState.channel} to ${newState.channel}`,
+      );
       voiceUpdate.setColor(0x0033cc);
       voiceUpdate.setTitle('Moved Voicechannel');
       voiceUpdate.addFields({ name: 'von', value: `${oldState.channel}` });
@@ -62,5 +73,3 @@ module.exports = async (oldState, newState, client) => {
     console.log(error);
   }
 };
-
-
