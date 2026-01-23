@@ -10,7 +10,7 @@ async function createQuizLeaderboardEmbeds(page, client) {
     console.log('ERROR: Niemand auf dem Server hat Level');
     return;
   }
-  var oldUsers = [];
+  let oldUsers = [];
   for (let j = 0; j < fetchedStats.length; j++) {
     if (!guild.members.cache.find((m) => m.id === fetchedStats[j].userId)?.id) {
       oldUsers[oldUsers.length] = j;
@@ -27,8 +27,8 @@ async function createQuizLeaderboardEmbeds(page, client) {
     }
   });
 
-  var i = 0 + page * 5;
-  var max = 5 + page * 5;
+  let i = 0 + page * 5;
+  const max = 5 + page * 5;
   const embed = new EmbedBuilder()
     .setTitle(`Rangliste`)
     .setDescription(`${page + 1}/${Math.ceil(fetchedStats.length / 5)}`)
@@ -37,7 +37,7 @@ async function createQuizLeaderboardEmbeds(page, client) {
     if (i === fetchedStats.length) {
       break;
     }
-    let userObj = await guild.members.fetch(fetchedStats[i].userId);
+    const userObj = await guild.members.fetch(fetchedStats[i].userId);
     let value;
     if (i === max - 1 || i === fetchedStats.length - 1) {
       value = `Richtig: ${fetchedStats[i].right} Falsch: ${fetchedStats[i].wrong}\n Letzte Teilnahme: ${fetchedStats[i].lastParticipation}`;

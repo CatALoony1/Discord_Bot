@@ -39,7 +39,7 @@ function isRunning() {
 
 async function jobFunction(client) {
   try {
-    var targetChannel = await client.channels.fetch(process.env.QUIZ_ID);
+    const targetChannel = await client.channels.fetch(process.env.QUIZ_ID);
     const embed = await createQuizLeaderboardEmbeds(0, client);
     const pageDownButton = new ButtonBuilder()
       .setEmoji('⬅️')

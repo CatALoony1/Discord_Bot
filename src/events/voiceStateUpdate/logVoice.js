@@ -3,7 +3,7 @@ const { EmbedBuilder, VoiceState } = require('discord.js');
 const { startJob, stopJob, isRunning } = require('../../jobs/cronJob_voiceXp');
 
 async function checkVoice(client) {
-  var isTwoMembers = false;
+  let isTwoMembers = false;
   await client.channels.cache.forEach(async (channel) => {
     if (channel.type == 2 && channel.id != '1307820687599337602') {
       if (channel.members.size >= 2) {

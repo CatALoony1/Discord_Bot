@@ -1,12 +1,12 @@
 const fs = require('fs');
 require('dotenv').config();
-var install_hook_to = function (obj) {
+const install_hook_to = function (obj) {
   if (obj.hook || obj.unhook) {
     throw new Error('Object already has properties hook and/or unhook');
   }
 
   obj.hook = function (_meth_name, _fn, _is_async) {
-    var self = this,
+    let self = this,
       meth_ref;
 
     // Make sure method exists
@@ -25,7 +25,7 @@ var install_hook_to = function (obj) {
     meth_ref = self.unhook.methods[_meth_name] = self[_meth_name];
 
     self[_meth_name] = function () {
-      var args = Array.prototype.slice.call(arguments);
+      const args = Array.prototype.slice.call(arguments);
 
       // Our hook should take the same number of arguments
       // as the original method so we must fill with undefined
@@ -36,7 +36,7 @@ var install_hook_to = function (obj) {
 
       // Last argument is always original method call
       args.push(function () {
-        var args = arguments;
+        const args = arguments;
 
         if (_is_async) {
           process.nextTick(function () {
@@ -52,7 +52,7 @@ var install_hook_to = function (obj) {
   };
 
   obj.unhook = function (_meth_name) {
-    var self = this,
+    let self = this,
       ref = self.unhook.methods[_meth_name];
 
     if (ref) {
@@ -67,12 +67,12 @@ var install_hook_to = function (obj) {
 };
 
 module.exports = async (client) => {
-  var stdout = process.stdout;
+  const stdout = process.stdout;
   install_hook_to(stdout);
   stdout.hook(
     'write',
     async function (string) {
-      var targetChannel = await client.channels.fetch(process.env.LOG_ID);
+      const targetChannel = await client.channels.fetch(process.env.LOG_ID);
       let d = new Date();
       string = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()},${d.getMilliseconds()}|${string}`;
       if (string.includes('TESTJG')) {

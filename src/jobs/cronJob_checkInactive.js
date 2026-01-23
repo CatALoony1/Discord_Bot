@@ -26,19 +26,19 @@ function startJob(client) {
         console.log('ERROR: Niemand auf dem Server hat Level');
         return;
       }
-      var away = [];
+      let away = [];
       for await (const doc of Config.find({ guildId: process.env.GUILD_ID })) {
         if (doc.key == 'away') {
           away = doc.value.split(',');
         }
       }
-      var playerTags = new Map();
+      let playerTags = new Map();
       for (let i = 0; i < fetchedLevel.length; i++) {
         playerTags.set(fetchedLevel[i].userName, fetchedLevel[i]);
       }
-      var playerTagsOnServer = [];
-      var playerTagsLurk = new Map();
-      var playerTagsGood = [];
+      let playerTagsOnServer = [];
+      let playerTagsLurk = new Map();
+      let playerTagsGood = [];
       members.forEach(async (member) => {
         if (
           !(away.length != 0 && away.includes(member.user.tag)) &&
@@ -47,10 +47,10 @@ function startJob(client) {
           let vorhanden = 0;
           for (const key of playerTags.keys()) {
             if (key == member.user.tag) {
-              let now = new Date();
-              var lastMessage = playerTags.get(key).lastMessage;
-              let diffTime = Math.abs(now - lastMessage);
-              let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+              const now = new Date();
+              const lastMessage = playerTags.get(key).lastMessage;
+              const diffTime = Math.abs(now - lastMessage);
+              const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
               console.log(`DB and Server: ${member.user.tag}: ${diffDays}`);
               if (diffDays < 30) {
                 //User on Server
@@ -65,10 +65,10 @@ function startJob(client) {
             }
           }
           if (vorhanden == 0) {
-            let now = new Date();
-            let joinDate = member.joinedAt;
-            let diffTime = Math.abs(now - joinDate);
-            let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            const now = new Date();
+            const joinDate = member.joinedAt;
+            const diffTime = Math.abs(now - joinDate);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             console.log(`Not DB: ${member.user.id}: ${diffDays}`);
             if (diffDays >= 15) {
               //User on Server, not DB
@@ -89,9 +89,9 @@ function startJob(client) {
         if (!playerTagsGood.includes(key)) {
           for (let j = 0; j < fetchedLevel.length; j++) {
             if (key === fetchedLevel[j].userName) {
-              let now = new Date();
-              let diffTime = Math.abs(now - fetchedLevel[j].lastMessage);
-              let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+              const now = new Date();
+              const diffTime = Math.abs(now - fetchedLevel[j].lastMessage);
+              const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
               console.log(`DB not Server: ${key}: ${diffDays}`);
               if (diffDays < 30) {
                 //User not on Server
@@ -108,7 +108,7 @@ function startJob(client) {
       const fetchedQuizstats = await QuizStats.find({
         guildId: process.env.GUILD_ID,
       });
-      var quizUserIds = [];
+      let quizUserIds = [];
       for (let stat of fetchedQuizstats) {
         quizUserIds[quizUserIds.length] = stat.userId;
       }
@@ -126,7 +126,7 @@ function startJob(client) {
           });
         }
       }
-      var playerLurkArray = [];
+      let playerLurkArray = [];
       for (const key of playerTagsLurk.keys()) {
         playerLurkArray[playerLurkArray.length] = key;
         console.log(`User ${key} hasn't send a message in at least 15 Days.`);

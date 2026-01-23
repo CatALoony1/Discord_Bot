@@ -9,7 +9,7 @@ async function createLeaderboardEmbeds(page, interaction) {
     console.log('ERROR: Niemand auf dem Server hat Level');
     return;
   }
-  var oldUsers = [];
+  let oldUsers = [];
   for (let j = 0; j < fetchedLevel.length; j++) {
     if (
       !interaction.guild.members.cache.find(
@@ -30,8 +30,8 @@ async function createLeaderboardEmbeds(page, interaction) {
     }
   });
 
-  var i = 0 + page * 5;
-  var max = 5 + page * 5;
+  let i = 0 + page * 5;
+  const max = 5 + page * 5;
   const embed = new EmbedBuilder()
     .setTitle(`Rangliste`)
     .setDescription(`${page + 1}/${Math.ceil(fetchedLevel.length / 5)}`)
@@ -40,13 +40,15 @@ async function createLeaderboardEmbeds(page, interaction) {
     if (i === fetchedLevel.length) {
       break;
     }
-    let userObj = await interaction.guild.members.fetch(fetchedLevel[i].userId);
+    const userObj = await interaction.guild.members.fetch(
+      fetchedLevel[i].userId,
+    );
     let value;
-    var time;
+    let time;
     if (fetchedLevel[i].voicetime >= 60) {
-      var h = 0;
-      var m = fetchedLevel[i].voicetime;
-      var isHour = true;
+      let h = 0;
+      let m = fetchedLevel[i].voicetime;
+      let isHour = true;
       while (isHour) {
         if (m >= 60) {
           m -= 60;

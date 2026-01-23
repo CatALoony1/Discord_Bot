@@ -43,7 +43,7 @@ async function jobFunction(client) {
   console.log('Quiz started');
   const guild = client.guilds.cache.get(process.env.GUILD_ID);
   try {
-    var targetChannel = await client.channels.fetch(process.env.QUIZ_ID);
+    const targetChannel = await client.channels.fetch(process.env.QUIZ_ID);
     const oldQuestions = await Questions.find({
       guildId: process.env.GUILD_ID,
       asked: 'J',
@@ -91,10 +91,10 @@ async function jobFunction(client) {
     });
     if (fetchedQuestions.length != 0) {
       const questionIndex = getRandom(1, fetchedQuestions.length) - 1;
-      var wrongAnswers = fetchedQuestions[questionIndex].wrong.split('/');
-      var answers = [];
-      var rightAnswerPosition = getRandom(1, 4) - 1;
-      var count = 0;
+      const wrongAnswers = fetchedQuestions[questionIndex].wrong.split('/');
+      let answers = [];
+      const rightAnswerPosition = getRandom(1, 4) - 1;
+      let count = 0;
       for (let i = 0; i < 4; i++) {
         if (i === rightAnswerPosition) {
           answers[i] = fetchedQuestions[questionIndex].right;
@@ -103,7 +103,7 @@ async function jobFunction(client) {
           count += 1;
         }
       }
-      let questionUser = fetchedQuestions[questionIndex].participants[0];
+      const questionUser = fetchedQuestions[questionIndex].participants[0];
       const stats = await QuizStats.findOne({
         guildId: process.env.GUILD_ID,
         userId: questionUser,
@@ -112,7 +112,7 @@ async function jobFunction(client) {
         stats.lastParticipation = Date.now();
         await stats.save();
       }
-      var rightChar = 'A';
+      let rightChar = 'A';
       const questionEmbed = new Discord.EmbedBuilder();
       questionEmbed.setColor(0x0033cc);
       questionEmbed.setTitle(`Frage des Tages:`);

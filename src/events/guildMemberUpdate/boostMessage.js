@@ -29,7 +29,7 @@ module.exports = async (oldMember, newMember) => {
         .setTitle(`Danke für den Serverboost!❤️`)
         .setDescription(`Als Dank erhältst du 15% mehr Blattläuse und XP.`)
         .setImage(gifUrl);
-      var message = await targetChannel.send({
+      const message = await targetChannel.send({
         content: `||<@${newMember.id}>||`,
         embeds: [boost],
       });

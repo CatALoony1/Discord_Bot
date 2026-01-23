@@ -11,7 +11,7 @@ async function createSpieleLeaderboardEmbeds(page, interaction) {
     console.log('ERROR: Niemand auf dem Server hat Blattläuse!');
     return;
   }
-  var oldUsers = [];
+  let oldUsers = [];
   for (let j = 0; j < fetchedGameUsers.length; j++) {
     if (
       !interaction.guild.members.cache.find(
@@ -31,8 +31,8 @@ async function createSpieleLeaderboardEmbeds(page, interaction) {
       return b.bankkonto.currentMoney - a.bankkonto.currentMoney;
     }
   });
-  var i = 0 + page * 5;
-  var max = 5 + page * 5;
+  let i = 0 + page * 5;
+  const max = 5 + page * 5;
   const embed = new EmbedBuilder()
     .setTitle(`Rangliste`)
     .setDescription(`${page + 1}/${Math.ceil(fetchedGameUsers.length / 5)}`)
@@ -41,7 +41,7 @@ async function createSpieleLeaderboardEmbeds(page, interaction) {
     if (i === fetchedGameUsers.length) {
       break;
     }
-    let userObj = await interaction.guild.members.fetch(
+    const userObj = await interaction.guild.members.fetch(
       fetchedGameUsers[i].userId,
     );
     let value;

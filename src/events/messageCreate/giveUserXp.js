@@ -21,7 +21,7 @@ module.exports = async (message) => {
     message.webhookId
   )
     return;
-  var xpToGive = getRandomXp(5, 15);
+  const xpToGive = getRandomXp(5, 15);
   await giveXP(message.member, xpToGive, message.channel, true);
   cooldowns.add(message.author.id);
   setTimeout(() => {

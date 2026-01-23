@@ -25,7 +25,7 @@ module.exports = async (interaction) => {
     await newQuestion.save();
     const targetUserObj =
       await interaction.guild.members.fetch(mentionedUserId);
-    var moneyToGive = 2000;
+    const moneyToGive = 2000;
     await giveMoney(targetUserObj, moneyToGive, true);
     interaction.editReply('Frage eingetragen!');
   }

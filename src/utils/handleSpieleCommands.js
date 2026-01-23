@@ -114,7 +114,7 @@ async function handleGamestats(interaction) {
     guildId: interaction.guild.id,
   }).populate('bankkonto');
 
-  var oldUsers = [];
+  let oldUsers = [];
   for (let j = 0; j < allUsers.length; j++) {
     if (
       !interaction.guild.members.cache.find((m) => m.id === allUsers[j].userId)
@@ -136,7 +136,7 @@ async function handleGamestats(interaction) {
     guildId: interaction.guild.id,
     userId: targetUserId,
   });
-  var lottospiele = 0;
+  let lottospiele = 0;
   if (lotto && lotto.length > 0) {
     lottospiele = lotto.length;
   }

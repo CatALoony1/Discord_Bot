@@ -75,7 +75,7 @@ module.exports = {
       await interaction.editReply(
         `Dein Einsatz in Höhe von ${einsatz} Blattläuse wurde abgezogen!`,
       );
-      var delay = 1000;
+      const delay = 1000;
       let sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
       await sleep(delay);
       const gewinnVerlust = getRandom(1, 10) / 10;

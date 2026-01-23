@@ -14,7 +14,7 @@ const zinsenJob = require('../../jobs/cronJob_zinsen');
 const checkActiveItems = require('../../jobs/cronJob_checkActiveItems');
 
 async function checkVoice(client) {
-  var isTwoMembers = false;
+  let isTwoMembers = false;
   await client.channels.cache.forEach(async (channel) => {
     if (channel.type == 2 && channel.id != '1307820687599337602') {
       if (channel.members.size >= 2) {

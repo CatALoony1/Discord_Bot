@@ -45,7 +45,7 @@ module.exports = {
       const allLotto = await Lottozahlen.find({
         guildId: interaction.guild.id,
       });
-      var lottozahl = -1;
+      let lottozahl = -1;
       if (allLotto && allLotto.length > 0) {
         const lottozahlenArray = allLotto.map((dokument) => dokument.lottozahl);
         console.time('Lottozahlgenerierung');
@@ -61,7 +61,7 @@ module.exports = {
       } else {
         lottozahl = Math.floor(Math.random() * 140000000);
       }
-      var moneyToGive = 0;
+      let moneyToGive = 0;
       if (lottozahl != 0) {
         const newLottozahl = new Lottozahlen({
           guildId: interaction.guild.id,
@@ -70,7 +70,7 @@ module.exports = {
           lottozahl: lottozahl,
         });
         await newLottozahl.save();
-        var anzahlNullen = 0;
+        let anzahlNullen = 0;
         if (lottozahl % 10000000 === 0) {
           moneyToGive = 2000000;
           anzahlNullen = 7;

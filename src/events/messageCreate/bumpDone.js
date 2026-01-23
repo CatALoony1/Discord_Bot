@@ -20,7 +20,7 @@ module.exports = async (message) => {
         userId: userid,
         guildId: guildId,
       });
-      var newMessage = undefined;
+      let newMessage = undefined;
       if (level) {
         level.lastBump = new Date();
         level.bumps += 1;
@@ -46,7 +46,7 @@ module.exports = async (message) => {
       const query = {
         guildId: guildId,
       };
-      var messageToReact = undefined;
+      let messageToReact = undefined;
       if (newMessage != undefined) {
         messageToReact = newMessage;
         await message.delete();

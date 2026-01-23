@@ -23,7 +23,7 @@ module.exports = async (message, client) => {
       console.log('Fehler, Logchannel gibts nicht');
       return;
     }
-    var user = client.user;
+    let user = client.user;
     if (message.author == null) {
       const logs = await message.guild.fetchAuditLogs({
         type: AuditLogEvent.MessageDelete,

@@ -39,7 +39,7 @@ module.exports = {
 
     let allLevels = await Level.find({ guildId: interaction.guild.id });
 
-    var oldUsers = [];
+    let oldUsers = [];
     for (let j = 0; j < allLevels.length; j++) {
       if (
         !interaction.guild.members.cache.find(
@@ -62,11 +62,11 @@ module.exports = {
     });
     let currentRank =
       allLevels.findIndex((lvl) => lvl.userId === targetUserId) + 1;
-    var time;
+    let time;
     if (fetchedLevel.voicetime >= 60) {
-      var h = 0;
-      var m = fetchedLevel.voicetime;
-      var isHour = true;
+      let h = 0;
+      let m = fetchedLevel.voicetime;
+      let isHour = true;
       while (isHour) {
         if (m >= 60) {
           m -= 60;
@@ -83,7 +83,7 @@ module.exports = {
       guildId: interaction.guild.id,
       userId: targetUserId,
     });
-    var lottospiele = 0;
+    let lottospiele = 0;
     if (lotto && lotto.length > 0) {
       lottospiele = lotto.length;
     }

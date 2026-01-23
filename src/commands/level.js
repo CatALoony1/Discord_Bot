@@ -59,7 +59,7 @@ module.exports = {
     }
 
     let allLevels = await Level.find({ guildId: interaction.guild.id });
-    var oldUsers = [];
+    let oldUsers = [];
     for (let j = 0; j < allLevels.length; j++) {
       if (
         !interaction.guild.members.cache.find(
@@ -80,7 +80,7 @@ module.exports = {
         return b.level - a.level;
       }
     });
-    var status = 'offline';
+    let status = 'offline';
     if (targetUserObj.presence) {
       status = targetUserObj.presence.status;
     }

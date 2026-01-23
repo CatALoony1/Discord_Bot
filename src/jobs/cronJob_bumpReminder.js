@@ -28,12 +28,14 @@ function startJob(client) {
             console.log('ERROR Bump gif');
             return;
           }
-          var bump = new Discord.EmbedBuilder()
+          const bump = new Discord.EmbedBuilder()
             .setColor(0x0033cc)
             .setTitle('Es ist Zeit zu bumpen!')
             .setImage(gifUrl);
-          var targetChannel = await client.channels.fetch(process.env.BUMP_ID);
-          var message = await targetChannel.send({
+          const targetChannel = await client.channels.fetch(
+            process.env.BUMP_ID,
+          );
+          const message = await targetChannel.send({
             content: `${role}`,
             embeds: [bump],
           });

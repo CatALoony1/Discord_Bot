@@ -11,8 +11,8 @@ function startJob(client) {
   renameLogFileJob = cron.schedule('58 23 * * *', async function () {
     console.log(`RenameLogFile-Job started...`);
     if (fs.existsSync('./logs/bot._log')) {
-      var d = new Date();
-      var newFilename = `./logs/bot._log${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}`;
+      const d = new Date();
+      const newFilename = `./logs/bot._log${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}`;
       fs.rename('./logs/bot._log', newFilename, function (err) {
         if (err) throw err;
       });

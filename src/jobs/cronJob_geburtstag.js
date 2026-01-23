@@ -33,12 +33,12 @@ function isRunning() {
 }
 
 async function jobFunction(client) {
-  var targetChannel = await client.channels.fetch(process.env.ALLGEMEIN_ID);
+  const targetChannel = await client.channels.fetch(process.env.ALLGEMEIN_ID);
   const guild = await client.guilds.cache.get(process.env.GUILD_ID);
   const allLevels = await Level.find({
     guildId: process.env.GUILD_ID,
   });
-  var oldUsers = [];
+  let oldUsers = [];
   for (let j = 0; j < allLevels.length; j++) {
     if (!guild.members.cache.find((m) => m.id === allLevels[j].userId)?.id) {
       oldUsers[oldUsers.length] = j;

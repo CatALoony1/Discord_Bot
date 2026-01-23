@@ -65,11 +65,11 @@ module.exports = async (message, client) => {
   )
     return;
   console.log(`Bot Mentioned`);
-  var number = getRandom(1, answers.size);
-  var delay = 2000;
+  const number = getRandom(1, answers.size);
+  const delay = 2000;
   if (number == 22) {
     let sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
-    var newMessage = await message.reply(answers.get(number));
+    let newMessage = await message.reply(answers.get(number));
     newMessage = await newMessage.reply(`Self destruction initialized!`);
     await sleep(delay);
     newMessage = await newMessage.reply(`3`);
