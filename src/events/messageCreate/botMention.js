@@ -85,34 +85,24 @@ module.exports = async (message, client) => {
         await sleep(delay);
         newMessage = await newMessage.reply(`Evil Bot starting up...`);
         await sleep(delay);
-        await getTenorGifById('10449061')
-          .then(async (gifUrl) => {
-            if (!gifUrl.includes('http')) {
-              console.log('ERROR Evil gif');
-              return;
-            }
-            newMessage = await newMessage.reply(gifUrl);
-          })
-          .catch((error) => {
-            console.error('ERROR:', error);
-          });
+        const gifUrl = await getTenorGifById('10449061');
+        if (!gifUrl.includes('http')) {
+          console.log('ERROR Evil gif');
+          return;
+        }
+        newMessage = await newMessage.reply(gifUrl);
       }
     } else if (boom == 2) {
       newMessage = await newMessage.reply(
         `Self destruction canceled, you are safe!`,
       );
     } else if (boom == 3) {
-      await getTenorGifById('26770639')
-        .then(async (gifUrl) => {
-          if (!gifUrl.includes('http')) {
-            console.log('ERROR Element of Surprise gif');
-            return;
-          }
-          newMessage = await newMessage.reply(gifUrl);
-        })
-        .catch((error) => {
-          console.error('ERROR:', error);
-        });
+      const gifUrl = await getTenorGifById('26770639');
+      if (!gifUrl.includes('http')) {
+        console.log('ERROR Element of Surprise gif');
+        return;
+      }
+      newMessage = await newMessage.reply(gifUrl);
     }
   } else if (number >= 44 && number <= 49) {
     const image = answers.get(number);

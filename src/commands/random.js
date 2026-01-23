@@ -49,17 +49,11 @@ module.exports = {
       if (subcommand === 'gif') {
         const suchwort = wordList[getRandom(0, wordList.length - 1)];
         console.log(`Suchwort für GIF: ${suchwort}`);
-        await getTenorGif(suchwort)
-          .then((gifUrl) => {
-            interaction.editReply(gifUrl);
-          })
-          .catch((error) => {
-            console.error('ERROR:', error);
-          });
+        const gifUrl = await getTenorGif(suchwort);
+        interaction.editReply(gifUrl);
       } else if (subcommand === 'api') {
         const zahl = interaction.options.get('zahl')?.value || -1;
         let randomNumber = getRandom(1, 40);
-        let data = null;
         let apiUrl = null;
         const delay = 2000;
         let sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
@@ -71,29 +65,22 @@ module.exports = {
         }
         switch (randomNumber) {
           case 1: {
-            await fetch('https://cataas.com/cat?json=true')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch('https://cataas.com/cat?json=true');
+            const data = await response.json();
             await interaction.editReply(data.url);
             break;
           }
           case 2: {
-            await fetch('https://api.adviceslip.com/advice')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch('https://api.adviceslip.com/advice');
+            const data = await response.json();
             await interaction.editReply(data.slip.advice);
             break;
           }
           case 3: {
-            await fetch('http://api.quotable.kurokeita.dev/api/quotes/random')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(
+              'http://api.quotable.kurokeita.dev/api/quotes/random',
+            );
+            const data = await response.json();
             await interaction.editReply(
               data.quote.content + '\n~' + data.quote.author.name,
             );
@@ -101,11 +88,8 @@ module.exports = {
           }
           case 4: {
             apiUrl = 'https://api.jikan.moe/v4/random/anime';
-            await fetch(apiUrl)
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(apiUrl);
+            const data = await response.json();
             const anime = data.data;
             const animeEmbed = new EmbedBuilder()
               .setColor(0x0099ff)
@@ -154,11 +138,8 @@ module.exports = {
               page = zahl;
             }
             apiUrl = `https://api.potterdb.com/v1/spells?page[number]=${page}`;
-            await fetch(apiUrl)
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(apiUrl);
+            const data = await response.json();
             const randomIndex = getRandom(0, data.data.length - 1);
             const spell = data.data[randomIndex];
             const spellEmbed = new EmbedBuilder()
@@ -197,11 +178,8 @@ module.exports = {
               page = zahl;
             }
             apiUrl = `https://api.potterdb.com/v1/characters?page[number]=${page}`;
-            await fetch(apiUrl)
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(apiUrl);
+            const data = await response.json();
             const randomIndex = getRandom(0, data.data.length - 1);
             const character = data.data[randomIndex];
             const characterEmbed = new EmbedBuilder()
@@ -265,11 +243,8 @@ module.exports = {
               page = zahl;
             }
             apiUrl = `https://api.fbi.gov/wanted/v1/list?page=${page}`;
-            await fetch(apiUrl)
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(apiUrl);
+            const data = await response.json();
             const randomIndex = getRandom(0, data.items.length - 1);
             const wantedPerson = data.items[randomIndex];
             const wantedEmbed = new EmbedBuilder()
@@ -309,11 +284,8 @@ module.exports = {
               moveId = zahl;
             }
             apiUrl = `https://pokeapi.co/api/v2/move/${moveId}`;
-            await fetch(apiUrl)
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(apiUrl);
+            const data = await response.json();
             const availability =
               data.learned_by_pokemon
                 .slice(0, 5)
@@ -392,11 +364,8 @@ module.exports = {
               itemId = zahl;
             }
             apiUrl = `https://pokeapi.co/api/v2/item/${itemId}`;
-            await fetch(apiUrl)
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(apiUrl);
+            const data = await response.json();
             const item = new EmbedBuilder()
               .setColor(0x0099ff)
               .setTitle(data.name.charAt(0).toUpperCase() + data.name.slice(1))
@@ -444,24 +413,18 @@ module.exports = {
             break;
           }
           case 10: {
-            await fetch(
+            const response = await fetch(
               `https://api.spoonacular.com/food/trivia/random?apiKey=${process.env.SPOONACULAR_API}`,
-            )
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            );
+            const data = await response.json();
             await interaction.editReply(data.text);
             break;
           }
           case 11: {
-            await fetch(
+            const response = await fetch(
               `https://api.spoonacular.com/food/jokes/random?apiKey=${process.env.SPOONACULAR_API}`,
-            )
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            );
+            const data = await response.json();
             await interaction.editReply(data.text);
             break;
           }
@@ -472,11 +435,8 @@ module.exports = {
             }
             apiUrl = `https://superheroapi.com/api/${process.env.HERO_API}/${heroId}`;
             console.log(apiUrl);
-            await fetch(apiUrl)
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(apiUrl);
+            const data = await response.json();
             const hero = new EmbedBuilder()
               .setColor(0x0099ff)
               .setTitle(data.name)
@@ -622,11 +582,10 @@ module.exports = {
             break;
           }
           case 13: {
-            await fetch('https://api.chucknorris.io/jokes/random')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(
+              'https://api.chucknorris.io/jokes/random',
+            );
+            const data = await response.json();
             await interaction.editReply(data.value);
             break;
           }
@@ -636,19 +595,11 @@ module.exports = {
             } else {
               apiUrl = 'http://numbersapi.com/random/trivia';
             }
-            await fetch(apiUrl)
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text();
-              })
-              .then((mydata) => {
-                data = mydata;
-              })
-              .catch((error) => {
-                console.error('Fehler beim Abrufen der Trivia:', error);
-              });
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.text();
             await interaction.editReply(data);
             break;
           }
@@ -658,73 +609,45 @@ module.exports = {
             } else {
               apiUrl = 'http://numbersapi.com/random/math';
             }
-            await fetch(apiUrl)
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text();
-              })
-              .then((mydata) => {
-                data = mydata;
-              })
-              .catch((error) => {
-                console.error('Fehler beim Abrufen der Trivia:', error);
-              });
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.text();
             await interaction.editReply(data);
             break;
           }
           case 16: {
-            await fetch('http://numbersapi.com/random/year')
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text();
-              })
-              .then((mydata) => {
-                data = mydata;
-              })
-              .catch((error) => {
-                console.error('Fehler beim Abrufen der Trivia:', error);
-              });
+            const response = await fetch('http://numbersapi.com/random/year');
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.text();
             await interaction.editReply(data);
             break;
           }
           case 17: {
-            await fetch('http://numbersapi.com/random/date')
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.text();
-              })
-              .then((mydata) => {
-                data = mydata;
-              })
-              .catch((error) => {
-                console.error('Fehler beim Abrufen der Trivia:', error);
-              });
+            const response = await fetch('http://numbersapi.com/random/date');
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.text();
             await interaction.editReply(data);
             break;
           }
           case 18: {
-            await fetch(
+            const response = await fetch(
               `https://api.agify.io?name=${interaction.user.displayName}`,
-            )
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            );
+            const data = await response.json();
             await interaction.editReply(`Du bist: ${data.age} Jahre alt.`);
             break;
           }
           case 19: {
-            await fetch(`http://thecocktaildb.com/api/json/v1/1/random.php`)
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(
+              `http://thecocktaildb.com/api/json/v1/1/random.php`,
+            );
+            const data = await response.json();
             const drink = data.drinks[0];
             let output = `**${drink.strDrink}**\n\n`;
             output += `Kategorie: ${drink.strCategory}\n`;
@@ -742,54 +665,44 @@ module.exports = {
             break;
           }
           case 20: {
-            await fetch(
+            const response = await fetch(
               `https://api.thecatapi.com/v1/images/search?size=full&limit=1`,
               {
                 headers: {
                   'x-api-key': process.env.CAT_API,
                 },
               },
-            )
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            );
+            const data = await response.json();
             await interaction.editReply(data[0].url);
             break;
           }
           case 21: {
-            await fetch(
+            const response = await fetch(
               `https://api.thedogapi.com/v1/images/search?size=full&limit=1`,
               {
                 headers: {
                   'x-api-key': process.env.DOG_API,
                 },
               },
-            )
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            );
+            const data = await response.json();
             await interaction.editReply(data[0].url);
             break;
           }
           case 22: {
-            await fetch('https://deckofcardsapi.com/api/deck/new/draw/?count=1')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(
+              'https://deckofcardsapi.com/api/deck/new/draw/?count=1',
+            );
+            const data = await response.json();
             await interaction.editReply(data.cards[0].image);
             break;
           }
           case 23: {
-            await fetch(
+            const response = await fetch(
               `https://api.spoonacular.com/recipes/random?apiKey=${process.env.SPOONACULAR_API}`,
-            )
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            );
+            const data = await response.json();
             const recipe = data.recipes[0];
             if (recipe) {
               const recipeEmbed = new EmbedBuilder()
@@ -859,11 +772,8 @@ module.exports = {
             }
             apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
             console.log(apiUrl);
-            await fetch(apiUrl)
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(apiUrl);
+            const data = await response.json();
             const pokemon = new EmbedBuilder()
               .setColor(0x0099ff)
               .setTitle(data.name.charAt(0).toUpperCase() + data.name.slice(1))
@@ -896,44 +806,34 @@ module.exports = {
             break;
           }
           case 25: {
-            await fetch('https://official-joke-api.appspot.com/random_joke')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(
+              'https://official-joke-api.appspot.com/random_joke',
+            );
+            const data = await response.json();
             const message = await interaction.editReply(`${data.setup}`);
             await sleep(delay);
             await message.reply(data.punchline);
             break;
           }
           case 26: {
-            await fetch(
+            const response = await fetch(
               'https://uselessfacts.jsph.pl/api/v2/facts/random?language=de',
-            )
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            );
+            const data = await response.json();
             await interaction.editReply(data.text);
             break;
           }
           case 27: {
-            await fetch(
+            const response = await fetch(
               'https://geek-jokes.sameerkumar.website/api?format=json',
-            )
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            );
+            const data = await response.json();
             await interaction.editReply(data.joke);
             break;
           }
           case 28: {
-            await fetch('https://meowfacts.herokuapp.com/')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch('https://meowfacts.herokuapp.com/');
+            const data = await response.json();
             await interaction.editReply(data.data[0]);
             break;
           }
@@ -943,11 +843,8 @@ module.exports = {
               page = zahl;
             }
             apiUrl = `https://api.disneyapi.dev/character?page=${page}`;
-            await fetch(apiUrl)
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(apiUrl);
+            const data = await response.json();
             const randomIndex = getRandom(0, data.data.length - 1);
             const character = data.data[randomIndex];
             const characterEmbed = new EmbedBuilder()
@@ -1011,58 +908,46 @@ module.exports = {
             break;
           }
           case 30: {
-            await fetch('https://riddles-api.vercel.app/random')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(
+              'https://riddles-api.vercel.app/random',
+            );
+            const data = await response.json();
             const message = await interaction.editReply(data.riddle);
             await sleep(delay + delay);
             await message.reply(data.answer);
             break;
           }
           case 31: {
-            await fetch('https://meme-api.com/gimme')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch('https://meme-api.com/gimme');
+            const data = await response.json();
             await interaction.editReply(data.url);
             break;
           }
           case 32: {
-            await fetch('https://shrekofficial.com/quotes/random')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(
+              'https://shrekofficial.com/quotes/random',
+            );
+            const data = await response.json();
             await interaction.editReply(data);
             break;
           }
           case 33: {
-            await fetch('https://randomfox.ca/floof/')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch('https://randomfox.ca/floof/');
+            const data = await response.json();
             await interaction.editReply(data.image);
             break;
           }
           case 34: {
-            await fetch('https://www.affirmations.dev/')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch('https://www.affirmations.dev/');
+            const data = await response.json();
             await interaction.editReply(data.affirmation);
             break;
           }
           case 35: {
-            await fetch('https://makeup-api.herokuapp.com/api/v1/products.json')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(
+              'https://makeup-api.herokuapp.com/api/v1/products.json',
+            );
+            const data = await response.json();
             let randomIndex = getRandom(0, data.length - 1);
             if (zahl > 0 && zahl < data.length) {
               randomIndex = zahl;
@@ -1097,47 +982,34 @@ module.exports = {
             break;
           }
           case 36: {
-            await fetch('https://nekos.life/api/v2/fact')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch('https://nekos.life/api/v2/fact');
+            const data = await response.json();
             await interaction.editReply(data.fact);
             break;
           }
           case 37: {
-            await fetch('https://nekos.life/api/v2/img/meow')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch('https://nekos.life/api/v2/img/meow');
+            const data = await response.json();
             await interaction.editReply(data.url);
             break;
           }
           case 38: {
-            await fetch('https://nekos.life/api/v2/img/lizard')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch(
+              'https://nekos.life/api/v2/img/lizard',
+            );
+            const data = await response.json();
             await interaction.editReply(data.url);
             break;
           }
           case 39: {
-            await fetch('https://nekos.life/api/v2/img/woof')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch('https://nekos.life/api/v2/img/woof');
+            const data = await response.json();
             await interaction.editReply(data.url);
             break;
           }
           case 40: {
-            await fetch('https://nekos.life/api/v2/img/goose')
-              .then((response) => response.json())
-              .then((mydata) => {
-                data = mydata;
-              });
+            const response = await fetch('https://nekos.life/api/v2/img/goose');
+            const data = await response.json();
             await interaction.editReply(data.url);
             break;
           }

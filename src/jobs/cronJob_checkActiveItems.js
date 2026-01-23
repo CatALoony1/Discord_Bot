@@ -35,20 +35,15 @@ function startJob(client) {
                 (await guild.members.fetch(activeItem.usedOn));
               if (usedOnObj) {
                 await removeMoney(usedOnObj, amount);
-                await getTenorGifById('20062805')
-                  .then(async (gifUrl) => {
-                    if (!gifUrl.includes('http')) {
-                      console.log('ERROR Bombe gif');
-                      return;
-                    }
-                    await targetChannel.send({
-                      content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** Blattläuse sind verpufft!`,
-                      files: [gifUrl],
-                    });
-                  })
-                  .catch((error) => {
-                    console.error('ERROR:', error);
-                  });
+                const gifUrl = await getTenorGifById('20062805');
+                if (!gifUrl.includes('http')) {
+                  console.log('ERROR Bombe gif');
+                  return;
+                }
+                await targetChannel.send({
+                  content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** Blattläuse sind verpufft!`,
+                  files: [gifUrl],
+                });
               }
             } else if (activeItem.itemType == 'Doppelte XP') {
               const xpMultiplier = await Config.findOne({

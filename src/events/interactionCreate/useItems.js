@@ -949,12 +949,8 @@ async function useItemUmarmung(interaction) {
   }
   await user.inventar.save();
   const targetUserId = interaction.values[0];
-  let data = null;
-  await fetch('https://nekos.life/api/v2/img/hug')
-    .then((response) => response.json())
-    .then((mydata) => {
-      data = mydata;
-    });
+  const response = await fetch('https://nekos.life/api/v2/img/hug');
+  const data = await response.json();
   const hugGifUrl = data.url;
   const hugText = hugTexts[getRandom(0, hugTexts.length - 1)](
     `<@${interaction.user.id}>`,
@@ -996,12 +992,8 @@ async function useItemKuss(interaction) {
   }
   await user.inventar.save();
   const targetUserId = interaction.values[0];
-  let data = null;
-  await fetch('https://nekos.life/api/v2/img/kiss')
-    .then((response) => response.json())
-    .then((mydata) => {
-      data = mydata;
-    });
+  const response = await fetch('https://nekos.life/api/v2/img/kiss');
+  const data = await response.json();
   const kissGifUrl = data.url;
   const kissText = kissTexts[getRandom(0, kissTexts.length - 1)](
     `<@${interaction.user.id}>`,
@@ -1082,34 +1074,29 @@ async function useItemBombe(interaction) {
       components: [],
       flags: MessageFlags.Ephemeral,
     });
-    await getTenorGifById('20898456')
-      .then(async (gifUrl) => {
-        if (!gifUrl.includes('http')) {
-          console.log('ERROR Bombe gif');
-          return;
-        }
-        await channel.send({
-          content: `<@${targetUserId}> du hast eine Bombe erhalten! Entschärfe sie, indem du den richtigen Draht auswählst!`,
-          components: [
-            new ActionRowBuilder().addComponents(
-              new StringSelectMenuBuilder()
-                .setCustomId(`useItem_bombe_defuse_${activeItem._id}`)
-                .setPlaceholder('Wähle einen Draht aus')
-                .addOptions([
-                  { label: 'Rot', value: 'red' },
-                  { label: 'Gelb', value: 'yellow' },
-                  { label: 'Grün', value: 'green' },
-                  { label: 'Blau', value: 'blue' },
-                  { label: 'Pink', value: 'pink' },
-                ]),
-            ),
-          ],
-          files: [gifUrl],
-        });
-      })
-      .catch((error) => {
-        console.error('ERROR:', error);
-      });
+    const gifUrl = await getTenorGifById('20898456');
+    if (!gifUrl.includes('http')) {
+      console.log('ERROR Bombe gif');
+      return;
+    }
+    await channel.send({
+      content: `<@${targetUserId}> du hast eine Bombe erhalten! Entschärfe sie, indem du den richtigen Draht auswählst!`,
+      components: [
+        new ActionRowBuilder().addComponents(
+          new StringSelectMenuBuilder()
+            .setCustomId(`useItem_bombe_defuse_${activeItem._id}`)
+            .setPlaceholder('Wähle einen Draht aus')
+            .addOptions([
+              { label: 'Rot', value: 'red' },
+              { label: 'Gelb', value: 'yellow' },
+              { label: 'Grün', value: 'green' },
+              { label: 'Blau', value: 'blue' },
+              { label: 'Pink', value: 'pink' },
+            ]),
+        ),
+      ],
+      files: [gifUrl],
+    });
   } else if (interaction.customId.includes('bombe_defuse')) {
     const activeItemId = interaction.customId.split('_')[3];
     const activeItem = await ActiveItems.findById(activeItemId);
@@ -1151,21 +1138,16 @@ async function useItemBombe(interaction) {
     } else {
       const amount = getRandom(20000, 40000);
       await removeMoney(interaction.member, amount);
-      await getTenorGifById('20062805')
-        .then(async (gifUrl) => {
-          if (!gifUrl.includes('http')) {
-            console.log('ERROR Bombe gif');
-            return;
-          }
-          await interaction.update({
-            content: `Bei <@${interaction.user.id}> ist eine Bombe explodiert! **${amount}** Blattläuse sind verpufft!`,
-            files: [gifUrl],
-            components: [],
-          });
-        })
-        .catch((error) => {
-          console.error('ERROR:', error);
-        });
+      const gifUrl = await getTenorGifById('20062805');
+      if (!gifUrl.includes('http')) {
+        console.log('ERROR Bombe gif');
+        return;
+      }
+      await interaction.update({
+        content: `Bei <@${interaction.user.id}> ist eine Bombe explodiert! **${amount}** Blattläuse sind verpufft!`,
+        files: [gifUrl],
+        components: [],
+      });
       await ActiveItems.findByIdAndDelete(activeItemId);
       return;
     }

@@ -48,16 +48,15 @@ module.exports = {
       });
 
     try {
-      var actualNumer = amount;
-      await interaction.channel.messages
-        .fetch({ limit: amount })
-        .then(async (messages) => {
-          let deletedMessages = await interaction.channel.bulkDelete(
-            messages,
-            true,
-          );
-          actualNumer = deletedMessages.size;
-        });
+      let actualNumer = amount;
+      const messages = await interaction.channel.messages.fetch({
+        limit: amount,
+      });
+      const deletedMessages = await interaction.channel.bulkDelete(
+        messages,
+        true,
+      );
+      actualNumer = deletedMessages.size;
       await interaction.editReply({
         content: `Ich habe mal ${actualNumer} Nachrichten gelöscht!`,
       });

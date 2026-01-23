@@ -36,13 +36,8 @@ module.exports = {
       return;
     }
     try {
-      await getTenorGif(suchwort)
-        .then((gifUrl) => {
-          interaction.editReply(gifUrl);
-        })
-        .catch((error) => {
-          console.error('ERROR:', error);
-        });
+      const response = await getTenorGif(suchwort);
+      await interaction.editReply(response);
     } catch (error) {
       console.log(error);
     }
