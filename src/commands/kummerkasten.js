@@ -5,6 +5,7 @@ const {
   TextInputBuilder,
   TextInputStyle,
   ActionRowBuilder,
+  LabelBuilder,
 } = require('discord.js');
 
 module.exports = {
@@ -25,11 +26,13 @@ module.exports = {
         .setCustomId(`feedback-${interaction.user.id}`);
       const textInput = new TextInputBuilder()
         .setCustomId('feedback-input')
-        .setLabel('Was möchtest du uns sagen?')
         .setStyle(TextInputStyle.Paragraph)
         .setRequired(true)
         .setMaxLength(1000);
-      const actionRow = new ActionRowBuilder().addComponents(textInput);
+      const textInputLabel = new LabelBuilder()
+        .setLabel('Was möchtest du uns sagen?')
+        .setTextInputComponent(textInput);
+      const actionRow = new ActionRowBuilder().addComponents(textInputLabel);
       modal.addLabelComponents(actionRow);
       await interaction.showModal(modal);
     } catch (err) {

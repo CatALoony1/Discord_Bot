@@ -8,6 +8,7 @@ const {
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
+  LabelBuilder,
 } = require('discord.js');
 const GameUser = require('../../models/GameUser');
 require('../../models/Bankkonten');
@@ -245,21 +246,25 @@ module.exports = async (interaction) => {
             .setCustomId(`useItem_farbrolle`);
           const colorInput = new TextInputBuilder()
             .setCustomId('useItem_farbrolle_color')
-            .setLabel('Farbe (Hex-Code):')
             .setStyle(TextInputStyle.Short)
             .setRequired(true)
             .setMaxLength(7);
+          const colorInputLabel = new LabelBuilder()
+            .setLabel('Farbe (Hex-Code):')
+            .setTextInputComponent(colorInput);
           const rollenName = new TextInputBuilder()
             .setCustomId('useItem_farbrolle_name')
-            .setLabel('Name der Rolle:')
             .setStyle(TextInputStyle.Short)
             .setRequired(true)
             .setMaxLength(15);
+          const rollenNameLabel = new LabelBuilder()
+            .setLabel('Name der Rolle:')
+            .setTextInputComponent(rollenName);
           const firstActionRow = new ActionRowBuilder().addComponents(
-            colorInput,
+            colorInputLabel,
           );
           const secondActionRow = new ActionRowBuilder().addComponents(
-            rollenName,
+            rollenNameLabel,
           );
           modal.addLabelComponents(firstActionRow, secondActionRow);
           break;
@@ -270,12 +275,14 @@ module.exports = async (interaction) => {
             .setCustomId(`useItem_voicechannel`);
           const channelNameInput = new TextInputBuilder()
             .setCustomId('useItem_voicechannel_name')
-            .setLabel('Name des Voicechannels:')
             .setStyle(TextInputStyle.Short)
             .setRequired(true)
             .setMaxLength(100);
+          const channelNameInputLabel = new LabelBuilder()
+            .setLabel('Name des Voicechannels:')
+            .setTextInputComponent(channelNameInput);
           const firstActionRow = new ActionRowBuilder().addComponents(
-            channelNameInput,
+            channelNameInputLabel,
           );
           modal.addLabelComponents(firstActionRow);
           break;
@@ -286,12 +293,14 @@ module.exports = async (interaction) => {
             .setCustomId(`useItem_rolleNamensliste`);
           const rollenNameInput = new TextInputBuilder()
             .setCustomId('useItem_rolleNamensliste_name')
-            .setLabel('Name der Rolle:')
             .setStyle(TextInputStyle.Short)
             .setRequired(true)
             .setMaxLength(100);
+          const rollenNameInputLabel = new LabelBuilder()
+            .setLabel('Name der Rolle:')
+            .setTextInputComponent(rollenNameInput);
           const firstActionRow = new ActionRowBuilder().addComponents(
-            rollenNameInput,
+            rollenNameInputLabel,
           );
           modal.addLabelComponents(firstActionRow);
           break;
@@ -495,11 +504,13 @@ async function useItemTier(interaction) {
       .setCustomId(`useItem_tier_other_modal_${tierart}_${targetUserId}`);
     const textInput = new TextInputBuilder()
       .setCustomId('rename-input')
-      .setLabel('Wie soll das Tier heißen?')
       .setStyle(TextInputStyle.Short)
       .setRequired(true)
       .setMaxLength(30);
-    const actionRow = new ActionRowBuilder().addComponents(textInput);
+    const textInputLabel = new LabelBuilder()
+      .setLabel('Wie soll das Tier heißen?')
+      .setTextInputComponent(textInput);
+    const actionRow = new ActionRowBuilder().addComponents(textInputLabel);
     modal.addLabelComponents(actionRow);
     await interaction.showModal(modal);
   } else if (

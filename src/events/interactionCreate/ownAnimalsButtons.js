@@ -4,6 +4,7 @@ const {
   TextInputBuilder,
   ActionRowBuilder,
   TextInputStyle,
+  LabelBuilder,
 } = require('discord.js');
 const createAnimalsEmbeds = require('../../utils/createAnimalsEmbeds');
 const Tiere = require('../../models/Tiere');
@@ -88,11 +89,13 @@ module.exports = async (interaction) => {
         .setCustomId(`ownAnimalsRename-${name}`);
       const textInput = new TextInputBuilder()
         .setCustomId('rename-input')
-        .setLabel('Wie soll das Tier heißen?')
         .setStyle(TextInputStyle.Short)
         .setRequired(true)
         .setMaxLength(30);
-      const actionRow = new ActionRowBuilder().addComponents(textInput);
+      const textInputLabel = new LabelBuilder()
+        .setLabel('Wie soll das Tier heißen?')
+        .setTextInputComponent(textInput);
+      const actionRow = new ActionRowBuilder().addComponents(textInputLabel);
       modal.addLabelComponents(actionRow);
       await interaction.showModal(modal);
     } catch (error) {
