@@ -30,7 +30,8 @@ module.exports = {
         .setMaxLength(300);
       const frageInputLabel = new LabelBuilder()
         .setLabel('Frage:')
-        .setTextInputComponent(frageInput);
+        .setTextInputComponent(frageInput)
+        .setDescription('Frage:');
       const richtigInput = new TextInputBuilder()
         .setCustomId('quizadd-richtig')
         .setStyle(TextInputStyle.Paragraph)
@@ -38,7 +39,8 @@ module.exports = {
         .setMaxLength(100);
       const richtigInputLabel = new LabelBuilder()
         .setLabel('Richtige Antwort:')
-        .setTextInputComponent(richtigInput);
+        .setTextInputComponent(richtigInput)
+        .setDescription('Richtige Antwort:');
       const falsch1Input = new TextInputBuilder()
         .setCustomId('quizadd-falsch1')
         .setStyle(TextInputStyle.Paragraph)
@@ -46,7 +48,8 @@ module.exports = {
         .setMaxLength(100);
       const falsch1InputLabel = new LabelBuilder()
         .setLabel('Falsche Antwort 1:')
-        .setTextInputComponent(falsch1Input);
+        .setTextInputComponent(falsch1Input)
+        .setDescription('Falsche Antwort 1:');
       const falsch2Input = new TextInputBuilder()
         .setCustomId('quizadd-falsch2')
         .setStyle(TextInputStyle.Paragraph)
@@ -54,7 +57,8 @@ module.exports = {
         .setMaxLength(100);
       const falsch2InputLabel = new LabelBuilder()
         .setLabel('Falsche Antwort 2:')
-        .setTextInputComponent(falsch2Input);
+        .setTextInputComponent(falsch2Input)
+        .setDescription('Falsche Antwort 2:');
       const falsch3Input = new TextInputBuilder()
         .setCustomId('quizadd-falsch3')
         .setStyle(TextInputStyle.Paragraph)
@@ -62,26 +66,22 @@ module.exports = {
         .setMaxLength(100);
       const falsch3InputLabel = new LabelBuilder()
         .setLabel('Falsche Antwort 3:')
-        .setTextInputComponent(falsch3Input);
+        .setTextInputComponent(falsch3Input)
+        .setDescription('Falsche Antwort 3:');
       const firstActionRow = new ActionRowBuilder().addComponents(
         frageInputLabel,
-        frageInput,
       );
       const secondActionRow = new ActionRowBuilder().addComponents(
         richtigInputLabel,
-        richtigInput,
       );
       const thirdctionRow = new ActionRowBuilder().addComponents(
         falsch1InputLabel,
-        falsch1Input,
       );
       const fourthActionRow = new ActionRowBuilder().addComponents(
         falsch2InputLabel,
-        falsch2Input,
       );
       const fifthActionRow = new ActionRowBuilder().addComponents(
         falsch3InputLabel,
-        falsch3Input,
       );
       modal.addLabelComponents(
         firstActionRow,
