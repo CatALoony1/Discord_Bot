@@ -84,11 +84,11 @@ module.exports = {
         falsch3InputLabel,
       );
       modal.addLabelComponents(
-        firstActionRow,
-        secondActionRow,
-        thirdctionRow,
-        fourthActionRow,
-        fifthActionRow,
+        frageInputLabel,
+        richtigInputLabel,
+        falsch1InputLabel,
+        falsch2InputLabel,
+        falsch3InputLabel,
       );
       await interaction.showModal(modal);
     } catch (err) {
