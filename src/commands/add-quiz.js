@@ -65,18 +65,23 @@ module.exports = {
         .setTextInputComponent(falsch3Input);
       const firstActionRow = new ActionRowBuilder().addComponents(
         frageInputLabel,
+        frageInput,
       );
       const secondActionRow = new ActionRowBuilder().addComponents(
         richtigInputLabel,
+        richtigInput,
       );
       const thirdctionRow = new ActionRowBuilder().addComponents(
         falsch1InputLabel,
+        falsch1Input,
       );
       const fourthActionRow = new ActionRowBuilder().addComponents(
         falsch2InputLabel,
+        falsch2Input,
       );
       const fifthActionRow = new ActionRowBuilder().addComponents(
         falsch3InputLabel,
+        falsch3Input,
       );
       modal.addLabelComponents(
         firstActionRow,
