@@ -11,7 +11,7 @@
   "description": "",
   "dependencies": {
     "@google/genai": "^1.38.0",
-    "axios": "^1.13.2",
+    "axios": "^1.13.4",
     "canvacord": "^6.0.4",
     "commandkit": "^0.1.10",
     "discord.js": "^14.25.1",
@@ -24,7 +24,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "eslint": "^8.15.0",
-    "globals": "^17.1.0",
+    "globals": "^17.2.0",
     "prettier": "3.8.1"
   }
 }
