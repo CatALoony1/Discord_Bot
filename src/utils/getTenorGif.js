@@ -1,7 +1,7 @@
 require('dotenv').config();
 async function getTenorGif(searchTerm) {
   const apiKey = process.env.GIPHY_API;
-  const url = `api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=${searchTerm}`;
+  const url = `https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=${searchTerm}`;
   try {
     const response = await fetch(url);
     const data = await response.json();
