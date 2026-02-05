@@ -1,13 +1,18 @@
 require('dotenv').config();
 async function getTenorGif(searchTerm) {
-  const apiKey = process.env.TENOR_API;
-  const url = `https://tenor.googleapis.com/v2/search?q=${searchTerm}&key=${apiKey}&limit=1&random=true`;
+  const apiKey = process.env.GIPHY_API;
+  const url = `api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=${searchTerm}`;
   try {
     const response = await fetch(url);
     const data = await response.json();
 
-    if (data.results && data.results.length > 0) {
-      const gifUrl = data.results[0].media_formats.gif.url;
+    if (
+      data.data &&
+      data.data.images &&
+      data.data.images.original &&
+      data.data.images.original.url
+    ) {
+      const gifUrl = data.data.images.original.url;
       return gifUrl;
     } else {
       return 'Kein GIF gefunden.';
