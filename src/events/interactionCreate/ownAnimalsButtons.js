@@ -2,7 +2,6 @@ const {
   MessageFlags,
   ModalBuilder,
   TextInputBuilder,
-  ActionRowBuilder,
   TextInputStyle,
   LabelBuilder,
 } = require('discord.js');
@@ -95,8 +94,7 @@ module.exports = async (interaction) => {
       const textInputLabel = new LabelBuilder()
         .setLabel('Wie soll das Tier heißen?')
         .setTextInputComponent(textInput);
-      const actionRow = new ActionRowBuilder().addComponents(textInputLabel);
-      modal.addLabelComponents(actionRow);
+      modal.addLabelComponents(textInputLabel);
       await interaction.showModal(modal);
     } catch (error) {
       console.log(error);

@@ -4,7 +4,6 @@ const {
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
-  ActionRowBuilder,
   LabelBuilder,
 } = require('discord.js');
 
@@ -32,8 +31,7 @@ module.exports = {
       const textInputLabel = new LabelBuilder()
         .setLabel('Was möchtest du uns sagen?')
         .setTextInputComponent(textInput);
-      const actionRow = new ActionRowBuilder().addComponents(textInputLabel);
-      modal.addLabelComponents(actionRow);
+      modal.addLabelComponents(textInputLabel);
       await interaction.showModal(modal);
     } catch (err) {
       console.log(err);

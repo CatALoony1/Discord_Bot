@@ -2,7 +2,6 @@ const {
   MessageFlags,
   StringSelectMenuBuilder,
   UserSelectMenuBuilder,
-  ActionRowBuilder,
   ButtonStyle,
   ButtonBuilder,
   ModalBuilder,
@@ -260,13 +259,7 @@ module.exports = async (interaction) => {
           const rollenNameLabel = new LabelBuilder()
             .setLabel('Name der Rolle:')
             .setTextInputComponent(rollenName);
-          const firstActionRow = new ActionRowBuilder().addComponents(
-            colorInputLabel,
-          );
-          const secondActionRow = new ActionRowBuilder().addComponents(
-            rollenNameLabel,
-          );
-          modal.addLabelComponents(firstActionRow, secondActionRow);
+          modal.addLabelComponents(colorInputLabel, rollenNameLabel);
           break;
         }
         case 'Voicechannel': {
@@ -281,10 +274,7 @@ module.exports = async (interaction) => {
           const channelNameInputLabel = new LabelBuilder()
             .setLabel('Name des Voicechannels:')
             .setTextInputComponent(channelNameInput);
-          const firstActionRow = new ActionRowBuilder().addComponents(
-            channelNameInputLabel,
-          );
-          modal.addLabelComponents(firstActionRow);
+          modal.addLabelComponents(channelNameInputLabel);
           break;
         }
         case 'Rolle (Namensliste)': {
@@ -299,10 +289,7 @@ module.exports = async (interaction) => {
           const rollenNameInputLabel = new LabelBuilder()
             .setLabel('Name der Rolle:')
             .setTextInputComponent(rollenNameInput);
-          const firstActionRow = new ActionRowBuilder().addComponents(
-            rollenNameInputLabel,
-          );
-          modal.addLabelComponents(firstActionRow);
+          modal.addLabelComponents(rollenNameInputLabel);
           break;
         }
         case 'Umarmung': {
@@ -510,8 +497,7 @@ async function useItemTier(interaction) {
     const textInputLabel = new LabelBuilder()
       .setLabel('Wie soll das Tier heißen?')
       .setTextInputComponent(textInput);
-    const actionRow = new ActionRowBuilder().addComponents(textInputLabel);
-    modal.addLabelComponents(actionRow);
+    modal.addLabelComponents(textInputLabel);
     await interaction.showModal(modal);
   } else if (
     interaction.customId.includes('other_modal') ||
