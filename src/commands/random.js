@@ -4,7 +4,7 @@ const {
   EmbedBuilder,
 } = require('discord.js');
 require('dotenv').config();
-const getTenorGif = require('../utils/getTenorGif');
+const getGif = require('../utils/getGif');
 const wordList = require('../utils/wordList').wordList;
 
 function getRandom(min, max) {
@@ -49,7 +49,7 @@ module.exports = {
       if (subcommand === 'gif') {
         const suchwort = wordList[getRandom(0, wordList.length - 1)];
         console.log(`Suchwort für GIF: ${suchwort}`);
-        const gifUrl = await getTenorGif(suchwort);
+        const gifUrl = await getGif(suchwort);
         interaction.editReply(gifUrl);
       } else if (subcommand === 'api') {
         const zahl = interaction.options.get('zahl')?.value || -1;

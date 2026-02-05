@@ -3,7 +3,7 @@ const {
   InteractionContextType,
   MessageFlags,
 } = require('discord.js');
-const getTenorGif = require('../utils/getTenorGif');
+const getGif = require('../utils/getGif');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('gif')
@@ -36,7 +36,7 @@ module.exports = {
       return;
     }
     try {
-      const response = await getTenorGif(suchwort);
+      const response = await getGif(suchwort);
       await interaction.editReply(response);
     } catch (error) {
       console.log(error);

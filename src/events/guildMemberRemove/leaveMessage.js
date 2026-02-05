@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { EmbedBuilder } = require('discord.js');
-const getTenorGifById = require('../../utils/getTenorGifById');
+const getGifById = require('../../utils/getGifById');
 
 /**
  *
@@ -18,7 +18,7 @@ module.exports = async (guildMember) => {
       console.log('Fehler, Verlassenschannel gibts nicht');
       return;
     }
-    const gifUrl = await getTenorGifById('21215328'); //Luna 15308096
+    const gifUrl = await getGifById('QMtW7K5i1M9SGZVh5t'); //Luna 15308096
     if (!gifUrl.includes('http')) {
       console.log('ERROR Leave gif');
       return;

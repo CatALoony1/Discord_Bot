@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const getTenorGifById = require('../../utils/getTenorGifById');
+const getGifById = require('../../utils/getGifById');
 
 function getRandom(min, max) {
   min = Math.ceil(min);
@@ -85,7 +85,7 @@ module.exports = async (message, client) => {
         await sleep(delay);
         newMessage = await newMessage.reply(`Evil Bot starting up...`);
         await sleep(delay);
-        const gifUrl = await getTenorGifById('10449061');
+        const gifUrl = await getGifById('ckJF143W1gBS8Hk833');
         if (!gifUrl.includes('http')) {
           console.log('ERROR Evil gif');
           return;
@@ -95,7 +95,7 @@ module.exports = async (message, client) => {
     } else if (boom == 2) {
       await newMessage.reply(`Self destruction canceled, you are safe!`);
     } else if (boom == 3) {
-      const gifUrl = await getTenorGifById('26770639');
+      const gifUrl = await getGifById('Ust7qbx5r3IcUuVPoc');
       if (!gifUrl.includes('http')) {
         console.log('ERROR Element of Surprise gif');
         return;

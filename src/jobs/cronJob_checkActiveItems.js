@@ -4,7 +4,7 @@ const ActiveItems = require('../models/ActiveItems.js');
 const Config = require('../models/Config.js');
 const removeMoney = require('../utils/removeMoney.js');
 const giveMoney = require('../utils/giveMoney.js');
-const getTenorGifById = require('../utils/getTenorGifById.js');
+const getGifById = require('../utils/getGifById.js');
 
 let checkActiveItemsJob = null;
 
@@ -35,7 +35,7 @@ function startJob(client) {
                 (await guild.members.fetch(activeItem.usedOn));
               if (usedOnObj) {
                 await removeMoney(usedOnObj, amount);
-                const gifUrl = await getTenorGifById('20062805');
+                const gifUrl = await getGifById('mZryFzM65MtpJ5fOMj');
                 if (!gifUrl.includes('http')) {
                   console.log('ERROR Bombe gif');
                   return;

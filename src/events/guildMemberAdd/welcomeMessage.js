@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { EmbedBuilder } = require('discord.js');
-const getTenorGifById = require('../../utils/getTenorGifById');
+const getGifById = require('../../utils/getGifById');
 
 /**
  *
@@ -21,7 +21,7 @@ module.exports = async (guildMember) => {
       console.log('Fehler, Willkommenschannel gibts nicht');
       return;
     }
-    const gifUrl = await getTenorGifById('16257158234093763124'); //Luna 6622282259374419079
+    const gifUrl = await getGifById('01aIE3J9zBHYwJ9BZE'); //Luna 6622282259374419079
     if (!gifUrl.includes('http')) {
       console.log('ERROR Welcome gif');
       return;

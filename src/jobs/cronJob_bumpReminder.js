@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const cron = require('node-cron');
 require('dotenv').config();
 const Bump = require('../models/Bump');
-const getTenorGifById = require('../utils/getTenorGifById');
+const getGifById = require('../utils/getGifById');
 
 let bumpReminderJob = null;
 
@@ -23,7 +23,7 @@ function startJob(client) {
           let role = guild.roles.cache.find(
             (role) => role.name === 'Bump-Ping',
           );
-          const gifUrl = await getTenorGifById('8978495178385937973');
+          const gifUrl = await getGifById('SQD2LlZy731O8');
           if (!gifUrl.includes('http')) {
             console.log('ERROR Bump gif');
             return;

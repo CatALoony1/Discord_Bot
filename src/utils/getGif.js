@@ -1,5 +1,5 @@
 require('dotenv').config();
-async function getTenorGif(searchTerm) {
+async function getGif(searchTerm) {
   const apiKey = process.env.GIPHY_API;
   const url = `https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&tag=${searchTerm}`;
   try {
@@ -23,4 +23,4 @@ async function getTenorGif(searchTerm) {
   }
 }
 
-module.exports = getTenorGif;
+module.exports = getGif;

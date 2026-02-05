@@ -19,7 +19,7 @@ const Config = require('../../models/Config');
 const ActiveItems = require('../../models/ActiveItems');
 const removeMoney = require('../../utils/removeMoney.js');
 const giveMoney = require('../../utils/giveMoney.js');
-const getTenorGifById = require('../../utils/getTenorGifById.js');
+const getGifById = require('../../utils/getGifById.js');
 
 const hugTexts = [
   (author, target) => `${author} umarmt ${target} ganz fest! Awwww! ❤️`,
@@ -1072,7 +1072,7 @@ async function useItemBombe(interaction) {
       components: [],
       flags: MessageFlags.Ephemeral,
     });
-    const gifUrl = await getTenorGifById('20898456');
+    const gifUrl = await getGifById('l0K4mVE5b5WZ1sctW');
     if (!gifUrl.includes('http')) {
       console.log('ERROR Bombe gif');
       return;
@@ -1136,7 +1136,7 @@ async function useItemBombe(interaction) {
     } else {
       const amount = getRandom(20000, 40000);
       await removeMoney(interaction.member, amount);
-      const gifUrl = await getTenorGifById('20062805');
+      const gifUrl = await getGifById('mZryFzM65MtpJ5fOMj');
       if (!gifUrl.includes('http')) {
         console.log('ERROR Bombe gif');
         return;
