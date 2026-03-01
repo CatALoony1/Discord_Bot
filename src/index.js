@@ -1,10 +1,3 @@
-if (global._commandKitInstance) {
-  console.log(
-    '⚠️ [Guard] CommandKit Instanz bereits aktiv. Überspringe Initialisierung.',
-  );
-  return; // Stoppt die Ausführung dieser Datei hier
-}
-global._commandKitInstance = true;
 require('dotenv').config();
 const Discord = require('discord.js');
 const { CommandKit } = require('commandkit');
