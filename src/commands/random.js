@@ -36,9 +36,6 @@ module.exports = {
       InteractionContextType.PrivateChannel,
     ]),
 
-  /**
-   * @param {import('commandkit').SlashCommandProps} param0
-   */
   run: async ({ interaction }) => {
     console.log(
       `SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`,
