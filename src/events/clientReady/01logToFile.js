@@ -66,38 +66,41 @@ const install_hook_to = function (obj) {
   obj.unhook.methods = {};
 };
 
-module.exports = async (client) => {
-  const stdout = process.stdout;
-  install_hook_to(stdout);
-  stdout.hook(
-    'write',
-    async function (string) {
-      const targetChannel = await client.channels.fetch(process.env.LOG_ID);
-      let d = new Date();
-      string = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()},${d.getMilliseconds()}|${string}`;
-      if (string.includes('TESTJG')) {
-        await fs.appendFile(
-          './logs/chat._log',
-          string.replace('TESTJG', ''),
-          function (err) {
+module.exports = {
+  once: true,
+  run: async (client) => {
+    const stdout = process.stdout;
+    install_hook_to(stdout);
+    stdout.hook(
+      'write',
+      async function (string) {
+        const targetChannel = await client.channels.fetch(process.env.LOG_ID);
+        let d = new Date();
+        string = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()},${d.getMilliseconds()}|${string}`;
+        if (string.includes('TESTJG')) {
+          await fs.appendFile(
+            './logs/chat._log',
+            string.replace('TESTJG', ''),
+            function (err) {
+              if (err) throw err;
+            },
+          );
+        } else {
+          await fs.appendFile('./logs/bot._log', string, function (err) {
             if (err) throw err;
-          },
-        );
-      } else {
-        await fs.appendFile('./logs/bot._log', string, function (err) {
-          if (err) throw err;
-        });
-        if (string.includes('connect ECONNREFUSED')) {
-          targetChannel.send(
-            `DB connection ERROR <@${process.env.ADMIN_ID}> please check DB`,
-          );
-        } else if (string.toLowerCase().includes('error')) {
-          targetChannel.send(
-            `ERROR <@${process.env.ADMIN_ID}> please check log`,
-          );
+          });
+          if (string.includes('connect ECONNREFUSED')) {
+            targetChannel.send(
+              `DB connection ERROR <@${process.env.ADMIN_ID}> please check DB`,
+            );
+          } else if (string.toLowerCase().includes('error')) {
+            targetChannel.send(
+              `ERROR <@${process.env.ADMIN_ID}> please check log`,
+            );
+          }
         }
-      }
-    },
-    true,
-  );
+      },
+      true,
+    );
+  },
 };

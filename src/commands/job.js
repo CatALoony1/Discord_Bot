@@ -185,8 +185,4 @@ module.exports = {
       console.log(error);
     }
   },
-  options: {
-    devOnly: true,
-    deleted: false,
-  },
 };

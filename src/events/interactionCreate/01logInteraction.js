@@ -1,7 +1,9 @@
-module.exports = async (interaction) => {
-  if (interaction.isStringSelectMenu() || interaction.isButton()) {
-    console.log(
-      `interaction ${interaction.customId} executed by ${interaction.member.user.tag}`,
-    );
-  }
+module.exports = {
+  run: async (interaction) => {
+    if (interaction.isStringSelectMenu() || interaction.isButton()) {
+      console.log(
+        `interaction ${interaction.customId} executed by ${interaction.member.user.tag}`,
+      );
+    }
+  },
 };

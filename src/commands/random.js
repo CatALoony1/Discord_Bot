@@ -1023,8 +1023,4 @@ module.exports = {
       console.log(err);
     }
   },
-  options: {
-    devOnly: false,
-    deleted: false,
-  },
 };

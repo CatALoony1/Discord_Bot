@@ -13,18 +13,20 @@ function getRandomXp(min, max) {
  * @param {Message} message
  * @returns
  */
-module.exports = async (message) => {
-  if (
-    !message.inGuild() ||
-    message.author.bot ||
-    cooldowns.has(message.author.id) ||
-    message.webhookId
-  )
-    return;
-  const xpToGive = getRandomXp(5, 15);
-  await giveXP(message.member, xpToGive, message.channel, true);
-  cooldowns.add(message.author.id);
-  setTimeout(() => {
-    cooldowns.delete(message.author.id);
-  }, 15000); // Cooldown 15000 = 15sec
+module.exports = {
+  run: async (message) => {
+    if (
+      !message.inGuild() ||
+      message.author.bot ||
+      cooldowns.has(message.author.id) ||
+      message.webhookId
+    )
+      return;
+    const xpToGive = getRandomXp(5, 15);
+    await giveXP(message.member, xpToGive, message.channel, true);
+    cooldowns.add(message.author.id);
+    setTimeout(() => {
+      cooldowns.delete(message.author.id);
+    }, 15000); // Cooldown 15000 = 15sec
+  },
 };

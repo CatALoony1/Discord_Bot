@@ -29,21 +29,24 @@ async function checkVoice(client) {
   }
 }
 
-module.exports = async (client) => {
-  console.log(`Starting Jobs...`);
-  bumpReminderJob.startJob(client);
-  checkBumperRoleJob.startJob(client);
-  checkInactiveJob.startJob(client);
-  customStatusJob.startJob(client);
-  geburtstagJob.startJob(client);
-  monthlyXPJob.startJob(client);
-  newYearJob.startJob(client);
-  quizQuestionJob.startJob(client);
-  quizStatsJob.startJob(client);
-  renameLogFileJob.startJob(client);
-  missingXpJob.startJob(client);
-  zinsenJob.startJob(client);
-  checkActiveItems.startJob(client);
-  checkVoice(client);
-  console.log(`Jobs started...`);
+module.exports = {
+  once: true,
+  run: async (client) => {
+    console.log(`Starting Jobs...`);
+    bumpReminderJob.startJob(client);
+    checkBumperRoleJob.startJob(client);
+    checkInactiveJob.startJob(client);
+    customStatusJob.startJob(client);
+    geburtstagJob.startJob(client);
+    monthlyXPJob.startJob(client);
+    newYearJob.startJob(client);
+    quizQuestionJob.startJob(client);
+    quizStatsJob.startJob(client);
+    renameLogFileJob.startJob(client);
+    missingXpJob.startJob(client);
+    zinsenJob.startJob(client);
+    checkActiveItems.startJob(client);
+    checkVoice(client);
+    console.log(`Jobs started...`);
+  },
 };

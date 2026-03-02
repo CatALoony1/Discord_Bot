@@ -55,57 +55,59 @@ const answers = new Map([
  * @param {Message} message
  * @returns
  */
-module.exports = async (message, client) => {
-  if (
-    !message.inGuild() ||
-    message.author.bot ||
-    !message.content.includes(client.user.id) ||
-    !message.content.includes('?') ||
-    message.webhookId
-  )
-    return;
-  console.log(`Bot Mentioned`);
-  const number = getRandom(1, answers.size);
-  const delay = 2000;
-  if (number == 22) {
-    let sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
-    let newMessage = await message.reply(answers.get(number));
-    newMessage = await newMessage.reply(`Self destruction initialized!`);
-    await sleep(delay);
-    newMessage = await newMessage.reply(`3`);
-    await sleep(delay);
-    newMessage = await newMessage.reply(`2`);
-    await sleep(delay);
-    newMessage = await newMessage.reply(`1`);
-    await sleep(delay);
-    const boom = getRandom(1, 4);
-    if (boom == 1) {
-      newMessage = await newMessage.reply(`BOOM💥`);
-      if (getRandom(1, 5) == 5) {
-        await sleep(delay);
-        newMessage = await newMessage.reply(`Evil Bot starting up...`);
-        await sleep(delay);
-        const gifUrl = await getGifById('ckJF143W1gBS8Hk833');
+module.exports = {
+  run: async (message, client) => {
+    if (
+      !message.inGuild() ||
+      message.author.bot ||
+      !message.content.includes(client.user.id) ||
+      !message.content.includes('?') ||
+      message.webhookId
+    )
+      return;
+    console.log(`Bot Mentioned`);
+    const number = getRandom(1, answers.size);
+    const delay = 2000;
+    if (number == 22) {
+      let sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
+      let newMessage = await message.reply(answers.get(number));
+      newMessage = await newMessage.reply(`Self destruction initialized!`);
+      await sleep(delay);
+      newMessage = await newMessage.reply(`3`);
+      await sleep(delay);
+      newMessage = await newMessage.reply(`2`);
+      await sleep(delay);
+      newMessage = await newMessage.reply(`1`);
+      await sleep(delay);
+      const boom = getRandom(1, 4);
+      if (boom == 1) {
+        newMessage = await newMessage.reply(`BOOM💥`);
+        if (getRandom(1, 5) == 5) {
+          await sleep(delay);
+          newMessage = await newMessage.reply(`Evil Bot starting up...`);
+          await sleep(delay);
+          const gifUrl = await getGifById('ckJF143W1gBS8Hk833');
+          if (!gifUrl.includes('http')) {
+            console.log('ERROR Evil gif');
+            return;
+          }
+          await newMessage.reply(gifUrl);
+        }
+      } else if (boom == 2) {
+        await newMessage.reply(`Self destruction canceled, you are safe!`);
+      } else if (boom == 3) {
+        const gifUrl = await getGifById('Ust7qbx5r3IcUuVPoc');
         if (!gifUrl.includes('http')) {
-          console.log('ERROR Evil gif');
+          console.log('ERROR Element of Surprise gif');
           return;
         }
         await newMessage.reply(gifUrl);
       }
-    } else if (boom == 2) {
-      await newMessage.reply(`Self destruction canceled, you are safe!`);
-    } else if (boom == 3) {
-      const gifUrl = await getGifById('Ust7qbx5r3IcUuVPoc');
-      if (!gifUrl.includes('http')) {
-        console.log('ERROR Element of Surprise gif');
-        return;
-      }
-      await newMessage.reply(gifUrl);
+    } else if (number >= 44 && number <= 49) {
+      const image = answers.get(number);
+      await message.reply({ files: [image] });
+    } else {
+      await message.reply(answers.get(number));
     }
-  } else if (number >= 44 && number <= 49) {
-    const image = answers.get(number);
-    await message.reply({ files: [image] });
-  } else {
-    await message.reply(answers.get(number));
-  }
+  },
 };

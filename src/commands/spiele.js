@@ -77,8 +77,4 @@ module.exports = {
       return await handleSpieleCommands.handleLeaderboard(interaction);
     }
   },
-  options: {
-    devOnly: false,
-    deleted: false,
-  },
 };
