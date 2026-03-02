@@ -67,10 +67,7 @@ client.on('interactionCreate', async (interaction) => {
   } catch (error) {
     console.error(error);
     if (!interaction.replied && !interaction.deferred) {
-      await interaction.reply({
-        content: 'Fehler beim Ausführen!',
-        ephemeral: true,
-      });
+      await interaction.reply('Fehler beim Ausführen!');
     }
   }
 });
