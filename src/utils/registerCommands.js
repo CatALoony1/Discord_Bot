@@ -41,6 +41,7 @@ async function registerCommands(guildId) {
     .digest('hex');
   if (fs.existsSync(cachePath)) {
     const previousHash = fs.readFileSync(cachePath, 'utf8');
+    console.log(`Prev Hash: ${previousHash}, Current Hash: ${currentHash}`);
     if (currentHash === previousHash) {
       console.log(
         '[System] Keine Änderungen an Befehlen erkannt. Überspringe API-Registrierung.',

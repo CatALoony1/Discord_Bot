@@ -2,6 +2,7 @@ require('dotenv').config();
 const Discord = require('discord.js');
 const path = require('path');
 const registerCommands = require('./utils/registerCommands');
+const logToFile = require('./utils/logToFile');
 const fs = require('node:fs');
 
 const client = new Discord.Client({
@@ -26,6 +27,7 @@ const client = new Discord.Client({
 client.commands = new Discord.Collection();
 
 (async () => {
+  await logToFile.run(client);
   await registerCommands(process.env.GUILD_ID);
   const commandsPath = path.join(__dirname, 'commands');
   const getFiles = (dir) => {

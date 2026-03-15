@@ -67,7 +67,6 @@ const install_hook_to = function (obj) {
 };
 
 module.exports = {
-  once: true,
   run: async (client) => {
     const stdout = process.stdout;
     install_hook_to(stdout);
