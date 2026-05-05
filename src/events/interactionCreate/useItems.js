@@ -11,7 +11,6 @@ const {
   ActionRowBuilder,
   PermissionsBitField,
   ChannelType,
-  PermissionFlagsBits,
 } = require('discord.js');
 const GameUser = require('../../models/GameUser');
 require('../../models/Bankkonten');
