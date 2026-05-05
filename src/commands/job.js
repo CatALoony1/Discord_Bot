@@ -13,6 +13,7 @@ const missingXpJob = require('../jobs/cronJob_checkMissingXP');
 const checkNewAnimalsJob = require('../jobs/checkNewAnimals');
 const zinsenJob = require('../jobs/cronJob_zinsen');
 const checkActiveItemsJob = require('../jobs/cronJob_checkActiveItems');
+const checkVoiceChannelsJob = require('../jobs/cronJob_checkVoicechannels');
 
 const {
   SlashCommandBuilder,
@@ -47,6 +48,7 @@ module.exports = {
               { name: 'missingXp', value: 'missingXp' },
               { name: 'zinsen', value: 'zinsen' },
               { name: 'checkActiveItems', value: 'checkActiveItems' },
+              { name: 'checkVoiceChannels', value: 'checkVoiceChannels' },
             ),
         ),
     )
@@ -74,6 +76,7 @@ module.exports = {
               { name: 'missingXp', value: 'missingXp' },
               { name: 'zinsen', value: 'zinsen' },
               { name: 'checkActiveItems', value: 'checkActiveItems' },
+              { name: 'checkVoiceChannels', value: 'checkVoiceChannels' },
             ),
         ),
     )
@@ -153,6 +156,9 @@ module.exports = {
           break;
         case 'checkActiveItems':
           jobClass = checkActiveItemsJob;
+          break;
+        case 'checkVoiceChannels':
+          jobClass = checkVoiceChannelsJob;
           break;
         default:
           throw new Error(`Unbekannter Job: ${job}`);
