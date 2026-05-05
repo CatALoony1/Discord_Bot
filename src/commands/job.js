@@ -112,9 +112,10 @@ module.exports = {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     try {
       const subcommand = interaction.options.getSubcommand();
-      const job = interaction.options.get('job').value || null;
+      let job = null;
       let jobClass = null;
-      if (job) {
+      if (subcommand !== 'stop-all') {
+        job = interaction.options.get('job').value || null;
         switch (job) {
           case 'bumpReminder':
             jobClass = bumpReminderJob;
@@ -191,7 +192,7 @@ module.exports = {
         await interaction.editReply({
           content: `Job ${job} wurde erfolgreich ausgeführt.`,
         });
-      } else if (subcommand === 'stopAll') {
+      } else if (subcommand === 'stop-all') {
         bumpReminderJob.stopJob();
         checkBumperRoleJob.stopJob();
         checkInactiveJob.stopJob();
