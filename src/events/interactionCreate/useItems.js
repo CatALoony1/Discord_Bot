@@ -9,6 +9,8 @@ const {
   TextInputStyle,
   LabelBuilder,
   ActionRowBuilder,
+  PermissionsBitField,
+  ChannelType,
 } = require('discord.js');
 const GameUser = require('../../models/GameUser');
 require('../../models/Bankkonten');
@@ -17,6 +19,7 @@ const Items = require('../../models/Items');
 const Tiere = require('../../models/Tiere');
 const Config = require('../../models/Config');
 const ActiveItems = require('../../models/ActiveItems');
+const VoiceChannel = require('../../models/VoiceChannel');
 const removeMoney = require('../../utils/removeMoney.js');
 const giveMoney = require('../../utils/giveMoney.js');
 const getGifById = require('../../utils/getGifById.js');
@@ -172,7 +175,7 @@ const keksTexts = [
 ];
 
 module.exports = {
-  run: async (interaction) => {
+  run: async (interaction, client) => {
     if (!interaction.customId || !interaction.customId.includes('useItem'))
       return;
     try {
@@ -181,7 +184,7 @@ module.exports = {
       } else if (interaction.customId.includes('farbrolle')) {
         await useItemFarbrolle(interaction);
       } else if (interaction.customId.includes('voicechannel')) {
-        await useItemVoiceChannel(interaction);
+        await useItemVoiceChannel(interaction, client);
       } else if (interaction.customId.includes('rolleNamensliste')) {
         await useItemRolleNamensliste(interaction);
       } else if (interaction.customId.includes('doppelteXp_activate')) {
@@ -680,7 +683,7 @@ async function useItemFarbrolle(interaction) {
   });
 }
 
-async function useItemVoiceChannel(interaction) {
+async function useItemVoiceChannel(interaction, client) {
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });
   const user = await GameUser.findOne({ userId: interaction.user.id }).populate(
     { path: 'inventar', populate: { path: 'items.item', model: 'Items' } },
@@ -704,14 +707,33 @@ async function useItemVoiceChannel(interaction) {
   const channelname = interaction.fields.getTextInputValue(
     'useItem_voicechannel_name',
   );
-  let targetChannel =
-    interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) ||
-    (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));
-  await targetChannel.send(
-    `${interaction.member} hat den Voicechannel **${channelname}** gekauft! Bitte erstellen!`,
-  );
+
+  const kategorie = await client.channels.fetch(process.env.PERMANENT_VOICE_ID);
+  const channel = await kategorie.children.create({
+    name: channelname,
+    type: ChannelType.GuildVoice,
+    permissionOverwrites: [
+      {
+        id: interaction.user.id,
+        allow: [PermissionsBitField.Flags.Administrator],
+      },
+    ],
+  });
+  const newVoiceChannel = new VoiceChannel({
+    name: channelname,
+    permanent: true,
+    guildId: interaction.guild.id,
+    channelId: channel.id,
+    creationTime: Date.now(),
+    nutzer: 0,
+    userId: interaction.user.id,
+  });
+  await newVoiceChannel.save().catch((e) => {
+    console.log(`Error saving updated VoiceChannel ${e}`);
+    return;
+  });
   await interaction.editReply({
-    content: `Der Voicechannel **${channelname}** wurde erfolgreich an die Admins weitergeleitet!`,
+    content: `Der Voicechannel **${channelname}** wurde erfolgreich erstellt.`,
     flags: MessageFlags.Ephemeral,
   });
 }
