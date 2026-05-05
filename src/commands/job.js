@@ -97,6 +97,9 @@ module.exports = {
             ),
         ),
     )
+    .addSubcommand((subcommand) =>
+      subcommand.setName('stopAll').setDescription('Stoppe alle Jobs.'),
+    )
     .setContexts([
       InteractionContextType.Guild,
       InteractionContextType.PrivateChannel,
@@ -109,59 +112,61 @@ module.exports = {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     try {
       const subcommand = interaction.options.getSubcommand();
-      const job = interaction.options.get('job').value;
+      const job = interaction.options.get('job').value || null;
       let jobClass = null;
-      switch (job) {
-        case 'bumpReminder':
-          jobClass = bumpReminderJob;
-          break;
-        case 'checkBumperRole':
-          jobClass = checkBumperRoleJob;
-          break;
-        case 'checkInactive':
-          jobClass = checkInactiveJob;
-          break;
-        case 'customStatus':
-          jobClass = customStatusJob;
-          break;
-        case 'geburtstag':
-          jobClass = geburtstagJob;
-          break;
-        case 'monthlyXP':
-          jobClass = monthlyXPJob;
-          break;
-        case 'newYear':
-          jobClass = newYearJob;
-          break;
-        case 'quizQuestion':
-          jobClass = quizQuestionJob;
-          break;
-        case 'quizStats':
-          jobClass = quizStatsJob;
-          break;
-        case 'renameLogFile':
-          jobClass = renameLogFileJob;
-          break;
-        case 'voiceXP':
-          jobClass = voiceXPJob;
-          break;
-        case 'missingXp':
-          jobClass = missingXpJob;
-          break;
-        case 'checkNewAnimals':
-          jobClass = checkNewAnimalsJob;
-          break;
-        case 'zinsen':
-          jobClass = zinsenJob;
-          break;
-        case 'checkActiveItems':
-          jobClass = checkActiveItemsJob;
-          break;
-        case 'checkVoiceChannels':
-          jobClass = checkVoiceChannelsJob;
-          break;
-        default:
-          throw new Error(`Unbekannter Job: ${job}`);
+      if (job) {
+        switch (job) {
+          case 'bumpReminder':
+            jobClass = bumpReminderJob;
+            break;
+          case 'checkBumperRole':
+            jobClass = checkBumperRoleJob;
+            break;
+          case 'checkInactive':
+            jobClass = checkInactiveJob;
+            break;
+          case 'customStatus':
+            jobClass = customStatusJob;
+            break;
+          case 'geburtstag':
+            jobClass = geburtstagJob;
+            break;
+          case 'monthlyXP':
+            jobClass = monthlyXPJob;
+            break;
+          case 'newYear':
+            jobClass = newYearJob;
+            break;
+          case 'quizQuestion':
+            jobClass = quizQuestionJob;
+            break;
+          case 'quizStats':
+            jobClass = quizStatsJob;
+            break;
+          case 'renameLogFile':
+            jobClass = renameLogFileJob;
+            break;
+          case 'voiceXP':
+            jobClass = voiceXPJob;
+            break;
+          case 'missingXp':
+            jobClass = missingXpJob;
+            break;
+          case 'checkNewAnimals':
+            jobClass = checkNewAnimalsJob;
+            break;
+          case 'zinsen':
+            jobClass = zinsenJob;
+            break;
+          case 'checkActiveItems':
+            jobClass = checkActiveItemsJob;
+            break;
+          case 'checkVoiceChannels':
+            jobClass = checkVoiceChannelsJob;
+            break;
+          default:
+            throw new Error(`Unbekannter Job: ${job}`);
+        }
       }
       if (subcommand === 'start') {
         if (!jobClass.isRunning()) {
@@ -185,6 +190,25 @@ module.exports = {
         await jobClass.jobFunction(client);
         await interaction.editReply({
           content: `Job ${job} wurde erfolgreich ausgeführt.`,
+        });
+      } else if (subcommand === 'stopAll') {
+        bumpReminderJob.stopJob();
+        checkBumperRoleJob.stopJob();
+        checkInactiveJob.stopJob();
+        customStatusJob.stopJob();
+        geburtstagJob.stopJob();
+        monthlyXPJob.stopJob();
+        newYearJob.stopJob();
+        quizQuestionJob.stopJob();
+        quizStatsJob.stopJob();
+        renameLogFileJob.stopJob();
+        voiceXPJob.stopJob();
+        missingXpJob.stopJob();
+        zinsenJob.stopJob();
+        checkActiveItemsJob.stopJob();
+        checkVoiceChannelsJob.stopJob();
+        await interaction.editReply({
+          content: `Alle Jobs wurden erfolgreich gestoppt.`,
         });
       }
     } catch (error) {
