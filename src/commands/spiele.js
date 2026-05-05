@@ -10,7 +10,7 @@ module.exports = {
     .setName('spiele')
     .setDescription('Zeigt all deine Level-Bezogenen Daten.')
     .addSubcommand((subcommand) =>
-      subcommand.setName('shop').setDescription('Gibt Nutzer XP.'),
+      subcommand.setName('shop').setDescription('Zeigt den Item-Shop an.'),
     )
     .addSubcommand((subcommand) =>
       subcommand.setName('use_item').setDescription('Benutze ein Item.'),

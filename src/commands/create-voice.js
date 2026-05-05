@@ -70,6 +70,7 @@ module.exports = {
           name: name,
           type: ChannelType.GuildVoice,
           userLimit: amount,
+          permissionsLocked: true,
         });
         const newChannelModel = new VoiceChannel({
           name: name,

@@ -21,7 +21,7 @@ function startJob(client) {
           const voiceChannel = await client.channels.fetch(channel.channelId);
           if (voiceChannel.members.size == 0) {
             await voiceChannel.delete();
-            await channel.delete();
+            await VoiceChannel.deleteOne({ channelId: channel.channelId });
             console.log(
               `Deleted voice channel ${channel.name} and database entry.`,
             );

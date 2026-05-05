@@ -11,6 +11,7 @@ const {
   ActionRowBuilder,
   PermissionsBitField,
   ChannelType,
+  PermissionFlagsBits,
 } = require('discord.js');
 const GameUser = require('../../models/GameUser');
 require('../../models/Bankkonten');
@@ -715,7 +716,10 @@ async function useItemVoiceChannel(interaction, client) {
     permissionOverwrites: [
       {
         id: interaction.user.id,
-        allow: [PermissionsBitField.Flags.Administrator],
+        allow: [
+          PermissionsBitField.Flags.ManageChannels,
+          PermissionsBitField.Flags.ManageRoles,
+        ],
       },
     ],
   });
