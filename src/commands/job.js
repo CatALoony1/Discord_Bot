@@ -98,7 +98,7 @@ module.exports = {
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName('stopAll').setDescription('Stoppe alle Jobs.'),
+      subcommand.setName('stop-all').setDescription('Stoppe alle Jobs.'),
     )
     .setContexts([
       InteractionContextType.Guild,
