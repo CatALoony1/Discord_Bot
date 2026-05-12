@@ -39,35 +39,9 @@ let status = [
       name: 'Schatzsuche',
       type: ActivityType.Competing
     }], status: 'dnd'
-  }, */
-  {
-    activities: [
-      {
-        name: 'mit deinen Gefühlen',
-        type: ActivityType.Playing,
-      },
-    ],
-    status: 'online',
-  },
-  {
-    activities: [
-      {
-        name: 'Erhöht die Preise',
-        type: ActivityType.Custom,
-      },
-    ],
-    status: 'dnd',
-  },
-  {
-    activities: [
-      {
-        name: 'Wartet auf das Essen',
-        type: ActivityType.Custom,
-      },
-    ],
-    status: 'online',
-  },
-  {
+  }, 
+  
+    {
     activities: [
       {
         name: 'alleine',
@@ -93,6 +67,43 @@ let status = [
       },
     ],
     status: 'online',
+  },
+  {
+    activities: [
+      {
+        name: 'mit deinen Gefühlen',
+        type: ActivityType.Playing,
+      },
+    ],
+    status: 'online',
+  },
+  */
+  {
+    activities: [
+      {
+        name: 'Erhöht die Preise',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'dnd',
+  },
+  {
+    activities: [
+      {
+        name: 'Wartet auf das Essen',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'online',
+  },
+  {
+    activities: [
+      {
+        name: 'Schläft...',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'idle',
   },
 ];
 
