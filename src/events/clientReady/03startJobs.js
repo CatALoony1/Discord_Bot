@@ -13,6 +13,7 @@ const voiceJob = require('../../jobs/cronJob_voiceXp');
 const zinsenJob = require('../../jobs/cronJob_zinsen');
 const checkActiveItems = require('../../jobs/cronJob_checkActiveItems');
 const checkVoiceChannels = require('../../jobs/cronJob_checkVoicechannels');
+const Config = require('../../models/Config');
 
 async function checkVoice(client) {
   let isTwoMembers = false;
@@ -34,21 +35,30 @@ module.exports = {
   once: true,
   run: async (client) => {
     console.log(`Starting Jobs...`);
-    bumpReminderJob.startJob(client);
-    checkBumperRoleJob.startJob(client);
-    checkInactiveJob.startJob(client);
-    customStatusJob.startJob(client);
-    geburtstagJob.startJob(client);
-    monthlyXPJob.startJob(client);
-    newYearJob.startJob(client);
-    quizQuestionJob.startJob(client);
-    quizStatsJob.startJob(client);
-    renameLogFileJob.startJob(client);
-    missingXpJob.startJob(client);
-    zinsenJob.startJob(client);
-    checkActiveItems.startJob(client);
-    checkVoiceChannels.startJob(client);
-    checkVoice(client);
-    console.log(`Jobs started...`);
+    try {
+      const jobsActive = await Config.findOne({ key: 'jobsActive' });
+      if (jobsActive && jobsActive.value == 'J') {
+        bumpReminderJob.startJob(client);
+        checkBumperRoleJob.startJob(client);
+        checkInactiveJob.startJob(client);
+        customStatusJob.startJob(client);
+        geburtstagJob.startJob(client);
+        monthlyXPJob.startJob(client);
+        newYearJob.startJob(client);
+        quizQuestionJob.startJob(client);
+        quizStatsJob.startJob(client);
+        renameLogFileJob.startJob(client);
+        missingXpJob.startJob(client);
+        zinsenJob.startJob(client);
+        checkActiveItems.startJob(client);
+        checkVoiceChannels.startJob(client);
+        checkVoice(client);
+        console.log(`Jobs started.`);
+      } else {
+        console.log(`Jobstart deactivated.`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
