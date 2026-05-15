@@ -5,7 +5,7 @@ const giveUserXp = require('../../utils/messageC/giveUserXp');
 const hangman = require('../../utils/messageC/hangman');
 
 module.exports = {
-  run: async (message) => {
+  run: async (message, client) => {
     if (!message.inGuild() || message.webhookId) {
       return;
     }

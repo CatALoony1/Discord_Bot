@@ -1,5 +1,5 @@
 const { MessageFlags, EmbedBuilder } = require('discord.js');
-async function kummerkastenModal() {
+async function kummerkastenModal(interaction) {
   const targetChannel =
     interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) ||
     (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));

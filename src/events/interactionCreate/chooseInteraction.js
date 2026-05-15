@@ -20,7 +20,7 @@ module.exports = {
       `interaction ${customId} executed by ${interaction.member.user.tag}`,
     );
     if (customId.includes('useItem')) {
-      await useItem(interaction, client);
+      await useItems(interaction, client);
     } else if (interaction.isModalSubmit()) {
       if (customId === `feedback-${interaction.user.id}`) {
         await kummerkastenModal();
