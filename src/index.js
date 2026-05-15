@@ -22,6 +22,7 @@ const client = new Discord.Client({
     Discord.Partials.Message,
     Discord.Partials.Channel,
     Discord.Partials.Reaction,
+    Discord.Partials.User,
   ],
 });
 client.commands = new Discord.Collection();
