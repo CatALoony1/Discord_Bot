@@ -23,7 +23,7 @@ module.exports = {
       await useItems(interaction, client);
     } else if (interaction.isModalSubmit()) {
       if (customId === `feedback-${interaction.user.id}`) {
-        await kummerkastenModal();
+        await kummerkastenModal(interaction);
       } else if (customId.includes('ownAnimals')) {
         await ownAnimalsButtons(interaction);
       } else if (customId.includes(`quizadd-${interaction.user.id}`)) {

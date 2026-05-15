@@ -55,7 +55,7 @@ const answers = new Map([
  * @param {Message} message
  * @returns
  */
-async function botMention(message, client) {
+async function botMention(message) {
   console.log(`Bot Mentioned`);
   const number = getRandom(1, answers.size);
   const delay = 2000;
