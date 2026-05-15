@@ -19,7 +19,7 @@ module.exports = {
         message.content.includes(client.user.id) &&
         message.content.includes('?')
       ) {
-        await botMention(message, client);
+        await botMention(message);
       } else if (message.channel.id === process.env.VCCREATION_ID) {
         gueltig = false;
         try {
