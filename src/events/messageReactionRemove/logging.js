@@ -18,7 +18,7 @@ module.exports = {
       if (!config) {
         return;
       }
-      config.value.count = (config.value || 0) + 1;
+      config.value = (config.value || 0) + 1;
       await config.save();
     } catch (error) {
       console.log(error);
