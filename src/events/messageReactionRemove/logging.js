@@ -3,6 +3,7 @@ const {
   User,
   MessageReactionEventDetails,
 } = require('discord.js');
+const Config = require('../../models/Config');
 /**
  *
  * @param {MessageReaction} reaction
@@ -12,9 +13,15 @@ const {
  */
 module.exports = {
   run: async (reaction, user, details) => {
-    console.log(reaction);
-    console.log(user);
-    console.log(details);
-    console.log(`Reaction partial? ${reaction.partial}`);
+    try {
+      const config = await Config.findOne({ key: 'reaction_remove' });
+      if (!config) {
+        return;
+      }
+      config.value.count = (config.value || 0) + 1;
+      await config.save();
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
