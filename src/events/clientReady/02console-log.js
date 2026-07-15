@@ -8,7 +8,10 @@ module.exports = {
       const guild = await client.guilds.cache.get(process.env.GUILD_ID);
       const targetUser = await guild.members.fetch(process.env.ADMIN_ID);
       targetUser.send(`Bot ist gestartet.`);
-      client.guilds.cache.forEach((guild) => {
+      const guilds = await client.guilds.fetch();
+
+      targetUser.send(`Der Bot ist laut API auf ${guilds.size} Server(n):`);
+      guilds.forEach((guild) => {
         targetUser.send(`- ${guild.name} (ID: ${guild.id})`);
       });
     } catch (error) {
