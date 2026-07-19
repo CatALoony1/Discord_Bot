@@ -37,32 +37,36 @@
 
     <!-- Wenn ein Server ausgewählt wurde und Kanäle vorhanden sind, zeigen wir die Tabelle -->
     <% if (selectedServerId && selectedTable && alleDaten.length > 0) { %>
-        <h2>Gefundene Einträge:</h2>
-        <table border="1" cellpadding="5" style="border-collapse: collapse;">
-            <thead>
-                <tr>
-                    <% Object.keys(alleDaten[0]).forEach(key => { %>
+    <h2>Gefundene Einträge:</h2>
+    <table border="1" cellpadding="5" style="border-collapse: collapse;">
+        <thead>
+            <tr>
+                <% 
+                   const spalten = Object.keys(alleDaten[0]); 
+                %>
+                <% spalten.forEach(key => { %>
                     <th><%= key %></th>
                 <% }); %>
-                </tr>
-            </thead>
-            <tbody>
-                <% alleDaten.forEach(item => { %>
+            </tr>
+        </thead>
+        <tbody>
+            <% alleDaten.forEach(item => { %>
                 <tr>
-                    <!-- 3. Zellen: Wir lesen jeden Wert (Value) des aktuellen Objekts aus -->
-                    <% Object.values(item).forEach(value => { %>
+                    <% spalten.forEach(key => { %>
                         <td>
-                            <!-- Kleiner Trick, falls ein Wert selbst wieder ein Objekt ist -->
+                            <% 
+                               const value = item[key];
+                            %>
                             <%= typeof value === 'object' && value !== null ? JSON.stringify(value) : value %>
                         </td>
                     <% }); %>
                 </tr>
             <% }); %>
-            </tbody>
-        </table>
-    <% } else if (selectedServerId && selectedTable) { %>
-        <p>Es gibt keine Datensätze</p>
-    <% } %>
+        </tbody>
+    </table>
+<% } else if (selectedServerId && selectedTable) { %>
+    <p>Es gibt keine Datensätze</p>
+<% } %>
 
     <br><br>
     <a href="/">Zurück zur Startseite</a>

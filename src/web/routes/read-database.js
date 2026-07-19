@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
       if (DbModel.schema.paths['guildId']) {
         query.guildId = selectedServerId;
       }
-      alleDaten = await DbModel.find(query).lean();
+      alleDaten = await DbModel.find(query).select('-_id -__v').lean();
     }
     res.render('read-database', {
       servers: servers,
