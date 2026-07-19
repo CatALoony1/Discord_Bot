@@ -28,6 +28,7 @@ router.post('/delete', async (req, res) => {
 
 router.post('/create', async (req, res) => {
   const { name, password, serverids } = req.body;
+  console.log(`Name: ${name}, PWD: ${password}, serverids: ${serverids}`);
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   const newUser = new WebUser({
     name: name,
