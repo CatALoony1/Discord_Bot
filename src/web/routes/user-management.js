@@ -9,6 +9,7 @@ router.get('/', async (req, res) => {
     const user = await WebUser.findById(req.session.userId);
     if (!user || user.guildIds !== 'all') {
       req.session.message = 'Du bist dazu nicht berechtigt!';
+      res.redirect('/');
     }
     const allUsers = await WebUser.find({}).select('-password -__v').lean();
     res.render('user-management', {
