@@ -8,6 +8,8 @@ const userManagement = require('./routes/user-management');
 const app = express();
 const port = 3000;
 const ADMIN_PASSWORD = process.env.WEB_PWD;
+const WebUser = require('../models/WebUser');
+const bcrypt = require('bcrypt');
 
 app.set('view engine', 'ejs');
 
@@ -23,7 +25,7 @@ app.use(
 );
 
 function requireLogin(req, res, next) {
-  if (req.session.loggedIn) {
+  if (req.session && req.session.userId) {
     next();
   } else {
     res.redirect('/login');
@@ -38,11 +40,12 @@ function startWebsite(client) {
   app.get('/login', (req, res) => {
     res.render('login');
   });
-  app.post('/login', (req, res) => {
+  app.post('/login', async (req, res) => {
     const submittedPassword = req.body.password;
-
-    if (submittedPassword === ADMIN_PASSWORD) {
-      req.session.loggedIn = true;
+    const user = await WebUser.findOne({ name });
+    if (user && (await bcrypt.compare(submittedPassword, user.password))) {
+      req.session.userId = user._id;
+      req.session.userName = user.name;
       res.redirect('/');
     } else {
       res.render('login', { error: 'Falsches Passwort!' });
@@ -55,9 +58,9 @@ function startWebsite(client) {
 
   //geschützte routen
   app.get('/', requireLogin, (req, res) => {
-    res.render('index', {
-      botStatus: 'Test-Modus aktiv',
-    });
+    const message = req.session.message || null;
+    req.session.message = null;
+    res.render('index', { message: null });
   });
   app.use('/rechner', requireLogin, calculatorRouter);
   app.use('/kanaele', requireLogin, channelsRouter);

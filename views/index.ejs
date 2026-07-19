@@ -6,11 +6,12 @@
   </head>
   <body>
     <h1>Willkommen im Control Panel!</h1>
-    <p>
-      Der aktuelle Status ist: <strong><%= botStatus %></strong>
-    </p>
+    <% if (message) { %>
+    <div class="error-box">
+      <strong><%= message %></strong>
+    </div>
+    <% } %>
     <br /><br />
-    <!-- Ein simpler Link, den man mit CSS später wie einen echten Button aussehen lassen kann -->
     <a
       href="/rechner"
       style="

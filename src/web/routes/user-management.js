@@ -6,6 +6,10 @@ const saltRounds = 10;
 
 router.get('/', async (req, res) => {
   try {
+    const user = await WebUser.findById(req.session.userId);
+    if (!user || user.guildIds !== 'all') {
+      req.session.message = 'Du bist dazu nicht berechtigt!';
+    }
     const allUsers = await WebUser.find({}).select('-password -__v').lean();
     res.render('user-management', {
       allUsers: allUsers,
