@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const WebUser = require('../../models/WebUser');
+const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 router.get('/', async (req, res) => {
@@ -27,7 +28,7 @@ router.post('/user-management/delete', async (req, res) => {
 
 router.post('/user-management/create', async (req, res) => {
   const { name, password, serverids } = req.body;
-  const hashedPassword = ''; //await bcrypt.hash(password, saltRounds);
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
   const newUser = new WebUser({
     name: name,
     password: hashedPassword,
