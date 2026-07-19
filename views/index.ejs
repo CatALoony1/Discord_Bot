@@ -6,7 +6,9 @@
   </head>
   <body>
     <h1>Willkommen im Control Panel!</h1>
-    <p>Der aktuelle Status ist: <strong><%= botStatus %></strong></p>
+    <p>
+      Der aktuelle Status ist: <strong><%= botStatus %></strong>
+    </p>
     <br /><br />
     <!-- Ein simpler Link, den man mit CSS später wie einen echten Button aussehen lassen kann -->
     <a
@@ -35,7 +37,18 @@
       href="/read-database"
       style="
         padding: 10px;
-        background-color: #23a125;
+        background-color: #a12597;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      "
+      >Datenbank auslesen</a
+    >
+    <a
+      href="/user-management"
+      style="
+        padding: 10px;
+        background-color: #bd6f16;
         color: white;
         text-decoration: none;
         border-radius: 5px;

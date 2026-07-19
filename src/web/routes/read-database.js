@@ -9,7 +9,11 @@ router.get('/', async (req, res) => {
       id: guild.id,
       name: guild.name,
     }));
-    const alleModelle = mongoose.modelNames();
+    const alleModelleUngefiltert = mongoose.modelNames();
+    const filter = ['WebUser'];
+    const alleModelle = alleModelleUngefiltert.filter(
+      (name) => !filter.includes(name),
+    );
     const selectedServerId = req.query.serverId;
     const selectedTable = req.query.table;
     let alleDaten = [];
