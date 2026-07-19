@@ -7,9 +7,7 @@
   <body>
     <h1>Willkommen im Control Panel!</h1>
     <% if (message) { %>
-    <div class="error-box">
-      <strong><%= message %></strong>
-    </div>
+    <p><%= message %></p>
     <% } %>
     <br /><br />
     <a
@@ -55,6 +53,17 @@
         border-radius: 5px;
       "
       >User Management</a
+    >
+    <a
+      href="/logout"
+      style="
+        padding: 10px;
+        background-color: #d30909;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      "
+      >Logout</a
     >
   </body>
 </html>
