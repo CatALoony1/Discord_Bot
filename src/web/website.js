@@ -45,7 +45,7 @@ function startWebsite(client) {
     const user = await WebUser.findOne({ name });
     if (user && (await bcrypt.compare(submittedPassword, user.password))) {
       req.session.userId = user._id;
-      req.session.userName = user.name;
+      req.session.userName = user.user;
       res.redirect('/');
     } else {
       res.render('login', { error: 'Falsches Passwort!' });
