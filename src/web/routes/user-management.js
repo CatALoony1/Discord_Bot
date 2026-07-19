@@ -6,8 +6,7 @@ const saltRounds = 10;
 
 router.get('/', async (req, res) => {
   try {
-    const allUsers = WebUser.find({}).select('-password -__v').lean();
-    console.log(allUsers);
+    const allUsers = await WebUser.find({}).select('-password -__v').lean();
     res.render('user-management', {
       allUsers: allUsers,
       error: null,
