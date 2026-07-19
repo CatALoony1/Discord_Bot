@@ -20,13 +20,13 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/user-management/delete', async (req, res) => {
+router.post('/delete', async (req, res) => {
   const { userId } = req.body;
   await WebUser.findByIdAndDelete(userId);
   res.redirect('/user-management');
 });
 
-router.post('/user-management/create', async (req, res) => {
+router.post('/create', async (req, res) => {
   const { name, password, serverids } = req.body;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   const newUser = new WebUser({
