@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const calculatorRouter = require('./routes/calculator');
 const channelsRouter = require('./routes/channels');
+const readDatabaseRouter = require('./routes/read-database');
 const app = express();
 const port = 3000;
 const ADMIN_PASSWORD = process.env.WEB_PWD;
@@ -59,6 +60,7 @@ function startWebsite(client) {
   });
   app.use('/rechner', requireLogin, calculatorRouter);
   app.use('/kanaele', requireLogin, channelsRouter);
+  app.use('/read-database', requireLogin, readDatabaseRouter);
 
   app.listen(port, () => {
     console.log(`[Dashboard] Webserver läuft auf http://localhost:${port}`);
