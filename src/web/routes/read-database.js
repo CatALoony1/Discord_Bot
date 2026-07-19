@@ -12,17 +12,17 @@ router.get('/', async (req, res) => {
     const alleModelle = mongoose.modelNames();
     const selectedServerId = req.query.serverId;
     const selectedTable = req.query.table;
-    let channels = [];
+    let alleDaten = [];
     if (selectedServerId && selectedTable) {
-      const dbModel = mongoose.models[selectedTable];
-      if (!dbModel) {
+      const DbModel = mongoose.models[selectedTable];
+      if (!DbModel) {
         return res.status(404).json({ fehler: 'Tabelle existirt nicht.' });
       }
       const query = {};
-      if (dbModel.schema.paths['guildId']) {
+      if (DbModel.schema.paths['guildId']) {
         query.guildId = selectedServerId;
       }
-      const alleDaten = await DbModel.find(suchFilter).lean();
+      alleDaten = await DbModel.find(query).lean();
     }
     res.render('read-database', {
       servers: servers,
@@ -35,11 +35,11 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.log(error);
     res.render('read-database', {
-      servers: servers,
-      selectedServerId: selectedServerId,
+      servers: null,
+      selectedServerId: null,
       alleDaten: null,
-      tabellen: alleModelle,
-      selectedTable: selectedTable,
+      tabellen: null,
+      selectedTable: null,
       error: error.message,
     });
   }
