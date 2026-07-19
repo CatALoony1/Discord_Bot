@@ -61,7 +61,7 @@ function startWebsite(client) {
   app.get('/', requireLogin, (req, res) => {
     const message = req.session.message || null;
     req.session.message = null;
-    res.render('index', { message: null });
+    res.render('index', { message: message });
   });
   app.use('/rechner', requireLogin, calculatorRouter);
   app.use('/kanaele', requireLogin, channelsRouter);
