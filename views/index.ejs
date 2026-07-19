@@ -7,9 +7,18 @@
   <body>
     <h1>Willkommen im Control Panel!</h1>
     <% if (message) { %>
-    <div class="error-box">
-      <strong><%= message %></strong>
-    </div>
+    <p id="flash-message" style="color: red; font-weight: bold">
+      <%= message %>
+    </p>
+
+    <script>
+      setTimeout(function () {
+        const msgElement = document.getElementById('flash-message');
+        if (msgElement) {
+          msgElement.style.display = 'none';
+        }
+      }, 4000);
+    </script>
     <% } %>
     <br /><br />
     <a
