@@ -5,7 +5,7 @@ const calculatorRouter = require('./routes/calculator');
 const channelsRouter = require('./routes/channels');
 const app = express();
 const port = 3000;
-const ADMIN_PASSWORD = process.env.PWD;
+const ADMIN_PASSWORD = process.env.WEB_PWD;
 
 app.set('view engine', 'ejs');
 
