@@ -42,7 +42,8 @@ function startWebsite(client) {
   });
   app.post('/login', async (req, res) => {
     const submittedPassword = req.body.password;
-    const user = await WebUser.findOne({ name });
+    const submittedName = req.body.user;
+    const user = await WebUser.findOne({ submittedName });
     if (user && (await bcrypt.compare(submittedPassword, user.password))) {
       req.session.userId = user._id;
       req.session.userName = user.user;
