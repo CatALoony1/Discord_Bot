@@ -25,8 +25,8 @@
       <tbody>
         <% allUsers.forEach(function(user) { %>
         <tr>
-          <td><%= user.id %></td>
-          <td><%= user.name %></td>
+          <td><%= user._id %></td>
+          <td><%= user.user %></td>
           <td><%= user.guildIds %></td>
           <td>
             <form
