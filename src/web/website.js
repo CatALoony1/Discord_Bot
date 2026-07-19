@@ -30,7 +30,7 @@ function requireLogin(req, res, next) {
 
 function startWebsite(client) {
   app.use((req, res, next) => {
-    req.discordClient = discordClient;
+    req.discordClient = client;
     next();
   });
   app.get('/login', (req, res) => {
