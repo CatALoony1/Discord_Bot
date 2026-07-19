@@ -35,14 +35,17 @@
 
     <br><hr><br>
 
-    <!-- Wenn ein Server ausgewählt wurde und Kanäle vorhanden sind, zeigen wir die Tabelle -->
-    <% if (selectedServerId && selectedTable && alleDaten.length > 0) { %>
+<% if (selectedServerId && selectedTable && alleDaten.length > 0) { %>
     <h2>Gefundene Einträge:</h2>
     <table border="1" cellpadding="5" style="border-collapse: collapse;">
         <thead>
             <tr>
                 <% 
-                   const spalten = Object.keys(alleDaten[0]); 
+                   let alleKeys = new Set();
+                   alleDaten.forEach(item => {
+                       Object.keys(item).forEach(key => alleKeys.add(key));
+                   });
+                   const spalten = Array.from(alleKeys).filter(k => k !== '_id' && k !== '__v');
                 %>
                 <% spalten.forEach(key => { %>
                     <th><%= key %></th>
@@ -57,7 +60,7 @@
                             <% 
                                const value = item[key];
                             %>
-                            <%= typeof value === 'object' && value !== null ? JSON.stringify(value) : value %>
+                            <%= (value === undefined || value === null) ? '' : (typeof value === 'object' ? JSON.stringify(value) : value) %>
                         </td>
                     <% }); %>
                 </tr>
