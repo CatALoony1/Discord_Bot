@@ -5,7 +5,7 @@ const saltRounds = 10;
 const WebUser = require('../../models/WebUser');
 
 router.get('/', (req, res) => {
-  res.render('jobs', {
+  res.render('change-password', {
     error: null,
     message: null,
   });
@@ -20,25 +20,25 @@ router.post('/change', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         user.password = hashedPassword;
         user.save();
-        res.render('jobs', {
+        res.render('change-password', {
           error: null,
           messasge: 'Passwort erfolgreich geändert!',
         });
       } else {
-        res.render('jobs', {
+        res.render('change-password', {
           error: 'Falsches altes Passwort!',
           message: null,
         });
       }
     } catch (error) {
       console.log(error);
-      res.render('jobs', {
+      res.render('change-password', {
         error: error.message,
         message: null,
       });
     }
   } else {
-    res.render('jobs', {
+    res.render('change-password', {
       error: 'Passwörter stimmen nicht überein.',
       message: null,
     });
