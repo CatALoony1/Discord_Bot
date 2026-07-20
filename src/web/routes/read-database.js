@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 
 router.get('/', async (req, res) => {
   try {
+    if (req.session.guildIds !== 'all') {
+      req.session.message = 'Du bist dazu nicht berechtigt!';
+      return res.redirect('/');
+    }
     const client = req.discordClient;
     const servers = client.guilds.cache.map((guild) => ({
       id: guild.id,

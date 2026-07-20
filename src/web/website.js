@@ -5,9 +5,9 @@ const calculatorRouter = require('./routes/calculator');
 const channelsRouter = require('./routes/channels');
 const readDatabaseRouter = require('./routes/read-database');
 const userManagement = require('./routes/user-management');
+const jobs = require('./routes/jobs');
 const app = express();
 const port = 3000;
-const ADMIN_PASSWORD = process.env.WEB_PWD;
 const WebUser = require('../models/WebUser');
 const bcrypt = require('bcrypt');
 
@@ -62,12 +62,13 @@ function startWebsite(client) {
   app.get('/', requireLogin, (req, res) => {
     const message = req.session.message || null;
     req.session.message = null;
-    res.render('index', { message: message, guildIds: guildIds });
+    res.render('index', { message: message, guildIds: req.session.guildIds });
   });
   app.use('/rechner', requireLogin, calculatorRouter);
   app.use('/kanaele', requireLogin, channelsRouter);
   app.use('/read-database', requireLogin, readDatabaseRouter);
   app.use('/user-management', requireLogin, userManagement);
+  app.use('/jobs', requireLogin, jobs);
 
   app.listen(port, () => {
     console.log(`[Dashboard] Webserver läuft auf http://localhost:${port}`);
