@@ -22,7 +22,7 @@ router.post('/change', async (req, res) => {
         user.save();
         res.render('change-password', {
           error: null,
-          messasge: 'Passwort erfolgreich geändert!',
+          message: 'Passwort erfolgreich geändert!',
         });
       } else {
         res.render('change-password', {
