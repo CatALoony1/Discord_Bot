@@ -8,6 +8,7 @@ router.get('/', (req, res) => {
   res.render('change-password', {
     error: null,
     message: null,
+    initial: req.session.initialPWD,
   });
 });
 
@@ -26,11 +27,13 @@ router.post('/change', async (req, res) => {
         res.render('change-password', {
           error: null,
           message: 'Passwort erfolgreich geändert!',
+          initial: req.session.initialPWD,
         });
       } else {
         res.render('change-password', {
           error: 'Falsches altes Passwort!',
           message: null,
+          initial: req.session.initialPWD,
         });
       }
     } catch (error) {
@@ -38,12 +41,14 @@ router.post('/change', async (req, res) => {
       res.render('change-password', {
         error: error.message,
         message: null,
+        initial: req.session.initialPWD,
       });
     }
   } else {
     res.render('change-password', {
       error: 'Passwörter stimmen nicht überein.',
       message: null,
+      initial: req.session.initialPWD,
     });
   }
 });

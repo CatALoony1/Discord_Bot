@@ -26,7 +26,9 @@ app.use(
 );
 
 function requireLogin(req, res, next) {
-  if (req.session && req.session.userId) {
+  if (req.path !== '/change-password' && req.session.initialPWD) {
+    res.redirect('/change-password');
+  } else if (req.session && req.session.userId) {
     next();
   } else {
     res.redirect('/login');
@@ -49,6 +51,7 @@ function startWebsite(client) {
       req.session.userId = user._id;
       req.session.userName = user.user;
       req.session.guildIds = user.guildIds;
+      req.session.initialPWD = user.initialPWD;
       res.redirect('/');
     } else {
       res.render('login', { error: 'Falsches Passwort!' });
