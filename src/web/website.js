@@ -83,7 +83,7 @@ function startWebsite(client) {
   app.use('/change-password', requireLogin, changePassword);
   app.use('/user-activity', requireLogin, userActivity);
 
-  app.get('*', (req, res) => {
+  app.get(/(.*)/, (req, res) => {
     res.redirect('/');
   });
   app.listen(port, () => {
