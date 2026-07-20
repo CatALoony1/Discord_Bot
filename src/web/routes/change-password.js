@@ -15,32 +15,40 @@ router.get('/', (req, res) => {
 router.post('/change', async (req, res) => {
   const { oldpassword, password, confirm_password } = req.body;
   if (password === confirm_password) {
-    try {
-      const user = await WebUser.findById(req.session.userId);
-      if (user && (await bcrypt.compare(oldpassword, user.password))) {
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-        user.password = hashedPassword;
-        if (user.initialPWD) {
-          user.initialPWD = false;
-          req.session.initialPWD = false;
+    if (oldpassword !== password) {
+      try {
+        const user = await WebUser.findById(req.session.userId);
+        if (user && (await bcrypt.compare(oldpassword, user.password))) {
+          const hashedPassword = await bcrypt.hash(password, saltRounds);
+          user.password = hashedPassword;
+          if (user.initialPWD) {
+            user.initialPWD = false;
+            req.session.initialPWD = false;
+          }
+          user.save();
+          res.render('change-password', {
+            error: null,
+            message: 'Passwort erfolgreich geändert!',
+            initial: req.session.initialPWD,
+          });
+        } else {
+          res.render('change-password', {
+            error: 'Falsches altes Passwort!',
+            message: null,
+            initial: req.session.initialPWD,
+          });
         }
-        user.save();
+      } catch (error) {
+        console.log(error);
         res.render('change-password', {
-          error: null,
-          message: 'Passwort erfolgreich geändert!',
-          initial: req.session.initialPWD,
-        });
-      } else {
-        res.render('change-password', {
-          error: 'Falsches altes Passwort!',
+          error: error.message,
           message: null,
           initial: req.session.initialPWD,
         });
       }
-    } catch (error) {
-      console.log(error);
+    } else {
       res.render('change-password', {
-        error: error.message,
+        error: 'Neues Passwort darf nicht das alte sein.',
         message: null,
         initial: req.session.initialPWD,
       });
