@@ -47,6 +47,7 @@ function startWebsite(client) {
     if (user && (await bcrypt.compare(submittedPassword, user.password))) {
       req.session.userId = user._id;
       req.session.userName = user.user;
+      req.session.guildIds = user.guildIds;
       res.redirect('/');
     } else {
       res.render('login', { error: 'Falsches Passwort!' });
@@ -61,7 +62,7 @@ function startWebsite(client) {
   app.get('/', requireLogin, (req, res) => {
     const message = req.session.message || null;
     req.session.message = null;
-    res.render('index', { message: message });
+    res.render('index', { message: message, guildIds: guildIds });
   });
   app.use('/rechner', requireLogin, calculatorRouter);
   app.use('/kanaele', requireLogin, channelsRouter);

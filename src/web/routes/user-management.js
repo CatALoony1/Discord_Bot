@@ -6,8 +6,7 @@ const saltRounds = 10;
 
 router.get('/', async (req, res) => {
   try {
-    const user = await WebUser.findById(req.session.userId);
-    if (!user || user.guildIds !== 'all') {
+    if (req.session.guildIds !== 'all') {
       req.session.message = 'Du bist dazu nicht berechtigt!';
       return res.redirect('/');
     }
