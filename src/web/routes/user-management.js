@@ -31,15 +31,23 @@ router.post('/delete', async (req, res) => {
 });
 
 router.post('/create', async (req, res) => {
-  const { name, password, serverids } = req.body;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  const newUser = new WebUser({
-    user: name,
-    password: hashedPassword,
-    guildIds: serverids,
-  });
-  await newUser.save();
-  res.redirect('/user-management');
+  try {
+    const { name, password, serverids } = req.body;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const newUser = new WebUser({
+      user: name,
+      password: hashedPassword,
+      guildIds: serverids,
+    });
+    await newUser.save();
+    res.redirect('/user-management');
+  } catch (error) {
+    console.log(error);
+    res.render('user-management', {
+      allUsers: null,
+      error: error.message,
+    });
+  }
 });
 
 module.exports = router;
