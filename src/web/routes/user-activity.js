@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Level = require('../../models/Level');
+const Config = require('../../models/Config');
 
 router.get('/', async (req, res) => {
   const client = req.discordClient;
@@ -16,14 +17,21 @@ router.get('/', async (req, res) => {
   }
   const selectedServerId = req.query.serverId;
   let users = [];
+  let away = '';
   if (
     selectedServerId &&
     (allowedGuilds.includes(selectedServerId) || allowedGuilds === 'all')
   ) {
+    const awayUsers = await Config.findOne({
+      guildId: selectedServerId,
+      key: 'away',
+    });
+    if (awayUsers && awayUsers.value) {
+      away = value;
+    }
     const allUsers = await Level.find({ guildId: selectedServerId }).lean();
     if (allUsers) {
       users = allUsers.map((user) => ({
-        id: user.userId,
         name: user.userName,
         lastMessage: getDaysAgo(user.lastMessage),
         messages: user.messages,
@@ -35,7 +43,56 @@ router.get('/', async (req, res) => {
     servers: servers,
     selectedServerId: selectedServerId,
     users: users,
+    away: away,
   });
+});
+
+router.post('/away', async (req, res) => {
+  const { username } = req.body;
+  const selectedServerId = req.query.serverId;
+  const awayUsers = await Config.findOne({
+    guildId: selectedServerId,
+    key: 'away',
+  });
+  if (awayUsers && awayUsers.value) {
+    awayUsers.value = `${awayUsers.value},${username}`;
+    await awayUsers.save();
+  } else if (awayUsers) {
+    awayUsers.value = `${username}`;
+    await awayUsers.save();
+  } else {
+    const newUser = new Config({
+      guildId: selectedServerId,
+      key: 'away',
+      value: username,
+    });
+    await newUser.save();
+  }
+  res.redirect('/user-activity');
+});
+
+router.post('/back', async (req, res) => {
+  const { username } = req.body;
+  const selectedServerId = req.query.serverId;
+  const awayUsers = await Config.findOne({
+    guildId: selectedServerId,
+    key: 'away',
+  });
+  if (awayUsers && awayUsers.value) {
+    let awayValue = awayUsers.value;
+    if (awayValue.includes(',')) {
+      if (awayValue.includes(`,${username}`)) {
+        awayValue = awayValue.replace(`,${username}`);
+      } else {
+        awayValue = awayValue.replace(`${username},`);
+      }
+    } else {
+      awayValue = '';
+    }
+    awayUsers.value = awayValue;
+    await awayUsers.save();
+  }
+  res.redirect('/user-activity');
 });
 
 function getDaysAgo(userDate) {

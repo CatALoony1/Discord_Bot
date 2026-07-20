@@ -82,6 +82,7 @@ function startWebsite(client) {
   app.use('/jobs', requireLogin, jobs);
   app.use('/change-password', requireLogin, changePassword);
   app.use('/user-activity', requireLogin, userActivity);
+
   app.get('*', (req, res) => {
     res.redirect('/');
   });

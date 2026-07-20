@@ -11,7 +11,7 @@
       <label for="serverId">Wähle einen Server:</label>
       <select name="serverId" id="serverId">
         <option value="">-- Bitte wählen --</option>
-        <% servers.forEach(function(server) { %>
+                <% servers.forEach(function(server) { %>
             <option value="<%= server.id %>" <%= server.id === selectedServerId ? 'selected' : '' %>>
                 <%= server.name %>
             </option>
@@ -26,7 +26,12 @@
     <br />
     <% if (selectedServerId && users.length > 0) { %>
     <h2>Gefundene User:</h2>
-    <table border="1" cellpadding="5" style="border-collapse: collapse" id="sortableTable">
+    <table
+      border="1"
+      cellpadding="5"
+      style="border-collapse: collapse"
+      id="sortableTable"
+    >
       <thead>
         <tr>
           <th onclick="sortTable(0)">Username</th>
@@ -45,41 +50,55 @@
           <td><%= user.messages %></td>
           <td><%= user.voiceTime %></td>
           <td><%= user.lastMessage %></td>
-          <td></td>
+          <% if (away.includes(user.name)) { %>
+          <form action="/user-activity/back" method="POST" style="display: inline">
+            <input type="hidden" name="username" value="<%= user.name %>" />
+            <button type="submit">
+              Abwesenheitsprüfung aktivieren
+            </button>
+          </form>
+          <% } else { %>
+          <form action="/user-activity/away" method="POST" style="display: inline">
+            <input type="hidden" name="username" value="<%= user.name %>" />
+            <button type="submit">
+              Abwesenheitsprüfung deaktivieren
+            </button>
+          </form>
+          <% } %>
         </tr>
         <% }); %>
       </tbody>
     </table>
     <% } else if (selectedServerId) { %>
-    <p>
-      Auf diesem Server gibt es keine User (oder der Bot sieht sie nicht).
-    </p>
+    <p>Auf diesem Server gibt es keine User (oder der Bot sieht sie nicht).</p>
     <% } %>
 
     <br /><br />
     <a href="/">Zurück zur Startseite</a>
     <script>
-  function sortTable(columnIndex) {
-    const table = document.getElementById("sortableTable");
-    const tbody = table.querySelector("tbody");
-    const rows = Array.from(tbody.querySelectorAll("tr"));
-    const isAscending = table.dataset.sortCol == columnIndex && table.dataset.sortOrder === "asc";
-    rows.sort((rowA, rowB) => {
-      const cellA = rowA.children[columnIndex].innerText.trim();
-      const cellB = rowB.children[columnIndex].innerText.trim();
-      const numA = parseFloat(cellA);
-      const numB = parseFloat(cellB);
-      if (!isNaN(numA) && !isNaN(numB)) {
-        return isAscending ? numB - numA : numA - numB;
+      function sortTable(columnIndex) {
+        const table = document.getElementById('sortableTable');
+        const tbody = table.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const isAscending =
+          table.dataset.sortCol == columnIndex &&
+          table.dataset.sortOrder === 'asc';
+        rows.sort((rowA, rowB) => {
+          const cellA = rowA.children[columnIndex].innerText.trim();
+          const cellB = rowB.children[columnIndex].innerText.trim();
+          const numA = parseFloat(cellA);
+          const numB = parseFloat(cellB);
+          if (!isNaN(numA) && !isNaN(numB)) {
+            return isAscending ? numB - numA : numA - numB;
+          }
+          return isAscending
+            ? cellB.localeCompare(cellA)
+            : cellA.localeCompare(cellB);
+        });
+        rows.forEach((row) => tbody.appendChild(row));
+        table.dataset.sortCol = columnIndex;
+        table.dataset.sortOrder = isAscending ? 'desc' : 'asc';
       }
-      return isAscending 
-        ? cellB.localeCompare(cellA) 
-        : cellA.localeCompare(cellB);
-    });
-    rows.forEach(row => tbody.appendChild(row));
-    table.dataset.sortCol = columnIndex;
-    table.dataset.sortOrder = isAscending ? "desc" : "asc";
-  }
-</script>
+    </script>
   </body>
 </html>
