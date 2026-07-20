@@ -19,6 +19,9 @@ router.post('/change', async (req, res) => {
       if (user && (await bcrypt.compare(oldpassword, user.password))) {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         user.password = hashedPassword;
+        if (user.initialPWD) {
+          user.initialPWD = false;
+        }
         user.save();
         res.render('change-password', {
           error: null,

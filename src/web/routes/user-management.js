@@ -38,6 +38,7 @@ router.post('/create', async (req, res) => {
       user: name,
       password: hashedPassword,
       guildIds: serverids,
+      initialPWD: true,
     });
     await newUser.save();
     res.redirect('/user-management');

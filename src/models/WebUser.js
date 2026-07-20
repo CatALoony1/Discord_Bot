@@ -13,6 +13,10 @@ const webUserSchema = new Schema({
     type: String,
     required: true,
   },
+  initialPWD: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 module.exports = model('WebUser', webUserSchema);
