@@ -6,6 +6,7 @@ const channelsRouter = require('./routes/channels');
 const readDatabaseRouter = require('./routes/read-database');
 const userManagement = require('./routes/user-management');
 const changePassword = require('./routes/change-password');
+const userActivity = require('./routes/user-activity');
 const jobs = require('./routes/jobs');
 const app = express();
 const port = 3000;
@@ -80,6 +81,7 @@ function startWebsite(client) {
   app.use('/user-management', requireLogin, userManagement);
   app.use('/jobs', requireLogin, jobs);
   app.use('/change-password', requireLogin, changePassword);
+  app.use('/user-activity', requireLogin, userActivity);
 
   app.listen(port, () => {
     console.log(`[Dashboard] Webserver läuft auf http://localhost:${port}`);
