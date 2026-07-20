@@ -50,8 +50,10 @@
           <td><%= user.messages %></td>
           <td><%= user.voiceTime %></td>
           <td><%= user.lastMessage %></td>
-          <% if (away.includes(user.name)) { %>
+          <% const awayList = away ? away.split(',').map(name => name.trim()) : []; %>
+          <% if (awayList.includes(user.name)) { %>
           <td><form action="/user-activity/back" method="POST" style="display: inline">
+            <input type="hidden" name="serverId" value="<%= selectedServerId %>" />
             <input type="hidden" name="username" value="<%= user.name %>" />
             <button type="submit">
               Abwesenheitsprüfung aktivieren
@@ -59,6 +61,7 @@
           </form></td>
           <% } else { %>
           <td><form action="/user-activity/away" method="POST" style="display: inline">
+            <input type="hidden" name="serverId" value="<%= selectedServerId %>" />
             <input type="hidden" name="username" value="<%= user.name %>" />
             <button type="submit">
               Abwesenheitsprüfung deaktivieren

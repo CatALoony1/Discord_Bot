@@ -18,10 +18,14 @@ router.get('/', async (req, res) => {
   const selectedServerId = req.query.serverId;
   let users = [];
   let away = '';
-  if (
-    selectedServerId &&
-    (allowedGuilds.includes(selectedServerId) || allowedGuilds === 'all')
-  ) {
+  const allowedIds =
+    allowedGuilds && allowedGuilds !== 'all'
+      ? allowedGuilds.split(',').map((id) => id.trim())
+      : [];
+
+  const isAllowed =
+    allowedGuilds === 'all' || allowedIds.includes(selectedServerId);
+  if (selectedServerId && isAllowed) {
     const awayUsers = await Config.findOne({
       guildId: selectedServerId,
       key: 'away',
@@ -48,10 +52,9 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/away', async (req, res) => {
-  const { username } = req.body;
-  const selectedServerId = req.query.serverId;
+  const { username, serverId } = req.body;
   const awayUsers = await Config.findOne({
-    guildId: selectedServerId,
+    guildId: serverId,
     key: 'away',
   });
   if (awayUsers && awayUsers.value) {
@@ -62,20 +65,22 @@ router.post('/away', async (req, res) => {
     await awayUsers.save();
   } else {
     const newUser = new Config({
-      guildId: selectedServerId,
+      guildId: serverId,
       key: 'away',
       value: username,
     });
     await newUser.save();
   }
-  res.redirect('/user-activity');
+  const targetUrl = serverId
+    ? `/user-activity?serverId=${serverId}`
+    : '/user-activity';
+  return res.redirect(targetUrl);
 });
 
 router.post('/back', async (req, res) => {
-  const { username } = req.body;
-  const selectedServerId = req.query.serverId;
+  const { username, serverId } = req.body;
   const awayUsers = await Config.findOne({
-    guildId: selectedServerId,
+    guildId: serverId,
     key: 'away',
   });
   if (awayUsers && awayUsers.value) {
@@ -92,7 +97,10 @@ router.post('/back', async (req, res) => {
     awayUsers.value = awayValue;
     await awayUsers.save();
   }
-  res.redirect('/user-activity');
+  const targetUrl = serverId
+    ? `/user-activity?serverId=${serverId}`
+    : '/user-activity';
+  return res.redirect(targetUrl);
 });
 
 function getDaysAgo(userDate) {
