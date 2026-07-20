@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
       key: 'away',
     });
     if (awayUsers && awayUsers.value) {
-      away = value;
+      away = awayUsers.value;
     }
     const allUsers = await Level.find({ guildId: selectedServerId }).lean();
     if (allUsers) {
