@@ -1,22 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const jobMap = {
-  bumpReminderJob: require('../../jobs/cronJob_bumpReminder'),
-  checkBumperRoleJob: require('../../jobs/cronJob_checkBumperRole'),
-  checkInactiveJob: require('../../jobs/cronJob_checkInactive'),
-  customStatusJob: require('../../jobs/cronJob_customStatus'),
-  geburtstagJob: require('../../jobs/cronJob_geburtstag'),
-  monthlyXPJob: require('../../jobs/cronJob_monthlyXP'),
-  newYearJob: require('../../jobs/cronJob_newYear'),
-  quizQuestionJob: require('../../jobs/cronJob_quizQuestion'),
-  quizStatsJob: require('../../jobs/cronJob_quizStats'),
-  renameLogFileJob: require('../../jobs/cronJob_renameLogFile'),
-  voiceXPJob: require('../../jobs/cronJob_voiceXp'),
-  missingXpJob: require('../../jobs/cronJob_checkMissingXP'),
-  checkNewAnimalsJob: require('../../jobs/checkNewAnimals'),
-  zinsenJob: require('../../jobs/cronJob_zinsen'),
-  checkActiveItemsJob: require('../../jobs/cronJob_checkActiveItems'),
-  checkVoiceChannelsJob: require('../../jobs/cronJob_checkVoicechannels'),
+  cronJob_bumpReminder: require('../../jobs/cronJob_bumpReminder'),
+  cronJob_checkBumperRole: require('../../jobs/cronJob_checkBumperRole'),
+  cronJob_checkInactive: require('../../jobs/cronJob_checkInactive'),
+  cronJob_customStatus: require('../../jobs/cronJob_customStatus'),
+  cronJob_geburtstag: require('../../jobs/cronJob_geburtstag'),
+  cronJob_monthlyXP: require('../../jobs/cronJob_monthlyXP'),
+  cronJob_newYear: require('../../jobs/cronJob_newYear'),
+  cronJob_quizQuestion: require('../../jobs/cronJob_quizQuestion'),
+  cronJob_quizStats: require('../../jobs/cronJob_quizStats'),
+  cronJob_renameLogFile: require('../../jobs/cronJob_renameLogFile'),
+  cronJob_voiceXp: require('../../jobs/cronJob_voiceXp'),
+  cronJob_checkMissingXP: require('../../jobs/cronJob_checkMissingXP'),
+  checkNewAnimals: require('../../jobs/checkNewAnimals'),
+  cronJob_zinsen: require('../../jobs/cronJob_zinsen'),
+  cronJob_checkActiveItems: require('../../jobs/cronJob_checkActiveItems'),
+  cronJob_checkVoicechannels: require('../../jobs/cronJob_checkVoicechannels'),
 };
 
 router.get('/', (req, res) => {
@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
   }
   const alleJobs = Object.entries(jobMap).map(([jobname, modul]) => ({
     jobname: jobname,
-    status: modul.isRunning,
+    status: modul.isRunning(),
   }));
   res.render('jobs', {
     alleJobs: alleJobs,
