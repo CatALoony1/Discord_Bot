@@ -51,19 +51,19 @@
           <td><%= user.voiceTime %></td>
           <td><%= user.lastMessage %></td>
           <% if (away.includes(user.name)) { %>
-          <form action="/user-activity/back" method="POST" style="display: inline">
+          <td><form action="/user-activity/back" method="POST" style="display: inline">
             <input type="hidden" name="username" value="<%= user.name %>" />
             <button type="submit">
               Abwesenheitsprüfung aktivieren
             </button>
-          </form>
+          </form></td>
           <% } else { %>
-          <form action="/user-activity/away" method="POST" style="display: inline">
+          <td><form action="/user-activity/away" method="POST" style="display: inline">
             <input type="hidden" name="username" value="<%= user.name %>" />
             <button type="submit">
               Abwesenheitsprüfung deaktivieren
             </button>
-          </form>
+          </form></td>
           <% } %>
         </tr>
         <% }); %>
