@@ -16,7 +16,10 @@ router.get('/', async (req, res) => {
   }
   const selectedServerId = req.query.serverId;
   let users = [];
-  if (selectedServerId && allowedGuilds.includes(selectedServerId)) {
+  if (
+    selectedServerId &&
+    (allowedGuilds.includes(selectedServerId) || allowedGuilds === 'all')
+  ) {
     const allUsers = await Level.find({ guildId: selectedServerId }).lean();
     if (allUsers) {
       users = allUsers.map((user) => ({
