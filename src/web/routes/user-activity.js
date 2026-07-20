@@ -62,6 +62,7 @@ function getVoiceTime(duration) {
   } else {
     time = `${duration}m`;
   }
+  return time;
 }
 
 module.exports = router;
