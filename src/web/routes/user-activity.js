@@ -87,9 +87,9 @@ router.post('/back', async (req, res) => {
     let awayValue = awayUsers.value;
     if (awayValue.includes(',')) {
       if (awayValue.includes(`,${username}`)) {
-        awayValue = awayValue.replace(`,${username}`);
+        awayValue = awayValue.replace(`,${username}`, '');
       } else {
-        awayValue = awayValue.replace(`${username},`);
+        awayValue = awayValue.replace(`${username},`, '');
       }
     } else {
       awayValue = '';
