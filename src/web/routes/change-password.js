@@ -22,6 +22,7 @@ router.post('/change', async (req, res) => {
         user.password = hashedPassword;
         if (user.initialPWD) {
           user.initialPWD = false;
+          req.session.initialPWD = false;
         }
         user.save();
         res.render('change-password', {
