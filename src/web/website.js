@@ -26,13 +26,16 @@ app.use(
 );
 
 function requireLogin(req, res, next) {
-  if (req.path !== '/change-password' && req.session.initialPWD) {
-    res.redirect('/change-password');
-  } else if (req.session && req.session.userId) {
-    next();
-  } else {
-    res.redirect('/login');
+  if (!req.session || !req.session.userId) {
+    return res.redirect('/login');
   }
+  if (req.session.initialPWD) {
+    if (req.originalUrl.startsWith('/change-password')) {
+      return next();
+    }
+    return res.redirect('/change-password');
+  }
+  next();
 }
 
 function startWebsite(client) {
@@ -52,6 +55,9 @@ function startWebsite(client) {
       req.session.userName = user.user;
       req.session.guildIds = user.guildIds;
       req.session.initialPWD = user.initialPWD;
+      if (user.initialPWD) {
+        return res.redirect('/change-password');
+      }
       res.redirect('/');
     } else {
       res.render('login', { error: 'Falsches Passwort!' });
