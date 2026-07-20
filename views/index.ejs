@@ -44,17 +44,19 @@
       >Kanäle anzeigen</a
     >
     <a
-      href="/read-database"
+      href="/logout"
       style="
         padding: 10px;
-        background-color: #a12597;
+        background-color: #d30909;
         color: white;
         text-decoration: none;
         border-radius: 5px;
       "
-      >Datenbank auslesen</a
+      >Logout</a
     >
     <% if (guildIds === 'all') { %>
+    <br /><br />
+    <p>Admin Bereich</p>
     <a
       href="/user-management"
       style="
@@ -66,17 +68,17 @@
       "
       >User Management</a
     >
-    <% } %>
     <a
-      href="/logout"
+      href="/read-database"
       style="
         padding: 10px;
-        background-color: #d30909;
+        background-color: #a12597;
         color: white;
         text-decoration: none;
         border-radius: 5px;
       "
-      >Logout</a
+      >Datenbank auslesen</a
     >
+    <% } %>
   </body>
 </html>
