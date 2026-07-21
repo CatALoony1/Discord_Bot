@@ -1,5 +1,7 @@
 const fs = require('fs');
+const path = require('path');
 require('dotenv').config();
+
 const install_hook_to = function (obj) {
   if (obj.hook || obj.unhook) {
     throw new Error('Object already has properties hook and/or unhook');
@@ -9,32 +11,25 @@ const install_hook_to = function (obj) {
     let self = this,
       meth_ref;
 
-    // Make sure method exists
     if (
       Object.prototype.toString.call(self[_meth_name]) !== '[object Function]'
     ) {
       throw new Error('Invalid method: ' + _meth_name);
     }
 
-    // We should not hook a hook
     if (self.unhook.methods[_meth_name]) {
       throw new Error('Method already hooked: ' + _meth_name);
     }
 
-    // Reference default method
     meth_ref = self.unhook.methods[_meth_name] = self[_meth_name];
 
     self[_meth_name] = function () {
       const args = Array.prototype.slice.call(arguments);
 
-      // Our hook should take the same number of arguments
-      // as the original method so we must fill with undefined
-      // optional args not provided in the call
       while (args.length < meth_ref.length) {
         args.push(undefined);
       }
 
-      // Last argument is always original method call
       args.push(function () {
         const args = arguments;
 
@@ -66,38 +61,101 @@ const install_hook_to = function (obj) {
   obj.unhook.methods = {};
 };
 
+async function sendAlert(targetChannel, messageText, logFilePath) {
+  if (!targetChannel) return;
+
+  try {
+    const payload = { content: messageText };
+
+    if (fs.existsSync(logFilePath)) {
+      payload.files = [
+        {
+          attachment: logFilePath,
+          name: 'bot._log',
+        },
+      ];
+    }
+
+    await targetChannel.send(payload);
+  } catch (err) {
+    process.stderr.write(
+      `Fehler beim Senden der Discord-Alert-Nachricht: ${err.message}\n`,
+    );
+  }
+}
+
 module.exports = {
   run: async (client) => {
-    const stdout = process.stdout;
-    install_hook_to(stdout);
-    stdout.hook(
+    let targetChannel = null;
+    try {
+      if (process.env.LOG_ID) {
+        targetChannel = await client.channels.fetch(process.env.LOG_ID);
+      }
+    } catch (e) {
+      console.error('Konnte LOG_ID Channel nicht laden:', e.message);
+    }
+
+    const logFilePath = path.join(__dirname, '../../logs/bot._log');
+    const chatFilePath = path.join(__dirname, '../../logs/chat._log');
+
+    const logDir = path.dirname(logFilePath);
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir, { recursive: true });
+    }
+
+    const handleLogWrite = async function (string, isErrorStream = false) {
+      let d = new Date();
+      const timestamp = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}T${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')},${d.getMilliseconds()}`;
+
+      const formattedString = `${timestamp}|${string}`;
+
+      if (formattedString.includes('TESTJG')) {
+        fs.appendFile(
+          chatFilePath,
+          formattedString.replace('TESTJG', ''),
+          (err) => {
+            if (err) process.stderr.write(`ChatLog Error: ${err}\n`);
+          },
+        );
+      } else {
+        fs.appendFile(logFilePath, formattedString, (err) => {
+          if (err) process.stderr.write(`BotLog Error: ${err}\n`);
+        });
+
+        if (formattedString.includes('connect ECONNREFUSED')) {
+          await sendAlert(
+            targetChannel,
+            `🚨 **DB Connection ERROR** <@${process.env.ADMIN_ID}> please check DB`,
+            logFilePath,
+          );
+        } else if (
+          isErrorStream ||
+          formattedString.toLowerCase().includes('error') ||
+          formattedString.toLowerCase().includes('fatal')
+        ) {
+          await sendAlert(
+            targetChannel,
+            `⚠️ **ERROR DETECTED** <@${process.env.ADMIN_ID}> please check log`,
+            logFilePath,
+          );
+        }
+      }
+    };
+
+    install_hook_to(process.stdout);
+    process.stdout.hook(
       'write',
       async function (string) {
-        const targetChannel = await client.channels.fetch(process.env.LOG_ID);
-        let d = new Date();
-        string = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()},${d.getMilliseconds()}|${string}`;
-        if (string.includes('TESTJG')) {
-          await fs.appendFile(
-            './logs/chat._log',
-            string.replace('TESTJG', ''),
-            function (err) {
-              if (err) throw err;
-            },
-          );
-        } else {
-          await fs.appendFile('./logs/bot._log', string, function (err) {
-            if (err) throw err;
-          });
-          if (string.includes('connect ECONNREFUSED')) {
-            targetChannel.send(
-              `DB connection ERROR <@${process.env.ADMIN_ID}> please check DB`,
-            );
-          } else if (string.toLowerCase().includes('error')) {
-            targetChannel.send(
-              `ERROR <@${process.env.ADMIN_ID}> please check log`,
-            );
-          }
-        }
+        await handleLogWrite(string, false);
+      },
+      true,
+    );
+
+    install_hook_to(process.stderr);
+    process.stderr.hook(
+      'write',
+      async function (string) {
+        await handleLogWrite(string, true);
       },
       true,
     );
