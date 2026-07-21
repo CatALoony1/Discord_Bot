@@ -12,4 +12,4 @@ router.get('/', async (req, res) => {
 
   res.render('logs', { logData });
 });
-module.exports = router;
+//module.exports = router;
