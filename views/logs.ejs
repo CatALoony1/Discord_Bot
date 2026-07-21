@@ -15,15 +15,34 @@
         white-space: pre-wrap;
         word-break: break-all;
       }
+      .toolbar {
+        margin-bottom: 15px;
+      }
     </style>
   </head>
   <body>
     <h1>Bot Logs</h1>
+    <div class="toolbar">
+      <label for="logSelect">Log-Datei wählen: </label>
+      <select id="logSelect" onchange="changeLogFile(this.value)">
+        <% logFiles.forEach(function(file) { %>
+          <option value="<%= file %>" <%= file === selectedFile ? 'selected' : '' %>>
+            <%= file %>
+          </option>
+        <% }); %>
+      </select>
+    </div>
+
     <div class="log-container" id="logBox"><%= logData %></div>
+
     <script>
       const logBox = document.getElementById('logBox');
       logBox.scrollTop = logBox.scrollHeight;
+      function changeLogFile(filename) {
+        window.location.href = `/logs?file=${encodeURIComponent(filename)}`;
+      }
     </script>
+
     <br /><br />
     <a href="/">Zurück zur Startseite</a>
   </body>
