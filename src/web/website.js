@@ -7,6 +7,7 @@ const readDatabaseRouter = require('./routes/read-database');
 const userManagement = require('./routes/user-management');
 const changePassword = require('./routes/change-password');
 const userActivity = require('./routes/user-activity');
+const logs = require('./routes/logs');
 const jobs = require('./routes/jobs');
 const app = express();
 const port = 3000;
@@ -82,6 +83,7 @@ function startWebsite(client) {
   app.use('/jobs', requireLogin, jobs);
   app.use('/change-password', requireLogin, changePassword);
   app.use('/user-activity', requireLogin, userActivity);
+  app.use('/logs', requireLogin, logs);
 
   app.get(/(.*)/, (req, res) => {
     res.redirect('/');
