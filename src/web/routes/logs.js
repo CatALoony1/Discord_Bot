@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const router = express.Router();
 
-router.get('/logs', requireLogin, (req, res) => {
+router.get('/', async (req, res) => {
   const logPath = path.join(__dirname, '../../../logs/bot._log');
   let logData = 'Keine Log-Datei gefunden.';
   if (fs.existsSync(logPath)) {
