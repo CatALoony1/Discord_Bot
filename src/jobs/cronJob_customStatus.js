@@ -1,6 +1,5 @@
 const { ActivityType, Client } = require('discord.js');
 const cron = require('node-cron');
-require('dotenv').config();
 let status = [
   /*
   {

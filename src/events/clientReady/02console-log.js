@@ -5,15 +5,16 @@ module.exports = {
   run: async (client) => {
     console.log(`Logged in as ${client.user.tag}!`);
     try {
-      const guild = await client.guilds.cache.get(process.env.GUILD_ID);
-      const targetUser = await guild.members.fetch(process.env.ADMIN_ID);
-      targetUser.send(`Bot ist gestartet.`);
+      let targetUser = undefined;
+      let message = `Bot ist gestartet.\nDer Bot ist laut API auf ${guilds.size} Server(n):\n`;
       const guilds = await client.guilds.fetch();
-
-      targetUser.send(`Der Bot ist laut API auf ${guilds.size} Server(n):`);
       guilds.forEach((guild) => {
-        targetUser.send(`- ${guild.name} (ID: ${guild.id})`);
+        if(!targetUser){
+          targetUser = await guild.members.fetch(process.env.ADMIN_ID);
+        }
+        message = `${message}- ${guild.name} (ID: ${guild.id})`;
       });
+      targetUser.send(message);
     } catch (error) {
       console.log(error);
     }
