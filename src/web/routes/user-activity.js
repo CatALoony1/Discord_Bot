@@ -58,16 +58,13 @@ router.post('/away', async (req, res) => {
     key: 'away',
   });
   if (awayUsers && awayUsers.value) {
-    awayUsers.value = `${awayUsers.value},${username}`;
-    await awayUsers.save();
-  } else if (awayUsers) {
-    awayUsers.value = `${username}`;
+    awayUsers.value = `${awayUsers.value}${username},`;
     await awayUsers.save();
   } else {
     const newUser = new Config({
       guildId: serverId,
       key: 'away',
-      value: username,
+      value: `,${username},`,
     });
     await newUser.save();
   }
@@ -88,11 +85,9 @@ router.post('/back', async (req, res) => {
     if (awayValue.includes(',')) {
       if (awayValue.includes(`,${username}`)) {
         awayValue = awayValue.replace(`,${username}`, '');
-      } else {
-        awayValue = awayValue.replace(`${username},`, '');
       }
     } else {
-      awayValue = '';
+      awayValue = ',';
     }
     awayUsers.value = awayValue;
     await awayUsers.save();
