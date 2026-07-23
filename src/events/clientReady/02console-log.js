@@ -12,9 +12,13 @@ module.exports = {
         if (!targetUser) {
           targetUser = await guild.members.fetch(process.env.ADMIN_ID);
         }
+        console.log(targetUser);
         message = `${message}- ${guild.name} (ID: ${guild.id})`;
       });
-      targetUser.send(message);
+      if (targetUser) {
+        console.log(targetUser);
+        targetUser.send(message);
+      }
     } catch (error) {
       console.log(error);
     }
