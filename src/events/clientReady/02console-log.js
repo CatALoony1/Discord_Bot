@@ -8,8 +8,8 @@ module.exports = {
       let targetUser = undefined;
       let message = `Bot ist gestartet.\nDer Bot ist laut API auf ${guilds.size} Server(n):\n`;
       const guilds = await client.guilds.fetch();
-      guilds.forEach((guild) => {
-        if(!targetUser){
+      guilds.forEach(async (guild) => {
+        if (!targetUser) {
           targetUser = await guild.members.fetch(process.env.ADMIN_ID);
         }
         message = `${message}- ${guild.name} (ID: ${guild.id})`;
