@@ -41,7 +41,7 @@ function isRunning() {
 
 async function jobFunction(client) {
   console.log('Quiz started');
-  const guilds = await client.guilds.fetch();
+  const guilds = await client.guilds.cache;
   for (const guild of guilds) {
     try {
       const targetChannel = await client.channels.fetch(process.env.QUIZ_ID);

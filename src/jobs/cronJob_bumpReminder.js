@@ -12,7 +12,7 @@ function startJob(client) {
     return;
   }
   bumpReminderJob = cron.schedule('* * * * *', async function () {
-    const guilds = await client.guilds.fetch();
+    const guilds = await client.guilds.cache;
     for (const guild of guilds) {
       const guildId = guild.id;
       const query = {

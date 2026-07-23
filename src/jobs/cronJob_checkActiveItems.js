@@ -14,7 +14,7 @@ function startJob(client) {
     return;
   }
   checkActiveItemsJob = cron.schedule('*/5 * * * *', async function () {
-    const guilds = await client.guilds.fetch();
+    const guilds = await client.guilds.cache;
     for (const guild of guilds) {
       try {
         const activeItems = await ActiveItems.find({});

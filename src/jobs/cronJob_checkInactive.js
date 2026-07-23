@@ -16,7 +16,7 @@ function startJob(client) {
   checkInactiveJob = cron.schedule('0 1 * * *', async function () {
     // 1 Uhr
     console.log(`CheckInactive-Job started...`);
-    const guilds = await client.guilds.fetch();
+    const guilds = await client.guilds.cache;
     for (const guild of guilds) {
       try {
         const guildId = guild.id;

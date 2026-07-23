@@ -33,7 +33,7 @@ function isRunning() {
 }
 
 async function jobFunction(client) {
-  const guilds = await client.guilds.fetch();
+  const guilds = await client.guilds.cache;
   for (const guild of guilds) {
     const targetChannel = await client.channels.fetch(process.env.ALLGEMEIN_ID);
     const allLevels = await Level.find({

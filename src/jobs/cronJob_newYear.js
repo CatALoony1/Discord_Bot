@@ -9,7 +9,7 @@ function startJob(client) {
     return;
   }
   newYearJob = cron.schedule('0 0 1 1 *', async function () {
-    const guilds = await client.guilds.fetch();
+    const guilds = await client.guilds.cache;
     for (const guild of guilds) {
       const targetChannel = await client.channels.fetch(
         process.env.ALLGEMEIN_ID,

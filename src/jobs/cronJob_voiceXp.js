@@ -17,7 +17,7 @@ function startJob(client) {
   }
   voiceXpJob = cron.schedule('*/5 * * * *', async function () {
     console.log(`VoiceXP-Job started...`);
-    const guilds = await client.guilds.fetch();
+    const guilds = await client.guilds.cache;
     for (const guild of guilds) {
       const targetChannel = await client.channels.fetch(
         process.env.ALLGEMEIN_ID,

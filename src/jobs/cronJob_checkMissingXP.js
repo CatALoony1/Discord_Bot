@@ -11,7 +11,7 @@ function startJob(client) {
   }
   missingXpJob = cron.schedule('*/6 * * * *', async function () {
     console.log('Started checking for missing XP');
-    const guilds = await client.guilds.fetch();
+    const guilds = await client.guilds.cache;
     for (const guild of guilds) {
       const guildId = guild.id;
       try {

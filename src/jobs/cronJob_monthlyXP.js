@@ -11,7 +11,7 @@ function startJob(client) {
   }
   monthlyXpJob = cron.schedule('0 0 1 * *', async function () {
     console.log('Started deleting monthly XP');
-    const guilds = await client.guilds.fetch();
+    const guilds = await client.guilds.cache;
     for (const guild of guilds) {
       try {
         const fetchedLevel = await Level.find({

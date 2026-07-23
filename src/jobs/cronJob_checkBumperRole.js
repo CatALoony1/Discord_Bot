@@ -9,7 +9,7 @@ function startJob(client) {
     return;
   }
   checkBumperRoleJob = cron.schedule('*/5 * * * *', async function () {
-    const guilds = await client.guilds.fetch();
+    const guilds = await client.guilds.cache;
     for (const guild of guilds) {
       try {
         const allLevels = await Level.find({

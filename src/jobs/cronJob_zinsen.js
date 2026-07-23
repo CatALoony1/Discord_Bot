@@ -12,7 +12,7 @@ function startJob(client) {
   checkInactiveJob = cron.schedule('10 0 * * *', async function () {
     // 0:10 Uhr
     console.log(`CheckInactive-Job started...`);
-    const guilds = await client.guilds.fetch();
+    const guilds = await client.guilds.cache;
     for (const guild of guilds) {
       try {
         const bankkontenZinsen = await Bankkonten.find({
