@@ -8,9 +8,10 @@ const idUses = {
   QUIZ_ID: 'Channel für tägliche Quizzes und Quiz Statistik am Wochenende.',
   ADMIN_C_ID:
     'Channel für private Feedback Nachrichten von Nutzern sowie die Kontrolle von gekaufen Items und Quizfragen.',
-  KI_BOT: 'Rolle auf die die KI Reagieren soll',
+  AFK_ID: 'Voicechannel für Abwesende User, welcher keine XP gibt.',
   SPIELE_ID: 'Channel für Spiel Befehle und Galgenmännchen.',
   VCCREATION_ID: 'Voicechannel bei dessen beitritt ein neuer erstellt wird.',
+  KI_BOT: 'Rolle auf die die KI Reagieren soll',
   ADMIN_ROLE_ID:
     'Rolle die gepingt wird, wenn ein Nutzer bei der Rollenwahl angibt unter 18 zu sein.',
   MITGLIED_ROLE_ID:

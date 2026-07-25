@@ -77,8 +77,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-app.post(
-  '/change-channel-:chosenobj(allgemein|bye|log|bump|quiz|admin|spiele|vccreation)',
+router.post(
+  '/change-channel-:chosenobj(allgemein|bye|log|bump|quiz|admin|spiele|vccreation|afk)',
   async (req, res) => {
     const targetObj = req.params.chosenobj;
     const guildId = req.params.guildId;
@@ -116,6 +116,10 @@ app.post(
       case 'vccreation':
         channelId = req.body.vccreation;
         searchString = 'VCCREATION_ID';
+        break;
+      case 'afk':
+        channelId = req.body.afk;
+        searchString = 'AFK_ID';
         break;
       default:
         break;

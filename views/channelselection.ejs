@@ -167,6 +167,22 @@
             </form>
           </td>
         </tr>
+        <tr>
+          <td><%= uses.AKF_ID %></td>
+          <td>AFK_ID</td>
+          <td>
+            <form action="channelselection/select-channel-afk" method="POST">
+              <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+                <select name="afk" onchange="this.form.submit()">
+                  <% alleVoiceChannels.forEach(function(server) { %>
+                <option value="<%= alleVoiceChannels.id %>" <%= alleVoiceChannels.id === defaultValues.AFK_ID ? 'selected' : '' %>>
+                    <%= alleVoiceChannels.name %>
+                </option>
+            <% }); %>
+                </select>
+            </form>
+          </td>
+        </tr>
       </tbody>
     </table>
     <% } else if (selectedServerId && selectedTable) { %>
