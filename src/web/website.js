@@ -10,7 +10,7 @@ const changePassword = require('./routes/change-password');
 const userActivity = require('./routes/user-activity');
 const logs = require('./routes/logs');
 const jobs = require('./routes/jobs');
-//const channelselection = require('./routes/channelselection');
+const channelselection = require('./routes/channelselection');
 const app = express();
 const port = 3000;
 const WebUser = require('../models/WebUser');
@@ -91,7 +91,7 @@ function startWebsite(client) {
   app.use('/change-password', requireLogin, changePassword);
   app.use('/user-activity', requireLogin, userActivity);
   app.use('/logs', requireLogin, logs);
-  //app.use('/channelselection', requireLogin, channelselection);
+  app.use('/channelselection', requireLogin, channelselection);
 
   app.get(/(.*)/, (req, res) => {
     res.redirect('/');
