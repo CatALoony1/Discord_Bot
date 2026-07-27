@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
     let textChannels = [];
     let voiceChannels = [];
     let defaultValues = [];
-    const selectedServerId = req.query.serverId;
+    const selectedServerId = req.query.serverId || servers[0]?.id;
     if (selectedServerId) {
       const selectedGuild = client.guilds.cache.get(selectedServerId);
       if (selectedGuild) {
