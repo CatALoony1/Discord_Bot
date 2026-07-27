@@ -143,75 +143,79 @@
     <br /><br />
     <a href="/">Zurück zur Startseite</a>
       <script>
-    const GIPHY_API_KEY = '<%= giphyApiKey %>';
-    
-    // Giphy Fetch API Initialisierung aus dem CDN-Bundle
-    const gf = new GiphyJS.GiphyFetch(GIPHY_API_KEY);
-    let currentSearch = '';
-    let debounceTimer;
-
-function openGiphyModal() {
-  const modal = document.getElementById('giphyModal');
+  const GIPHY_API_KEY = '<%= giphyApiKey %>';
   
-  // 1. Modal erst sichtbar machen!
-  modal.classList.add('active');
+  // GiphyFetch & renderGrid aus den globalen Objekten der Bundles holen
+  const gf = new GiphyJS.GiphyFetch(GIPHY_API_KEY);
+  const renderGrid = GiphyJSComponents.renderGrid;
 
-  // 2. Kurz auf das nächste Frame warten, damit der Browser das Layout/Breite berechnet hat
-  requestAnimationFrame(() => {
-    renderGrid();
-  });
-}
+  let currentSearch = '';
+  let debounceTimer;
 
-    function closeGiphyModal() {
-      document.getElementById('giphyModal').classList.remove('active');
-    }
+  function openGiphyModal() {
+    const modal = document.getElementById('giphyModal');
+    modal.classList.add('active');
 
-    // Such-Debounce, damit nicht bei jedem Tastendruck sofort eine API-Anfrage feuert
-    function debounceSearch() {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        currentSearch = document.getElementById('giphySearch').value;
-        renderGrid();
-      }, 300);
-    }
+    // 50ms Warten, damit CSS 'display: flex' greift und der Container eine echte Breite > 0 hat
+    setTimeout(() => {
+      drawGrid();
+    }, 50);
+  }
 
-    // Rendert das SDK Grid mit automatischem Infinite-Scroll
-    function renderGrid() {
-      const container = document.getElementById('giphyGrid');
-      container.innerHTML = ''; // Grid leeren
+  function closeGiphyModal() {
+    document.getElementById('giphyModal').classList.remove('active');
+  }
 
-      // Funktion für das SDK um Daten abzurufen (Trending oder Suche)
-      const fetchGifs = (offset) => {
-        if (currentSearch) {
-          return gf.search(currentSearch, { offset, limit: 20 });
-        }
-        return gf.trending({ offset, limit: 20 });
-      };
+  function debounceSearch() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      currentSearch = document.getElementById('giphySearch').value;
+      drawGrid();
+    }, 300);
+  }
 
-      // Erstellt das native SDK Grid inklusive Infinite Scrolling
-      return GiphyJS.renderGrid(
-        {
-          width: container.clientWidth - 20,
-          fetchGifs: fetchGifs,
-          columns: 2,
-          gutter: 6,
-          onGifClick: (gif, e) => {
-            e.preventDefault();
-            
-            // 1. ID in das versteckte Formular-Feld schreiben
-            document.getElementById('giphyIdInput').value = gif.id;
+  function drawGrid() {
+    const container = document.getElementById('giphyGrid');
+    if (!container) return;
 
-            // 2. Vorschau-Bild im Hauptformular aktualisieren
-            const preview = document.getElementById('previewContainer');
+    container.innerHTML = ''; // Container säubern
+
+    // Fallback falls clientWidth im Modal noch nicht berechnet wurde
+    const width = container.clientWidth > 0 ? container.clientWidth - 20 : 400;
+
+    const fetchGifs = (offset) => {
+      if (currentSearch.trim()) {
+        return gf.search(currentSearch, { offset, limit: 20 });
+      }
+      return gf.trending({ offset, limit: 20 });
+    };
+
+    // renderGrid aus GiphyJSComponents aufrufen
+    renderGrid(
+      {
+        width: width,
+        fetchGifs: fetchGifs,
+        columns: 2,
+        gutter: 6,
+        onGifClick: (gif, e) => {
+          e.preventDefault();
+          
+          // 1. ID speichern
+          document.getElementById('giphyIdInput').value = gif.id;
+
+          // 2. Vorschau anzeigen
+          const preview = document.getElementById('previewContainer');
+          if (preview) {
             preview.innerHTML = `<img class="selected-gif-preview" src="${gif.images.fixed_height.url}">`;
-
-            // 3. Modal schließen
-            closeGiphyModal();
           }
-        },
-        container
-      );
-    }
-  </script>
+
+          // 3. Schließen
+          closeGiphyModal();
+        }
+      },
+      container
+    );
+  }
+</script>
   </body>
 </html>
