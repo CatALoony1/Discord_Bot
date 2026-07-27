@@ -78,7 +78,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post(
-  '/change-channel-:chosenobj(allgemein|bye|log|bump|quiz|admin|spiele|vccreation|afk)',
+  '/change-channel-{:chosenobj(allgemein|bye|log|bump|quiz|admin|spiele|vccreation|afk)}',
   async (req, res) => {
     const targetObj = req.params.chosenobj;
     const guildId = req.params.guildId;
