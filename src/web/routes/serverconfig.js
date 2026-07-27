@@ -63,8 +63,8 @@ router.post('/change-member-role', async (req, res) => {
     const guildId = req.body.guildId;
     let roleId = req.body.newMemberRole;
     const targetUrl = guildId
-      ? `/channelselection?serverId=${guildId}`
-      : '/channelselection';
+      ? `/serverconfig?serverId=${guildId}`
+      : '/serverconfig';
     const srvConf = await ServerConfig.findOne({
       guildId: guildId,
       variableName: 'MITGLIED_ROLE_ID',
@@ -83,7 +83,7 @@ router.post('/change-member-role', async (req, res) => {
     return res.redirect(targetUrl);
   } catch (error) {
     console.log(error);
-    res.render('channelselction', {
+    res.render('serverconfig', {
       servers: null,
       selectedServerId: null,
       alleRollen: [],

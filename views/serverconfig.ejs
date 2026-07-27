@@ -149,10 +149,17 @@
     let currentSearch = '';
     let debounceTimer;
 
-    function openGiphyModal() {
-      document.getElementById('giphyModal').classList.add('active');
-      renderGrid(); // Baut das initiale Trending-Grid auf
-    }
+function openGiphyModal() {
+  const modal = document.getElementById('giphyModal');
+  
+  // 1. Modal erst sichtbar machen!
+  modal.classList.add('active');
+
+  // 2. Kurz auf das nächste Frame warten, damit der Browser das Layout/Breite berechnet hat
+  requestAnimationFrame(() => {
+    renderGrid();
+  });
+}
 
     function closeGiphyModal() {
       document.getElementById('giphyModal').classList.remove('active');
