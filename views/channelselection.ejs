@@ -43,7 +43,7 @@
           <td><%= uses.ALLGEMEIN_ID %></td>
           <td>ALLGEMEIN_ID</td>
           <td>
-            <form action="channelselection/select-channel-allgemein" method="POST">
+            <form action="/channelselection/change-channel-allgemein" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="allgemein" onchange="this.form.submit()">
                   <% alleTextChannels.forEach(function(channel) { %>
@@ -59,7 +59,7 @@
           <td><%= uses.BYE_ID %></td>
           <td>BYE_ID</td>
           <td>
-            <form action="channelselection/select-channel-bye" method="POST">
+            <form action="/channelselection/change-channel-bye" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="bye" onchange="this.form.submit()">
                   <% alleTextChannels.forEach(function(channel) { %>
@@ -75,7 +75,7 @@
           <td><%= uses.LOG_ID %></td>
           <td>LOG_ID</td>
           <td>
-            <form action="channelselection/select-channel-log" method="POST">
+            <form action="/channelselection/change-channel-log" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="log" onchange="this.form.submit()">
                   <% alleTextChannels.forEach(function(channel) { %>
@@ -91,7 +91,7 @@
           <td><%= uses.BUMP_ID %></td>
           <td>BUMP_ID</td>
           <td>
-            <form action="channelselection/select-channel-bump" method="POST">
+            <form action="/channelselection/change-channel-bump" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="bump" onchange="this.form.submit()">
                   <% alleTextChannels.forEach(function(channel) { %>
@@ -107,7 +107,7 @@
           <td><%= uses.QUIZ_ID %></td>
           <td>QUIZ_ID</td>
           <td>
-            <form action="channelselection/select-channel-quiz" method="POST">
+            <form action="/channelselection/change-channel-quiz" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="quiz" onchange="this.form.submit()">
                   <% alleTextChannels.forEach(function(channel) { %>
@@ -123,7 +123,7 @@
           <td><%= uses.ADMIN_C_ID %></td>
           <td>ADMIN_C_ID</td>
           <td>
-            <form action="channelselection/select-channel-admin" method="POST">
+            <form action="/channelselection/change-channel-admin" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="admin" onchange="this.form.submit()">
                   <% alleTextChannels.forEach(function(channel) { %>
@@ -139,7 +139,7 @@
           <td><%= uses.SPIELE_ID %></td>
           <td>SPIELE_ID</td>
           <td>
-            <form action="channelselection/select-channel-spiele" method="POST">
+            <form action="/channelselection/change-channel-spiele" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="spiele" onchange="this.form.submit()">
                   <% alleTextChannels.forEach(function(channel) { %>
@@ -155,7 +155,7 @@
           <td><%= uses.VCCREATION_ID %></td>
           <td>VCCREATION_ID</td>
           <td>
-            <form action="channelselection/select-channel-vccreation" method="POST">
+            <form action="/channelselection/change-channel-vccreation" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="vccreation" onchange="this.form.submit()">
                   <% alleVoiceChannels.forEach(function(channel) { %>
@@ -168,10 +168,10 @@
           </td>
         </tr>
         <tr>
-          <td><%= uses.AKF_ID %></td>
+          <td><%= uses.AFK_ID %></td>
           <td>AFK_ID</td>
           <td>
-            <form action="channelselection/select-channel-afk" method="POST">
+            <form action="/channelselection/change-channel-afk" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="afk" onchange="this.form.submit()">
                   <% alleVoiceChannels.forEach(function(channel) { %>
