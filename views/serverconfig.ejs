@@ -134,32 +134,33 @@
     <button type="submit">Speichern</button>
   </form>
 <div id="giphyModal" class="giphy-modal">
-    <div class="giphy-header">
-      <input type="text" id="giphySearch" placeholder="In Giphy suchen..." oninput="debounceSearch()">
-      <button class="giphy-close" onclick="closeGiphyModal()">&times;</button>
-    </div>
-    <div id="giphyGrid"></div>
+  <div class="giphy-header">
+    <input type="text" id="giphySearch" placeholder="In Giphy suchen..." oninput="debounceSearch()">
+    <button type="button" class="giphy-close" onclick="closeGiphyModal()">&times;</button>
+  </div>
+  <div id="giphyGrid" onscroll="handleScroll()"></div>
+</div>
 
-    <br /><br />
-    <a href="/">Zurück zur Startseite</a>
-      <script>
+<script>
+  // Der Key aus deiner .env / Express-Route
   const GIPHY_API_KEY = '<%= giphyApiKey %>';
-  
-  // GiphyFetch & renderGrid aus den globalen Objekten der Bundles holen
-  const gf = new GiphyJS.GiphyFetch(GIPHY_API_KEY);
-  const renderGrid = GiphyJSComponents.renderGrid;
 
   let currentSearch = '';
   let debounceTimer;
+  let currentOffset = 0;
+  let isLoading = false;
+  let hasMore = true;
 
   function openGiphyModal() {
     const modal = document.getElementById('giphyModal');
     modal.classList.add('active');
 
-    // 50ms Warten, damit CSS 'display: flex' greift und der Container eine echte Breite > 0 hat
-    setTimeout(() => {
-      drawGrid();
-    }, 50);
+    // Zurücksetzen bei neuem Öffnen
+    currentOffset = 0;
+    hasMore = true;
+    document.getElementById('giphyGrid').innerHTML = '';
+    
+    fetchGifs();
   }
 
   function closeGiphyModal() {
@@ -169,52 +170,81 @@
   function debounceSearch() {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
-      currentSearch = document.getElementById('giphySearch').value;
-      drawGrid();
+      currentSearch = document.getElementById('giphySearch').value.trim();
+      currentOffset = 0;
+      hasMore = true;
+      document.getElementById('giphyGrid').innerHTML = '';
+      fetchGifs();
     }, 300);
   }
 
-  function drawGrid() {
-    const container = document.getElementById('giphyGrid');
-    if (!container) return;
+  async function fetchGifs() {
+    if (isLoading || !hasMore) return;
+    isLoading = true;
 
-    container.innerHTML = ''; // Container säubern
+    const endpoint = currentSearch ? 'search' : 'trending';
+    const queryParam = currentSearch ? `&q=${encodeURIComponent(currentSearch)}` : '';
+    const url = `https://api.giphy.com/v1/gifs/${endpoint}?api_key=${GIPHY_API_KEY}&limit=20&offset=${currentOffset}${queryParam}`;
 
-    // Fallback falls clientWidth im Modal noch nicht berechnet wurde
-    const width = container.clientWidth > 0 ? container.clientWidth - 20 : 400;
+    try {
+      const response = await fetch(url);
+      const { data, pagination } = await response.json();
 
-    const fetchGifs = (offset) => {
-      if (currentSearch.trim()) {
-        return gf.search(currentSearch, { offset, limit: 20 });
-      }
-      return gf.trending({ offset, limit: 20 });
-    };
-
-    // renderGrid aus GiphyJSComponents aufrufen
-    renderGrid(
-      {
-        width: width,
-        fetchGifs: fetchGifs,
-        columns: 2,
-        gutter: 6,
-        onGifClick: (gif, e) => {
-          e.preventDefault();
-          
-          // 1. ID speichern
-          document.getElementById('giphyIdInput').value = gif.id;
-
-          // 2. Vorschau anzeigen
-          const preview = document.getElementById('previewContainer');
-          if (preview) {
-            preview.innerHTML = `<img class="selected-gif-preview" src="${gif.images.fixed_height.url}">`;
-          }
-
-          // 3. Schließen
-          closeGiphyModal();
+      if (!data || data.length === 0) {
+        hasMore = false;
+        if (currentOffset === 0) {
+          document.getElementById('giphyGrid').innerHTML = '<p style="color: white; padding: 10px;">Keine GIFs gefunden.</p>';
         }
-      },
-      container
-    );
+        return;
+      }
+
+      const grid = document.getElementById('giphyGrid');
+
+      data.forEach(gif => {
+        const img = document.createElement('img');
+        img.src = gif.images.fixed_height_small.url;
+        img.style.width = '48%';
+        img.style.margin = '1%';
+        img.style.borderRadius = '6px';
+        img.style.cursor = 'pointer';
+        img.style.objectFit = 'cover';
+
+        img.onclick = () => selectGif(gif);
+
+        grid.appendChild(img);
+      });
+
+      currentOffset += data.length;
+      if (currentOffset >= pagination.total_count) {
+        hasMore = false;
+      }
+    } catch (err) {
+      console.error('Fehler beim Laden der GIFs:', err);
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  // Infinite-Scroll beim Herunterscrollen im Modal
+  function handleScroll() {
+    const grid = document.getElementById('giphyGrid');
+    if (grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 50) {
+      fetchGifs();
+    }
+  }
+
+  function selectGif(gif) {
+    // 1. ID in das hidden input schreiben
+    document.getElementById('giphyIdInput').value = gif.id;
+
+    // 2. Vorschau anzeigen
+    const preview = document.getElementById('previewContainer');
+    if (preview) {
+      preview.innerHTML = `<img class="selected-gif-preview" src="${gif.images.fixed_height.url}">`;
+    }
+
+    // 3. Modal schließen
+    closeGiphyModal();
   }
 </script>
   </body>
