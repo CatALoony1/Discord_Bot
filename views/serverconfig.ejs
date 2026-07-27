@@ -71,7 +71,7 @@
           <td>
             <form action="/serverconfig/change-member-role" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-                <select name="allgemein" onchange="this.form.submit()">
+                <select name="newMemberRole" onchange="this.form.submit()">
                   <% alleRollen.forEach(function(role) { %>
                 <option value="<%= role.id %>" <%= role.id === defaultRole ? 'selected' : '' %>>
                     <%= role.name %>

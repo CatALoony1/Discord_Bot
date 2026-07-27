@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const ServerConfig = require('../../models/ServerConfig');
 const idUses = require('../../utils/data/idUses');
-const { ChannelType } = require('discord.js');
 
 router.get('/', async (req, res) => {
   try {
@@ -17,8 +16,7 @@ router.get('/', async (req, res) => {
       servers = servers.filter((server) => allowedIds.includes(server.id));
     }
     let rollen = [];
-    let voiceChannels = [];
-    let defaultRole = [];
+    let defaultRole = '';
     const selectedServerId = req.query.serverId;
     if (selectedServerId) {
       const selectedGuild = client.guilds.cache.get(selectedServerId);
@@ -39,7 +37,7 @@ router.get('/', async (req, res) => {
     res.render('serverconfig', {
       servers: servers,
       selectedServerId: selectedServerId,
-      alleRollen: textChannels,
+      alleRollen: rollen,
       defaultRole: defaultRole,
       uses: idUses,
       error: null,
@@ -50,7 +48,7 @@ router.get('/', async (req, res) => {
       servers: null,
       selectedServerId: null,
       alleRollen: [],
-      defaultRole: [],
+      defaultRole: '',
       uses: idUses,
       error: error.message,
     });
@@ -59,72 +57,23 @@ router.get('/', async (req, res) => {
 
 router.post('/change-member-role', async (req, res) => {
   try {
-    const chosenObj = req.params.chosenobj;
-
-    if (!ALLOWED_CHANNELS.has(chosenObj)) {
-      return res.status(400).send('Ungültiger Kanal-Typ');
-    }
     const guildId = req.body.guildId;
-    let channelId;
-    let searchString;
-    switch (chosenObj) {
-      case 'allgemein':
-        channelId = req.body.allgemein;
-        searchString = 'ALLGEMEIN_ID';
-        break;
-      case 'bye':
-        channelId = req.body.bye;
-        searchString = 'BYE_ID';
-        break;
-      case 'log':
-        channelId = req.body.log;
-        searchString = 'LOG_ID';
-        break;
-      case 'bump':
-        channelId = req.body.bump;
-        searchString = 'BUMP_ID';
-        break;
-      case 'quiz':
-        channelId = req.body.quiz;
-        searchString = 'QUIZ_ID';
-        break;
-      case 'admin':
-        channelId = req.body.admin;
-        searchString = 'ADMIN_C_ID';
-        break;
-      case 'spiele':
-        channelId = req.body.spiele;
-        searchString = 'SPIELE_ID';
-        break;
-      case 'vccreation':
-        channelId = req.body.vccreation;
-        searchString = 'VCCREATION_ID';
-        break;
-      case 'afk':
-        channelId = req.body.afk;
-        searchString = 'AFK_ID';
-        break;
-      default:
-        break;
-    }
+    let roleId = req.body.newMemberRole;
     const targetUrl = guildId
       ? `/channelselection?serverId=${guildId}`
       : '/channelselection';
-    if (!channelId && !searchString) {
-      return res.redirect(targetUrl);
-    }
     const srvConf = await ServerConfig.findOne({
       guildId: guildId,
-      variableName: searchString,
+      variableName: 'MITGLIED_ROLE_ID',
     });
-    if (srvConf && srvConf.objectId != channelId) {
-      srvConf.objectId = channelId;
+    if (srvConf && srvConf.objectId != roleId) {
+      srvConf.objectId = roleId;
       await srvConf.save();
     } else {
       const newSrvConf = new ServerConfig({
         guildId: guildId,
-        variableName: searchString,
-        objectId: channelId,
+        variableName: 'MITGLIED_ROLE_ID',
+        objectId: roleId,
       });
       newSrvConf.save();
     }
@@ -135,7 +84,7 @@ router.post('/change-member-role', async (req, res) => {
       servers: null,
       selectedServerId: null,
       alleRollen: [],
-      defaultRole: [],
+      defaultRole: '',
       uses: idUses,
       error: error.message,
     });
