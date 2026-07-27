@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ChannelConfig = require('../../models/ChannelConfig');
+const ServerConfig = require('../../models/ServerConfig');
 const idUses = require('../../utils/data/idUses');
 const { ChannelType } = require('discord.js');
 const ALLOWED_CHANNELS = new Set([
@@ -54,7 +54,7 @@ router.get('/', async (req, res) => {
             id: channel.id,
             name: channel.name,
           }));
-        const srvCfg = await ChannelConfig.find({
+        const srvCfg = await ServerConfig.find({
           guildId: selectedServerId,
         }).lean();
         if (srvCfg) {
@@ -144,20 +144,20 @@ router.post('/change-channel-:chosenobj', async (req, res) => {
     if (!channelId && !searchString) {
       return res.redirect(targetUrl);
     }
-    const channelConfig = await ChannelConfig.findOne({
+    const srvCfg = await ServerConfig.findOne({
       guildId: guildId,
       variableName: searchString,
     });
-    if (channelConfig && channelConfig.objectId != channelId) {
-      channelConfig.objectId = channelId;
-      await channelConfig.save();
+    if (srvCfg && srvCfg.objectId != channelId) {
+      srvCfg.objectId = channelId;
+      await srvCfg.save();
     } else {
-      const newChannelConfig = new ChannelConfig({
+      const newSrvCfg = new ServerConfig({
         guildId: guildId,
         variableName: searchString,
         objectId: channelId,
       });
-      newChannelConfig.save();
+      newSrvCfg.save();
     }
     return res.redirect(targetUrl);
   } catch (error) {
