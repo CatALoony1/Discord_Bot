@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const router = express.Router();
 const ServerConfig = require('../../models/ServerConfig');
 const idUses = require('../../utils/data/idUses');
@@ -41,6 +42,7 @@ router.get('/', async (req, res) => {
       defaultRole: defaultRole,
       uses: idUses,
       error: null,
+      giphyApiKey: process.env.GIPHY_API,
     });
   } catch (error) {
     console.log(error);
@@ -51,6 +53,7 @@ router.get('/', async (req, res) => {
       defaultRole: '',
       uses: idUses,
       error: error.message,
+      giphyApiKey: process.env.GIPHY_API,
     });
   }
 });
@@ -87,6 +90,7 @@ router.post('/change-member-role', async (req, res) => {
       defaultRole: '',
       uses: idUses,
       error: error.message,
+      giphyApiKey: process.env.GIPHY_API,
     });
   }
 });
