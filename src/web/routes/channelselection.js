@@ -91,13 +91,13 @@ router.get('/', async (req, res) => {
 router.post('/change-channel-:chosenobj', async (req, res) => {
   const chosenObj = req.params.chosenobj;
 
-  if (!ALLOWED_CHANNELS.includes(chosenObj)) {
+  if (!ALLOWED_CHANNELS.has(chosenObj)) {
     return res.status(400).send('Ungültiger Kanal-Typ');
   }
-  const guildId = req.params.guildId;
+  const guildId = req.body.guildId;
   let channelId;
   let searchString;
-  switch (targetObj) {
+  switch (chosenObj) {
     case 'allgemein':
       channelId = req.body.allgemein;
       searchString = 'ALLGEMEIN_ID';
@@ -120,7 +120,7 @@ router.post('/change-channel-:chosenobj', async (req, res) => {
       break;
     case 'admin':
       channelId = req.body.admin;
-      searchString = 'ADMIN_ID';
+      searchString = 'ADMIN_C_ID';
       break;
     case 'spiele':
       channelId = req.body.spiele;
