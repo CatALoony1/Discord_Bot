@@ -3,25 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <title>Datenbank - Dashboard</title>
-    <style>
-    .gif-results {
+    <script src="https://unpkg.com/@giphy/js-fetch-api/dist/giphy-js-fetch-api.bundle.js"></script>
+  
+  <style>
+    .giphy-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 450px;
+      max-width: 90vw;
+      height: 550px;
+      background: #121212;
+      border: 1px solid #333;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      z-index: 1000;
+      padding: 15px;
+      box-sizing: border-box;
+      flex-direction: column;
+    }
+
+    .giphy-modal.active {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      max-height: 300px;
-      overflow-y: auto;
-      margin-top: 10px;
     }
-    .gif-item {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      cursor: pointer;
-      border: 3px solid transparent;
+
+    .giphy-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    .giphy-header input {
+      width: 80%;
+      padding: 8px;
       border-radius: 6px;
+      border: 1px solid #444;
+      background: #222;
+      color: #fff;
     }
-    .gif-item.selected {
-      border-color: #007bff;
+
+    .giphy-close {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    #giphyGrid {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .selected-gif-preview {
+      margin-top: 10px;
+      max-width: 200px;
     }
   </style>
   </head>
@@ -87,42 +126,83 @@
     <br /><br />
 <form action="/serverconfig/welcomegif" method="POST">
     <input type="hidden" name="giphyId" id="giphyIdInput">
-    <h3>GIF auswählen</h3>
-    <input type="text" id="gifSearchInput" placeholder="GIF suchen...">
-    <button type="button" onclick="searchGifs()">Suchen</button>
-    <div id="gifResults" class="gif-results"></div>
+    <h3>GIF auswählen:</h3>
+    <div id="previewContainer"></div>
+    <button type="button" onclick="openGiphyModal()">GIF suchen & auswählen</button>
     <br><br>
-    <button type="submit">Formular abschicken</button>
+    <button type="submit">Speichern</button>
   </form>
-
+<div id="giphyModal" class="giphy-modal">
+    <div class="giphy-header">
+      <input type="text" id="giphySearch" placeholder="In Giphy suchen..." oninput="debounceSearch()">
+      <button class="giphy-close" onclick="closeGiphyModal()">&times;</button>
+    </div>
+    <div id="giphyGrid"></div>
 
     <br /><br />
     <a href="/">Zurück zur Startseite</a>
       <script>
     const GIPHY_API_KEY = '<%= giphyApiKey %>';
+    
+    // Giphy Fetch API Initialisierung aus dem CDN-Bundle
+    const gf = new GiphyJS.GiphyFetch(GIPHY_API_KEY);
+    let currentSearch = '';
+    let debounceTimer;
 
-    async function searchGifs() {
-      const query = document.getElementById('gifSearchInput').value;
-      if (!query) return;
+    function openGiphyModal() {
+      document.getElementById('giphyModal').classList.add('active');
+      renderGrid(); // Baut das initiale Trending-Grid auf
+    }
 
-      const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(query)}&limit=12&rating=g`);
-      const { data } = await response.json();
+    function closeGiphyModal() {
+      document.getElementById('giphyModal').classList.remove('active');
+    }
 
-      const resultsContainer = document.getElementById('gifResults');
-      resultsContainer.innerHTML = '';
+    // Such-Debounce, damit nicht bei jedem Tastendruck sofort eine API-Anfrage feuert
+    function debounceSearch() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        currentSearch = document.getElementById('giphySearch').value;
+        renderGrid();
+      }, 300);
+    }
 
-      data.forEach(gif => {
-        const img = document.createElement('img');
-        img.src = gif.images.fixed_height_small.url;
-        img.classList.add('gif-item');
-        img.dataset.id = gif.id;
-        img.onclick = function() {
-          document.querySelectorAll('.gif-item').forEach(el => el.classList.remove('selected'));
-          img.classList.add('selected');
-          document.getElementById('giphyIdInput').value = gif.id;
-        };
-        resultsContainer.appendChild(img);
-      });
+    // Rendert das SDK Grid mit automatischem Infinite-Scroll
+    function renderGrid() {
+      const container = document.getElementById('giphyGrid');
+      container.innerHTML = ''; // Grid leeren
+
+      // Funktion für das SDK um Daten abzurufen (Trending oder Suche)
+      const fetchGifs = (offset) => {
+        if (currentSearch) {
+          return gf.search(currentSearch, { offset, limit: 20 });
+        }
+        return gf.trending({ offset, limit: 20 });
+      };
+
+      // Erstellt das native SDK Grid inklusive Infinite Scrolling
+      return GiphyJS.renderGrid(
+        {
+          width: container.clientWidth - 20,
+          fetchGifs: fetchGifs,
+          columns: 2,
+          gutter: 6,
+          onGifClick: (gif, e) => {
+            e.preventDefault();
+            
+            // 1. ID in das versteckte Formular-Feld schreiben
+            document.getElementById('giphyIdInput').value = gif.id;
+
+            // 2. Vorschau-Bild im Hauptformular aktualisieren
+            const preview = document.getElementById('previewContainer');
+            preview.innerHTML = `<img class="selected-gif-preview" src="${gif.images.fixed_height.url}">`;
+
+            // 3. Modal schließen
+            closeGiphyModal();
+          }
+        },
+        container
+      );
     }
   </script>
   </body>
