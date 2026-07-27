@@ -126,6 +126,7 @@
     <% } %>
     <br /><br />
 <form action="/serverconfig/welcomegif" method="POST">
+  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
     <input type="hidden" name="giphyId" id="giphyIdInput">
     <h3>GIF auswählen:</h3>
     <div id="previewContainer"></div>

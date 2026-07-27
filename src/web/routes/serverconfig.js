@@ -98,6 +98,11 @@ router.post('/change-member-role', async (req, res) => {
 router.post('/welcomegif', (req, res) => {
   const { giphyId } = req.body;
   console.log('Ausgewählte Giphy ID:', giphyId);
+  const guildId = req.body.guildId;
+  const targetUrl = guildId
+    ? `/serverconfig?serverId=${guildId}`
+    : '/serverconfig';
+  return res.redirect(targetUrl);
 });
 
 module.exports = router;
