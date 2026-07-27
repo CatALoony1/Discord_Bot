@@ -11,14 +11,8 @@ const idUses = {
   AFK_ID: 'Voicechannel für Abwesende User, welcher keine XP gibt.',
   SPIELE_ID: 'Channel für Spiel Befehle und Galgenmännchen.',
   VCCREATION_ID: 'Voicechannel bei dessen beitritt ein neuer erstellt wird.',
-  KI_BOT: 'Rolle auf die die KI Reagieren soll',
-  ADMIN_ROLE_ID:
-    'Rolle die gepingt wird, wenn ein Nutzer bei der Rollenwahl angibt unter 18 zu sein.',
   MITGLIED_ROLE_ID:
     'Mitglieder Rolle welche Nutzern beim erreichen von Level 1 vergeben wird.',
-  NEWMEMBER_ROLE_ID: 'Rolle die Nutzern bei Beitritt des Servers gegeben wird.',
-  OBERSTER_PLATZ_ID:
-    'Rolle des Obersten Platz in der Nutzer Liste. Über Shop kaufbar.',
 };
 
 module.exports = idUses;

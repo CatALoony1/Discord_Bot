@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Datenbank - Dashboard</title>
+    <style>
+    .gif-results {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 10px;
+    }
+    .gif-item {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 3px solid transparent;
+      border-radius: 6px;
+    }
+    .gif-item.selected {
+      border-color: #007bff;
+    }
+  </style>
+  </head>
+  <body>
+    <h1>Server & Datenbank</h1>
+    <% if (error) { %>
+    <div class="error-box">
+      <strong>Fehler:</strong>
+      <%= error %>
+    </div>
+    <% } %>
+<form action="/serverconfig" method="GET">
+  <label for="serverId">Wähle einen Server:</label>
+  <select name="serverId" id="serverId" onchange="this.form.submit()">
+    <option value="" <%= !selectedServerId ? 'disabled' : '' %>>-- Bitte wählen --</option>
+    <% servers.forEach(function(server, index) { %>
+      <% 
+        const isSelected = selectedServerId 
+          ? server.id === selectedServerId 
+          : index === 0; 
+      %>
+      <option value="<%= server.id %>" <%= isSelected ? 'selected' : '' %>>
+        <%= server.name %>
+      </option>
+    <% }); %>
+  </select>
+</form>
+
+    <br />
+    <hr />
+    <br />
+
+    <% if (selectedServerId && alleRollen.length > 0 ) { %>
+    <h2>Gefundene Einträge:</h2>
+    <table border="1" cellpadding="5" style="border-collapse: collapse">
+      <thead>
+        <tr>
+         <th>Nutzung</th>
+          <th>Variable</th>
+          <th>Kanal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= uses.MITGLIED_ROLE_ID %></td>
+          <td>MITGLIED_ROLE_ID</td>
+          <td>
+            <form action="/serverconfig/change-member-role" method="POST">
+              <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+                <select name="allgemein" onchange="this.form.submit()">
+                  <% alleRollen.forEach(function(role) { %>
+                <option value="<%= role.id %>" <%= role.id === defaultRole ? 'selected' : '' %>>
+                    <%= role.name %>
+                </option>
+            <% }); %>
+                </select>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <% } %>
+    <br /><br />
+<form action="/serverconfig/welcomegif" method="POST">
+    <input type="hidden" name="giphyId" id="giphyIdInput">
+    <h3>GIF auswählen</h3>
+    <input type="text" id="gifSearchInput" placeholder="GIF suchen...">
+    <button type="button" onclick="searchGifs()">Suchen</button>
+    <div id="gifResults" class="gif-results"></div>
+    <br><br>
+    <button type="submit">Formular abschicken</button>
+  </form>
+
+
+    <br /><br />
+    <a href="/">Zurück zur Startseite</a>
+      <script>
+    const GIPHY_API_KEY = '<%= giphyApiKey %>';
+
+    async function searchGifs() {
+      const query = document.getElementById('gifSearchInput').value;
+      if (!query) return;
+
+      const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(query)}&limit=12&rating=g`);
+      const { data } = await response.json();
+
+      const resultsContainer = document.getElementById('gifResults');
+      resultsContainer.innerHTML = '';
+
+      data.forEach(gif => {
+        const img = document.createElement('img');
+        img.src = gif.images.fixed_height_small.url;
+        img.classList.add('gif-item');
+        img.dataset.id = gif.id;
+        img.onclick = function() {
+          document.querySelectorAll('.gif-item').forEach(el => el.classList.remove('selected'));
+          img.classList.add('selected');
+          document.getElementById('giphyIdInput').value = gif.id;
+        };
+        resultsContainer.appendChild(img);
+      });
+    }
+  </script>
+  </body>
+</html>

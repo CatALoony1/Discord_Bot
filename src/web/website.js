@@ -11,6 +11,7 @@ const userActivity = require('./routes/user-activity');
 const logs = require('./routes/logs');
 const jobs = require('./routes/jobs');
 const channelselection = require('./routes/channelselection');
+const serverconfig = require('./routes/serverconfig');
 const app = express();
 const port = 3000;
 const WebUser = require('../models/WebUser');
@@ -92,6 +93,7 @@ function startWebsite(client) {
   app.use('/user-activity', requireLogin, userActivity);
   app.use('/logs', requireLogin, logs);
   app.use('/channelselection', requireLogin, channelselection);
+  app.use('/serverconfig', requireLogin, serverconfig);
 
   app.get(/(.*)/, (req, res) => {
     res.redirect('/');

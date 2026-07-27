@@ -12,9 +12,9 @@
       <%= error %>
     </div>
     <% } %>
-<form action="/channelselection" method="GET">
-  <label for="serverId">Wähle einen Server:</label>
-  <select name="serverId" id="serverId" onchange="this.form.submit()">
+    <form action="/channelselection" method="GET">
+      <label for="serverId">Wähle einen Server:</label>
+      <select name="serverId" id="serverId" onchange="this.form.submit()">
     <option value="" <%= !selectedServerId ? 'disabled' : '' %>>-- Bitte wählen --</option>
     <% servers.forEach(function(server, index) { %>
       <% 
@@ -23,11 +23,11 @@
           : index === 0; 
       %>
       <option value="<%= server.id %>" <%= isSelected ? 'selected' : '' %>>
-        <%= server.name %>
-      </option>
-    <% }); %>
-  </select>
-</form>
+                    <%= server.name %>
+                </option>
+            <% }); %>
+        </select>
+    </form>
 
     <br />
     <hr />
@@ -190,8 +190,6 @@
         </tr>
       </tbody>
     </table>
-    <% } else if (selectedServerId && selectedTable) { %>
-    <p>Es gibt keine Datensätze</p>
     <% } %>
 
     <br /><br />

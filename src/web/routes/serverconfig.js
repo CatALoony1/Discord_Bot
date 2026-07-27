@@ -3,17 +3,6 @@ const router = express.Router();
 const ServerConfig = require('../../models/ServerConfig');
 const idUses = require('../../utils/data/idUses');
 const { ChannelType } = require('discord.js');
-const ALLOWED_CHANNELS = new Set([
-  'allgemein',
-  'bye',
-  'log',
-  'bump',
-  'quiz',
-  'admin',
-  'spiele',
-  'vccreation',
-  'afk',
-]);
 
 router.get('/', async (req, res) => {
   try {
@@ -27,68 +16,48 @@ router.get('/', async (req, res) => {
       const allowedIds = allowedGuilds.split(',').map((id) => id.trim());
       servers = servers.filter((server) => allowedIds.includes(server.id));
     }
-    let textChannels = [];
+    let rollen = [];
     let voiceChannels = [];
-    let defaultValues = [];
+    let defaultRole = [];
     const selectedServerId = req.query.serverId;
     if (selectedServerId) {
       const selectedGuild = client.guilds.cache.get(selectedServerId);
       if (selectedGuild) {
-        textChannels = selectedGuild.channels.cache
-          .filter(
-            (channel) =>
-              channel.type === ChannelType.GuildText ||
-              channel.type === ChannelType.GuildAnnouncement,
-          )
-          .map((channel) => ({
-            id: channel.id,
-            name: channel.name,
-          }));
-        voiceChannels = selectedGuild.channels.cache
-          .filter(
-            (channel) =>
-              channel.type === ChannelType.GuildVoice ||
-              channel.type === ChannelType.GuildStageVoice,
-          )
-          .map((channel) => ({
-            id: channel.id,
-            name: channel.name,
-          }));
-        const srvCfg = await ServerConfig.find({
+        rollen = selectedGuild.roles.cache.map((role) => ({
+          id: role.id,
+          name: role.name,
+        }));
+        const srvCfg = await ServerConfig.findOne({
           guildId: selectedServerId,
+          variableName: 'MITGLIED_ROLE_ID',
         }).lean();
         if (srvCfg) {
-          defaultValues = srvCfg.reduce((acc, item) => {
-            acc[item.variableName] = item.objectId;
-            return acc;
-          }, {});
+          defaultRole = srvCfg.objectId;
         }
       }
     }
-    res.render('channelselection', {
+    res.render('serverconfig', {
       servers: servers,
       selectedServerId: selectedServerId,
-      alleTextChannels: textChannels,
-      alleVoiceChannels: voiceChannels,
-      defaultValues: defaultValues,
+      alleRollen: textChannels,
+      defaultRole: defaultRole,
       uses: idUses,
       error: null,
     });
   } catch (error) {
     console.log(error);
-    res.render('channelselction', {
+    res.render('serverconfig', {
       servers: null,
       selectedServerId: null,
-      alleTextChannels: [],
-      alleVoiceChannels: [],
-      defaultValues: [],
+      alleRollen: [],
+      defaultRole: [],
       uses: idUses,
       error: error.message,
     });
   }
 });
 
-router.post('/change-channel-:chosenobj', async (req, res) => {
+router.post('/change-member-role', async (req, res) => {
   try {
     const chosenObj = req.params.chosenobj;
 
@@ -165,13 +134,17 @@ router.post('/change-channel-:chosenobj', async (req, res) => {
     res.render('channelselction', {
       servers: null,
       selectedServerId: null,
-      alleTextChannels: [],
-      alleVoiceChannels: [],
-      defaultValues: [],
+      alleRollen: [],
+      defaultRole: [],
       uses: idUses,
       error: error.message,
     });
   }
+});
+
+router.post('/welcomegif', (req, res) => {
+  const { giphyId } = req.body;
+  console.log('Ausgewählte Giphy ID:', giphyId);
 });
 
 module.exports = router;
