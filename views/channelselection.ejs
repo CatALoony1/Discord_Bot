@@ -46,9 +46,9 @@
             <form action="channelselection/select-channel-allgemein" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="allgemein" onchange="this.form.submit()">
-                  <% alleTextChannels.forEach(function(server) { %>
-                <option value="<%= alleTextChannels.id %>" <%= alleTextChannels.id === defaultValues.ALLGEMEIN_ID ? 'selected' : '' %>>
-                    <%= alleTextChannels.name %>
+                  <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= channel.id === defaultValues.ALLGEMEIN_ID ? 'selected' : '' %>>
+                    <%= channel.name %>
                 </option>
             <% }); %>
                 </select>
@@ -62,9 +62,9 @@
             <form action="channelselection/select-channel-bye" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="bye" onchange="this.form.submit()">
-                  <% alleTextChannels.forEach(function(server) { %>
-                <option value="<%= alleTextChannels.id %>" <%= alleTextChannels.id === defaultValues.BYE_ID ? 'selected' : '' %>>
-                    <%= alleTextChannels.name %>
+                  <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= channel.id === defaultValues.BYE_ID ? 'selected' : '' %>>
+                    <%= channel.name %>
                 </option>
             <% }); %>
                 </select>
@@ -78,9 +78,9 @@
             <form action="channelselection/select-channel-log" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="log" onchange="this.form.submit()">
-                  <% alleTextChannels.forEach(function(server) { %>
-                <option value="<%= alleTextChannels.id %>" <%= alleTextChannels.id === defaultValues.LOG_ID ? 'selected' : '' %>>
-                    <%= alleTextChannels.name %>
+                  <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= channel.id === defaultValues.LOG_ID ? 'selected' : '' %>>
+                    <%= channel.name %>
                 </option>
             <% }); %>
                 </select>
@@ -94,9 +94,9 @@
             <form action="channelselection/select-channel-bump" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="bump" onchange="this.form.submit()">
-                  <% alleTextChannels.forEach(function(server) { %>
-                <option value="<%= alleTextChannels.id %>" <%= alleTextChannels.id === defaultValues.BUMP_ID ? 'selected' : '' %>>
-                    <%= alleTextChannels.name %>
+                  <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= channel.id === defaultValues.BUMP_ID ? 'selected' : '' %>>
+                    <%= channel.name %>
                 </option>
             <% }); %>
                 </select>
@@ -110,9 +110,9 @@
             <form action="channelselection/select-channel-quiz" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="quiz" onchange="this.form.submit()">
-                  <% alleTextChannels.forEach(function(server) { %>
-                <option value="<%= alleTextChannels.id %>" <%= alleTextChannels.id === defaultValues.QUIZ_ID ? 'selected' : '' %>>
-                    <%= alleTextChannels.name %>
+                  <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= channel.id === defaultValues.QUIZ_ID ? 'selected' : '' %>>
+                    <%= channel.name %>
                 </option>
             <% }); %>
                 </select>
@@ -126,9 +126,9 @@
             <form action="channelselection/select-channel-admin" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="admin" onchange="this.form.submit()">
-                  <% alleTextChannels.forEach(function(server) { %>
-                <option value="<%= alleTextChannels.id %>" <%= alleTextChannels.id === defaultValues.ADMIN_C_ID ? 'selected' : '' %>>
-                    <%= alleTextChannels.name %>
+                  <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= channel.id === defaultValues.ADMIN_C_ID ? 'selected' : '' %>>
+                    <%= channel.name %>
                 </option>
             <% }); %>
                 </select>
@@ -142,9 +142,9 @@
             <form action="channelselection/select-channel-spiele" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="spiele" onchange="this.form.submit()">
-                  <% alleTextChannels.forEach(function(server) { %>
-                <option value="<%= alleTextChannels.id %>" <%= alleTextChannels.id === defaultValues.SPIELE_ID ? 'selected' : '' %>>
-                    <%= alleTextChannels.name %>
+                  <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= channel.id === defaultValues.SPIELE_ID ? 'selected' : '' %>>
+                    <%= channel.name %>
                 </option>
             <% }); %>
                 </select>
@@ -158,9 +158,9 @@
             <form action="channelselection/select-channel-vccreation" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="vccreation" onchange="this.form.submit()">
-                  <% alleVoiceChannels.forEach(function(server) { %>
-                <option value="<%= alleVoiceChannels.id %>" <%= alleVoiceChannels.id === defaultValues.VCCREATION_ID ? 'selected' : '' %>>
-                    <%= alleVoiceChannels.name %>
+                  <% alleVoiceChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= channel.id === defaultValues.VCCREATION_ID ? 'selected' : '' %>>
+                    <%= channel.name %>
                 </option>
             <% }); %>
                 </select>
@@ -174,9 +174,9 @@
             <form action="channelselection/select-channel-afk" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
                 <select name="afk" onchange="this.form.submit()">
-                  <% alleVoiceChannels.forEach(function(server) { %>
-                <option value="<%= alleVoiceChannels.id %>" <%= alleVoiceChannels.id === defaultValues.AFK_ID ? 'selected' : '' %>>
-                    <%= alleVoiceChannels.name %>
+                  <% alleVoiceChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= channel.id === defaultValues.AFK_ID ? 'selected' : '' %>>
+                    <%= channel.name %>
                 </option>
             <% }); %>
                 </select>

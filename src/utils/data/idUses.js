@@ -21,4 +21,4 @@ const idUses = {
     'Rolle des Obersten Platz in der Nutzer Liste. Über Shop kaufbar.',
 };
 
-module.exports = { idUses };
+module.exports = idUses;
