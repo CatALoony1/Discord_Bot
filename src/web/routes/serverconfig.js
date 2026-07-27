@@ -11,14 +11,14 @@ router.get('/', async (req, res) => {
       id: guild.id,
       name: guild.name,
     }));
-    const allowedGuilds = req.session.guildIds || servers[0]?.id;
+    const allowedGuilds = req.session.guildIds;
     if (allowedGuilds !== 'all') {
       const allowedIds = allowedGuilds.split(',').map((id) => id.trim());
       servers = servers.filter((server) => allowedIds.includes(server.id));
     }
     let rollen = [];
     let defaultRole = '';
-    const selectedServerId = req.query.serverId;
+    const selectedServerId = req.query.serverId || servers[0]?.id;
     if (selectedServerId) {
       const selectedGuild = client.guilds.cache.get(selectedServerId);
       if (selectedGuild) {
