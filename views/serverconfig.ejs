@@ -246,7 +246,7 @@
     if (activePreviewId) {
       const preview = document.getElementById(activePreviewId);
       if (preview) {
-        preview.innerHTML = `<img class="selected-gif-preview" src="${gif.images.fixed_height.url}">`;
+        preview.innerHTML = `<img class="selected-gif-preview" src="https://media.giphy.com/media/${gif.id}/giphy.gif">`;
       }
     }
     closeGiphyModal();
