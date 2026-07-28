@@ -45,6 +45,8 @@ router.get('/', async (req, res) => {
       giphyApiKey: process.env.GIPHY_API,
       welcomeGifId: 'LgKBKAzEs1zqL6SlJE',
       byeGifId: null,
+      dbWelcome: '',
+      dbBye: '',
     });
   } catch (error) {
     console.log(error);
@@ -58,6 +60,8 @@ router.get('/', async (req, res) => {
       giphyApiKey: process.env.GIPHY_API,
       welcomeGifId: null,
       byeGifId: null,
+      dbWelcome: '',
+      dbBye: '',
     });
   }
 });
@@ -97,11 +101,13 @@ router.post('/change-member-role', async (req, res) => {
       giphyApiKey: process.env.GIPHY_API,
       welcomeGifId: null,
       byeGifId: null,
+      dbWelcome: '',
+      dbBye: '',
     });
   }
 });
 
-router.post('/welcomegif', (req, res) => {
+router.post('/welcomemessage', (req, res) => {
   const { giphyId } = req.body;
   console.log('Ausgewählte Giphy ID:', giphyId);
   const guildId = req.body.guildId;

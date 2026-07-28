@@ -93,11 +93,11 @@
     <br />
     <hr />
     <br />
-<!-- BEREICH 1: Welcome GIF -->
-<form action="/serverconfig/welcomegif" method="POST">
+<form action="/serverconfig/welcomemessage" method="POST">
   <input type="hidden" name="giphyId" id="welcomeGifId" value="<%= welcomeGifId || '' %>">
-  
-  <h3>Willkommens-GIF:</h3>
+  <h3>Willkommensnachricht:</h3>
+  <textarea id="welcomeText" name="welcomeText" rows="5" cols="90"><%= dbWelcome %></textarea>
+  <br />
   <div id="welcomeGifPreview">
     <% if (welcomeGifId) { %>
       <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= welcomeGifId %>/giphy.gif">
@@ -114,7 +114,9 @@
 
 <form action="/serverconfig/byegif" method="POST">
   <input type="hidden" name="giphyId" id="byeGifId" value="<%= byeGifId || '' %>">
-    <h3>Verabschiedungs-GIF:</h3>
+    <h3>Verabschiedungsnachricht:</h3>
+      <textarea id="byeText" name="byeText" rows="5" cols="90"><%= dbBye %></textarea>
+  <br />
   <div id="byeGifPreview">
     <% if (byeGifId) { %>
       <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= byeGifId %>/giphy.gif">
