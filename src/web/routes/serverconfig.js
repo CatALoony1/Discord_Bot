@@ -43,6 +43,8 @@ router.get('/', async (req, res) => {
       uses: idUses,
       error: null,
       giphyApiKey: process.env.GIPHY_API,
+      welcomeGifId: null,
+      byeGifId: null,
     });
   } catch (error) {
     console.log(error);
@@ -54,6 +56,8 @@ router.get('/', async (req, res) => {
       uses: idUses,
       error: error.message,
       giphyApiKey: process.env.GIPHY_API,
+      welcomeGifId: null,
+      byeGifId: null,
     });
   }
 });
@@ -91,11 +95,23 @@ router.post('/change-member-role', async (req, res) => {
       uses: idUses,
       error: error.message,
       giphyApiKey: process.env.GIPHY_API,
+      welcomeGifId: null,
+      byeGifId: null,
     });
   }
 });
 
 router.post('/welcomegif', (req, res) => {
+  const { giphyId } = req.body;
+  console.log('Ausgewählte Giphy ID:', giphyId);
+  const guildId = req.body.guildId;
+  const targetUrl = guildId
+    ? `/serverconfig?serverId=${guildId}`
+    : '/serverconfig';
+  return res.redirect(targetUrl);
+});
+
+router.post('/byegif', (req, res) => {
   const { giphyId } = req.body;
   console.log('Ausgewählte Giphy ID:', giphyId);
   const guildId = req.body.guildId;

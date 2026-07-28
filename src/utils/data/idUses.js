@@ -13,6 +13,8 @@ const idUses = {
   VCCREATION_ID: 'Voicechannel bei dessen beitritt ein neuer erstellt wird.',
   MITGLIED_ROLE_ID:
     'Mitglieder Rolle welche Nutzern beim erreichen von Level 1 vergeben wird.',
+  NEWMEMBER_ROLE_ID:
+    'Mitglieder Rolle welche Nutzern nach dem Bestätigend der Regeln zugewiesen wird.',
 };
 
 module.exports = idUses;

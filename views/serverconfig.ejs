@@ -124,16 +124,42 @@
       </tbody>
     </table>
     <% } %>
-    <br /><br />
+    <br />
+    <hr />
+    <br />
+<!-- BEREICH 1: Welcome GIF -->
 <form action="/serverconfig/welcomegif" method="POST">
-  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-    <input type="hidden" name="giphyId" id="giphyIdInput">
-    <h3>GIF auswählen:</h3>
-    <div id="previewContainer"></div>
-    <button type="button" onclick="openGiphyModal()">GIF suchen & auswählen</button>
-    <br><br>
-    <button type="submit">Speichern</button>
-  </form>
+  <input type="hidden" name="giphyId" id="welcomeGifId" value="<%= welcomeGifId || '' %>">
+  
+  <h3>Willkommens-GIF:</h3>
+  <div id="welcomeGifPreview">
+    <% if (welcomeGifId) { %>
+      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= welcomeGifId %>/giphy.gif">
+    <% } %>
+  </div>
+    <button type="button" onclick="openGiphyModal('welcomeGifId', 'welcomeGifPreview')">
+    GIF auswählen / ändern
+  </button>
+  <button type="submit">Speichern</button>
+</form>
+
+<hr>
+
+<form action="/serverconfig/byegif" method="POST">
+  <input type="hidden" name="giphyId" id="byeGifId" value="<%= byeGifId || '' %>">
+    <h3>Verabschiedungs-GIF:</h3>
+  <div id="byeGifPreview">
+    <% if (byeGifId) { %>
+      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= byeGifId %>/giphy.gif">
+    <% } %>
+  </div>
+    <button type="button" onclick="openGiphyModal('byeGifId', 'byeGifPreview')">
+    GIF auswählen / ändern
+  </button>
+  <button type="submit">Speichern</button>
+</form>
+
+<!-- MODAL (NUR EINMAL AUF DER SEITE NÖTIG) -->
 <div id="giphyModal" class="giphy-modal">
   <div class="giphy-header">
     <input type="text" id="giphySearch" placeholder="In Giphy suchen..." oninput="debounceSearch()">
@@ -146,20 +172,22 @@
     <a href="/">Zurück zur Startseite</a>
 
 <script>
-  // Der Key aus deiner .env / Express-Route
   const GIPHY_API_KEY = '<%= giphyApiKey %>';
-
   let currentSearch = '';
   let debounceTimer;
   let currentOffset = 0;
   let isLoading = false;
   let hasMore = true;
+  let activeInputId = null;
+  let activePreviewId = null;
 
-  function openGiphyModal() {
+  function openGiphyModal(inputId, previewId) {
+    activeInputId = inputId;
+    activePreviewId = previewId;
     const modal = document.getElementById('giphyModal');
     modal.classList.add('active');
-
-    // Zurücksetzen bei neuem Öffnen
+    document.getElementById('giphySearch').value = '';
+    currentSearch = '';
     currentOffset = 0;
     hasMore = true;
     document.getElementById('giphyGrid').innerHTML = '';
@@ -185,15 +213,12 @@
   async function fetchGifs() {
     if (isLoading || !hasMore) return;
     isLoading = true;
-
     const endpoint = currentSearch ? 'search' : 'trending';
     const queryParam = currentSearch ? `&q=${encodeURIComponent(currentSearch)}` : '';
     const url = `https://api.giphy.com/v1/gifs/${endpoint}?api_key=${GIPHY_API_KEY}&limit=20&offset=${currentOffset}${queryParam}`;
-
     try {
       const response = await fetch(url);
       const { data, pagination } = await response.json();
-
       if (!data || data.length === 0) {
         hasMore = false;
         if (currentOffset === 0) {
@@ -203,7 +228,6 @@
       }
 
       const grid = document.getElementById('giphyGrid');
-
       data.forEach(gif => {
         const img = document.createElement('img');
         img.src = gif.images.fixed_height_small.url;
@@ -212,12 +236,9 @@
         img.style.borderRadius = '6px';
         img.style.cursor = 'pointer';
         img.style.objectFit = 'cover';
-
         img.onclick = () => selectGif(gif);
-
         grid.appendChild(img);
       });
-
       currentOffset += data.length;
       if (currentOffset >= pagination.total_count) {
         hasMore = false;
@@ -229,7 +250,6 @@
     }
   }
 
-  // Infinite-Scroll beim Herunterscrollen im Modal
   function handleScroll() {
     const grid = document.getElementById('giphyGrid');
     if (grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 50) {
@@ -238,16 +258,15 @@
   }
 
   function selectGif(gif) {
-    // 1. ID in das hidden input schreiben
-    document.getElementById('giphyIdInput').value = gif.id;
-
-    // 2. Vorschau anzeigen
-    const preview = document.getElementById('previewContainer');
-    if (preview) {
-      preview.innerHTML = `<img class="selected-gif-preview" src="${gif.images.fixed_height.url}">`;
+    if (activeInputId) {
+      document.getElementById(activeInputId).value = gif.id;
     }
-
-    // 3. Modal schließen
+    if (activePreviewId) {
+      const preview = document.getElementById(activePreviewId);
+      if (preview) {
+        preview.innerHTML = `<img class="selected-gif-preview" src="${gif.images.fixed_height.url}">`;
+      }
+    }
     closeGiphyModal();
   }
 </script>
