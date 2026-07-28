@@ -96,22 +96,19 @@
     <br />
 <form action="/serverconfig/welcomemessage" method="POST">
   <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-  <input type="hidden" name="giphyId" id="welcomeGifId" value="<%= welcomeGifId || '' %>">
+  <input type="hidden" name="giphyId" id="welcomeGifId" value="<%= (gifTextList.get('WELCOME') && gifTextList.get('WELCOME').gif) ? gifTextList.get('WELCOME').gif : '' %>">
+  
   <h3>Willkommensnachricht:</h3>
-  <textarea id="welcomeText" name="welcomeText" rows="5" cols="90" required>
-    <% if (gifTextList.get("WELCOME") ) { %>
-  <%= gifTextList.get("WELCOME").text %>
-    <% } %>
-  </textarea>
-  <br />
-  <br />
-  <br />
+  <textarea id="welcomeText" name="welcomeText" rows="5" cols="90" required><% if (gifTextList.get("WELCOME")) { %><%= gifTextList.get("WELCOME").text %><% } %></textarea>
+  <br /><br /><br />
+  
   <div id="welcomeGifPreview">
     <% if (gifTextList.get("WELCOME") && gifTextList.get("WELCOME").gif !== '') { %>
       <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('WELCOME').gif %>/giphy.gif">
     <% } %>
   </div>
-    <button type="button" onclick="openGiphyModal('welcomeGifId', 'welcomeGifPreview')">
+  
+  <button type="button" onclick="openGiphyModal('welcomeGifId', 'welcomeGifPreview')">
     GIF auswählen / ändern
   </button>
   <button type="button" onclick="clearGif('welcomeGifId', 'welcomeGifPreview')">Gif entfernen</button>
@@ -122,22 +119,19 @@
 
 <form action="/serverconfig/byegif" method="POST">
   <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-  <input type="hidden" name="giphyId" id="byeGifId" value="<%= byeGifId || '' %>">
-    <h3>Verabschiedungsnachricht:</h3>
-      <textarea id="byeText" name="byeText" rows="5" cols="90" required>
-            <% if (gifTextList.get("BYE") ) { %>
-  <%= gifTextList.get("BYE").text %>
-    <% } %>
-      </textarea>
-  <br />
-  <br />
-  <br />
+  <input type="hidden" name="giphyId" id="byeGifId" value="<%= (gifTextList.get('BYE') && gifTextList.get('BYE').gif) ? gifTextList.get('BYE').gif : '' %>">
+  
+  <h3>Verabschiedungsnachricht:</h3>
+  <textarea id="byeText" name="byeText" rows="5" cols="90" required><% if (gifTextList.get("BYE")) { %><%= gifTextList.get("BYE").text %><% } %></textarea>
+  <br /><br /><br />
+  
   <div id="byeGifPreview">
     <% if (gifTextList.get("BYE") && gifTextList.get("BYE").gif !== '') { %>
       <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('BYE').gif %>/giphy.gif">
     <% } %>
   </div>
-    <button type="button" onclick="openGiphyModal('byeGifId', 'byeGifPreview')">
+  
+  <button type="button" onclick="openGiphyModal('byeGifId', 'byeGifPreview')">
     GIF auswählen / ändern
   </button>
   <button type="button" onclick="clearGif('byeGifId', 'byeGifPreview')">Gif entfernen</button>
