@@ -99,6 +99,9 @@
   <h3>Willkommensnachricht:</h3>
   <textarea id="welcomeText" name="welcomeText" rows="5" cols="90"><%= dbWelcome %></textarea>
   <br />
+  <br />
+  <br />
+  <br />
   <div id="welcomeGifPreview">
     <% if (welcomeGifId) { %>
       <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= welcomeGifId %>/giphy.gif">
@@ -117,6 +120,8 @@
   <input type="hidden" name="giphyId" id="byeGifId" value="<%= byeGifId || '' %>">
     <h3>Verabschiedungsnachricht:</h3>
       <textarea id="byeText" name="byeText" rows="5" cols="90"><%= dbBye %></textarea>
+  <br />
+  <br />
   <br />
   <div id="byeGifPreview">
     <% if (byeGifId) { %>
