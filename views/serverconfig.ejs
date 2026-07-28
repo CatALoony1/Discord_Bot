@@ -95,16 +95,20 @@
     <hr />
     <br />
 <form action="/serverconfig/welcomemessage" method="POST">
+  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
   <input type="hidden" name="giphyId" id="welcomeGifId" value="<%= welcomeGifId || '' %>">
   <h3>Willkommensnachricht:</h3>
-  <textarea id="welcomeText" name="welcomeText" rows="5" cols="90"><%= dbWelcome %></textarea>
-  <br />
+  <textarea id="welcomeText" name="welcomeText" rows="5" cols="90" required>
+    <% if (gifTextList.get("WELCOME") ) { %>
+  <%= gifTextList.get("WELCOME").text %>
+    <% }
+  </textarea>
   <br />
   <br />
   <br />
   <div id="welcomeGifPreview">
-    <% if (welcomeGifId) { %>
-      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= welcomeGifId %>/giphy.gif">
+    <% if (gifTextList.get("WELCOME") && gifTextList.get("WELCOME").gif !== '') { %>
+      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get("WELCOME").gif %>/giphy.gif">
     <% } %>
   </div>
     <button type="button" onclick="openGiphyModal('welcomeGifId', 'welcomeGifPreview')">
@@ -117,15 +121,20 @@
 <hr>
 
 <form action="/serverconfig/byegif" method="POST">
+  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
   <input type="hidden" name="giphyId" id="byeGifId" value="<%= byeGifId || '' %>">
     <h3>Verabschiedungsnachricht:</h3>
-      <textarea id="byeText" name="byeText" rows="5" cols="90"><%= dbBye %></textarea>
+      <textarea id="byeText" name="byeText" rows="5" cols="90" required>
+            <% if (gifTextList.get("BYE") ) { %>
+  <%= gifTextList.get("BYE").text %>
+    <% }
+      </textarea>
   <br />
   <br />
   <br />
   <div id="byeGifPreview">
-    <% if (byeGifId) { %>
-      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= byeGifId %>/giphy.gif">
+    <% if (gifTextList.get("BYE") && gifTextList.get("BYE").gif !== '') { %>
+      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get("BYE").gif %>/giphy.gif">
     <% } %>
   </div>
     <button type="button" onclick="openGiphyModal('byeGifId', 'byeGifPreview')">
@@ -135,7 +144,6 @@
   <button type="submit">Speichern</button>
 </form>
 
-<!-- MODAL (NUR EINMAL AUF DER SEITE NÖTIG) -->
 <div id="giphyModal" class="giphy-modal">
   <div class="giphy-header">
     <input type="text" id="giphySearch" placeholder="In Giphy suchen..." oninput="debounceSearch()">

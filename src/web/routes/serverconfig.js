@@ -3,6 +3,7 @@ require('dotenv').config();
 const router = express.Router();
 const ServerConfig = require('../../models/ServerConfig');
 const idUses = require('../../utils/data/idUses');
+const Config = require('../../models/Config');
 
 router.get('/', async (req, res) => {
   try {
@@ -18,6 +19,7 @@ router.get('/', async (req, res) => {
     }
     let rollen = [];
     let defaultRole = '';
+    let gifTextList = new Map();
     const selectedServerId = req.query.serverId || servers[0]?.id;
     if (selectedServerId) {
       const selectedGuild = client.guilds.cache.get(selectedServerId);
@@ -33,6 +35,30 @@ router.get('/', async (req, res) => {
         if (srvCfg) {
           defaultRole = srvCfg.objectId;
         }
+        const cfg = await Config.find({
+          guildId: selectedServerId,
+        });
+        for (const conf of cfg) {
+          switch (conf.key) {
+            case 'WELCOME_GIF':
+              gifTextList = addToList(
+                'WELCOME',
+                conf.value,
+                gifTextList,
+                false,
+              );
+              break;
+            case 'WELCOME_TXT':
+              gifTextList = addToList('WELCOME', conf.value, gifTextList, true);
+              break;
+            case 'BYE_GIF':
+              gifTextList = addToList('BYE', conf.value, gifTextList, false);
+              break;
+            case 'BYE_TXT':
+              gifTextList = addToList('BYE', conf.value, gifTextList, true);
+              break;
+          }
+        }
       }
     }
     res.render('serverconfig', {
@@ -43,10 +69,7 @@ router.get('/', async (req, res) => {
       uses: idUses,
       error: null,
       giphyApiKey: process.env.GIPHY_API,
-      welcomeGifId: 'LgKBKAzEs1zqL6SlJE',
-      byeGifId: null,
-      dbWelcome: '',
-      dbBye: '',
+      gifTextList: gifTextList,
     });
   } catch (error) {
     console.log(error);
@@ -58,10 +81,7 @@ router.get('/', async (req, res) => {
       uses: idUses,
       error: error.message,
       giphyApiKey: process.env.GIPHY_API,
-      welcomeGifId: null,
-      byeGifId: null,
-      dbWelcome: '',
-      dbBye: '',
+      gifTextList: new Map(),
     });
   }
 });
@@ -98,19 +118,49 @@ router.post('/change-member-role', async (req, res) => {
       defaultRole: '',
       uses: idUses,
       error: error.message,
-      giphyApiKey: process.env.GIPHY_API,
-      welcomeGifId: null,
-      byeGifId: null,
-      dbWelcome: '',
-      dbBye: '',
+      gifTextList: new Map(),
     });
   }
 });
 
-router.post('/welcomemessage', (req, res) => {
-  const { giphyId } = req.body;
-  console.log('Ausgewählte Giphy ID:', giphyId);
-  const guildId = req.body.guildId;
+router.post('/welcomemessage', async (req, res) => {
+  const { giphyId, welcomeText, guildId } = req.body;
+  const gifId = giphyId || '';
+  const cfg = await Config.find({
+    guildId: guildId,
+    key: { $regex: '^WELCOME' },
+  });
+  let txtAdded = false;
+  let gifAdded = false;
+  if (cfg) {
+    for (const conf of cfg) {
+      if (conf.key === 'WELCOME_TXT') {
+        conf.value = welcomeText;
+        await conf.save();
+        txtAdded = true;
+      } else if (conf.key === 'WELCOME_GIF') {
+        conf.value = gifId;
+        await conf.save();
+        gifAdded = true;
+      }
+    }
+  }
+  if (!gifAdded) {
+    const newGifCfg = new Config({
+      guildId: guildId,
+      key: 'WELCOME_GIF',
+      value: gifId,
+    });
+    await newGifCfg.save();
+  }
+  if (!txtAdded) {
+    const newTxtCfg = new Config({
+      guildId: guildId,
+      key: 'WELCOME_TXT',
+      value: welcomeText,
+    });
+    await newTxtCfg.save();
+  }
   const targetUrl = guildId
     ? `/serverconfig?serverId=${guildId}`
     : '/serverconfig';
@@ -127,4 +177,22 @@ router.post('/byegif', (req, res) => {
   return res.redirect(targetUrl);
 });
 
+function addToList(identifier, content, map, isTxt) {
+  const entry = map.get(identifier);
+  if (entry) {
+    if (isTxt) {
+      entry.text = content;
+    } else {
+      entry.gif = content;
+    }
+    map.set(identifier, entry);
+  } else {
+    if (isTxt) {
+      map.set(identifier, { text: content, gif: '' });
+    } else {
+      map.set(identifier, { text: '', gif: content });
+    }
+  }
+  return map;
+}
 module.exports = router;
