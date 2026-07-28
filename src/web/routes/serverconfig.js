@@ -167,10 +167,44 @@ router.post('/welcomemessage', async (req, res) => {
   return res.redirect(targetUrl);
 });
 
-router.post('/byegif', (req, res) => {
-  const { giphyId } = req.body;
-  console.log('Ausgewählte Giphy ID:', giphyId);
-  const guildId = req.body.guildId;
+router.post('/byemessage', (req, res) => {
+  const { giphyId, byeText, guildId } = req.body;
+  const gifId = giphyId || '';
+  const cfg = await Config.find({
+    guildId: guildId,
+    key: { $regex: '^BYE' },
+  });
+  let txtAdded = false;
+  let gifAdded = false;
+  if (cfg) {
+    for (const conf of cfg) {
+      if (conf.key === 'BYE_TXT') {
+        conf.value = byeText;
+        await conf.save();
+        txtAdded = true;
+      } else if (conf.key === 'BYE_GIF') {
+        conf.value = gifId;
+        await conf.save();
+        gifAdded = true;
+      }
+    }
+  }
+  if (!gifAdded) {
+    const newGifCfg = new Config({
+      guildId: guildId,
+      key: 'BYE_GIF',
+      value: gifId,
+    });
+    await newGifCfg.save();
+  }
+  if (!txtAdded) {
+    const newTxtCfg = new Config({
+      guildId: guildId,
+      key: 'BYE_TXT',
+      value: byeText,
+    });
+    await newTxtCfg.save();
+  }
   const targetUrl = guildId
     ? `/serverconfig?serverId=${guildId}`
     : '/serverconfig';
