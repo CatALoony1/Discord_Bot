@@ -61,7 +61,7 @@ router.get('/', async (req, res) => {
         }
       }
     }
-    res.render('serverconfig', {
+    return res.render('serverconfig', {
       servers: servers,
       selectedServerId: selectedServerId,
       alleRollen: rollen,
@@ -73,7 +73,7 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.render('serverconfig', {
+    return res.render('serverconfig', {
       servers: null,
       selectedServerId: null,
       alleRollen: [],
@@ -111,7 +111,7 @@ router.post('/change-member-role', async (req, res) => {
     return res.redirect(targetUrl);
   } catch (error) {
     console.log(error);
-    res.render('serverconfig', {
+    return res.render('serverconfig', {
       servers: null,
       selectedServerId: null,
       alleRollen: [],
@@ -124,65 +124,64 @@ router.post('/change-member-role', async (req, res) => {
 });
 
 router.post('/welcomemessage', async (req, res) => {
-  const { giphyId, welcomeText, guildId } = req.body;
-  const gifId = giphyId || '';
-  const cfg = await Config.find({
-    guildId: guildId,
-    key: { $regex: '^WELCOME' },
-  });
-  let txtAdded = false;
-  let gifAdded = false;
-  if (cfg) {
-    for (const conf of cfg) {
-      if (conf.key === 'WELCOME_TXT') {
-        conf.value = welcomeText;
-        await conf.save();
-        txtAdded = true;
-      } else if (conf.key === 'WELCOME_GIF') {
-        conf.value = gifId;
-        await conf.save();
-        gifAdded = true;
-      }
-    }
-  }
-  if (!gifAdded) {
-    const newGifCfg = new Config({
-      guildId: guildId,
-      key: 'WELCOME_GIF',
-      value: gifId,
+  try {
+    const { giphyId, welcomeText, guildId } = req.body;
+    await addToDb(giphyId, welcomeText, guildId, 'WELCOME');
+    const targetUrl = guildId
+      ? `/serverconfig?serverId=${guildId}`
+      : '/serverconfig';
+    return res.redirect(targetUrl);
+  } catch (error) {
+    console.log(error);
+    return res.render('serverconfig', {
+      servers: null,
+      selectedServerId: null,
+      alleRollen: [],
+      defaultRole: '',
+      uses: idUses,
+      error: error.message,
+      gifTextList: new Map(),
     });
-    await newGifCfg.save();
   }
-  if (!txtAdded) {
-    const newTxtCfg = new Config({
-      guildId: guildId,
-      key: 'WELCOME_TXT',
-      value: welcomeText,
-    });
-    await newTxtCfg.save();
-  }
-  const targetUrl = guildId
-    ? `/serverconfig?serverId=${guildId}`
-    : '/serverconfig';
-  return res.redirect(targetUrl);
 });
 
 router.post('/byemessage', async (req, res) => {
-  const { giphyId, byeText, guildId } = req.body;
+  try {
+    const { giphyId, byeText, guildId } = req.body;
+    await addToDb(giphyId, byeText, guildId, 'BYE');
+    const targetUrl = guildId
+      ? `/serverconfig?serverId=${guildId}`
+      : '/serverconfig';
+    return res.redirect(targetUrl);
+  } catch (error) {
+    console.log(error);
+    return res.render('serverconfig', {
+      servers: null,
+      selectedServerId: null,
+      alleRollen: [],
+      defaultRole: '',
+      uses: idUses,
+      error: error.message,
+      gifTextList: new Map(),
+    });
+  }
+});
+
+async function addToDb(giphyId, text, guildId, identifier) {
   const gifId = giphyId || '';
   const cfg = await Config.find({
     guildId: guildId,
-    key: { $regex: '^BYE' },
+    key: { $regex: `^${identifier}` },
   });
   let txtAdded = false;
   let gifAdded = false;
   if (cfg) {
     for (const conf of cfg) {
-      if (conf.key === 'BYE_TXT') {
-        conf.value = byeText;
+      if (conf.key === `${identifier}_TXT`) {
+        conf.value = text;
         await conf.save();
         txtAdded = true;
-      } else if (conf.key === 'BYE_GIF') {
+      } else if (conf.key === `${identifier}_GIF`) {
         conf.value = gifId;
         await conf.save();
         gifAdded = true;
@@ -192,7 +191,7 @@ router.post('/byemessage', async (req, res) => {
   if (!gifAdded) {
     const newGifCfg = new Config({
       guildId: guildId,
-      key: 'BYE_GIF',
+      key: `${identifier}_GIF`,
       value: gifId,
     });
     await newGifCfg.save();
@@ -200,16 +199,12 @@ router.post('/byemessage', async (req, res) => {
   if (!txtAdded) {
     const newTxtCfg = new Config({
       guildId: guildId,
-      key: 'BYE_TXT',
-      value: byeText,
+      key: `${identifier}_TXT`,
+      value: text,
     });
     await newTxtCfg.save();
   }
-  const targetUrl = guildId
-    ? `/serverconfig?serverId=${guildId}`
-    : '/serverconfig';
-  return res.redirect(targetUrl);
-});
+}
 
 function addToList(identifier, content, map, isTxt) {
   const entry = map.get(identifier);
