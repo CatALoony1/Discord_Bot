@@ -43,7 +43,7 @@ router.get('/', async (req, res) => {
       uses: idUses,
       error: null,
       giphyApiKey: process.env.GIPHY_API,
-      welcomeGifId: null,
+      welcomeGifId: 'LgKBKAzEs1zqL6SlJE',
       byeGifId: null,
     });
   } catch (error) {
