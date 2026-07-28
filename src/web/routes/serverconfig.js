@@ -167,7 +167,7 @@ router.post('/welcomemessage', async (req, res) => {
   return res.redirect(targetUrl);
 });
 
-router.post('/byemessage', (req, res) => {
+router.post('/byemessage', async (req, res) => {
   const { giphyId, byeText, guildId } = req.body;
   const gifId = giphyId || '';
   const cfg = await Config.find({
