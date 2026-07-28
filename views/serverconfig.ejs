@@ -108,7 +108,7 @@
   <br />
   <div id="welcomeGifPreview">
     <% if (gifTextList.get("WELCOME") && gifTextList.get("WELCOME").gif !== '') { %>
-      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get("WELCOME").gif %>/giphy.gif">
+      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('WELCOME').gif %>/giphy.gif">
     <% } %>
   </div>
     <button type="button" onclick="openGiphyModal('welcomeGifId', 'welcomeGifPreview')">
@@ -134,7 +134,7 @@
   <br />
   <div id="byeGifPreview">
     <% if (gifTextList.get("BYE") && gifTextList.get("BYE").gif !== '') { %>
-      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get("BYE").gif %>/giphy.gif">
+      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('BYE').gif %>/giphy.gif">
     <% } %>
   </div>
     <button type="button" onclick="openGiphyModal('byeGifId', 'byeGifPreview')">
