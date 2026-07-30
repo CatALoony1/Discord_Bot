@@ -33,7 +33,7 @@ router.post('/delete', async (req, res) => {
 router.post('/create', async (req, res) => {
   try {
     const { name, password, serverids } = req.body;
-    const existing = WebUser.findOne({ user: name });
+    const existing = await WebUser.findOne({ user: name });
     if (!existing) {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       const newUser = new WebUser({
