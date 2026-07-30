@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
       servers = servers.filter((server) => allowedIds.includes(server.id));
     }
     let rollen = [];
-    let defaultRole = '';
+    let defaultRole = [];
     let gifTextList = new Map();
     const selectedServerId = req.query.serverId || servers[0]?.id;
     if (selectedServerId) {
@@ -28,10 +28,18 @@ router.get('/', async (req, res) => {
           id: role.id,
           name: role.name,
         }));
-        const srvCfg = await ServerConfig.findOne({
+        const srvCfg = await ServerConfig.find({
           guildId: selectedServerId,
-          variableName: 'MITGLIED_ROLE_ID',
         }).lean();
+        for (const confi of srvCfg) {
+          if (confi.variableName == 'MITGLIED_ROLE_ID') {
+            defaultRole[0] = confi.objectId;
+          } else if (confi.variableName == 'NEWMEMBER_ROLE_ID') {
+            defaultRole[1] = confi.objectId;
+          } else if (confi.variableName == 'MIDMEMBER_ROLE_ID') {
+            defaultRole[2] = confi.objectId;
+          }
+        }
         if (srvCfg) {
           defaultRole = srvCfg.objectId;
         }
@@ -89,13 +97,14 @@ router.get('/', async (req, res) => {
 router.post('/change-member-role', async (req, res) => {
   try {
     const guildId = req.body.guildId;
+    const variableName = req.body.variableName;
     let roleId = req.body.newMemberRole;
     const targetUrl = guildId
       ? `/serverconfig?serverId=${guildId}`
       : '/serverconfig';
     const srvConf = await ServerConfig.findOne({
       guildId: guildId,
-      variableName: 'MITGLIED_ROLE_ID',
+      variableName: variableName,
     });
     if (srvConf && srvConf.objectId != roleId) {
       srvConf.objectId = roleId;
@@ -103,7 +112,7 @@ router.post('/change-member-role', async (req, res) => {
     } else {
       const newSrvConf = new ServerConfig({
         guildId: guildId,
-        variableName: 'MITGLIED_ROLE_ID',
+        variableName: variableName,
         objectId: roleId,
       });
       newSrvConf.save();

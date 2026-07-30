@@ -78,9 +78,40 @@
           <td>
             <form action="/serverconfig/change-member-role" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+              <input type="hidden" name="variableName" value="MITGLIED_ROLE_ID">
                 <select name="newMemberRole" onchange="this.form.submit()">
                   <% alleRollen.forEach(function(role) { %>
-                <option value="<%= role.id %>" <%= role.id === defaultRole ? 'selected' : '' %>>
+                <option value="<%= role.id %>" <%= role.id === defaultRole[0] ? 'selected' : '' %>>
+                    <%= role.name %>
+                </option>
+            <% }); %>
+                </select>
+            </form>
+          </td>
+          <td><%= uses.NEWMEMBER_ROLE_ID %></td>
+          <td>NEWMEMBER_ROLE_ID</td>
+          <td>
+            <form action="/serverconfig/change-member-role" method="POST">
+              <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+              <input type="hidden" name="variableName" value="NEWMEMBER_ROLE_ID">
+                <select name="newMemberRole" onchange="this.form.submit()">
+                  <% alleRollen.forEach(function(role) { %>
+                <option value="<%= role.id %>" <%= role.id === defaultRole[1] ? 'selected' : '' %>>
+                    <%= role.name %>
+                </option>
+            <% }); %>
+                </select>
+            </form>
+          </td>
+          <td><%= uses.MIDMEMBER_ROLE_ID %></td>
+          <td>MIDMEMBER_ROLE_ID</td>
+          <td>
+            <form action="/serverconfig/change-mmember-role" method="POST">
+              <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+              <input type="hidden" name="variableName" value="MIDMEMBER_ROLE_ID">
+                <select name="newMemberRole" onchange="this.form.submit()">
+                  <% alleRollen.forEach(function(role) { %>
+                <option value="<%= role.id %>" <%= role.id === defaultRole[2] ? 'selected' : '' %>>
                     <%= role.name %>
                 </option>
             <% }); %>
