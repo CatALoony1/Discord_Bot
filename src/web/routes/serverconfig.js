@@ -40,9 +40,6 @@ router.get('/', async (req, res) => {
             defaultRole[2] = confi.objectId;
           }
         }
-        if (srvCfg) {
-          defaultRole = srvCfg.objectId;
-        }
         const cfg = await Config.find({
           guildId: selectedServerId,
         });
