@@ -43,25 +43,11 @@ router.get('/', async (req, res) => {
         const cfg = await Config.find({
           guildId: selectedServerId,
         });
-        for (const conf of cfg) {
-          switch (conf.key) {
-            case 'WELCOME_GIF':
-              gifTextList = addToList(
-                'WELCOME',
-                conf.value,
-                gifTextList,
-                false,
-              );
-              break;
-            case 'WELCOME_TXT':
-              gifTextList = addToList('WELCOME', conf.value, gifTextList, true);
-              break;
-            case 'BYE_GIF':
-              gifTextList = addToList('BYE', conf.value, gifTextList, false);
-              break;
-            case 'BYE_TXT':
-              gifTextList = addToList('BYE', conf.value, gifTextList, true);
-              break;
+        for (const { key, value } of cfg) {
+          const [type, kind] = key.split('_');
+          if (kind === 'GIF' || kind === 'TXT') {
+            const isText = kind === 'TXT';
+            gifTextList = addToList(type, value, gifTextList, isText);
           }
         }
       }
@@ -129,32 +115,10 @@ router.post('/change-member-role', async (req, res) => {
   }
 });
 
-router.post('/welcomemessage', async (req, res) => {
+router.post('/message', async (req, res) => {
   try {
-    const { giphyId, welcomeText, guildId } = req.body;
-    await addToDb(giphyId, welcomeText, guildId, 'WELCOME');
-    const targetUrl = guildId
-      ? `/serverconfig?serverId=${guildId}`
-      : '/serverconfig';
-    return res.redirect(targetUrl);
-  } catch (error) {
-    console.log(error);
-    return res.render('serverconfig', {
-      servers: null,
-      selectedServerId: null,
-      alleRollen: [],
-      defaultRole: '',
-      uses: idUses,
-      error: error.message,
-      gifTextList: new Map(),
-    });
-  }
-});
-
-router.post('/byemessage', async (req, res) => {
-  try {
-    const { giphyId, byeText, guildId } = req.body;
-    await addToDb(giphyId, byeText, guildId, 'BYE');
+    const { giphyId, welcomeText, guildId, messageType } = req.body;
+    await addToDb(giphyId, welcomeText, guildId, messageType);
     const targetUrl = guildId
       ? `/serverconfig?serverId=${guildId}`
       : '/serverconfig';

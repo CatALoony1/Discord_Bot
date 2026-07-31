@@ -129,8 +129,11 @@
     <br />
     <hr />
     <br />
-<form action="/serverconfig/welcomemessage" method="POST">
+    <details>
+      <summary>Willkommensnachricht konfigurieren</summary>
+<form action="/serverconfig/message" method="POST">
   <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+  <input type="hidden" name="messageType" value="WELCOME">
   <input type="hidden" name="giphyId" id="welcomeGifId" value="<%= (gifTextList.get('WELCOME') && gifTextList.get('WELCOME').gif) ? gifTextList.get('WELCOME').gif : '' %>">
   
   <h3>Willkommensnachricht:</h3>
@@ -149,11 +152,13 @@
   <button type="button" onclick="clearGif('welcomeGifId', 'welcomeGifPreview')">Gif entfernen</button>
   <button type="submit">Speichern</button>
 </form>
-
+</details>
 <hr>
-
-<form action="/serverconfig/byemessage" method="POST">
+<details>
+      <summary>Verabschiedungsnachricht konfigurieren</summary>
+<form action="/serverconfig/message" method="POST">
   <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+  <input type="hidden" name="messageType" value="BYE">
   <input type="hidden" name="giphyId" id="byeGifId" value="<%= (gifTextList.get('BYE') && gifTextList.get('BYE').gif) ? gifTextList.get('BYE').gif : '' %>">
   
   <h3>Verabschiedungsnachricht:</h3>
@@ -172,6 +177,57 @@
   <button type="button" onclick="clearGif('byeGifId', 'byeGifPreview')">Gif entfernen</button>
   <button type="submit">Speichern</button>
 </form>
+</details>
+<hr>
+<details>
+      <summary>Boostnachricht konfigurieren</summary>
+<form action="/serverconfig/message" method="POST">
+  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+  <input type="hidden" name="messageType" value="BOOST">
+  <input type="hidden" name="giphyId" id="boostGifId" value="<%= (gifTextList.get('BOOST') && gifTextList.get('BOOST').gif) ? gifTextList.get('BOOST').gif : '' %>">
+  
+  <h3>Boostnachricht:</h3>
+  <textarea id="boostText" name="boostText" rows="5" cols="90" required><% if (gifTextList.get("BOOST")) { %><%= gifTextList.get("BOOST").text %><% } %></textarea>
+  <br /><br /><br />
+  
+  <div id="boostGifPreview">
+    <% if (gifTextList.get("BOOST") && gifTextList.get("BOOST").gif !== '') { %>
+      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('BOOST').gif %>/giphy.gif">
+    <% } %>
+  </div>
+  
+  <button type="button" onclick="openGiphyModal('boostGifId', 'boostGifPreview')">
+    GIF auswählen / ändern
+  </button>
+  <button type="button" onclick="clearGif('boostGifId', 'boostGifPreview')">Gif entfernen</button>
+  <button type="submit">Speichern</button>
+</form>
+</details>
+<hr>
+<details>
+      <summary>Bumpnachricht konfigurieren</summary>
+<form action="/serverconfig/message" method="POST">
+  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+  <input type="hidden" name="messageType" value="BUMP">
+  <input type="hidden" name="giphyId" id="bumpGifId" value="<%= (gifTextList.get('BUMP') && gifTextList.get('BUMP').gif) ? gifTextList.get('BUMP').gif : '' %>">
+  
+  <h3>Bumpnachricht:</h3>
+  <textarea id="bumpText" name="bumpText" rows="5" cols="90" required><% if (gifTextList.get("BUMP")) { %><%= gifTextList.get("BUMP").text %><% } %></textarea>
+  <br /><br /><br />
+  
+  <div id="bumpGifPreview">
+    <% if (gifTextList.get("BUMP") && gifTextList.get("BUMP").gif !== '') { %>
+      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('BUMP').gif %>/giphy.gif">
+    <% } %>
+  </div>
+  
+  <button type="button" onclick="openGiphyModal('bumpGifId', 'bumpGifPreview')">
+    GIF auswählen / ändern
+  </button>
+  <button type="button" onclick="clearGif('bumpGifId', 'bumpGifPreview')">Gif entfernen</button>
+  <button type="submit">Speichern</button>
+</form>
+</details>
 
 <div id="giphyModal" class="giphy-modal">
   <div class="giphy-header">
