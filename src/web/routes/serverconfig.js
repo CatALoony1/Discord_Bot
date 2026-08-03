@@ -149,7 +149,7 @@ async function addToDb(giphyId, text, header, guildId, identifier) {
   if (cfg) {
     for (const conf of cfg) {
       if (conf.key === `${identifier}_TXT`) {
-        conf.value = text;
+        conf.value = txt;
         await conf.save();
         txtAdded = true;
       } else if (conf.key === `${identifier}_GIF`) {
@@ -175,7 +175,7 @@ async function addToDb(giphyId, text, header, guildId, identifier) {
     const newTxtCfg = new Config({
       guildId: guildId,
       key: `${identifier}_TXT`,
-      value: text,
+      value: txt,
     });
     await newTxtCfg.save();
   }
