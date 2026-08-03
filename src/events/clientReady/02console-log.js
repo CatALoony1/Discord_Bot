@@ -1,4 +1,6 @@
 require('dotenv').config();
+const getGifById = require('../../utils/getGifById');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
   once: true,
 
@@ -16,6 +18,19 @@ module.exports = {
       });
       if (targetUser) {
         targetUser.send(message);
+        const gifUrl = await getGifById('igry3SpqajLhzyYMO5');
+        if (!gifUrl.includes('http')) {
+          console.log('ERROR Welcome gif');
+          return;
+        }
+        const welcome = new EmbedBuilder()
+          .setColor(0x0033cc)
+          .setTitle(`Titel`)
+          .setDescription(`Beschreibung`)
+          .setImage(gifUrl);
+        await targetUser.send({
+          embeds: [welcome],
+        });
       }
     } catch (error) {
       console.log(error);
