@@ -45,9 +45,8 @@ router.get('/', async (req, res) => {
         });
         for (const { key, value } of cfg) {
           const [type, kind] = key.split('_');
-          if (kind === 'GIF' || kind === 'TXT') {
-            const isText = kind === 'TXT';
-            gifTextList = addToList(type, value, gifTextList, isText);
+          if (kind === 'GIF' || kind === 'TXT' || kind === 'HEADER') {
+            gifTextList = addToList(type, value, gifTextList, kind);
           }
         }
       }
@@ -117,8 +116,8 @@ router.post('/change-member-role', async (req, res) => {
 
 router.post('/message', async (req, res) => {
   try {
-    const { giphyId, welcomeText, guildId, messageType } = req.body;
-    await addToDb(giphyId, welcomeText, guildId, messageType);
+    const { giphyId, text, header, guildId, messageType } = req.body;
+    await addToDb(giphyId, text, header, guildId, messageType);
     const targetUrl = guildId
       ? `/serverconfig?serverId=${guildId}`
       : '/serverconfig';
@@ -137,14 +136,16 @@ router.post('/message', async (req, res) => {
   }
 });
 
-async function addToDb(giphyId, text, guildId, identifier) {
+async function addToDb(giphyId, text, header, guildId, identifier) {
   const gifId = giphyId || '';
+  const txt = text || '';
   const cfg = await Config.find({
     guildId: guildId,
     key: { $regex: `^${identifier}` },
   });
   let txtAdded = false;
   let gifAdded = false;
+  let headerAdded = false;
   if (cfg) {
     for (const conf of cfg) {
       if (conf.key === `${identifier}_TXT`) {
@@ -155,6 +156,10 @@ async function addToDb(giphyId, text, guildId, identifier) {
         conf.value = gifId;
         await conf.save();
         gifAdded = true;
+      } else if (conf.key === `${identifier}_HEADER`) {
+        conf.value = header;
+        await conf.save();
+        headerAdded = true;
       }
     }
   }
@@ -174,22 +179,34 @@ async function addToDb(giphyId, text, guildId, identifier) {
     });
     await newTxtCfg.save();
   }
+  if (!headerAdded) {
+    const newHeaderCfg = new Config({
+      guildId: guildId,
+      key: `${identifier}_HEADER`,
+      value: header,
+    });
+    await newHeaderCfg.save();
+  }
 }
 
-function addToList(identifier, content, map, isTxt) {
+function addToList(identifier, content, map, kind) {
   const entry = map.get(identifier);
   if (entry) {
-    if (isTxt) {
+    if (kind === 'TXT') {
       entry.text = content;
-    } else {
+    } else if (kind === 'GIF') {
       entry.gif = content;
+    } else if (kind === 'HEADER') {
+      entry.header = content;
     }
     map.set(identifier, entry);
   } else {
-    if (isTxt) {
-      map.set(identifier, { text: content, gif: '' });
+    if (kind === 'TXT') {
+      map.set(identifier, { text: content, gif: '', header: '' });
+    } else if (kind === 'HEADER') {
+      map.set(identifier, { text: '', gif: '', header: content });
     } else {
-      map.set(identifier, { text: '', gif: content });
+      map.set(identifier, { text: '', gif: content, header: '' });
     }
   }
   return map;

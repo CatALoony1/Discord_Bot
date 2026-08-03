@@ -20,6 +20,7 @@ const bcrypt = require('bcrypt');
 app.set('view engine', 'ejs');
 app.set('trust proxy', true);
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(
   session({
