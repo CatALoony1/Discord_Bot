@@ -141,7 +141,7 @@
   <input type="hidden" name="giphyId" id="welcomeGifId" value="<%= (gifTextList.get('WELCOME') && gifTextList.get('WELCOME').gif) ? gifTextList.get('WELCOME').gif : '' %>">
   
   <h3>Willkommensnachricht-Titel:</h3>
-  <input type="text" id="welcomeHeader" name="header" required value="<%= (gifTextList.get('WELCOME') && gifTextList.get('WELCOME').header) ? gifTextList.get('WELCOME').header : '' %>" />
+  <input type="text" id="welcomeHeader" name="header" required value="<%= gifTextList.get('WELCOME')?.header || '' %>" />
   <br />
   <h3>Willkommensnachricht-Beschreibung:</h3>
   <textarea id="welcomeText" name="text" rows="5" cols="90"><% if (gifTextList.get("WELCOME")) { %><%= gifTextList.get("WELCOME").text %><% } %></textarea>
@@ -169,7 +169,7 @@
   <input type="hidden" name="giphyId" id="byeGifId" value="<%= (gifTextList.get('BYE') && gifTextList.get('BYE').gif) ? gifTextList.get('BYE').gif : '' %>">
   
     <h3>Verabschiedungsnachricht-Titel:</h3>
-  <input type="text" id="byeHeader" name="header" required value="<%= (gifTextList.get('BYE') && gifTextList.get('BYE').header) ? gifTextList.get('BYE').header : '' %>" />
+  <input type="text" id="byeHeader" name="header" required value="<%= gifTextList.get('BYE')?.header || '' %>" />
   <br />
   <h3>Verabschiedungsnachricht-Beschreibung:</h3>
   <textarea id="byeText" name="text" rows="5" cols="90"><% if (gifTextList.get("BYE")) { %><%= gifTextList.get("BYE").text %><% } %></textarea>
@@ -196,7 +196,7 @@
   <input type="hidden" name="messageType" value="BOOST">
   <input type="hidden" name="giphyId" id="boostGifId" value="<%= (gifTextList.get('BOOST') && gifTextList.get('BOOST').gif) ? gifTextList.get('BOOST').gif : '' %>">
       <h3>Boostnachricht-Titel:</h3>
-  <input type="text" id="boostHeader" name="header" required value="<%= (gifTextList.get('BOOST') && gifTextList.get('BOOST').header) ? gifTextList.get('BOOST').header : '' %>" />
+  <input type="text" id="boostHeader" name="header" required value="<%= gifTextList.get('BOOST')?.header || '' %>" />
   <br />
   <h3>Boostnachricht-Beschreibung:</h3>
   <textarea id="boostText" name="text" rows="5" cols="90"><% if (gifTextList.get("BOOST")) { %><%= gifTextList.get("BOOST").text %><% } %></textarea>
@@ -223,7 +223,7 @@
   <input type="hidden" name="messageType" value="BUMPREM">
   <input type="hidden" name="giphyId" id="bumpRemGifId" value="<%= (gifTextList.get('BUMPREM') && gifTextList.get('BUMPREM').gif) ? gifTextList.get('BUMPREM').gif : '' %>">
       <h3>Bump-Erinnerungs-Titel:</h3>
-  <input type="text" id="bumpRemHeader" name="header" required value="<%= (gifTextList.get('BUMPREM') && gifTextList.get('BUMPREM').header) ? gifTextList.get('BUMPREM').header : '' %>" />
+  <input type="text" id="bumpRemHeader" name="header" required value="<%= gifTextList.get('BUMPREM')?.header || '' %>" />
   <br />
   <h3>Bump-Erinnerungs-Nachricht-Beschreibung:</h3>
   <textarea id="bumpRemText" name="text" rows="5" cols="90" ><% if (gifTextList.get("BUMPREM")) { %><%= gifTextList.get("BUMPREM").text %><% } %></textarea>
@@ -249,7 +249,7 @@
   <input type="hidden" name="messageType" value="BUMPTHX">
   <input type="hidden" name="giphyId" id="bumpThxGifId" value="<%= (gifTextList.get('BUMPTHX') && gifTextList.get('BUMPTHX').gif) ? gifTextList.get('BUMPTHX').gif : '' %>">
       <h3>Bump-Dankes-Titel:</h3>
-  <input type="text" id="bumpThxHeader" name="header" required value="<%= (gifTextList.get('BUMPTHX') && gifTextList.get('BUMPTHX').header) ? gifTextList.get('BUMPTHX').header : '' %>" />
+  <input type="text" id="bumpThxHeader" name="header" required value="<%= gifTextList.get('BUMPTHX')?.header || '' %>" />
   <br />
   <h3>Bump-Dankes-Nachricht-Beschreibung:</h3>
   <textarea id="bumpThxText" name="text" rows="5" cols="90"><% if (gifTextList.get("BUMPTHX")) { %><%= gifTextList.get("BUMPTHX").text %><% } %></textarea>
